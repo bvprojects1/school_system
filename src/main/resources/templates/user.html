@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns:th="http:/>/www.thymeleaf.org">
+<head>
+
+</head>
+<div class="container">
+    <div class="row">
+        <div class="col-md-6 col-md-offset-3 ">
+            <div class="panel panel-primary">
+                <div class="panel-heading">Add TODO</div>
+                <div class="panel-body">
+                    <form action="#" th:action="@{/registerUserForm}" method="post" th:object="${user}">
+                        <label> Full name:</label>
+                        <label> Username:</label>
+                        <input type="text" th:field="*{userName}"/> <br/>
+                        <label> Password:</label>
+                        <input type="text" th:field="*{password}"/> <br/>
+                        <label> LockAccount:</label>
+                        <button type="submit" class="btn btn-success">Save User</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

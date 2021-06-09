@@ -1,0 +1,37 @@
+<div class="container">
+    <div>
+        <a type="button" class="btn btn-primary btn-md" href="/add-todo">Add Todo</a>
+    </div>
+    <br>
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <h3>List of TODO's</h3>
+        </div>
+        <div class="panel-body">
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th width="40%">Description</th>
+                    <th width="40%">Target Date</th>
+                    <th width="20%"></th>
+                </tr>
+                </thead>
+                <tbody>
+
+                    <tr>
+                        <td>${todo.description}</td>
+
+                        <td><a type="button" class="btn btn-success"
+                               href="/update-todo?id=${todo.id}">Update</a>
+                            <a type="button" class="btn btn-warning"
+                               href="/delete-todo?id=1">Delete</a></td>
+                    </tr>
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <ul class="nav navbar-nav navbar-right">
+        <li><a href="/logout">Logout</a></li>
+    </ul>
+</div>
