@@ -4,8 +4,6 @@ import com.bitsvaley.micro.domain.Todo;
 import com.bitsvaley.micro.services.TodoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -19,7 +17,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 @Controller
-public class TodoController {
+public class TodoController extends SuperController{
 
     @Autowired
     private TodoService todoService;
@@ -32,20 +30,11 @@ public class TodoController {
 
     @GetMapping(value = "/list-todos")
     public String showTodos(ModelMap model) {
-        String name = getLoggedInUserName(model);
+        String name = getLoggedInUserName();
         model.put("todos", todoService.getTodosByUser(name));
         return "list-todos";
     }
 
-    private String getLoggedInUserName(ModelMap model) {
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-
-        if (principal instanceof UserDetails) {
-            return ((UserDetails) principal).getUsername();
-        }
-
-        return principal.toString();
-    }
 
     @GetMapping(value = "/add-todo")
     public String showAddTodoPage(ModelMap model) {
@@ -73,7 +62,7 @@ public class TodoController {
             return "todo";
         }
 
-        todo.setUserName(getLoggedInUserName(model));
+        todo.setUserName(getLoggedInUserName());
         todoService.updateTodo(todo);
         return "redirect:/list-todos";
     }
@@ -85,7 +74,7 @@ public class TodoController {
             return "todo";
         }
 
-        todo.setUserName(getLoggedInUserName(model));
+        todo.setUserName(getLoggedInUserName());
         todoService.saveTodo(todo);
         return "redirect:/list-todos";
     }

@@ -13,13 +13,12 @@ import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Controller
 public class UserController {
-
-    @Autowired
-    private TodoService todoService;
 
     @Autowired
     private UserService userService;
@@ -38,19 +37,25 @@ public class UserController {
     }
 
     @PostMapping(value = "/registerUserForm")
-    public String registerUserForm(@ModelAttribute("user") User user) {
+    public String registerUserForm(@ModelAttribute("user") User user, ModelMap model) {
           userService.createUser(user);
-        return "user";
+        return "userSaved";
     }
 
     private String getLoggedInUserName(ModelMap model) {
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-
         if (principal instanceof UserDetails) {
             return ((UserDetails) principal).getUsername();
         }
-
         return principal.toString();
+    }
+
+
+    @GetMapping(value = "/listUsers")
+    public String listUsers(ModelMap model) {
+        List<User> users = new ArrayList<User>();
+        model.put("users", users);
+        return "userList";
     }
 
 }

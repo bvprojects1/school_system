@@ -4,11 +4,11 @@ import javax.persistence.*;
 
 /**
  * @author Fru Chifen
- * 09.07.2021
+ * 11.06.2021
  */
 @Entity
-@Table(name = "userRole")
-public class UserRole {
+@Table(name = "savingAccountType")
+public class SavingAccountType {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
