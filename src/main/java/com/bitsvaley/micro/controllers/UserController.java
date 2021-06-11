@@ -42,20 +42,19 @@ public class UserController {
         return "userSaved";
     }
 
-    private String getLoggedInUserName(ModelMap model) {
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        if (principal instanceof UserDetails) {
-            return ((UserDetails) principal).getUsername();
-        }
-        return principal.toString();
-    }
+//    private String getLoggedInUserName(ModelMap model) {
+//        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+//        if (principal instanceof UserDetails) {
+//            return ((UserDetails) principal).getUsername();
+//        }
+//        return principal.toString();
+//    }
 
-
-    @GetMapping(value = "/listUsers")
-    public String listUsers(ModelMap model) {
-        List<User> users = new ArrayList<User>();
-        model.put("users", users);
-        return "userList";
+    @PostMapping(value = "/findUserByUserName")
+    public String findUserByUserName(@ModelAttribute("user") User user, ModelMap model) {
+        User aUser = userService.findUserByUserName(user.getUserName());
+        model.put("user", aUser);
+        return "userDetails";
     }
 
 }

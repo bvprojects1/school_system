@@ -23,7 +23,7 @@ public class UserService {
     public Optional<User> getUserById(long id) {
         return userRepository.findById(id);
     }
-    public User getUserByUserName(String userName) {
+    public User findUserByUserName(String userName) {
         return userRepository.findByUserName(userName);
     }
 

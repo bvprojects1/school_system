@@ -7,9 +7,9 @@
     <div class="row">
         <div class="col-md-6 col-md-offset-3 ">
             <div class="panel panel-primary">
-                <div class="panel-heading">Add TODO</div>
+                <div class="panel-heading">Create a Savings account</div>
                 <div class="panel-body">
-                    <form action="#" th:action="@{/savingAccountForm}" method="post" th:object="${savingAccount}" >
+                    <form action="#" th:action="@{/registerSavingAccountForm}" method="post" th:object="${savingAccount}" >
 
                         <label> Minimum balance:</label>
                         <input type="number" th:field="*{accountMinBalance}"/> <br/>

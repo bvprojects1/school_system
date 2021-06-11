@@ -26,7 +26,7 @@ public class SavingAccountController extends SuperController{
     @PostMapping(value = "/registerSavingAccountForm")
     public String registerSavingForm(@ModelAttribute("saving") SavingAccount savingAccount) {
         savingService.createSavingAccount(savingAccount);
-        return "userSaved";
+        return "savingAccountSaved";
     }
 
 
