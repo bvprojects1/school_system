@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:th="http:/>/www.thymeleaf.org">
+<head>
+
+</head>
+<div class="container">
+    <div class="row">
+        <div class="col-md-6 col-md-offset-3 ">
+            <div class="panel panel-primary">
+                <div class="panel-heading">Create a Savings account</div>
+                <div class="panel-body">
+                    <form action="#" th:action="@{/registerSavingAccountForm}" method="post" th:object="${savingAccountTransaction}" >
+                        <label> Amount received:</label><br/>
+                        <input type="number" th:field="*{savingAmount}"/> <br/>
+                        <label> Notes:</label><br/>
+                        <input type="text" th:field="*{notes}"/>
+                        <button type="submit" class="btn btn-success">Save Payment</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

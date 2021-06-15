@@ -18,7 +18,7 @@ import java.util.Date;
 import java.util.List;
 
 @Controller
-public class UserController {
+public class UserController extends SuperController{
 
     @Autowired
     private UserService userService;
@@ -42,19 +42,14 @@ public class UserController {
         return "userSaved";
     }
 
-//    private String getLoggedInUserName(ModelMap model) {
-//        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-//        if (principal instanceof UserDetails) {
-//            return ((UserDetails) principal).getUsername();
-//        }
-//        return principal.toString();
-//    }
-
     @PostMapping(value = "/findUserByUserName")
     public String findUserByUserName(@ModelAttribute("user") User user, ModelMap model) {
         User aUser = userService.findUserByUserName(user.getUserName());
         model.put("user", aUser);
-        return "userDetails";
+        if(null != user.getSavingAccount() && 0 < user.getSavingAccount().size()){
+            return "userDetails";
+        }else
+        return "userDetailsNoAccount";
     }
 
 }

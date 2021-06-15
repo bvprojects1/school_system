@@ -1,6 +1,7 @@
 package com.bitsvaley.micro.controllers;
 
 import com.bitsvaley.micro.domain.SavingAccount;
+import com.bitsvaley.micro.domain.SavingAccountTransaction;
 import com.bitsvaley.micro.services.SavingAccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -22,26 +23,24 @@ public class SavingAccountController extends SuperController{
         return "savingAccount";
     }
 
-
     @PostMapping(value = "/registerSavingAccountForm")
-    public String registerSavingForm(@ModelAttribute("saving") SavingAccount savingAccount) {
+    public String registerSavingForm(@ModelAttribute("saving") SavingAccount savingAccount,ModelMap model) {
         savingService.createSavingAccount(savingAccount);
-        return "savingAccountSaved";
+        model.put("savingAccount", savingAccount);
+        return "userDetails";
     }
-
 
     @GetMapping(value = "/registerSavingAccountTransaction")
     public String registerSavingAccountTransaction(ModelMap model) {
-        SavingAccount savingAccount = new SavingAccount();
-        model.put("savingAccount", savingAccount);
-        return "savingAccount";
+        SavingAccountTransaction savingAccountTransaction = new SavingAccountTransaction();
+        model.put("savingAccountTransaction", savingAccountTransaction);
+        return "savingAccountTransaction";
     }
 
-
     @PostMapping(value = "/registerSavingAccountTransactionForm")
-    public String registerSavingAccountTransactionForm(@ModelAttribute("saving") SavingAccount user) {
-//        savingService.createSavingAccountTransaction(user);
-        return "userSaved";
+    public String registerSavingAccountTransactionForm(@ModelAttribute("savingAccountTransaction") SavingAccountTransaction savingAccountTransaction) {
+        savingService.createSavingAccountTransaction(savingAccountTransaction);
+        return "userDetails";
     }
 
 }

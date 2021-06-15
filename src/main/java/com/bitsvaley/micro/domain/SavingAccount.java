@@ -1,6 +1,7 @@
 package com.bitsvaley.micro.domain;
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  * @author Fru Chifen
@@ -9,18 +10,10 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "savingaccount")
 public class SavingAccount {
-    public SavingAccountType getSavingAccountType() {
-        return savingAccountType;
-    }
-
-    public void setSavingAccountType(SavingAccountType savingAccountType) {
-        this.savingAccountType = savingAccountType;
-    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
-
     private String createdBy;
     private String lastUpdatedBy;
     private LocalDateTime createdDate;
@@ -30,16 +23,30 @@ public class SavingAccount {
     private String accountNumber;
     private int interestRate;
 
+    @ManyToOne
+    private User user;
+
     @OneToOne(cascade = CascadeType.ALL)
     private SavingAccountType savingAccountType; //Leave
+
+    @OneToMany(cascade = CascadeType.ALL)
+    private List<SavingAccountTransaction> savingAccountTransaction;
 
     private String notes;
     private double accountMinBalance;
 
+
+    public List<SavingAccountTransaction> getSavingAccountTransaction() {
+        return savingAccountTransaction;
+    }
+
+    public void setSavingAccountTransaction(List<SavingAccountTransaction> savingAccountTransaction) {
+        this.savingAccountTransaction = savingAccountTransaction;
+    }
+
     public SavingAccountType getAccountSavingsType() {
         return savingAccountType;
     }
-
 
     public String getAccountNumber() {
         return accountNumber;
@@ -120,6 +127,22 @@ public class SavingAccount {
 
     public boolean getAccountLocked() {
         return accountMinBalanceLocked;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public SavingAccountType getSavingAccountType() {
+        return savingAccountType;
+    }
+
+    public void setSavingAccountType(SavingAccountType savingAccountType) {
+        this.savingAccountType = savingAccountType;
     }
 
 }

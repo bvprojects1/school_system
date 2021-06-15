@@ -15,16 +15,16 @@ import java.time.LocalDateTime;
 import java.util.Random;
 
 @Service
-public class SavingAccountService extends SuperService{
+public class SavingAccountTransactionService extends SuperService{
 
     @Autowired
     private SavingAccountRepository savingAccountRepository;
 
     @Autowired
-    private SavingAccountTypeRepository savingAccountTypeRepository;
+    private SavingAccountTransactionRepository savingAccountTransactionRepository;
 
     @Autowired
-    private SavingAccountTransactionRepository savingAccountTransactionRepository;
+    private SavingAccountTypeRepository savingAccountTypeRepository;
 
     @Autowired
     private UserRoleService userRoleService;
@@ -57,13 +57,12 @@ public class SavingAccountService extends SuperService{
     }
 
     public void createSavingAccountTransaction(SavingAccountTransaction savingAccountTransaction) {
-        //Get id of savingAccount transaction
         User user = userService.findUserByUserName("admin");
         savingAccountTransaction.setCreatedBy(getLoggedInUserName());
         savingAccountTransaction.setCreatedDate(LocalDateTime.now());
         savingAccountTransactionRepository.save(savingAccountTransaction);
 //        savingAccount.getSavingAccount().add(savingAccount);
-//        savingAccountRepository.get(savingAccountTransaction);
+        userService.saveUser(user);
     }
 
 

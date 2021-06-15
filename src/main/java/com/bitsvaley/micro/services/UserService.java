@@ -58,4 +58,7 @@ public class UserService {
         return userRole;
     }
 
+    public void saveUser(User user){
+        userRepository.save(user);
+    }
 }
