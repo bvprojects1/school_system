@@ -1,5 +1,6 @@
 package com.bitsvaley.micro.controllers;
 
+import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.ModelAndView;
@@ -10,7 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 public class ErrorController {
 
     @ExceptionHandler(Exception.class)
-    public ModelAndView handleException(HttpServletRequest request, Exception ex) {
+    public ModelAndView handleException(@NotNull HttpServletRequest request, Exception ex) {
         ex.printStackTrace();
         ModelAndView mv = new ModelAndView();
 
