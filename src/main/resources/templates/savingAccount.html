@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:th="http:/>/www.thymeleaf.org">
+<head>
+
+</head>
+<div class="container">
+    <div class="row">
+        <div class="col-md-6 col-md-offset-3 ">
+            <div class="panel panel-primary">
+                <div class="panel-heading">Create a Savings account</div>
+                <div class="panel-body">
+                    <form action="#" th:action="@{/registerSavingAccountForm}" method="post" th:object="${savingAccount}" >
+
+                        <label> Minimum balance:</label>
+                        <input type="number" th:field="*{accountMinBalance}"/> <br/>
+                        <label> Interest Rate:</label>
+                        <input type="number" th:field="*{interestRate}"/> <br/>
+                        <label> notes:</label>
+                        <input type="text" th:field="*{notes}"/>
+
+                        <label> Savings Type:</label>
+
+                        <button type="submit" class="btn btn-success">Save Account</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

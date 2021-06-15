@@ -6,7 +6,6 @@ import com.bitsvaley.micro.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.ManyToMany;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,23 +17,48 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private UserRoleService userRoleService;
+
     public Optional<User> getUserById(long id) {
         return userRepository.findById(id);
     }
-    public User getUserByUserName(String userName) {
+    public User findUserByUserName(String userName) {
         return userRepository.findByUserName(userName);
     }
 
     public void createUser(User user) {
+
         user.setCreated(LocalDateTime.now());
-        user.setAccountExpired(LocalDateTime.now().plusYears(99));
+        user.setAccountExpiredDate(LocalDateTime.now().plusYears(99));
+        user.setAccountBlockedDate(LocalDateTime.now().plusYears(99));
         user.setLastUpdated(LocalDateTime.now());
+
+        user.setAccountExpired(false);
         user.setAccountLocked(false);
-        UserRole userRole = new UserRole();
-        userRole.setName(com.bitsvaley.micro.utils.UserRole.CUSTOMER.name());
+
         List<UserRole> userRoleList = new ArrayList<UserRole>();
-        userRoleList.add(userRole);
+        userRoleList.add(insureCustomerRoleExists());// create a new customer role if none exists
         user.setUserRole(userRoleList);
+        userRepository.save(user);
+    }
+
+    /*
+        Insure a role 'CUSTOMER' exists in USER_ROLE table and use it. We are making sure a 'CUSTOMER' role
+        exists if not create one
+     */
+    private UserRole insureCustomerRoleExists() {
+        UserRole userRole = userRoleService.findUserRoleByName(com.bitsvaley.micro.utils.UserRole.CUSTOMER.name());
+        if( null == userRole ){
+            UserRole newUserRole = new UserRole();
+            newUserRole.setName("CUSTOMER");
+            userRoleService.saveUserRole(newUserRole);
+            return newUserRole;
+        }
+        return userRole;
+    }
+
+    public void saveUser(User user){
         userRepository.save(user);
     }
 }

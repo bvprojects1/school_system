@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html xmlns:th="http:/>/www.thymeleaf.org">
+<head>
+</head>
+    <div class="panel-heading">Saving Accounts</div>
+<table>
+    <tr>
+        <th>
+            Account Type
+        </th>
+        <th>
+            Account Number
+        </th>
+        <th>
+            Account Minimum Balance
+        </th>
+        <th>
+            Interest Rate
+        </th>
+        <th>
+            Minimum Balance Locked
+        </th>
+        <th>
+            Created Date
+        </th>
+        <th>
+            Created By
+        </th>
+        <th>
+
+        </th>
+    </tr>
+    <tr>
+        <td>
+            <p th:text="${savingAccount.savingAccountType.name}"/>
+        </td>
+        <td>
+            <p th:text="${savingAccount.accountNumber}"/>
+        </td>
+        <td>
+            <p th:text="${savingAccount.accountMinBalance}"/>
+        </td>
+        <td>
+            <p th:text="${savingAccount.interestRate}"/>
+        </td>
+        <td>
+            <p th:text="${savingAccount.accountMinBalanceLocked}"/>
+        </td>
+        <td>
+            <p th:text="${savingAccount.createdDate}"/>
+        </td>
+        <td>
+            <p th:text="${savingAccount.createdBy}"/>
+        </td>
+        <td>
+            <a href="#" th:href="@{/registerSavingAccountTransaction}">Make a savings payment</a>
+
+        </td>
+    </tr>
+</table>
+
+<!--<p Saving amount th:text="${savingAccount.accountMinBalance}"> </p>-->
+<!--        <div class="panel-body">-->
+<!--&lt;!&ndash;            <form action="#" th:action="@{/registerUserForm}" method="post" th:object="${savingAccount}" >&ndash;&gt;-->
+<!--&lt;!&ndash;            </form>&ndash;&gt;-->
+<!--        </div>-->
+</html>
+

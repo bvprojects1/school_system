@@ -14,6 +14,7 @@ public class UserRole {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
+    @Column(unique = true)
     String name;
 
     public String getName() {

@@ -7,7 +7,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
-public class WelcomeController {
+public class WelcomeController extends SuperController{
 
     @GetMapping(value = "/")
     public String showIndexPage(ModelMap model) {

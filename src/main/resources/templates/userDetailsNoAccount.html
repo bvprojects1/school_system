@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html xmlns:th="http:/>/www.thymeleaf.org">
+<head>
+
+</head>
+<div class="panel-heading">Saving Accounts</div>
+<!--<p Saving amount th:text="${savingAccount.amount}"> </p>-->
+<div class="panel-body">
+    <!--            <form action="#" th:action="@{/registerUserForm}" method="post" th:object="${savingAccount}" >-->
+    <!--            </form>-->
+    <a href="#" th:href="@{/registerSavingAccount}">Create Saving Account</a>
+    <a href="#" th:href="@{/registerCurrentAccount}">Create Current Account</a>
+    <a href="#" th:href="@{/registerRetirementAccount}">Create Retirement Savings Account</a>
+</div>
+</html>

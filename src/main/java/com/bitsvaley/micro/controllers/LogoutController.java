@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 @Controller
-public class LogoutController {
+public class LogoutController extends SuperController{
 
     @GetMapping(value = "/logout")
     public String logout(HttpServletRequest request,

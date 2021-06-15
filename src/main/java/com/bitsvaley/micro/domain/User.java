@@ -16,14 +16,65 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
+
+    @Column(unique = true)
     private String userName;
+    private String firstName;
+    private String lastName;
+    private String telephone1;
+    private String telephone2;
+    private String address;
     private String password;
-    @ManyToMany
+    private String email;
+    private String beneficiary;
+    private String dateOfBirth;
+
+    @ManyToMany(cascade = CascadeType.ALL)
     private List<UserRole> userRole;
-    private LocalDateTime accountExpired;
+
+    @OneToMany(cascade = CascadeType.ALL)
+    private List<SavingAccount> savingAccount;
+
+    private LocalDateTime accountExpiredDate;
     private boolean accountLocked;
+
+    private LocalDateTime accountBlockedDate;
+    private boolean accountExpired;
+
     private LocalDateTime lastUpdated;
     private LocalDateTime created;
+
+    public String getTelephone1() {
+        return telephone1;
+    }
+
+    public void setTelephone1(String telephone1) {
+        this.telephone1 = telephone1;
+    }
+
+    public String getTelephone2() {
+        return telephone2;
+    }
+
+    public void setTelephone2(String telephone2) {
+        this.telephone2 = telephone2;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
 
     public long getId() {
         return id;
@@ -57,12 +108,52 @@ public class User {
         this.userRole = userRole;
     }
 
-    public LocalDateTime getAccountExpired() {
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public List<SavingAccount> getSavingAccount() {
+        return savingAccount;
+    }
+
+    public void setSavingAccount(List<SavingAccount> savingAccount) {
+        this.savingAccount = savingAccount;
+    }
+
+    public LocalDateTime getAccountExpiredDate() {
+        return accountExpiredDate;
+    }
+
+    public void setAccountExpiredDate(LocalDateTime accountExpiredDate) {
+        this.accountExpiredDate = accountExpiredDate;
+    }
+
+    public LocalDateTime getAccountBlockedDate() {
+        return accountBlockedDate;
+    }
+
+    public void setAccountBlockedDate(LocalDateTime accountBlockedDate) {
+        this.accountBlockedDate = accountBlockedDate;
+    }
+
+    public boolean isAccountExpired() {
         return accountExpired;
     }
 
-    public void setAccountExpired(LocalDateTime accountExpired) {
+    public void setAccountExpired(boolean accountExpired) {
         this.accountExpired = accountExpired;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
     }
 
     public boolean isAccountLocked() {
@@ -87,5 +178,21 @@ public class User {
 
     public void setCreated(LocalDateTime created) {
         this.created = created;
+    }
+
+    public String getBeneficiary() {
+        return beneficiary;
+    }
+
+    public void setBeneficiary(String beneficiary) {
+        this.beneficiary = beneficiary;
+    }
+
+    public String getDateOfBirth() {
+        return dateOfBirth;
+    }
+
+    public void setDateOfBirth(String dateOfBirth) {
+        this.dateOfBirth = dateOfBirth;
     }
 }

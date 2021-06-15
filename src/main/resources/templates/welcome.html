@@ -1,15 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:th="http:/>/www.thymeleaf.org">
+<head>
 
+</head>
 <div class="container">
 
     <div class="panel panel-primary">
         <div class="panel-heading">Home Page</div>
         <div class="panel-body">
-            Welcome html ${name}!! <a href="/list-todos">Click here</a> to manage your
-            todo's.
-
-            <br/>
-            Create customers ${name}!! <a href="/registerUser">Create see Customers</a> to manage your
+            <p Welcome th:text="${name}"/>
+            <br/> <a href="/registerUser">
+            Create a new Customers with first name "admin" and lastname "admin"</a> <br/><br/>
         </div>
+
+        <form action="#" th:action="@{/findUserByUserName}" method="post" >
+            
+            <label> Firstname/Username</label>
+            <input type="text" name="userName" value=""/> <br/>
+
+            <input type="submit" value="submit">
+        </form>
+
     </div>
     <ul class="nav navbar-nav navbar-right">
         <li><a href="/logout">Logout</a></li>

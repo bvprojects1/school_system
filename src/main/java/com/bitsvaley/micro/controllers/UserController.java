@@ -13,13 +13,12 @@ import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Controller
-public class UserController {
-
-    @Autowired
-    private TodoService todoService;
+public class UserController extends SuperController{
 
     @Autowired
     private UserService userService;
@@ -38,19 +37,19 @@ public class UserController {
     }
 
     @PostMapping(value = "/registerUserForm")
-    public String registerUserForm(@ModelAttribute("user") User user) {
+    public String registerUserForm(@ModelAttribute("user") User user, ModelMap model) {
           userService.createUser(user);
-        return "user";
+        return "userSaved";
     }
 
-    private String getLoggedInUserName(ModelMap model) {
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-
-        if (principal instanceof UserDetails) {
-            return ((UserDetails) principal).getUsername();
-        }
-
-        return principal.toString();
+    @PostMapping(value = "/findUserByUserName")
+    public String findUserByUserName(@ModelAttribute("user") User user, ModelMap model) {
+        User aUser = userService.findUserByUserName(user.getUserName());
+        model.put("user", aUser);
+        if(null != user.getSavingAccount() && 0 < user.getSavingAccount().size()){
+            return "userDetails";
+        }else
+        return "userDetailsNoAccount";
     }
 
 }
