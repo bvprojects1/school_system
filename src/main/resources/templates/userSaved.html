@@ -7,13 +7,13 @@
 
     <div>
 
-        <p Welcome th:text="${user.userName}"> </p>
+        <p> Welcome <strong th:text="${user.userName}"> </strong></p>
                 <div>Your account was successfully created</div>
 
                     <form action="#" th:action="@{/registerUserForm}" method="post" th:object="${user}">
                         <br/>
-                        <label> Customer name:</label>
-                        <input type="text" th:field="*{userName}"/> <br/>
+<!--                        <label> Customer name:</label>-->
+<!--                        <input type="text" th:field="*{userName}"/> <br/>-->
 
 
                         <br>
