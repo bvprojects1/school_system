@@ -19,7 +19,6 @@ public class WelcomeController extends SuperController{
     @GetMapping(value = "/")
     public String showIndexPage(ModelMap model, HttpServletRequest request) {
         model.put("name", getLoggedinUserName());
-        request.getSession().setAttribute("user", userRepository.findByUserName(getLoggedinUserName()) );
         return "welcome";
     }
 

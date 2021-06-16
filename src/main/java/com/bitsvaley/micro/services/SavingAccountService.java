@@ -42,9 +42,9 @@ public class SavingAccountService extends SuperService{
         return savingAccountRepository.findByAccountNumber(accountNumber);
     }
 
-    public void createSavingAccount(SavingAccount savingAccount, User user) {
+    public void createSavingAccount(SavingAccount savingAccount) {
 
-//        User user = userService.findUserByUserName("admin");
+        User user = userService.findUserByUserName("admin");
 //        NumberFormat formatter = NumberFormat.getCurrencyInstance(new Locale("en", "CM"));
 //        savingAccount.setAccountMinBalance(new Double(formatter.format(savingAccount.getAccountMinBalance())));
 
@@ -62,9 +62,9 @@ public class SavingAccountService extends SuperService{
         userService.saveUser(user);
     }
 
-    public void createSavingAccountTransaction(SavingAccountTransaction savingAccountTransaction) {
+    public void createSavingAccountTransaction(SavingAccountTransaction savingAccountTransaction,User user) {
         //Get id of savingAccount transaction
-        User user = userService.findUserByUserName("admin");
+
         savingAccountTransaction.setCreatedBy(getLoggedInUserName());
         savingAccountTransaction.setCreatedDate(LocalDateTime.now());
         savingAccountTransactionRepository.save(savingAccountTransaction);

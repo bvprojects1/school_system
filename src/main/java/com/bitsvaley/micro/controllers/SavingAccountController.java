@@ -4,6 +4,7 @@ import com.bitsvaley.micro.domain.SavingAccount;
 import com.bitsvaley.micro.domain.SavingAccountTransaction;
 import com.bitsvaley.micro.domain.User;
 import com.bitsvaley.micro.services.SavingAccountService;
+import com.bitsvaley.micro.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -19,6 +20,10 @@ import java.util.Optional;
 public class SavingAccountController extends SuperController{
 
     @Autowired
+
+    UserService userService;
+
+    @Autowired
     SavingAccountService savingAccountService;
 
     @GetMapping(value = "/registerSavingAccount")
@@ -30,10 +35,11 @@ public class SavingAccountController extends SuperController{
 
     @PostMapping(value = "/registerSavingAccountForm")
     public String registerSavingForm( @ModelAttribute("saving") SavingAccount savingAccount, ModelMap model, HttpServletRequest request) {
-        User user = (User)request.getSession().getAttribute("user");
-        savingAccountService.createSavingAccount(savingAccount, user);
+
+        savingAccountService.createSavingAccount(savingAccount);
         request.getSession().setAttribute("savingAccount",savingAccount);
-        model.put("savingAccount", savingAccount);
+//        model.put("savingAccount", savingAccount);
+        model.put("user", savingAccount.getUser());
         return "userDetails";
     }
 
@@ -52,7 +58,8 @@ public class SavingAccountController extends SuperController{
         String blogId = request.getParameter("blogId");
         Optional<SavingAccount> savingAccount = savingAccountService.findById(new Long(savingAccountId));
         savingAccountTransaction.setSavingAccount(savingAccount.get());
-        savingAccountService.createSavingAccountTransaction(savingAccountTransaction);
+        User user = userService.findUserByUserName("admin");
+        savingAccountService.createSavingAccountTransaction(savingAccountTransaction, user);
 //        savingAccountService.findBySavingAccount(String Saving acco);
         model.put("savingAccountTransaction", savingAccountTransaction);
         return "savingAccountTransactions";
