@@ -12,11 +12,8 @@ import com.bitsvaley.micro.utils.SavingAccountType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.text.NumberFormat;
 import java.time.LocalDateTime;
-import java.util.Locale;
 import java.util.Optional;
-import java.util.Random;
 
 @Service
 public class SavingAccountService extends SuperService{
@@ -37,7 +34,7 @@ public class SavingAccountService extends SuperService{
     private UserService userService;
 
     @Autowired
-    private UserRepository repository;
+    private UserRepository userRepository;
 
     private double minimumSavings;
 
@@ -60,6 +57,7 @@ public class SavingAccountService extends SuperService{
         savingAccount.setSavingAccountType(insureAccountSavingsTypeExists());
         savingAccount.setUser(user); //TODO:Add User
         savingAccountRepository.save(savingAccount);
+        user = userRepository.findById(user.getId()).get();//TODO handle optional
         user.getSavingAccount().add(savingAccount);
         userService.saveUser(user);
     }

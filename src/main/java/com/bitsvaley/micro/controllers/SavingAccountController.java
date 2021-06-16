@@ -31,7 +31,7 @@ public class SavingAccountController extends SuperController{
     @PostMapping(value = "/registerSavingAccountForm")
     public String registerSavingForm( @ModelAttribute("saving") SavingAccount savingAccount, ModelMap model, HttpServletRequest request) {
         User user = (User)request.getSession().getAttribute("user");
-        savingAccountService.createSavingAccount(savingAccount,user);
+        savingAccountService.createSavingAccount(savingAccount, user);
         request.getSession().setAttribute("savingAccount",savingAccount);
         model.put("savingAccount", savingAccount);
         return "userDetails";
