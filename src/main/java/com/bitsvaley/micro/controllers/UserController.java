@@ -1,5 +1,6 @@
 package com.bitsvaley.micro.controllers;
 
+import com.bitsvaley.micro.domain.SavingAccount;
 import com.bitsvaley.micro.domain.User;
 import com.bitsvaley.micro.services.TodoService;
 import com.bitsvaley.micro.services.UserService;
@@ -45,8 +46,9 @@ public class UserController extends SuperController{
     @PostMapping(value = "/findUserByUserName")
     public String findUserByUserName(@ModelAttribute("user") User user, ModelMap model) {
         User aUser = userService.findUserByUserName(user.getUserName());
+        List<SavingAccount> savingAccount = aUser.getSavingAccount();
         model.put("user", aUser);
-        if(null != user.getSavingAccount() && 0 < user.getSavingAccount().size()){
+        if(null != aUser.getSavingAccount() && 0 < aUser.getSavingAccount().size()){
             return "userDetails";
         }else
         return "userDetailsNoAccount";

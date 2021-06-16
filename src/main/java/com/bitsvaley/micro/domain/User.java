@@ -3,6 +3,7 @@ package com.bitsvaley.micro.domain;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -33,7 +34,7 @@ public class User {
     private List<UserRole> userRole;
 
     @OneToMany(cascade = CascadeType.ALL)
-    private List<SavingAccount> savingAccount;
+    private List<SavingAccount> savingAccount = new ArrayList<SavingAccount>();
 
     private LocalDateTime accountExpiredDate;
     private boolean accountLocked;

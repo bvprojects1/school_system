@@ -10,7 +10,6 @@
                 <div class="panel-heading">Create a Savings account</div>
                 <div class="panel-body">
                     <form action="#" th:action="@{/registerSavingAccountForm}" method="post" th:object="${savingAccount}" >
-
                         <label> Minimum balance:</label>
                         <input type="number" th:field="*{accountMinBalance}"/> <br/>
                         <label> Interest Rate:</label>

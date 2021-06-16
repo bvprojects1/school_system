@@ -11,6 +11,7 @@ import com.bitsvaley.micro.utils.SavingAccountType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
 import java.util.Random;
 
@@ -56,12 +57,13 @@ public class SavingAccountTransactionService extends SuperService{
         userService.saveUser(user);
     }
 
-    public void createSavingAccountTransaction(SavingAccountTransaction savingAccountTransaction) {
+    public void createSavingAccountTransaction(SavingAccountTransaction savingAccountTransaction, HttpServletRequest request) {
         User user = userService.findUserByUserName("admin");
         savingAccountTransaction.setCreatedBy(getLoggedInUserName());
         savingAccountTransaction.setCreatedDate(LocalDateTime.now());
+        SavingAccount savingAccount = (SavingAccount)request.getSession().getAttribute("savingAccount");
+        savingAccountTransaction.setSavingAccount(savingAccount);
         savingAccountTransactionRepository.save(savingAccountTransaction);
-//        savingAccount.getSavingAccount().add(savingAccount);
         userService.saveUser(user);
     }
 

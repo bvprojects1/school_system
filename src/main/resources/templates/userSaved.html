@@ -11,13 +11,11 @@
                 <div>Your account was successfully created</div>
 
                     <form action="#" th:action="@{/registerUserForm}" method="post" th:object="${user}">
-                       <label> Customer name:</label>
+                        <br/>
+                        <label> Customer name:</label>
                         <input type="text" th:field="*{userName}"/> <br/>
 
-                        <select>
-                            <option value="select_an_account">Select an account</option>
-                            <option value="current_account">Current Account</option>
-                        </select>
+
                         <br>
                         <a href="#" th:href="@{/registerSavingAccount}">Create Saving Account</a>
                         <a href="#" th:href="@{/registerCurrentAccount}">Create Current Account</a>

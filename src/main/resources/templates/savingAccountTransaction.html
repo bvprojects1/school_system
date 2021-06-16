@@ -7,13 +7,15 @@
     <div class="row">
         <div class="col-md-6 col-md-offset-3 ">
             <div class="panel panel-primary">
-                <div class="panel-heading">Create a Savings account</div>
+                <div class="panel-heading">Make a Savings account payment</div>
                 <div class="panel-body">
-                    <form action="#" th:action="@{/registerSavingAccountForm}" method="post" th:object="${savingAccountTransaction}" >
+                    <form action="#" th:action="@{/registerSavingAccountTransactionForm}" method="post" th:object="${savingAccountTransaction}" >
                         <label> Amount received:</label><br/>
                         <input type="number" th:field="*{savingAmount}"/> <br/>
                         <label> Notes:</label><br/>
                         <input type="text" th:field="*{notes}"/>
+                        <input type="hidden" th:value="${savingAccountTransaction.savingAccount.id}" name="blogId" />
+                        <input type="hidden" th:value="${savingAccountTransaction.savingAccount.id}" th:attr="name='savingAccountId'"/>
                         <button type="submit" class="btn btn-success">Save Payment</button>
                     </form>
                 </div>

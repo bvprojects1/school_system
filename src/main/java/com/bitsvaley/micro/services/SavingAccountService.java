@@ -7,12 +7,13 @@ import com.bitsvaley.micro.repositories.SavingAccountRepository;
 import com.bitsvaley.micro.repositories.SavingAccountTransactionRepository;
 import com.bitsvaley.micro.repositories.SavingAccountTypeRepository;
 import com.bitsvaley.micro.repositories.UserRepository;
+import com.bitsvaley.micro.utils.BVMicroUtils;
 import com.bitsvaley.micro.utils.SavingAccountType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.Random;
+import java.util.Optional;
 
 @Service
 public class SavingAccountService extends SuperService{
@@ -33,7 +34,7 @@ public class SavingAccountService extends SuperService{
     private UserService userService;
 
     @Autowired
-    private UserRepository repository;
+    private UserRepository userRepository;
 
     private double minimumSavings;
 
@@ -42,23 +43,28 @@ public class SavingAccountService extends SuperService{
     }
 
     public void createSavingAccount(SavingAccount savingAccount) {
+
         User user = userService.findUserByUserName("admin");
-        savingAccount.setAccountNumber(new String(""+new Random())); //Collision
+//        NumberFormat formatter = NumberFormat.getCurrencyInstance(new Locale("en", "CM"));
+//        savingAccount.setAccountMinBalance(new Double(formatter.format(savingAccount.getAccountMinBalance())));
+
+        savingAccount.setAccountNumber(BVMicroUtils.RandomStringUnbounded_thenCorrect()); //Collision
         savingAccount.setCreatedBy(getLoggedInUserName());
         savingAccount.setCreatedDate(LocalDateTime.now());
         savingAccount.setLastUpdatedBy(getLoggedInUserName());
         savingAccount.setAccountLocked(false);
         savingAccount.setLastUpdatedDate(LocalDateTime.now());
         savingAccount.setSavingAccountType(insureAccountSavingsTypeExists());
-        savingAccount.setUser(userService.findUserByUserName("admin")); //TODO:Add User
+        savingAccount.setUser(user); //TODO:Add User
         savingAccountRepository.save(savingAccount);
+        user = userRepository.findById(user.getId()).get();//TODO handle optional
         user.getSavingAccount().add(savingAccount);
         userService.saveUser(user);
     }
 
-    public void createSavingAccountTransaction(SavingAccountTransaction savingAccountTransaction) {
+    public void createSavingAccountTransaction(SavingAccountTransaction savingAccountTransaction,User user) {
         //Get id of savingAccount transaction
-        User user = userService.findUserByUserName("admin");
+
         savingAccountTransaction.setCreatedBy(getLoggedInUserName());
         savingAccountTransaction.setCreatedDate(LocalDateTime.now());
         savingAccountTransactionRepository.save(savingAccountTransaction);
@@ -76,6 +82,11 @@ public class SavingAccountService extends SuperService{
             return savingAccountType;
         }
         return savingAccountType;
+    }
+
+    public Optional<SavingAccount> findById(long id){
+        Optional<SavingAccount> savingAccount = savingAccountRepository.findById(id);
+        return savingAccount;
     }
 
 }
