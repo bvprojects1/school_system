@@ -1,5 +1,6 @@
 package com.bitsvaley.micro.services;
 
+import com.bitsvaley.micro.domain.SavingAccount;
 import com.bitsvaley.micro.domain.User;
 import com.bitsvaley.micro.domain.UserRole;
 import com.bitsvaley.micro.repositories.UserRepository;
@@ -61,4 +62,6 @@ public class UserService {
     public void saveUser(User user){
         userRepository.save(user);
     }
+
+//    public List<SavingAccount> findAllSavingAccount
 }

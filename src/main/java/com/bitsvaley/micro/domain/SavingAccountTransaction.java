@@ -11,8 +11,9 @@ public class SavingAccountTransaction {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private String createdBy;
     private long id;
+
+    private String createdBy;
     private LocalDateTime createdDate;
     private int savingAmount;
     private String notes;

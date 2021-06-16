@@ -1,17 +1,25 @@
 package com.bitsvaley.micro.controllers;
 
+import com.bitsvaley.micro.repositories.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import javax.servlet.http.HttpServletRequest;
+
 @Controller
 public class WelcomeController extends SuperController{
 
+    @Autowired
+    UserRepository userRepository;
+
     @GetMapping(value = "/")
-    public String showIndexPage(ModelMap model) {
+    public String showIndexPage(ModelMap model, HttpServletRequest request) {
         model.put("name", getLoggedinUserName());
+        request.getSession().setAttribute("user", userRepository.findByUserName(getLoggedinUserName()) );
         return "welcome";
     }
 

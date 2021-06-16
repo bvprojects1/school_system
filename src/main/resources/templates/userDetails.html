@@ -30,7 +30,7 @@
 
         </th>
     </tr>
-    <tr>
+    <tr th:each="savingAccount : ${user.savingAccount}">
         <td>
             <p th:text="${savingAccount.savingAccountType.name}"/>
         </td>
@@ -53,7 +53,7 @@
             <p th:text="${savingAccount.createdBy}"/>
         </td>
         <td>
-            <a href="#" th:href="@{/registerSavingAccountTransaction}">Make a savings payment</a>
+            <a href="#" th:href="@{/registerSavingAccountTransaction/{id}(id=${savingAccount.id})}">Make a savings payment</a>
 
         </td>
     </tr>

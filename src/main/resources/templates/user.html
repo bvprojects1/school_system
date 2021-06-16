@@ -10,9 +10,9 @@
                 <div class="panel-heading">Create New User</div>
                 <div class="panel-body">
                     <form action="#" th:action="@{/registerUserForm}" method="post" th:object="${user}" >
-                        <label> First name:</label>
+                        <label> Username:</label>
                         <input type="text" th:field="*{userName}"/> <br/>
-                        <label> Last name:</label>
+                        <label> First & Last name:</label>
                         <input type="text" th:field="*{firstName}"/> <br/>
                         <label> National ID number:</label>
                         <input type="text" th:field="*{lastName}"/> <br/>

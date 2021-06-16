@@ -1,6 +1,7 @@
 package com.bitsvaley.micro.domain;
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -30,11 +31,18 @@ public class SavingAccount {
     private SavingAccountType savingAccountType; //Leave
 
     @OneToMany(cascade = CascadeType.ALL)
-    private List<SavingAccountTransaction> savingAccountTransaction;
+    private List<SavingAccountTransaction> savingAccountTransaction = new ArrayList<SavingAccountTransaction>();
 
     private String notes;
     private double accountMinBalance;
 
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
 
     public List<SavingAccountTransaction> getSavingAccountTransaction() {
         return savingAccountTransaction;
