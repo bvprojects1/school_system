@@ -42,9 +42,15 @@ public class UserController extends SuperController{
 //        return "userSavePreview";
 //    }
 
+    @PostMapping(value = "/registerUserPreviewForm")
+    public String registerUserPreviewForm(@ModelAttribute("user") User user, ModelMap model) {
+        userService.createUser(user);
+        return "userDetails";
+    }
+
     @PostMapping(value = "/registerUserForm")
     public String registerUserForm(@ModelAttribute("user") User user, ModelMap model) {
-          userService.createUser(user);
+        model.put("user", user);
         return "userSavedPreview";
     }
 
