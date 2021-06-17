@@ -10,6 +10,8 @@
         <p> Welcome <strong th:text="${user.userName}"> </strong></p>
                 <div>Your account was successfully created</div>
 
+                <a href="#" th:href="@{/userSavePreview}">Preview Account Details</a>
+
                     <form action="#" th:action="@{/registerUserForm}" method="post" th:object="${user}">
                         <br/>
 <!--                        <label> Customer name:</label>-->
