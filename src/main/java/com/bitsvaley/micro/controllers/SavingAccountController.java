@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.Optional;
 
 @Controller
@@ -55,14 +56,21 @@ public class SavingAccountController extends SuperController{
     @PostMapping(value = "/registerSavingAccountTransactionForm")
     public String registerSavingAccountTransactionForm(ModelMap model, @ModelAttribute("savingAccountTransaction") SavingAccountTransaction savingAccountTransaction, HttpServletRequest request) {
         String savingAccountId = request.getParameter("savingAccountId");
-        String blogId = request.getParameter("blogId");
         Optional<SavingAccount> savingAccount = savingAccountService.findById(new Long(savingAccountId));
         savingAccountTransaction.setSavingAccount(savingAccount.get());
         User user = userService.findUserByUserName("admin");
         savingAccountService.createSavingAccountTransaction(savingAccountTransaction, user);
-//        savingAccountService.findBySavingAccount(String Saving acco);
+        if(savingAccount.get().getSavingAccountTransaction() != null ){
+            savingAccount.get().getSavingAccountTransaction().add(savingAccountTransaction);
+        }else{
+            savingAccount.get().setSavingAccountTransaction(new ArrayList<SavingAccountTransaction>());
+            savingAccount.get().getSavingAccountTransaction().add(savingAccountTransaction);
+        }
+        savingAccountService.save(savingAccount.get());
+
+        //  savingAccountService.findBySavingAccount(String Saving acco);
         model.put("savingAccountTransaction", savingAccountTransaction);
-        return "savingAccountTransactions";
+        return "savingAccountTransaction";
     }
 
 }

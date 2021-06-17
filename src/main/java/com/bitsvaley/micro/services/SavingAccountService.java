@@ -48,7 +48,7 @@ public class SavingAccountService extends SuperService{
 //        NumberFormat formatter = NumberFormat.getCurrencyInstance(new Locale("en", "CM"));
 //        savingAccount.setAccountMinBalance(new Double(formatter.format(savingAccount.getAccountMinBalance())));
 
-        savingAccount.setAccountNumber(BVMicroUtils.RandomStringUnbounded_thenCorrect()); //Collision
+        savingAccount.setAccountNumber(BVMicroUtils.getSaltString()); //Collision
         savingAccount.setCreatedBy(getLoggedInUserName());
         savingAccount.setCreatedDate(LocalDateTime.now());
         savingAccount.setLastUpdatedBy(getLoggedInUserName());
@@ -87,6 +87,10 @@ public class SavingAccountService extends SuperService{
     public Optional<SavingAccount> findById(long id){
         Optional<SavingAccount> savingAccount = savingAccountRepository.findById(id);
         return savingAccount;
+    }
+
+    public void save(SavingAccount save){
+        savingAccountRepository.save(save);
     }
 
 }
