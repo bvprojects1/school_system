@@ -50,8 +50,10 @@ public class UserController extends SuperController{
 
     @PostMapping(value = "/registerUserForm")
     public String registerUserForm(@ModelAttribute("user") User user, ModelMap model) {
+        userService.createUser(user);
         model.put("user", user);
-        return "userSavedPreview";
+        return "userSaved";
+//        return "userSavedPreview";
     }
 
     @PostMapping(value = "/findUserByUserName")

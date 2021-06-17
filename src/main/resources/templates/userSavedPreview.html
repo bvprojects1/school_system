@@ -10,15 +10,17 @@
                 <div class="panel-heading">Verify User Info</div>
                 <div class="panel-body">
                     <form action="#" th:action="@{/registerUserPreviewForm}" method="post" th:object="${user}" >
-                        <label> <p>Username: <strong th:text="${user.userName}"> </strong></p> </label>
+                        <label> <p>Username:</p> </label>
+                        <input type="text" th:field="*{userName}" disabled/> <br/>
+
 <!--                        <input type="text" th:field="*{userName}"/> <br/>-->
                         <label> <p>First & Last name:<strong th:text="${user.firstName}+${user.lastName}"></strong></p> </label>
 <!--                        <input type="text" th:field="*{firstName}"/> <br/>-->
 <!--                        <label> National ID number:</label>-->
 <!--                        <input type="text" th:field="*{lastName}"/> <br/>-->
-                        <label><p> Phone Number 1:<strong th:field="${user.telephone1}"> </strong></p> </label>
+                        <label><p> Phone Number 1:<strong th:field="${telephone1}"> </strong></p> </label>
 <!--                        <input type="tel" th:field="*{telephone1}"/> <br/>-->
-                        <label><p>Phone Number 2:<strong th:field="${user.telephone2}"> </strong></p> </label>
+                        <label><p>Phone Number 2:<strong th:field="${telephone2}"> </strong></p> </label>
 <!--                        <input type="tel" th:field="*{telephone2}"/> <br/>-->
                         <label><p> Address:<strong th:text="${user.address}"> </strong></p></label>
 <!--                        <input type="text" th:field="*{address}"/> <br/>-->
@@ -26,7 +28,8 @@
 <!--                        <input type="date" th:field="*{dateOfBirth}"/> <br/>-->
                         <label><p>Beneficiary Name:<strong th:text="${user.beneficiary}"></strong></p></label>
 <!--                        <input type="text" th:field="*{beneficiary}"/> <br/>-->
-                        <label><p>Email:<strong th:text="${user.email}"></strong></p> </label>
+                        <label><p>Email:</label>
+                        <input type="text" th:field="*{email}" disabled/> <br/>
 <!--                        <input type="email" th:field="*{email}"/> <br/>-->
                         <label><p>Password:<strong th:text="${user.password}"> </strong></p> </label>
 <!--                        <input type="password" th:field="*{password}"/> <br/>-->
