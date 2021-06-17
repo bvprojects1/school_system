@@ -2,7 +2,14 @@
 <html xmlns:th="http:/>/www.thymeleaf.org">
 <head>
 </head>
-    <div class="panel-heading">Saving Accounts</div>
+
+<br/><br/>
+<h4>Customer detail page to see all their accounts </h4><br/>
+
+<a href="#" th:href="@{/registerSavingAccount}">Create a new SAVINGS Account</a>
+<p th:text="${user.userName}"/> 's Saving Accounts
+<br/><br/>
+
 <table>
     <tr>
         <th>
@@ -54,15 +61,24 @@
         </td>
         <td>
             <a href="#" th:href="@{/registerSavingAccountTransaction/{id}(id=${savingAccount.id})}">Make a savings payment</a>
-
         </td>
     </tr>
 </table>
 
-<!--<p Saving amount th:text="${savingAccount.accountMinBalance}"> </p>-->
-<!--        <div class="panel-body">-->
-<!--&lt;!&ndash;            <form action="#" th:action="@{/registerUserForm}" method="post" th:object="${savingAccount}" >&ndash;&gt;-->
-<!--&lt;!&ndash;            </form>&ndash;&gt;-->
-<!--        </div>-->
+<br/> <br/> <br/> <br/>
+
+<a href="#">Create a new CURRENT Account</a>
+  <div th:text="${user.userName}"/>'s Current Accounts <br/> <br/> <br/>
+
+
+<a href="#">Create a new LOAN Account</a>
+ <div th:text="${user.userName}"/>'s Loan Accounts <br/> <br/> <br/>
+
+
+<a href="#">Create a new RETIREMENT account</a>
+ <div th:text="${user.userName}"/>'s Retirement Accounts <br/> <br/>
+
+
+<a href="/logout">Logout</a>
 </html>
 

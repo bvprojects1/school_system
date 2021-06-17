@@ -7,17 +7,73 @@
     <div class="row">
         <div class="col-md-6 col-md-offset-3 ">
             <div class="panel panel-primary">
-                <div class="panel-heading">Make a Savings account payment</div>
+                <div class="panel-heading">Process a Savings account payment</div>
                 <div class="panel-body">
+
+                    <table width="50%" border="0">
+                        <tr>
+                            <th>
+                                Account Type
+                            </th>
+                            <th>
+                                Account number
+                            </th>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div th:text="${savingAccountTransaction.savingAccount.savingAccountType.name}"/>
+                            </td>
+                            <td>
+                                <div th:text="${savingAccountTransaction.savingAccount.accountNumber}"/>
+                            </td>
+                        </tr>
+                    </table>
+                    <br/><br/>
                     <form action="#" th:action="@{/registerSavingAccountTransactionForm}" method="post" th:object="${savingAccountTransaction}" >
                         <label> Amount received:</label><br/>
                         <input type="number" th:field="*{savingAmount}"/> <br/>
                         <label> Notes:</label><br/>
                         <input type="text" th:field="*{notes}"/>
-                        <input type="hidden" th:value="${savingAccountTransaction.savingAccount.id}" name="blogId" />
                         <input type="hidden" th:value="${savingAccountTransaction.savingAccount.id}" th:attr="name='savingAccountId'"/>
+                        <br/>
                         <button type="submit" class="btn btn-success">Save Payment</button>
                     </form>
+
+                    <h4>Saving Account Payments Processed</h4>
+                    <table>
+                    <tr>
+                        <th>
+                            Amount
+                        </th>
+                        <th>
+                            Created Date
+                        </th>
+                        <th>
+                            Created By
+                        </th>
+                        <th>
+                            Notes
+                        </th>
+                    </tr>
+
+                    <tr th:each="aSavingAccountTransaction : ${savingAccountTransaction.savingAccount.savingAccountTransaction}">
+
+                        <td>
+                            <p th:text="${aSavingAccountTransaction.savingAmount}"/>
+                        </td>
+                        <td>
+                            <p th:text="${aSavingAccountTransaction.createdDate}"/>
+                        </td>
+                        <td>
+                            <p th:text="${aSavingAccountTransaction.createdBy}"/>
+                        </td>
+                        <td>
+                            <p th:text="${aSavingAccountTransaction.notes}"/>
+                        </td>
+                    </tr>
+                </table>
+
+
                 </div>
             </div>
         </div>

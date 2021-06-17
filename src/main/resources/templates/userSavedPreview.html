@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http:/>/www.thymeleaf.org">
+<head>
+
+</head>
+<div class="container">
+    <div class="row">
+        <div class="col-md-6 col-md-offset-3 ">
+            <div class="panel panel-primary">
+                <div class="panel-heading">Verify User Info</div>
+                <div class="panel-body">
+                    <form action="#" th:action="@{/userSavePreview}" method="post" th:object="${user}" >
+                        <label> <p>Username: <strong th:text="${user.userName}"> </strong></p> </label>
+<!--                        <input type="text" th:field="*{userName}"/> <br/>-->
+                        <label> <p>First & Last name:<strong th:text="${firstName}+${lastName}"></strong></p> </label>
+<!--                        <input type="text" th:field="*{firstName}"/> <br/>-->
+<!--                        <label> National ID number:</label>-->
+<!--                        <input type="text" th:field="*{lastName}"/> <br/>-->
+                        <label><p> Phone Number 1:<strong th:field="${telephone1}"> </strong></p> </label>
+<!--                        <input type="tel" th:field="*{telephone1}"/> <br/>-->
+                        <label><p>Phone Number 2:<strong th:field="${telephone2}"> </strong></p> </label>
+<!--                        <input type="tel" th:field="*{telephone2}"/> <br/>-->
+                        <label><p> Address:<strong th:text="${address}"> </strong></p></label>
+<!--                        <input type="text" th:field="*{address}"/> <br/>-->
+                        <label><p>Date of Birth:<strong th:field="${dateOfBirth}"></strong></p></label>
+<!--                        <input type="date" th:field="*{dateOfBirth}"/> <br/>-->
+                        <label><p>Beneficiary Name:<strong th:text="${beneficiary}"></strong></p></label>
+<!--                        <input type="text" th:field="*{beneficiary}"/> <br/>-->
+                        <label><p>Email:<strong th:text="${email}"></strong></p> </label>
+<!--                        <input type="email" th:field="*{email}"/> <br/>-->
+                        <label><p>Password:<strong th:text="${password}"> </strong></p> </label>
+<!--                        <input type="password" th:field="*{password}"/> <br/>-->
+                        <label> LockAccount:</label>
+                        <select name="lockAccount" th:field="*{accountLocked}">
+                            <option value="false"> false </option>
+                            <option value="true"> true </option>
+                        </select><br/>
+                        <a href="user.html">Back</a>
+<!--                        <button type="submit" class="btn btn-success">Save User</button>-->
+                        <button type="submit" class="btn btn-success">Confirm and Save</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
