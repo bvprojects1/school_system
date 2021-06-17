@@ -36,11 +36,16 @@ public class UserController extends SuperController{
         model.put("user", user);
         return "user";
     }
+//    @RequestMapping("/userSavePreview")
+//    public String userSavePreview() {
+//
+//        return "userSavePreview";
+//    }
 
     @PostMapping(value = "/registerUserForm")
     public String registerUserForm(@ModelAttribute("user") User user, ModelMap model) {
           userService.createUser(user);
-        return "userSaved";
+        return "userSavedPreview";
     }
 
     @PostMapping(value = "/findUserByUserName")
