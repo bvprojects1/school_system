@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:th="http:/>/www.thymeleaf.org">
+<body>
+<section class="my-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8 mx-auto">
+                <h2>Upload Customer Identity Card info </h2>
+                User: <p th:text="${userName}"/>
+                <p th:text="${message}" th:if="${message ne null}" class="alert alert-primary"></p>
+                <form action="#" method="post" th:action="@{/upload}" enctype="multipart/form-data">
+                    <div class="form-group">
+                        <input type="file" name="file" class="form-control-file">
+<!--                        <input type="hidden" th:value="${userName}" th:attr="userName='userName'"/>-->
+                    </div>
+                    <button type="submit" class="btn btn-primary">Upload File</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+
+</body>
