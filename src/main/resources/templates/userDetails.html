@@ -7,7 +7,8 @@
 <h4>Customer detail page to see all their accounts </h4><br/>
 
 <a href="#" th:href="@{/registerSavingAccount}">Create a new SAVINGS Account</a>
-<p th:text="${user.userName}"/> 's Saving Accounts
+<p th:text="${user.userName}"/> 's Saving Accounts. <a href="#" th:href="@{/file/{userName}(userName=${user.userName})}">Upload picture identity</a>
+
 <br/><br/>
 
 <table>

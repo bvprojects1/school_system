@@ -29,6 +29,7 @@ public class User {
     private String email;
     private String beneficiary;
     private String dateOfBirth;
+    private String idFilePath;
 
     @ManyToMany(cascade = CascadeType.ALL)
     private List<UserRole> userRole;
@@ -195,5 +196,13 @@ public class User {
 
     public void setDateOfBirth(String dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
+    }
+
+    public String getIdFilePath() {
+        return idFilePath;
+    }
+
+    public void setIdFilePath(String idFilePath) {
+        this.idFilePath = idFilePath;
     }
 }

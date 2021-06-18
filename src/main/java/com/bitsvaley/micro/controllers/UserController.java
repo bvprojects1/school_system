@@ -13,6 +13,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -36,15 +37,17 @@ public class UserController extends SuperController{
         model.put("user", user);
         return "user";
     }
-//    @RequestMapping("/userSavePreview")
-//    public String userSavePreview() {
-//
-//        return "userSavePreview";
-//    }
+
+    @PostMapping(value = "/registerUserPreviewForm")
+    public String registerUserPreviewForm(@ModelAttribute("user") User user, ModelMap model) {
+        userService.createUser(user);
+        model.put("user", user);
+        return "userDetails";
+    }
 
     @PostMapping(value = "/registerUserForm")
     public String registerUserForm(@ModelAttribute("user") User user, ModelMap model) {
-          userService.createUser(user);
+        model.put("user", user);
         return "userSavedPreview";
     }
 
