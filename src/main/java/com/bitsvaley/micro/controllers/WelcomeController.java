@@ -22,6 +22,18 @@ public class WelcomeController extends SuperController{
         return "welcome";
     }
 
+    @GetMapping(value = "/login")
+    public String login(ModelMap model, HttpServletRequest request) {
+        model.put("name", getLoggedinUserName());
+        return "login";
+    }
+
+    @GetMapping(value = "/welcome")
+    public String welcome(ModelMap model, HttpServletRequest request) {
+        model.put("name", getLoggedinUserName());
+        return "welcome";
+    }
+
     @GetMapping(value = "/landing")
     public String showLandingPage(ModelMap model) {
         return "landing";
