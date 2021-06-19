@@ -30,7 +30,7 @@ public class UploadController extends SuperController{
     @Autowired
     UserService userService;
 
-    private final String UPLOAD_DIR = "/Users/frusamachifen/";
+    private final String UPLOAD_DIR = "C:/Users/TOSHIBA/img";
 
     @GetMapping("/file")
     public String uploadFile(){
