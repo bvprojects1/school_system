@@ -38,13 +38,29 @@
                         <input type="text" th:field="*{password}" readonly/><br/>
 
                         <label> LockAccount:</label>
-                        <input tyoe="text" th:field="*{accountLocked}" readonly/><br/>
+                        <input type="text" th:field="*{accountLocked}" readonly/><br/>
 
-                        <a href="user.html">Back</a>
+
+                        <label> UserRole:</label>
+                        <input type="text" name="userRoleTemp" th:value="${userRoleTemp}" readonly/><br/>
+
+
+<!--                        <select name="aUserRole" id="aUserRole">-->
+<!--&lt;!&ndash;                            <option value='${user.userRole}' selected>${userRoleTemp} </option>&ndash;&gt;-->
+<!--                            <option value="CUSTOMER">CUSTOMER</option>-->
+<!--                            <option value="AGENT">AGENT</option>-->
+<!--                            <option value="AUDITOR">AUDITOR</option>-->
+<!--                            <option value="BOARD MEMBER">BOARD MEMBER</option>-->
+<!--                            <option value="MANAGER">MANAGER</option>-->
+<!--                        </select>-->
+
+                        <a href="user.html">Back</a><br/><br/>
                         <button type="submit" class="btn btn-success">Confirm and Save</button>
                     </form>
                 </div>
             </div>
         </div>
     </div>
+    <br/><br/><br/><br/><br/><br/>
+    <div th:insert="/footer::navbar">  </div>
 </div>

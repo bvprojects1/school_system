@@ -5,6 +5,7 @@ import com.bitsvaley.micro.domain.SavingAccountTransaction;
 import com.bitsvaley.micro.domain.User;
 import com.bitsvaley.micro.services.SavingAccountService;
 import com.bitsvaley.micro.services.UserService;
+import com.bitsvaley.micro.utils.BVMicroUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -15,8 +16,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
+/**
+ * @author Fru Chifen
+ * 11.06.2021
+ */
 @Controller
 public class SavingAccountController extends SuperController{
 
@@ -28,7 +34,11 @@ public class SavingAccountController extends SuperController{
     SavingAccountService savingAccountService;
 
     @GetMapping(value = "/registerSavingAccount")
-    public String registerSaving(ModelMap model) {
+    public String registerSaving(ModelMap model, HttpServletRequest request) {
+        User user = (User)request.getSession().getAttribute(BVMicroUtils.CUSTOMER_IN_USE);
+        if(user == null){
+            return "findCustomer";
+        }
         SavingAccount savingAccount = new SavingAccount();
         model.put("savingAccount", savingAccount);
         return "savingAccount";
@@ -36,13 +46,12 @@ public class SavingAccountController extends SuperController{
 
     @PostMapping(value = "/registerSavingAccountForm")
     public String registerSavingForm( @ModelAttribute("saving") SavingAccount savingAccount, ModelMap model, HttpServletRequest request) {
-
-        savingAccountService.createSavingAccount(savingAccount);
-        request.getSession().setAttribute("savingAccount",savingAccount);
-//        model.put("savingAccount", savingAccount);
-        model.put("user", savingAccount.getUser());
-        return "userDetails";
+        User user = (User)request.getSession().getAttribute(BVMicroUtils.CUSTOMER_IN_USE);
+        savingAccountService.createSavingAccount(savingAccount, user);
+        return findUserByUserName(user, model, request);
     }
+
+
 
     @GetMapping(value = "/registerSavingAccountTransaction/{id}")
     public String registerSavingAccountTransaction(@PathVariable("id") long id,ModelMap model, HttpServletRequest request) {
@@ -58,7 +67,8 @@ public class SavingAccountController extends SuperController{
         String savingAccountId = request.getParameter("savingAccountId");
         Optional<SavingAccount> savingAccount = savingAccountService.findById(new Long(savingAccountId));
         savingAccountTransaction.setSavingAccount(savingAccount.get());
-        User user = userService.findUserByUserName("admin");
+        User user = (User)request.getSession().getAttribute(BVMicroUtils.CUSTOMER_IN_USE);
+
         savingAccountService.createSavingAccountTransaction(savingAccountTransaction, user);
         if(savingAccount.get().getSavingAccountTransaction() != null ){
             savingAccount.get().getSavingAccountTransaction().add(savingAccountTransaction);

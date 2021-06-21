@@ -24,13 +24,17 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.Optional;
 
+/**
+ * @author Fru Chifen
+ * 11.06.2021
+ */
 @Controller
 public class UploadController extends SuperController{
 
     @Autowired
     UserService userService;
 
-    private final String UPLOAD_DIR = "C:/Users/TOSHIBA/img";
+    private final String UPLOAD_DIR = "/Users/frusamachifen/";
 
     @GetMapping("/file")
     public String uploadFile(){

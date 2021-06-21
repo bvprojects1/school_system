@@ -9,6 +9,13 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
+/**
+ * The CustomSuccessHandler provides a handle after a successful login
+ *
+ * @author  Fru Chifen
+ * @version 1.0
+ * @since   2021-06-20
+ */
 public class CustomSuccessHandler extends SavedRequestAwareAuthenticationSuccessHandler {
 
     @Override

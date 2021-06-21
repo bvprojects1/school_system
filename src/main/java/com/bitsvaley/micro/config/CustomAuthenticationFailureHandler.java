@@ -12,11 +12,17 @@ import java.io.IOException;
 import java.util.Calendar;
 import java.util.HashMap;
 
+/**
+ * The CustomAuthenticationFailureHandler provides a failure handle after a unsuccessful login
+ *
+ * @author  Fru Chifen
+ * @version 1.0
+ * @since   2021-06-18
+ */
 public class CustomAuthenticationFailureHandler
         implements AuthenticationFailureHandler {
 
     private ObjectMapper objectMapper = new ObjectMapper();
-
 
 
     @Override

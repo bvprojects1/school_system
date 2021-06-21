@@ -38,7 +38,7 @@
                         <br/>
                         <button type="submit" class="btn btn-success">Save Payment</button>
                     </form>
-
+                    <h4><div th:text="${session.customerInUse.userName}"/>'s</h4>
                     <h4>Saving Account Payments Processed</h4>
                     <table>
                     <tr>
@@ -78,4 +78,6 @@
             </div>
         </div>
     </div>
+    <br/><br/><br/><br/><br/>
+    <div th:insert="/footer::navbar">  </div>
 </div>

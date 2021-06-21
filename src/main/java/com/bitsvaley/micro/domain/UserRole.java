@@ -24,4 +24,10 @@ public class UserRole {
     public void setName(String name) {
         this.name = name;
     }
+
+    public String name() {
+        return name;
+    }
+
 }
+

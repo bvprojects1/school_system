@@ -9,12 +9,7 @@ import java.util.Random;
 public class BVMicroUtils {
 
 
-//    public static String RandomStringUnbounded_thenCorrect() {
-//        byte[] array = new byte[8]; // length is bounded by 8
-//        new Random().nextBytes(array);
-//        String generatedString = new String(array, Charset.forName("UTF-8"));
-//        return generatedString;
-//    }
+    public static final String CUSTOMER_IN_USE = "customerInUse";
 
     public static  String getSaltString() {
         String SALTCHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
@@ -44,4 +39,12 @@ public class BVMicroUtils {
 //
 //        System.out.println(generatedString);
 //    }
+
+    //    public static String RandomStringUnbounded_thenCorrect() {
+//        byte[] array = new byte[8]; // length is bounded by 8
+//        new Random().nextBytes(array);
+//        String generatedString = new String(array, Charset.forName("UTF-8"));
+//        return generatedString;
+//    }
+
 }

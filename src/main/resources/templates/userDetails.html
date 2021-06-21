@@ -2,12 +2,12 @@
 <html xmlns:th="http:/>/www.thymeleaf.org">
 <head>
 </head>
-
+<body>
 <br/><br/>
-<h4>Customer detail page to see all their accounts </h4><br/>
+<h4 th:text="${session.customerInUse.userName}"></h4>'s' detail page to see all their accounts <br/>
 
-<a href="#" th:href="@{/registerSavingAccount}">Create a new SAVINGS Account</a>
-<p th:text="${user.userName}"/> 's Saving Accounts. <a href="#" th:href="@{/file/{userName}(userName=${user.userName})}">Upload picture identity</a>
+<a href="#" th:href="@{/registerSavingAccount}">SAVINGS Account </a>
+<p th:text="${session.customerInUse.userName}"/> 's Saving Accounts. <a href="#" th:href="@{/file/{userName}(userName=${session.customerInUse.userName})}">Upload picture identity</a>
 
 <br/><br/>
 
@@ -38,7 +38,7 @@
 
         </th>
     </tr>
-    <tr th:each="savingAccount : ${user.savingAccount}">
+    <tr th:each="savingAccount : ${session.customerInUse.savingAccount}">
         <td>
             <p th:text="${savingAccount.savingAccountType.name}"/>
         </td>
@@ -61,7 +61,7 @@
             <p th:text="${savingAccount.createdBy}"/>
         </td>
         <td>
-            <a href="#" th:href="@{/registerSavingAccountTransaction/{id}(id=${savingAccount.id})}">Make a savings payment</a>
+            <a href="#" th:href="@{/registerSavingAccountTransaction/{id}(id=${savingAccount.id})}"><img width="25px" th:src="@{/images/add.png}"/>  Make a savings payment</a>
         </td>
     </tr>
 </table>
@@ -69,17 +69,20 @@
 <br/> <br/> <br/> <br/>
 
 <a href="#">Create a new CURRENT Account</a>
-  <div th:text="${user.userName}"/>'s Current Accounts <br/> <br/> <br/>
+  <div th:text="${session.customerInUse.userName}"/>'s Current Accounts <br/> <br/> <br/>
 
 
 <a href="#">Create a new LOAN Account</a>
- <div th:text="${user.userName}"/>'s Loan Accounts <br/> <br/> <br/>
+ <div th:text="${session.customerInUse.userName}"/>'s Loan Accounts <br/> <br/> <br/>
 
 
 <a href="#">Create a new RETIREMENT account</a>
- <div th:text="${user.userName}"/>'s Retirement Accounts <br/> <br/>
+ <div th:text="${session.customerInUse.userName}"/>'s Retirement Accounts <br/> <br/>
 
 
-<a href="/logout">Logout</a>
+
+
+<div th:insert="/footer::navbar">  </div>
+</body>
 </html>
 

@@ -1,10 +1,12 @@
 package com.bitsvaley.micro.domain;
 
-import com.bitsvaley.micro.repositories.SavingAccountTypeRepository;
-
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
+/**
+ * @author Fru Chifen
+ * 11.06.2021
+ */
 @Entity
 @Table(name = "savingAccountTransaction")
 public class SavingAccountTransaction {

@@ -1,28 +1,86 @@
 <!DOCTYPE html>
 <html xmlns:th="http:/>/www.thymeleaf.org">
 <head>
-
+    <link rel="stylesheet" href="../css/main.css" th:href="@{css/main.css}" type="text/css"/>
 </head>
+<body>
 <div class="container">
 
     <div class="panel panel-primary">
-        <div class="panel-heading">Home Page</div>
+        <div class="panel-heading"></div>
         <div class="panel-body">
-            <p Welcome th:text="${name}"/>
-            <br/> <a href="/registerUser">
-            Create a new Customers with first name "admin" and lastname "admin"</a> <br/><br/>
+
+    <center>
+
+        <h4>Welcome <p th:text="${name}"/></h4>,
+        <br/>
+
+            <table width="50%" align="center" border="0">
+                <tr>
+                    <td>
+                        <br/>
+                        <img width="125px" th:src="@{/images/customer.png}" border="1"/>
+                        <br/>Customer <a href="/registerUser"> <img width="25px" th:src="@{/images/add.png}"/> </a>
+                    </td>
+                    <td>
+                        <br/>
+                         <img width="125px" th:src="@{/images/saving.png}" border="1"/>
+                        <br/>Savings <a href="/registerSavingAccount"><img width="25px" th:src="@{/images/add.png}"/> </a>
+                    </td>
+                    <td>
+                        <br/>
+                        <img width="125px" th:src="@{/images/loans.png}" border="1"/>
+                        <br/>Loans
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <br/>
+                        <img width="125px" height="125px" th:src="@{/images/withdrawal.png}"/>
+                        <br/>Withdrawal
+                    </td>
+                    <td>
+                        <br/>
+                        <img width="125px" th:src="@{/images/interest.png}" border="1"/>
+                        <br/>Interest
+                    </td>
+                    <td>
+                        <br/>
+                        <img width="125px" th:src="@{/images/retirementSavings.png}" border="1"/>
+                        <br/>Retirement Savings
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <br/>
+                        <img width="125px" height="125px" th:src="@{/images/daily.png}" border="1"/>
+                        <br/>Daily Collection
+                    </td>
+                    <td>
+                    </td>
+                    <td>
+                    </td>
+                </tr>
+
+            </table>
+    </center>
+
+            <br/><br/>
+
+            3. Search a customer Account below and create a new saving account for that customer<br/><br/>
+            4. See total interest accrued with a dynamic interest calculator and reverse profit calculator <br/><br/>
+            5. Print customer detail statement <br/><br/>
+            6. Call center tool for more customer interactivity with Micro finance <br/><br/>
+            7. See total MF actual balance <br/><br/>
+
         </div>
 
-        <form action="#" th:action="@{/findUserByUserName}" method="post" >
 
-            <label> Username</label>
-            <input type="text" name="userName" value=""/> <br/>
-
-            <input type="submit" value="submit">
-        </form>
 
     </div>
-    <ul class="nav navbar-nav navbar-right">
-        <li><a href="/logout">Logout</a></li>
-    </ul>
+
 </div>
+<br/><br/><br/><br/>
+<div th:insert="/footer::navbar">  </div>
+</body>
+</html>
