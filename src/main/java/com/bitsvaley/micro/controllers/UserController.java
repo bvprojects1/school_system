@@ -1,5 +1,7 @@
 package com.bitsvaley.micro.controllers;
 
+import com.bitsvaley.micro.domain.SavingAccount;
+import com.bitsvaley.micro.domain.SavingAccountTransaction;
 import com.bitsvaley.micro.domain.User;
 import com.bitsvaley.micro.domain.UserRole;
 import com.bitsvaley.micro.services.UserRoleService;
@@ -16,6 +18,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Optional;
 
 /**
  * @author Fru Chifen
@@ -79,4 +82,14 @@ public class UserController extends SuperController{
     public String findUserByUsername(@ModelAttribute("user") User user, ModelMap model, HttpServletRequest request){
         return findUserByUserName(user,model,request);
     }
+
+    @GetMapping(value = "/findAllCustomers")
+    public String findUserByUserRole(ModelMap model) {
+        UserRole userRole = new UserRole();
+        userRole.setName(com.bitsvaley.micro.utils.UserRole.CUSTOMER.name());
+
+        userService.findUserByUserRole(userRole);
+        return "usersList";
+    }
+
 }

@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 
 /**
@@ -51,8 +50,6 @@ public class SavingAccountController extends SuperController{
         return findUserByUserName(user, model, request);
     }
 
-
-
     @GetMapping(value = "/registerSavingAccountTransaction/{id}")
     public String registerSavingAccountTransaction(@PathVariable("id") long id,ModelMap model, HttpServletRequest request) {
         SavingAccountTransaction savingAccountTransaction = new SavingAccountTransaction();
@@ -61,6 +58,7 @@ public class SavingAccountController extends SuperController{
         model.put("savingAccountTransaction", savingAccountTransaction);
         return "savingAccountTransaction";
     }
+
 
     @PostMapping(value = "/registerSavingAccountTransactionForm")
     public String registerSavingAccountTransactionForm(ModelMap model, @ModelAttribute("savingAccountTransaction") SavingAccountTransaction savingAccountTransaction, HttpServletRequest request) {
@@ -77,8 +75,6 @@ public class SavingAccountController extends SuperController{
             savingAccount.get().getSavingAccountTransaction().add(savingAccountTransaction);
         }
         savingAccountService.save(savingAccount.get());
-
-        //  savingAccountService.findBySavingAccount(String Saving acco);
         model.put("savingAccountTransaction", savingAccountTransaction);
         return "savingAccountTransaction";
     }

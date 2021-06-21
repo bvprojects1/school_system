@@ -43,7 +43,6 @@ public class UserService {
         return save;
     }
 
-
     public void saveUser(User user){
         userRepository.save(user);
     }
@@ -58,34 +57,9 @@ public class UserService {
         }
         return role;
     }
-//              UserRole customer = new UserRole();
-//            customer .setName("CUSTOMER");
-////            userRoleService.saveUserRole(customer);
-//
-//            UserRole agent = new UserRole();
-//            agent.setName("AGENT");
-////            userRoleService.saveUserRole(agent);
-//
-//            UserRole manager = new UserRole();
-//            manager.setName("MANAGER");
-////            userRoleService.saveUserRole(manager);
-//
-//            UserRole board = new UserRole();
-//            board.setName("BOARD_MEMBER");
-////            userRoleService.saveUserRole(board);
-//
-//            UserRole auditor = new UserRole();
-//            auditor.setName("AUDITOR");
-////            userRoleService.saveUserRole(auditor);
-//
-////            UserRole admin = new UserRole();
-////            admin.setName("ADMIN");
-////            userRoleService.saveUserRole(admin);
-//
-//            UserRole userRoles[] = { customer, agent, manager, board, auditor};
-//            userRoleService.saveAllRole(Arrays.asList(userRoles));
-//        }
-//
-//    }
+
+    public User findUserByUserRole(UserRole userRole) {
+        return userRepository.findByUserRole(userRole);
+    }
 
 }

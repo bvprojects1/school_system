@@ -36,12 +36,11 @@ public class SuperController {
     public String findUserByUserName(User user, ModelMap model, HttpServletRequest request) {
         User aUser = userService.findUserByUserName(user.getUserName());
         request.getSession().setAttribute(BVMicroUtils.CUSTOMER_IN_USE, aUser);
-        List<SavingAccount> savingAccount = aUser.getSavingAccount();
-        model.put("user", aUser);
-        if(null != aUser.getSavingAccount() && 0 < aUser.getSavingAccount().size()){
+        if(null != aUser && null != aUser.getSavingAccount() && 0 < aUser.getSavingAccount().size()){
+            List<SavingAccount> savingAccount = aUser.getSavingAccount();
+            model.put("user", aUser);
             return "userDetails";
         }else
             return "userDetailsNoAccount";
     }
-
 }
