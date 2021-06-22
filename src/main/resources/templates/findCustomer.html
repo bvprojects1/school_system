@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.thymeleaf.org ">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Customer In Use</title>
+</head>
+<body>
+<div>
+    <div th:fragment="navbar" class="navbar">
+        <div class="navbar-inner">
+
+            <br/><br/>
+            <table width="75%">
+                <tr><td align="center">
+                    FIND CUSTOMER FOR MORE ACCOUNT DETAILS<br/>
+
+                    <form action="#" th:action="@{/findUserByUserName}" method="post" >
+                        <nobr>  Username:
+                            <input type="text" name="userName" value=""/>
+                            <input type="submit" value="submit"> </nobr>
+                    </form>
+                </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+</div>
+<br/> <br/>
+<table width="75%">
+    <tr><td align="center">
+
+        <a th:href="@{/welcome}" href="/welcome"> Home</a>
+    </td><td>
+        <a th:href="@{/logout}" href="/Logout">Logout</a>
+    </td></tr></table>
+</body>
+</html>

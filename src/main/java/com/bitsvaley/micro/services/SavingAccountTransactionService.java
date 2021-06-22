@@ -7,6 +7,7 @@ import com.bitsvaley.micro.repositories.SavingAccountRepository;
 import com.bitsvaley.micro.repositories.SavingAccountTransactionRepository;
 import com.bitsvaley.micro.repositories.SavingAccountTypeRepository;
 import com.bitsvaley.micro.repositories.UserRepository;
+import com.bitsvaley.micro.utils.BVMicroUtils;
 import com.bitsvaley.micro.utils.SavingAccountType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -42,23 +43,23 @@ public class SavingAccountTransactionService extends SuperService{
         return savingAccountRepository.findByAccountNumber(accountNumber);
     }
 
-    public void createSavingAccount(SavingAccount savingAccount) {
-        User user = userService.findUserByUserName("admin");
-        savingAccount.setAccountNumber(new String(""+new Random())); //Collision
-        savingAccount.setCreatedBy(getLoggedInUserName());
-        savingAccount.setCreatedDate(LocalDateTime.now());
-        savingAccount.setLastUpdatedBy(getLoggedInUserName());
-        savingAccount.setAccountLocked(false);
-        savingAccount.setLastUpdatedDate(LocalDateTime.now());
-        savingAccount.setSavingAccountType(insureAccountSavingsTypeExists());
-        savingAccount.setUser(userService.findUserByUserName("admin")); //TODO:Add User
-        savingAccountRepository.save(savingAccount);
-        user.getSavingAccount().add(savingAccount);
-        userService.saveUser(user);
-    }
+//    public void createSavingAccount(SavingAccount savingAccount, User user) {
+////        User user = userService.findUserByUserName("admin");
+//        savingAccount.setAccountNumber(new String(""+new Random())); //Collision
+//        savingAccount.setCreatedBy(getLoggedInUserName());
+//        savingAccount.setCreatedDate(LocalDateTime.now());
+//        savingAccount.setLastUpdatedBy(getLoggedInUserName());
+//        savingAccount.setAccountLocked(false);
+//        savingAccount.setLastUpdatedDate(LocalDateTime.now());
+//        savingAccount.setSavingAccountType(insureAccountSavingsTypeExists());
+//        savingAccount.setUser(user); //TODO:Add User
+//        savingAccountRepository.save(savingAccount);
+//        user.getSavingAccount().add(savingAccount);
+//        userService.saveUser(user);
+//    }
 
     public void createSavingAccountTransaction(SavingAccountTransaction savingAccountTransaction, HttpServletRequest request) {
-        User user = userService.findUserByUserName("admin");
+        User user = (User)request.getSession().getAttribute(BVMicroUtils.CUSTOMER_IN_USE);
         savingAccountTransaction.setCreatedBy(getLoggedInUserName());
         savingAccountTransaction.setCreatedDate(LocalDateTime.now());
         SavingAccount savingAccount = (SavingAccount)request.getSession().getAttribute("savingAccount");

@@ -1,10 +1,12 @@
 package com.bitsvaley.micro.domain;
 
-import com.bitsvaley.micro.repositories.SavingAccountTypeRepository;
-
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
+/**
+ * @author Fru Chifen
+ * 11.06.2021
+ */
 @Entity
 @Table(name = "savingAccountTransaction")
 public class SavingAccountTransaction {
@@ -17,7 +19,7 @@ public class SavingAccountTransaction {
     private LocalDateTime createdDate;
     private int savingAmount;
     private String notes;
-    private String name;
+//    private String name;
     
     @ManyToOne
     private SavingAccount savingAccount;
@@ -46,13 +48,13 @@ public class SavingAccountTransaction {
         this.notes = notes;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
+//    public String getName() {
+//        return name;
+//    }
+//
+//    public void setName(String name) {
+//        this.name = name;
+//    }
 
     public LocalDateTime getCreatedDate() {
         return createdDate;

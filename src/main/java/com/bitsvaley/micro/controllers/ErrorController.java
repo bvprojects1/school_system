@@ -7,6 +7,13 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 
+/**
+ * The ErrorController spits out details of an exception to the UI using model attributes
+ *
+ * @author  Fru Chifen
+ * @version 1.0
+ * @since   2021-06-10
+ */
 @Controller("error")
 public class ErrorController {
 

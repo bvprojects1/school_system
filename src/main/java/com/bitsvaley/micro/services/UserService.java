@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -28,7 +29,7 @@ public class UserService {
         return userRepository.findByUserName(userName);
     }
 
-    public void createUser(User user) {
+    public User createUser(User user) {
 
         user.setCreated(LocalDateTime.now());
         user.setAccountExpiredDate(LocalDateTime.now().plusYears(99));
@@ -37,31 +38,28 @@ public class UserService {
 
         user.setAccountExpired(false);
         user.setAccountLocked(false);
-
-        List<UserRole> userRoleList = new ArrayList<UserRole>();
-        userRoleList.add(insureCustomerRoleExists());// create a new customer role if none exists
-        user.setUserRole(userRoleList);
-        userRepository.save(user);
-    }
-
-    /*
-        Insure a role 'CUSTOMER' exists in USER_ROLE table and use it. We are making sure a 'CUSTOMER' role
-        exists if not create one
-     */
-    private UserRole insureCustomerRoleExists() {
-        UserRole userRole = userRoleService.findUserRoleByName(com.bitsvaley.micro.utils.UserRole.CUSTOMER.name());
-        if( null == userRole ){
-            UserRole newUserRole = new UserRole();
-            newUserRole.setName("CUSTOMER");
-            userRoleService.saveUserRole(newUserRole);
-            return newUserRole;
-        }
-        return userRole;
+//        insureUserRolesExists(user.getUserRole().get(0).getName());
+        User save = userRepository.save(user);
+        return save;
     }
 
     public void saveUser(User user){
         userRepository.save(user);
     }
 
-//    public List<SavingAccount> findAllSavingAccount
+    private UserRole insureUserRolesExists(String name) {
+        UserRole role = userRoleService.findUserRoleByName(name);
+        Iterable<UserRole> all = userRoleService.findAll();
+        if (role == null) {
+            role = new UserRole();
+            role.setName(name);
+            userRoleService.saveUserRole(role);
+        }
+        return role;
+    }
+
+    public User findUserByUserRole(UserRole userRole) {
+        return userRepository.findByUserRole(userRole);
+    }
+
 }

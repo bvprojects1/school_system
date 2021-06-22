@@ -28,4 +28,13 @@ public class UserRoleService {
         userRoleRepository.save(userRole);
     }
 
+    public void saveAllRole(Iterable<UserRole> iterableUserRole){
+        Iterable<UserRole> iterable = userRoleRepository.saveAll(iterableUserRole);
+    }
+
+    public Iterable<UserRole>  findAll(){
+        Iterable<UserRole> all = userRoleRepository.findAll();
+        return all;
+    }
+
 }

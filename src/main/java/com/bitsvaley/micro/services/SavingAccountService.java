@@ -42,9 +42,10 @@ public class SavingAccountService extends SuperService{
         return savingAccountRepository.findByAccountNumber(accountNumber);
     }
 
-    public void createSavingAccount(SavingAccount savingAccount) {
+    public void createSavingAccount(SavingAccount savingAccount, User user) {
 
-        User user = userService.findUserByUserName("admin");
+//        User user = userService.findUserByUserName("admin");
+//        request.getSession().getAttribute("customerInUse");
 //        NumberFormat formatter = NumberFormat.getCurrencyInstance(new Locale("en", "CM"));
 //        savingAccount.setAccountMinBalance(new Double(formatter.format(savingAccount.getAccountMinBalance())));
 
