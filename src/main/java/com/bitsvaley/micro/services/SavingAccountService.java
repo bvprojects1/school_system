@@ -3,16 +3,21 @@ package com.bitsvaley.micro.services;
 import com.bitsvaley.micro.domain.SavingAccount;
 import com.bitsvaley.micro.domain.SavingAccountTransaction;
 import com.bitsvaley.micro.domain.User;
+import com.bitsvaley.micro.domain.UserRole;
 import com.bitsvaley.micro.repositories.SavingAccountRepository;
 import com.bitsvaley.micro.repositories.SavingAccountTransactionRepository;
 import com.bitsvaley.micro.repositories.SavingAccountTypeRepository;
 import com.bitsvaley.micro.repositories.UserRepository;
 import com.bitsvaley.micro.utils.BVMicroUtils;
 import com.bitsvaley.micro.utils.SavingAccountType;
+import com.bitsvaley.micro.webdomain.SavingsBilanz;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -92,6 +97,60 @@ public class SavingAccountService extends SuperService{
 
     public void save(SavingAccount save){
         savingAccountRepository.save(save);
+    }
+
+
+    public ArrayList<SavingsBilanz> getSavingsBilanzByUserRole(ArrayList<UserRole> userRole) {
+        ArrayList<User> users = userRepository.findAllByUserRoleIn(userRole);
+        return calculateUsersInterest(users);
+    }
+
+
+    public ArrayList<SavingsBilanz> getSavingsBilanzByUser(User user) {
+        User aUser = userRepository.findById(user.getId()).get();
+        ArrayList<User> userList = new ArrayList<User>();
+        userList.add(aUser);
+        return calculateUsersInterest(userList);
+    }
+
+    private ArrayList<SavingsBilanz> calculateUsersInterest(ArrayList<User> users) {
+        ArrayList<SavingsBilanz> savingsBilanzsList = new ArrayList<SavingsBilanz>();
+        for (int i = 0; i < users.size(); i++) {
+            List<SavingAccount> savingAccounts = users.get(i).getSavingAccount();
+            for (int j = 0; j < savingAccounts.size(); j++) {
+                List<SavingAccountTransaction> savingAccountTransactions = savingAccounts.get(i).getSavingAccountTransaction();
+                for (int k = 0; k < savingAccounts.size(); k++) {
+                    final SavingAccountTransaction savingAccountTransaction = savingAccountTransactions.get(k);
+                    LocalDateTime createdDate = savingAccountTransaction.getCreatedDate();
+//                    if (LocalDateTime.now().minusMonths(1).isAfter(createdDate)) {
+                    SavingsBilanz savingsBilanz = calculateInterest(savingAccountTransaction);
+                    savingsBilanzsList.add(savingsBilanz);
+//                    }
+                }
+            }
+        }
+        return savingsBilanzsList;
+    }
+
+    private SavingsBilanz calculateInterest(SavingAccountTransaction savingAccountTransaction) {
+        SavingsBilanz savingsBilanz = new SavingsBilanz();
+        savingsBilanz.setAgent(savingAccountTransaction.getCreatedBy());
+        savingsBilanz.setCreatedDate(savingAccountTransaction.getCreatedDate().toString());
+        savingsBilanz.setNotes(savingAccountTransaction.getNotes());
+        savingsBilanz.setNoOfDays(calculateNoOfDays(savingAccountTransaction.getCreatedDate()));
+        savingsBilanz.setInterestAccrued(calculateInterestAccrued(savingAccountTransaction));
+        return savingsBilanz;
+    }
+
+    private String calculateNoOfDays(LocalDateTime createdDate) {
+        long noOfDays = createdDate.until(LocalDateTime.now(), ChronoUnit.DAYS);
+        return ""+noOfDays;
+    }
+
+    private int calculateInterestAccrued(SavingAccountTransaction savingAccountTransaction){
+        int accrued = 1977;
+
+        return accrued;
     }
 
 }

@@ -2,6 +2,8 @@ package com.bitsvaley.micro.controllers;
 
 import com.bitsvaley.micro.domain.SavingAccount;
 import com.bitsvaley.micro.domain.User;
+import com.bitsvaley.micro.domain.UserRole;
+import com.bitsvaley.micro.services.UserRoleService;
 import com.bitsvaley.micro.services.UserService;
 import com.bitsvaley.micro.utils.BVMicroUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -23,6 +26,9 @@ public class SuperController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private UserRoleService userRoleService;
 
     public String getLoggedInUserName() {
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -42,5 +48,13 @@ public class SuperController {
             return "userDetails";
         }else
             return "userDetailsNoAccount";
+    }
+
+    public ArrayList<User> getAllCustomers() {
+        ArrayList<UserRole> userRoleList = new ArrayList<UserRole>();
+        UserRole customer = userRoleService.findUserRoleByName("CUSTOMER");
+        userRoleList.add(customer);
+        ArrayList<User> customerList = userService.findAllByUserRoleIn(userRoleList);
+        return customerList;
     }
 }

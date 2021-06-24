@@ -1,6 +1,7 @@
 package com.bitsvaley.micro.services;
 
 import com.bitsvaley.micro.domain.SavingAccount;
+import com.bitsvaley.micro.domain.SavingAccountTransaction;
 import com.bitsvaley.micro.domain.User;
 import com.bitsvaley.micro.domain.UserRole;
 import com.bitsvaley.micro.repositories.UserRepository;
@@ -58,8 +59,10 @@ public class UserService {
         return role;
     }
 
-    public User findUserByUserRole(UserRole userRole) {
-        return userRepository.findByUserRole(userRole);
+
+
+    public ArrayList<User> findAllByUserRoleIn(ArrayList<UserRole> userRole) {
+        return userRepository.findAllByUserRoleIn(userRole);
     }
 
 }
