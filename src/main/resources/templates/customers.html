@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http:/>/www.thymeleaf.org">
+    <head>
+    </head>
+    <body>
+
+    <br/><br/><br/>
+        <table>
+            <tr>
+                <th>ID</th>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Member Since </th>
+                <th> </th>
+            </tr>
+            <tr th:each="user : ${userList}">
+                <td th:text="${user.id}"></td>
+                <td th:text="${user.firstName}"></td>
+                <td th:text="${user.lastName}"></td>
+                <td th:text="${user.created}"></td>
+                <td>
+                    <a href="#" th:href="@{/showCustomer/{id}(id=${user.id})}">
+                          Show Details</a>
+                </td>
+            </tr>
+            <tr th:if="${userList.isEmpty()}">
+                <td class="text-center" colspan="3">No customers. Add a customer!
+                    <a href="/registerUser">
+                    <img width="25px" th:src="@{/images/add.png}"/>
+                    </a> </td>
+            </tr>
+        </table>
+    <br/> <br/>
+    <div th:insert="/footer::navbar">  </div>
+    </body>
+</html>

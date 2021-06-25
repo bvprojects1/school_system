@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http:/>/www.thymeleaf.org">
+    <head>
+    </head>
+    <body>
+
+    <br/><br/><br/>
+        <table>
+            <tr>
+                <th>createdDate</th>
+                <th>Name</th>
+                <th>Agent</th>
+                <th>Savings Amount</th>
+                <th>Notes</th>
+                <th>Number of Days</th>
+                <th>Interest Accrued </th>
+            </tr>
+
+            <tr th:each="bilanz : ${savingsBilanzList}">
+                <td th:text="${bilanz.createdDate}"></td>
+                <td th:text="${bilanz.notes}"></td>
+                <td th:text="${bilanz.agent}"></td>
+                <td th:text="${bilanz.agent}"></td>
+                <td th:text="${bilanz.noOfDays}"></td>
+                <td th:text="${bilanz.interestAccrued}"></td>
+                <td ></td>
+                <td ></td>
+            </tr>
+        </table>
+    <br/> <br/>
+    <div th:insert="/footer::navbar">  </div>
+    </body>
+</html>

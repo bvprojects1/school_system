@@ -6,6 +6,7 @@ import com.bitsvaley.micro.domain.User;
 import com.bitsvaley.micro.services.SavingAccountService;
 import com.bitsvaley.micro.services.UserService;
 import com.bitsvaley.micro.utils.BVMicroUtils;
+import com.bitsvaley.micro.webdomain.SavingsBilanz;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -78,5 +79,17 @@ public class SavingAccountController extends SuperController{
         model.put("savingAccountTransaction", savingAccountTransaction);
         return "savingAccountTransaction";
     }
+
+
+    @GetMapping(value = "/showSavingsBilanz/{id}")
+    public String showSavingsBilanz(@PathVariable("id") long id,ModelMap model, HttpServletRequest request) {
+        User user = (User)request.getSession().getAttribute(BVMicroUtils.CUSTOMER_IN_USE);
+        ArrayList<SavingsBilanz> savingsBilanzByUserList = savingAccountService.getSavingsBilanzByUser(user);
+
+        model.put("savingsBilanzList", savingsBilanzByUserList);
+        return "savingsBilanz";
+    }
+
+
 
 }

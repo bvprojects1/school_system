@@ -4,6 +4,7 @@ import com.bitsvaley.micro.domain.SavingAccount;
 import com.bitsvaley.micro.domain.SavingAccountTransaction;
 import com.bitsvaley.micro.domain.User;
 import com.bitsvaley.micro.domain.UserRole;
+import com.bitsvaley.micro.repositories.UserRepository;
 import com.bitsvaley.micro.services.UserRoleService;
 import com.bitsvaley.micro.services.UserService;
 import com.bitsvaley.micro.utils.BVMicroUtils;
@@ -29,6 +30,9 @@ public class UserController extends SuperController{
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private UserRepository userRepository;
 
     @Autowired
     private UserRoleService userRoleService;
@@ -85,11 +89,23 @@ public class UserController extends SuperController{
 
     @GetMapping(value = "/findAllCustomers")
     public String findUserByUserRole(ModelMap model) {
-        UserRole userRole = new UserRole();
-        userRole.setName(com.bitsvaley.micro.utils.UserRole.CUSTOMER.name());
-
-        userService.findUserByUserRole(userRole);
-        return "usersList";
+        ArrayList<User> customerList = getAllCustomers();
+        model.put("userList", customerList );
+        return "customers";
     }
+
+
+    @GetMapping(value = "/showCustomer/{id}")
+    public String showCustomer(@PathVariable("id") long id,ModelMap model, HttpServletRequest request) {
+        Optional<User> userById = userRepository.findById(id);
+        User user = userById.get();
+        request.getSession().setAttribute(BVMicroUtils.CUSTOMER_IN_USE, user);
+        return "userDetails";
+    }
+
+
+
+
+
 
 }
