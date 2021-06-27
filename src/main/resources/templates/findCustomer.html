@@ -7,13 +7,16 @@
 </head>
 <body>
 <div>
+    <br/>
+    <h4>Welcome <p th:text="${name}"/></h4>
+    <br/>
     <div th:fragment="navbar" class="navbar">
         <div class="navbar-inner">
 
             <br/><br/>
             <table width="75%">
                 <tr><td align="center">
-                    FIND CUSTOMER FOR MORE ACCOUNT DETAILS<br/>
+                    FIND CUSTOMER FOR MORE ACCOUNT DETAILS<br/><br/>
 
                     <form action="#" th:action="@{/findUserByUserName}" method="post" >
                         <nobr>  Username:

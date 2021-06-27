@@ -100,6 +100,7 @@ public class UserController extends SuperController{
         Optional<User> userById = userRepository.findById(id);
         User user = userById.get();
         request.getSession().setAttribute(BVMicroUtils.CUSTOMER_IN_USE, user);
+
         return "userDetails";
     }
 

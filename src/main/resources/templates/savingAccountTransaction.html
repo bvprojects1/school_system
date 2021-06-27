@@ -32,6 +32,16 @@
                     <form action="#" th:action="@{/registerSavingAccountTransactionForm}" method="post" th:object="${savingAccountTransaction}" >
                         <label> Amount received:</label><br/>
                         <input type="number" th:field="*{savingAmount}"/> <br/>
+                        <label for="modeOfPayment">Mode of Payment:</label><br/>
+
+                        <select name="modeOfPayment" id="modeOfPayment">
+                            <option value="CASH">CASH</option>
+                            <option value="MOMO">MOMO</option>
+                            <option value="ORANGE MONEY">ORANGE MONEY</option>
+                            <option value="TRANSFER">TRANSFER</option>
+                            <option value="RECEIPT">RECEIPT</option>
+                            <option value="OTHER">OTHER</option>
+                        </select>
                         <label> Notes:</label><br/>
                         <input type="text" th:field="*{notes}"/>
                         <input type="hidden" th:value="${savingAccountTransaction.savingAccount.id}" th:attr="name='savingAccountId'"/>
