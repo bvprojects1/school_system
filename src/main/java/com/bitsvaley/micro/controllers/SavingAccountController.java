@@ -90,6 +90,8 @@ public class SavingAccountController extends SuperController{
             savingAccount.get().getSavingAccountTransaction().add(savingAccountTransaction);
         }
         savingAccountService.save(savingAccount.get());
+        SavingBilanzList savingsBilanzByUserList = savingAccountService.getSavingsBilanzByUser(user);
+        request.getSession().setAttribute("savingsBilanzList", savingsBilanzByUserList);
         model.put("savingAccountTransaction", savingAccountTransaction);
         return "savingAccountTransaction";
     }

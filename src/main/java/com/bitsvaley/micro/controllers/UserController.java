@@ -106,7 +106,7 @@ public class UserController extends SuperController{
         Optional<User> userById = userRepository.findById(id);
         User user = userById.get();
         SavingBilanzList savingsBilanzByUserList = savingAccountService.getSavingsBilanzByUser(user);
-        model.put("savingsBilanzList", savingsBilanzByUserList);
+        request.getSession().setAttribute("savingsBilanzList",savingsBilanzByUserList);
         request.getSession().setAttribute(BVMicroUtils.CUSTOMER_IN_USE, user);
         return "userDetails";
     }
