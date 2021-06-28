@@ -4,13 +4,18 @@
 </head>
 <body>
 <br/><br/>
-<span th:text="${session.customerInUse.userName}"></span>'s detail page to see all their accounts <br/>
+<!-- Use this as a header after login-->
+<table width="100%"><tr> <td><font size="10"> <span style th:text="${session.customerInUse.userName}"/>'s </font><button type="submit" ><a href="#" th:href="@{/file/{userName}(userName=${session.customerInUse.userName})}">Upload I.D</a></button>
+    <br/> Detail page to see all their accounts.  </td>
+<td> Saving <br/><font size="6" color="green"> <font color="green" size="6px"> <div th:text="${savingsBilanzList.totalSaving}"/></font></font></td>
+    <td> Current<br/> <font size="6" color="blue"> 5 000</font></td>
+    <td> Loan<br/> <font size="6" color="red"> 300</font></td>
+    <td>Retirement saving <br/> <font size="6" color="">25 000 </font> </b></td>
+</tr></table>
+<!-- END -->
+<br/>
 
-<a href="#" th:href="@{/registerSavingAccount}">SAVINGS Account </a><br/><br/>
-
-<span th:text="${session.customerInUse.userName}"/> 's Saving Accounts. <button type="submit" ><a href="#" th:href="@{/file/{userName}(userName=${session.customerInUse.userName})}">Upload I.D</a></button></span>
-
-<br/><br/>
+<font size="5" color="green"> SAVING ACCOUNT </font><a href="#" th:href="@{/registerSavingAccount}"> <img width="25px" th:src="@{/images/add.png}"/></a><br/></span>
 
 <table border="3px">
     <tr>
@@ -71,17 +76,14 @@
 
 <br/> <br/> <br/> <br/>
 
-<a href="#">Create a new CURRENT Account</a><h4>For <span th:text="${session.customerInUse.userName}"/></h4>  <br/> <br/> <br/><!--Current Accounts-->
+<font size="5" color="blue"> CURRENT ACCOUNT </font> <a href="#"> <img width="25px" th:src="@{/images/add.png}"/></a> <br/><br/><br/><br/>
 
 
-<a href="#">Create a new LOAN Account</a>
-<h4>For <span th:text="${session.customerInUse.userName}"/></h4>  <br/> <br/> <br/><!--Loan Accounts-->
+<font size="5" color="red"> LOAN ACCOUNT </font> <a href="#">  <img width="25px" th:src="@{/images/add.png}"/></a><br/><br/><br/><br/>
 
 
-<a href="#">Create a new RETIREMENT account</a>
-<h4>For <span th:text="${session.customerInUse.userName}"/></h4> <br/> <br/><!--Retirement Accounts-->
 
-
+<font size="5" color="red"> RETIREMENT SAVING ACCOUNT </font> <a href="#"> <img width="25px" th:src="@{/images/add.png}"/></a><br/><br/><br/><br/>
 
 
 <div th:insert="/footer::navbar">  </div>

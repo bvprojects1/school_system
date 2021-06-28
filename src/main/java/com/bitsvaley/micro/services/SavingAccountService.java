@@ -10,14 +10,17 @@ import com.bitsvaley.micro.repositories.SavingAccountTypeRepository;
 import com.bitsvaley.micro.repositories.UserRepository;
 import com.bitsvaley.micro.utils.BVMicroUtils;
 import com.bitsvaley.micro.utils.SavingAccountType;
+import com.bitsvaley.micro.webdomain.SavingBilanzList;
 import com.bitsvaley.micro.webdomain.SavingsBilanz;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.NumberFormat;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Optional;
 
 @Service
@@ -100,21 +103,22 @@ public class SavingAccountService extends SuperService{
     }
 
 
-    public ArrayList<SavingsBilanz> getSavingsBilanzByUserRole(ArrayList<UserRole> userRole) {
+    public SavingBilanzList getSavingsBilanzByUserRole(ArrayList<UserRole> userRole) {
         ArrayList<User> users = userRepository.findAllByUserRoleIn(userRole);
         return calculateUsersInterest(users);
     }
 
 
-    public ArrayList<SavingsBilanz> getSavingsBilanzByUser(User user) {
+    public SavingBilanzList getSavingsBilanzByUser(User user) {
         User aUser = userRepository.findById(user.getId()).get();
         ArrayList<User> userList = new ArrayList<User>();
         userList.add(aUser);
         return calculateUsersInterest(userList);
     }
 
-    private ArrayList<SavingsBilanz> calculateUsersInterest(ArrayList<User> users) {
-        ArrayList<SavingsBilanz> savingsBilanzsList = new ArrayList<SavingsBilanz>();
+    private SavingBilanzList calculateUsersInterest(ArrayList<User> users) {
+        double totalSaved = 0.0;
+        SavingBilanzList savingsBilanzsList = new SavingBilanzList();
         for (int i = 0; i < users.size(); i++) {
             List<SavingAccount> savingAccounts = users.get(i).getSavingAccount();
             for (int j = 0; j < savingAccounts.size(); j++) {
@@ -123,14 +127,25 @@ public class SavingAccountService extends SuperService{
                     final SavingAccountTransaction savingAccountTransaction = savingAccountTransactions.get(k);
                     LocalDateTime createdDate = savingAccountTransaction.getCreatedDate();
 //                    if (LocalDateTime.now().minusMonths(1).isAfter(createdDate)) {
-                    SavingsBilanz savingsBilanz = calculateInterest(savingAccountTransaction);
-                    savingsBilanzsList.add(savingsBilanz);
+                        SavingsBilanz savingsBilanz = calculateInterest(savingAccountTransaction);
+                        savingsBilanzsList.getSavingsBilanzList().add(savingsBilanz);
+                        totalSaved = totalSaved + savingsBilanz.getSavingsAmount();
 //                    }
                 }
             }
         }
+        savingsBilanzsList.setTotalSaving(formatCurrency(totalSaved));
         return savingsBilanzsList;
     }
+
+    private String formatCurrency(double totalSaved) {
+        Locale locale = new Locale("en", "CM");
+        NumberFormat fmt = NumberFormat.getCurrencyInstance(locale);
+        String total = fmt.format(totalSaved);
+        return total.substring(3,total.length());
+    }
+
+
 
     private SavingsBilanz calculateInterest(SavingAccountTransaction savingAccountTransaction) {
         SavingsBilanz savingsBilanz = new SavingsBilanz();
@@ -151,7 +166,6 @@ public class SavingAccountService extends SuperService{
 
     private int calculateInterestAccrued(SavingAccountTransaction savingAccountTransaction){
         int accrued = 1977;
-
         return accrued;
     }
 
