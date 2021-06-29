@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns:th="http:/>/www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+    <head>
+    </head>
+    <body>
+    <table width="100%"><tr> <td><font size="10"> <span style th:text="${session.customerInUse.userName}"/>'s </font><button type="submit" ><a href="#" th:href="@{/file/{userName}(userName=${session.customerInUse.userName})}">Upload I.D</a></button>
+        <br/> Detail page to see all their accounts.  </td>
+        <td> Saving <br/><font size="6" color="green"> <font color="green" size="6px"> <div th:text="${session.savingBilanzList.totalSaving}"/></font></font></td>
+        <td> Current<br/> <font size="6" color="blue"> 0</font></td>
+        <td> Loan<br/> <font size="6" color="red"> 0</font></td>
+        <td>Retirement saving <br/> <font size="6" color="#A57C00">0 </font> </b></td>
+    </tr></table>
+
+    <br/>
+    <font size="5" color="green"> SAVING INTEREST CENTER </font>
+    <br/><br/><br/>
+        <table width="85%">
+            <tr>
+                <th>Date of Payment</th>
+                <th>Mode of Payment </th>
+                <th>Agent</th>
+                <th>Account Number</th>
+                <th>Saving Amount</th>
+                <th>Notes</th>
+                <th>Number of Days</th>
+                <th>Interest Accrued </th>
+            </tr>
+
+            <tr th:each="bilanz : ${savingBilanzList.savingBilanzList}">
+                <td th:text="${bilanz.createdDate}"></td>
+                <td th:text="${bilanz.modeOfPayment}"></td>
+                <td th:text="${bilanz.agent}"></td>
+                <td th:text="${bilanz.accountNumber}"></td>
+                <td th:text="${bilanz.savingAmount}"></td>
+                <td th:text="${bilanz.notes}"></td>
+                <td th:text="${bilanz.noOfDays}"></td>
+                <td th:text="${bilanz.interestAccrued}"></td>
+            </tr>
+
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td>Interest Accrued</td>
+                <td><font color="green" size="4px"> <div th:text="${savingBilanzList.totalSavingInterest}"/></font></td>
+                <td>Total Saved</td>
+                <td><font color="green" size="6px"> <div th:text="${savingBilanzList.totalSaving}"/></font></td>
+            </tr>
+
+        </table><br/>
+    <br/> <br/>
+    <div th:insert="/footer::navbar">  </div>
+    </body>
+</html>
