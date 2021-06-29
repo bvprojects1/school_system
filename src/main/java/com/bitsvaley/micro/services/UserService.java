@@ -1,18 +1,13 @@
 package com.bitsvaley.micro.services;
 
-import com.bitsvaley.micro.domain.SavingAccount;
-import com.bitsvaley.micro.domain.SavingAccountTransaction;
-import com.bitsvaley.micro.domain.User;
-import com.bitsvaley.micro.domain.UserRole;
+import com.bitsvaley.micro.domain.*;
+import com.bitsvaley.micro.repositories.SavingAccountTypeRepository;
 import com.bitsvaley.micro.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class UserService {
@@ -23,12 +18,16 @@ public class UserService {
     @Autowired
     private UserRoleService userRoleService;
 
+    @Autowired
+    private SavingAccountTypeRepository savingsAccountTypeRepository;
+
     public Optional<User> getUserById(long id) {
         return userRepository.findById(id);
     }
     public User findUserByUserName(String userName) {
         return userRepository.findByUserName(userName);
     }
+
 
     public User createUser(User user) {
 
@@ -39,7 +38,7 @@ public class UserService {
 
         user.setAccountExpired(false);
         user.setAccountLocked(false);
-//        insureUserRolesExists(user.getUserRole().get(0).getName());
+        insureRolesExists(user.getUserRole().get(0).getName());
         User save = userRepository.save(user);
         return save;
     }
@@ -48,13 +47,64 @@ public class UserService {
         userRepository.save(user);
     }
 
-    private UserRole insureUserRolesExists(String name) {
+    private UserRole insureRolesExists(String name) {
         UserRole role = userRoleService.findUserRoleByName(name);
         Iterable<UserRole> all = userRoleService.findAll();
         if (role == null) {
-            role = new UserRole();
-            role.setName(name);
-            userRoleService.saveUserRole(role);
+//            role = new UserRole();
+//            role.setName(name);
+//            userRoleService.saveUserRole(role);
+
+            List<UserRole> userRolesList = new ArrayList<UserRole>();
+            UserRole customer = new UserRole();
+            customer.setName("CUSTOMER");
+            userRolesList.add(customer);
+
+            UserRole admin = new UserRole();
+            admin.setName("ADMIN");
+            userRolesList.add(admin);
+
+            UserRole manager = new UserRole();
+            manager.setName("MANAGER");
+            userRolesList.add(manager);
+
+            UserRole agent = new UserRole();
+            agent.setName("AGENT");
+            userRolesList.add(agent);
+
+            UserRole auditor = new UserRole();
+            auditor.setName("AUDITOR");
+            userRolesList.add(auditor);
+            Iterable<UserRole> iterable = userRolesList;
+            userRoleService.saveAllRole(iterable);
+// ----------------------------------------------------------------------------------------------
+            List<SavingAccountType> savingAccountTypeList = new ArrayList<SavingAccountType>();
+            SavingAccountType schoolSavingAccountType = new SavingAccountType();
+            schoolSavingAccountType.setName("SCHOOL SAVING");
+            savingAccountTypeList.add(schoolSavingAccountType);
+
+            SavingAccountType autoSavingAccountType = new SavingAccountType();
+            autoSavingAccountType.setName("AUTO SAVING");
+            savingAccountTypeList.add(autoSavingAccountType);
+
+            SavingAccountType vacationSavingAccountType = new SavingAccountType();
+            vacationSavingAccountType.setName("VACATION SAVING");
+            savingAccountTypeList.add(vacationSavingAccountType);
+
+            SavingAccountType constructionSavingAccountType = new SavingAccountType();
+            constructionSavingAccountType.setName("CONSTRUCTION SAVING");
+            savingAccountTypeList.add(constructionSavingAccountType);
+
+            SavingAccountType familySavingAccountType = new SavingAccountType();
+            familySavingAccountType.setName("FAMILY SAVING");
+            savingAccountTypeList.add(familySavingAccountType);
+
+            SavingAccountType otherSavingAccountType = new SavingAccountType();
+            otherSavingAccountType.setName("OTHER SAVING");
+            savingAccountTypeList.add(otherSavingAccountType);
+
+            Iterable<SavingAccountType> savingAccountTypeListIterable = savingAccountTypeList;
+            savingsAccountTypeRepository.saveAll(savingAccountTypeListIterable);
         }
         return role;
     }

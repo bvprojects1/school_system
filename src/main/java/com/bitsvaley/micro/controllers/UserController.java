@@ -5,9 +5,11 @@ import com.bitsvaley.micro.domain.SavingAccountTransaction;
 import com.bitsvaley.micro.domain.User;
 import com.bitsvaley.micro.domain.UserRole;
 import com.bitsvaley.micro.repositories.UserRepository;
+import com.bitsvaley.micro.services.SavingAccountService;
 import com.bitsvaley.micro.services.UserRoleService;
 import com.bitsvaley.micro.services.UserService;
 import com.bitsvaley.micro.utils.BVMicroUtils;
+import com.bitsvaley.micro.webdomain.SavingBilanzList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.stereotype.Controller;
@@ -30,6 +32,9 @@ public class UserController extends SuperController{
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private SavingAccountService savingAccountService;
 
     @Autowired
     private UserRepository userRepository;
@@ -90,6 +95,7 @@ public class UserController extends SuperController{
     @GetMapping(value = "/findAllCustomers")
     public String findUserByUserRole(ModelMap model) {
         ArrayList<User> customerList = getAllCustomers();
+        model.put("name", getLoggedinUserName());
         model.put("userList", customerList );
         return "customers";
     }
@@ -99,13 +105,10 @@ public class UserController extends SuperController{
     public String showCustomer(@PathVariable("id") long id,ModelMap model, HttpServletRequest request) {
         Optional<User> userById = userRepository.findById(id);
         User user = userById.get();
+        SavingBilanzList savingsBilanzByUserList = savingAccountService.getSavingsBilanzByUser(user);
+        request.getSession().setAttribute("savingsBilanzList",savingsBilanzByUserList);
         request.getSession().setAttribute(BVMicroUtils.CUSTOMER_IN_USE, user);
         return "userDetails";
     }
-
-
-
-
-
 
 }

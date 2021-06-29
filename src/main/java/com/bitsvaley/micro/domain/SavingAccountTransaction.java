@@ -19,7 +19,7 @@ public class SavingAccountTransaction {
     private LocalDateTime createdDate;
     private int savingAmount;
     private String notes;
-//    private String name;
+    private String modeOfPayment;
     
     @ManyToOne
     private SavingAccount savingAccount;
@@ -48,14 +48,6 @@ public class SavingAccountTransaction {
         this.notes = notes;
     }
 
-//    public String getName() {
-//        return name;
-//    }
-//
-//    public void setName(String name) {
-//        this.name = name;
-//    }
-
     public LocalDateTime getCreatedDate() {
         return createdDate;
     }
@@ -70,5 +62,13 @@ public class SavingAccountTransaction {
 
     public void setSavingAmount(int savingAmount) {
         this.savingAmount = savingAmount;
+    }
+
+    public String getModeOfPayment() {
+        return modeOfPayment;
+    }
+
+    public void setModeOfPayment(String modeOfPayment) {
+        this.modeOfPayment = modeOfPayment;
     }
 }

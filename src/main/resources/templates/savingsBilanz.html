@@ -1,32 +1,47 @@
 <!DOCTYPE html>
-<html xmlns:th="http:/>/www.thymeleaf.org">
+<html xmlns:th="http:/>/www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
     <head>
     </head>
     <body>
-
+    <h4>Welcome <p th:text="${name}"/></h4>
+    <br/>
+    <br/>
+    <b>SAVINGS INTEREST CENTER</b>
     <br/><br/><br/>
         <table>
             <tr>
-                <th>createdDate</th>
-                <th>Name</th>
+                <th>Date of Payment</th>
+                <th>Mode of Payment </th>
                 <th>Agent</th>
+                <th>Account Number</th>
                 <th>Savings Amount</th>
                 <th>Notes</th>
                 <th>Number of Days</th>
                 <th>Interest Accrued </th>
             </tr>
 
-            <tr th:each="bilanz : ${savingsBilanzList}">
+            <tr th:each="bilanz : ${savingsBilanzList.savingsBilanzList}">
                 <td th:text="${bilanz.createdDate}"></td>
+                <td th:text="${bilanz.modeOfPayment}"></td>
+                <td th:text="${bilanz.agent}"></td>
+                <td th:text="${bilanz.accountName}"></td>
+                <td th:text="${bilanz.savingsAmount}"></td>
                 <td th:text="${bilanz.notes}"></td>
-                <td th:text="${bilanz.agent}"></td>
-                <td th:text="${bilanz.agent}"></td>
                 <td th:text="${bilanz.noOfDays}"></td>
                 <td th:text="${bilanz.interestAccrued}"></td>
-                <td ></td>
-                <td ></td>
             </tr>
-        </table>
+
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td>Interest Accrued</td>
+                <td><font color="green" size="4px"> <div th:text="${savingsBilanzList.totalSavingInterest}"/></font></td>
+                <td>Total Saved</td>
+                <td><font color="green" size="6px"> <div th:text="${savingsBilanzList.totalSaving}"/></font></td>
+            </tr>
+
+        </table><br/>
     <br/> <br/>
     <div th:insert="/footer::navbar">  </div>
     </body>

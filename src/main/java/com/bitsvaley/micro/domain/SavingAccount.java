@@ -20,6 +20,8 @@ public class SavingAccount {
     private LocalDateTime createdDate;
     private LocalDateTime lastUpdatedDate;
     private boolean accountMinBalanceLocked;
+    private int minimumPayment;
+    private String intervalOfSaving;
 
     private String accountNumber;
     private int interestRate;
@@ -50,6 +52,22 @@ public class SavingAccount {
 
     public void setSavingAccountTransaction(List<SavingAccountTransaction> savingAccountTransaction) {
         this.savingAccountTransaction = savingAccountTransaction;
+    }
+
+    public int getMinimumPayment() {
+        return minimumPayment;
+    }
+
+    public void setMinimumPayment(int minimumPayment) {
+        this.minimumPayment = minimumPayment;
+    }
+
+    public String getIntervalOfSaving() {
+        return intervalOfSaving;
+    }
+
+    public void setIntervalOfSaving(String intervalOfSaving) {
+        this.intervalOfSaving = intervalOfSaving;
     }
 
     public SavingAccountType getAccountSavingsType() {

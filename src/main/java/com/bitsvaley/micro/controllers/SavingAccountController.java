@@ -2,10 +2,14 @@ package com.bitsvaley.micro.controllers;
 
 import com.bitsvaley.micro.domain.SavingAccount;
 import com.bitsvaley.micro.domain.SavingAccountTransaction;
+import com.bitsvaley.micro.domain.SavingAccountType;
 import com.bitsvaley.micro.domain.User;
+import com.bitsvaley.micro.repositories.SavingAccountTypeRepository;
 import com.bitsvaley.micro.services.SavingAccountService;
+import com.bitsvaley.micro.services.SavingAccountTypeService;
 import com.bitsvaley.micro.services.UserService;
 import com.bitsvaley.micro.utils.BVMicroUtils;
+import com.bitsvaley.micro.webdomain.SavingBilanzList;
 import com.bitsvaley.micro.webdomain.SavingsBilanz;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -33,6 +37,9 @@ public class SavingAccountController extends SuperController{
     @Autowired
     SavingAccountService savingAccountService;
 
+    @Autowired
+    SavingAccountTypeService savingAccountTypeService;
+
     @GetMapping(value = "/registerSavingAccount")
     public String registerSaving(ModelMap model, HttpServletRequest request) {
         User user = (User)request.getSession().getAttribute(BVMicroUtils.CUSTOMER_IN_USE);
@@ -47,6 +54,10 @@ public class SavingAccountController extends SuperController{
     @PostMapping(value = "/registerSavingAccountForm")
     public String registerSavingForm( @ModelAttribute("saving") SavingAccount savingAccount, ModelMap model, HttpServletRequest request) {
         User user = (User)request.getSession().getAttribute(BVMicroUtils.CUSTOMER_IN_USE);
+
+        String savingsType = request.getParameter("savingsType");
+        SavingAccountType savingAccountType = savingAccountTypeService.getSavingAccountType(savingsType);
+        savingAccount.setSavingAccountType(savingAccountType);
         savingAccountService.createSavingAccount(savingAccount, user);
         return findUserByUserName(user, model, request);
     }
@@ -68,6 +79,9 @@ public class SavingAccountController extends SuperController{
         savingAccountTransaction.setSavingAccount(savingAccount.get());
         User user = (User)request.getSession().getAttribute(BVMicroUtils.CUSTOMER_IN_USE);
 
+        String modeOfPayment = request.getParameter("modeOfPayment");
+        savingAccountTransaction.setModeOfPayment(modeOfPayment);
+
         savingAccountService.createSavingAccountTransaction(savingAccountTransaction, user);
         if(savingAccount.get().getSavingAccountTransaction() != null ){
             savingAccount.get().getSavingAccountTransaction().add(savingAccountTransaction);
@@ -76,6 +90,8 @@ public class SavingAccountController extends SuperController{
             savingAccount.get().getSavingAccountTransaction().add(savingAccountTransaction);
         }
         savingAccountService.save(savingAccount.get());
+        SavingBilanzList savingsBilanzByUserList = savingAccountService.getSavingsBilanzByUser(user);
+        request.getSession().setAttribute("savingsBilanzList", savingsBilanzByUserList);
         model.put("savingAccountTransaction", savingAccountTransaction);
         return "savingAccountTransaction";
     }
@@ -84,12 +100,10 @@ public class SavingAccountController extends SuperController{
     @GetMapping(value = "/showSavingsBilanz/{id}")
     public String showSavingsBilanz(@PathVariable("id") long id,ModelMap model, HttpServletRequest request) {
         User user = (User)request.getSession().getAttribute(BVMicroUtils.CUSTOMER_IN_USE);
-        ArrayList<SavingsBilanz> savingsBilanzByUserList = savingAccountService.getSavingsBilanzByUser(user);
-
+        SavingBilanzList savingsBilanzByUserList = savingAccountService.getSavingsBilanzByUser(user);
+        model.put("name", getLoggedinUserName());
         model.put("savingsBilanzList", savingsBilanzByUserList);
         return "savingsBilanz";
     }
-
-
 
 }

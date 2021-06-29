@@ -6,8 +6,26 @@ public class SavingsBilanz {
     int interestAccrued;
     String notes;
     String agent;
+    String modeOfPayment;
     String noOfDays;
+    String accountName;
     int savingsAmount;
+
+    public String getModeOfPayment() {
+        return modeOfPayment;
+    }
+
+    public void setModeOfPayment(String modeOfPayment) {
+        this.modeOfPayment = modeOfPayment;
+    }
+
+    public String getAccountName() {
+        return accountName;
+    }
+
+    public void setAccountName(String accountName) {
+        this.accountName = accountName;
+    }
 
     public String getCreatedDate() {
         return createdDate;

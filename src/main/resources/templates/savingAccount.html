@@ -3,6 +3,10 @@
 <head>
 
 </head>
+
+<h4>Welcome <p th:text="${name}"/></h4>
+<br/>
+
 <div class="container">
     <div class="row">
         <div class="col-md-6 col-md-offset-3 ">
@@ -14,15 +18,35 @@
                         <input type="number" th:field="*{accountMinBalance}"/> <br/>
                         <label> Interest Rate:</label>
                         <input type="number" th:field="*{interestRate}"/> <br/>
-                        <label> notes:</label>
+
+                        <label> Minimum Payment:</label>
+                        <input type="number" th:field="*{minimumPayment}"/> <br/>
+
+                        <label for="intervalOfSaving">Saving Interval:</label><br/>
+
+                        <select name="intervalOfSaving" id="intervalOfSaving">
+                            <option value="01 DAY">01 DAY</option>
+                            <option value="15 DAY">15 DAY</option>
+                            <option value="OTHER">OTHER</option>
+                        </select>
+                        <br/>
+                        <label> Notes:</label>
                         <input type="text" th:field="*{notes}"/>
-
+                        <br/>
                         <label> Savings Type:</label>
-
+                        <select name="savingsType" id="savingsType">
+                            <option value="SCHOOL SAVINMG">SCHOOL</option>
+                            <option value="VACATION SAVINMG">VACATION</option>
+                            <option value="FAMILY SAVINMG">FAMILY</option>
+                            <option value="AUTO SAVINMG">AUTO</option>
+                            <option value="CONSTRUCTION CONSTRUCTION">SCHOOL</option>
+                            <option value="OTHER">OTHER</option>
+                        </select>
                         <button type="submit" class="btn btn-success">Save Account</button>
                     </form>
                 </div>
             </div>
         </div>
     </div>
+        <div th:insert="/footer::navbar">  </div>
 </div>
