@@ -121,8 +121,9 @@ public class SavingAccountService extends SuperService{
         SavingBilanzList savingsBilanzsList = new SavingBilanzList();
         for (int i = 0; i < users.size(); i++) {
             List<SavingAccount> savingAccounts = users.get(i).getSavingAccount();
+            List<SavingAccountTransaction> savingAccountTransactions = new ArrayList<SavingAccountTransaction>();
             for (int j = 0; j < savingAccounts.size(); j++) {
-                List<SavingAccountTransaction> savingAccountTransactions = savingAccounts.get(i).getSavingAccountTransaction();
+                savingAccountTransactions = savingAccounts.get(j).getSavingAccountTransaction();
                 for (int k = 0; k < savingAccountTransactions.size(); k++) {
                     final SavingAccountTransaction savingAccountTransaction = savingAccountTransactions.get(k);
                     LocalDateTime createdDate = savingAccountTransaction.getCreatedDate();
@@ -153,6 +154,7 @@ public class SavingAccountService extends SuperService{
         savingsBilanz.setSavingsAmount(savingAccountTransaction.getSavingAmount());
         savingsBilanz.setCreatedDate(savingAccountTransaction.getCreatedDate().toString());
         savingsBilanz.setNotes(savingAccountTransaction.getNotes());
+        savingsBilanz.setAccountName(savingAccountTransaction.getSavingAccount().getAccountNumber());
         savingsBilanz.setNoOfDays(calculateNoOfDays(savingAccountTransaction.getCreatedDate()));
         savingsBilanz.setModeOfPayment(savingAccountTransaction.getModeOfPayment());
         savingsBilanz.setInterestAccrued(calculateInterestAccrued(savingAccountTransaction));
