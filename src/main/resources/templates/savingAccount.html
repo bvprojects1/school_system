@@ -11,7 +11,7 @@
     <div class="row">
         <div class="col-md-6 col-md-offset-3 ">
             <div class="panel panel-primary">
-                <div class="panel-heading"><img width="25px" th:src="@{/images/add.png}"/>  Create a Savings account for  <p th:text="${session.customerInUse.userName}"></p>
+                <div class="panel-heading"><img width="25px" th:src="@{/images/add.png}"/>  Create a Saving account for  <p th:text="${session.customerInUse.userName}"></p>
                 <div class="panel-body">
                     <form action="#" th:action="@{/registerSavingAccountForm}" method="post" th:object="${savingAccount}" >
                         <label> Minimum balance:</label>
@@ -34,7 +34,7 @@
                         <input type="text" th:field="*{notes}"/>
                         <br/>
                         <label> Savings Type:</label>
-                        <select name="savingsType" id="savingsType">
+                        <select name="savingType" id="savingType">
                             <option value="SCHOOL SAVINMG">SCHOOL</option>
                             <option value="VACATION SAVINMG">VACATION</option>
                             <option value="FAMILY SAVINMG">FAMILY</option>

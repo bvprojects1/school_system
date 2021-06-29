@@ -11,47 +11,46 @@
         <div class="panel-body">
 
     <center>
-
-        <h4>Welcome <p th:text="${name}"/></h4>
+        <font size="4" color="green">  Welcome <div th:text="${name}"/></font>
         <br/>
 
-            <table width="50%" align="center" border="0">
+            <table width="100%" align="center" border="1px">
                 <tr>
-                    <td>
+                    <td style="text-align: center:">
                         <br/>
                         <a href="/findAllCustomers"> <img width="125px" th:src="@{/images/customer.png}" border="1"/></a>
                         <br/>Customer <a href="/registerUser"> <img width="25px" th:src="@{/images/add.png}"/> </a>
                     </td>
-                    <td>
+                    <td style="text-align: center:">
                         <br/>
                          <img width="125px" th:src="@{/images/saving.png}" border="1"/>
                         <br/>Savings <a href="/registerSavingAccount"><img width="25px" th:src="@{/images/add.png}"/> </a>
                     </td>
-                    <td>
+                    <td style="text-align: center:">
                         <br/>
                         <img width="125px" th:src="@{/images/loans.png}" border="1"/>
                         <br/>Loans
                     </td>
                 </tr>
                 <tr>
-                    <td>
+                    <td style="text-align: center:">
                         <br/>
                         <img width="125px" height="125px" th:src="@{/images/withdrawal.png}"/>
                         <br/>Withdrawal
                     </td>
-                    <td>
+                    <td style="text-align: center:">
                         <br/>
                         <img width="125px" th:src="@{/images/interest.png}" border="1"/>
                         <br/>Interest
                     </td>
-                    <td>
+                    <td style="text-align: center:">
                         <br/>
                         <img width="125px" th:src="@{/images/retirementSavings.png}" border="1"/>
-                        <br/>Retirement Savings
+                        <br/>Retirement Saving
                     </td>
                 </tr>
                 <tr>
-                    <td>
+                    <td style="text-align: center:">
                         <br/>
                         <img width="125px" height="125px" th:src="@{/images/daily.png}" border="1"/>
                         <br/>Daily Collection
