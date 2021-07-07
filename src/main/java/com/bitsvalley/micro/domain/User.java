@@ -22,6 +22,8 @@ public class User {
     private String userName;
     private String firstName;
     private String lastName;
+    private String gender;
+    private String profession;
     private String telephone1;
     private String telephone2;
     private String address;
@@ -30,6 +32,7 @@ public class User {
     private String beneficiary;
     private String dateOfBirth;
     private String idFilePath;
+    private String identityCardNumber;
 
     @ManyToMany(cascade = CascadeType.ALL)
     private List<UserRole> userRole;
@@ -204,5 +207,29 @@ public class User {
 
     public void setIdFilePath(String idFilePath) {
         this.idFilePath = idFilePath;
+    }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+
+    public String getProfession() {
+        return profession;
+    }
+
+    public void setProfession(String profession) {
+        this.profession = profession;
+    }
+
+    public String getIdentityCardNumber() {
+        return identityCardNumber;
+    }
+
+    public void setIdentityCardNumber(String identityCardNumber) {
+        this.identityCardNumber = identityCardNumber;
     }
 }

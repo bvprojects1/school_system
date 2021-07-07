@@ -116,9 +116,16 @@ public class UserController extends SuperController{
         Optional<User> userById = userRepository.findById(id);
         User user = userById.get();
         SavingBilanzList savingBilanzByUserList = savingAccountService.getSavingBilanzByUser(user);
+        model.put("name", getLoggedinUserName());
         request.getSession().setAttribute("savingBilanzList",savingBilanzByUserList);
         request.getSession().setAttribute(BVMicroUtils.CUSTOMER_IN_USE, user);
-        return "userDetails";
+        return "userHome";
     }
+
+//            ArrayList<User> customerList = getAllCustomers();
+//            model.put("name", getLoggedinUserName());
+//            model.put("userList", customerList );
+//            return "customers";
+//        }
 
 }
