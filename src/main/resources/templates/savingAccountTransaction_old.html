@@ -3,7 +3,7 @@
 
 
 
-<!--Project title area end-->
+    <!--Project title area end-->
 <div class="container">
     <div class="row">
         <div class="col-md-6 col-md-offset-3 ">
@@ -52,40 +52,40 @@
                     <h4><div th:text="${session.customerInUse.userName}"/>'s</h4>
                     <h4>Saving Account Payments Processed</h4>
                     <table>
-                        <tr>
-                            <th>
-                                Amount
-                            </th>
-                            <th>
-                                Created Date
-                            </th>
-                            <th>
-                                Created By
-                            </th>
-                            <th>
-                                Notes
-                            </th>
-                        </tr>
+                    <tr>
+                        <th>
+                            Amount
+                        </th>
+                        <th>
+                            Created Date
+                        </th>
+                        <th>
+                            Created By
+                        </th>
+                        <th>
+                            Notes
+                        </th>
+                    </tr>
 
-                        <tr th:each="aSavingAccountTransaction : ${savingAccountTransaction.savingAccount.savingAccountTransaction}">
+                    <tr th:each="aSavingAccountTransaction : ${savingAccountTransaction.savingAccount.savingAccountTransaction}">
 
-                            <td>
-                                <p th:text="${aSavingAccountTransaction.savingAmount}"/>
-                            </td>
-                            <td>
-                                <p th:text="${aSavingAccountTransaction.createdDate}"/>
-                            </td>
-                            <td>
-                                <p th:text="${aSavingAccountTransaction.createdBy}"/>
-                            </td>
-                            <td>
-                                <p th:text="${aSavingAccountTransaction.notes}"/>
-                            </td>
-                        </tr>
-                    </table>
+                        <td>
+                            <p th:text="${aSavingAccountTransaction.savingAmount}"/>
+                        </td>
+                        <td>
+                            <p th:text="${aSavingAccountTransaction.createdDate}"/>
+                        </td>
+                        <td>
+                            <p th:text="${aSavingAccountTransaction.createdBy}"/>
+                        </td>
+                        <td>
+                            <p th:text="${aSavingAccountTransaction.notes}"/>
+                        </td>
+                    </tr>
+                </table>
 
 
-                </div>
+</div>
             </div>
         </div>
     </div>

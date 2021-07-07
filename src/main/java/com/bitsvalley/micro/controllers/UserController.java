@@ -70,7 +70,7 @@ public class UserController extends SuperController{
         }
         request.getSession().setAttribute("savingBilanzList",savingBilanzByUserList);
         request.getSession().setAttribute(BVMicroUtils.CUSTOMER_IN_USE, user);
-        return "userDetails";
+        return "userHome";
     }
 
     @PostMapping(value = "/registerUserForm")

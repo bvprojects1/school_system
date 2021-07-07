@@ -55,7 +55,7 @@ public class SuperController {
             SavingBilanzList savingBilanzByUserList = savingAccountService.getSavingBilanzByUser(user);
             request.getSession().setAttribute("savingBilanzList",savingBilanzByUserList);
             request.getSession().setAttribute(BVMicroUtils.CUSTOMER_IN_USE, aUser);
-            return "userDetails";
+            return "userHome";
         }
             return "userDetailsNoAccount";
     }
