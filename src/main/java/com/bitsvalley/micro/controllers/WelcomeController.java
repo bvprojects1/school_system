@@ -53,7 +53,7 @@ public class WelcomeController extends SuperController{
                 savingBilanzByUserList.setTotalSaving("0");
             }
             request.getSession().setAttribute("savingBilanzList",savingBilanzByUserList);
-            return "userDetails";
+            return "userHome";
         }
         return "welcome";
     }

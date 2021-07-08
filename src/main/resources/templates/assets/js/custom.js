@@ -110,7 +110,7 @@ $(function () {
     05 - TESTIMONIAL PARALLAX JS
     ==================================================*/
     $('.testimonial-area-start').parallax({
-        imageSrc: 'assets/images/main-slider/slider-1.jpg',
+//        imageSrc: 'assets/images/main-slider/slider-1.jpg',
         iosFix: true,
         androidFix: true
     });
@@ -119,7 +119,7 @@ $(function () {
     06 - BREADCRUMB JS
     ==================================================*/
     $('.breadcrumb-area-start, .award-area-start').parallax({
-        imageSrc: 'assets/images/main-slider/slider-1.jpg',
+//        imageSrc: 'assets/images/main-slider/slider-1.jpg',
         iosFix: true,
         androidFix: true
     });

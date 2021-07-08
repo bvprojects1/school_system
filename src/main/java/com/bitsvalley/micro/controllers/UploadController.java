@@ -81,7 +81,7 @@ public class UploadController extends SuperController{
         SavingBilanzList savingBilanzByUserList = savingAccountService.getSavingBilanzByUser(aUser);
         request.getSession().setAttribute("savingBilanzList",savingBilanzByUserList);
         model.put("user",aUser);
-        return "userDetails";
+        return "userHome";
     }
 
 }

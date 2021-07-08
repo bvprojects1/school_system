@@ -25,6 +25,19 @@
     <link rel="stylesheet" href="assets/css/style.css">
     <!-- Responsive -->
     <link rel="stylesheet" href="assets/css/responsive.css">
+
+    <style>
+        table, th, td {
+          border: 0px solid black;
+          align: center;
+        }
+        table.center {
+          margin-left: 50px;
+          margin-right: 50px;
+        }
+          tr:nth-child(even) {background-color: #D9E1F2;}
+
+    </style>
 </head>
 
 <body>
@@ -111,8 +124,7 @@
             <div class="row">
                 <div class="col-md-12">
                     <div class="project-title-content">
-                        <h3>All CUSTOMERS having a Saving, Current, Loan, Retirement Saving</h3>
-                        <span><i class="fas fa-crosshairs"></i></span>
+                        <font size="4px">All Customers with a Saving, Current, Loan, Retirement Saving</font>
                         <!--                            <p>Cross-agency coordination clean water rural, promising development turmoil inclusive education transformative community.</p>-->
                     </div>
                 </div>
@@ -124,8 +136,9 @@
         <div class="container">
             <div class="row">
                 <div class="offset-md-2 col-md-8">
-                    <table width="80%" border="0px">
+                    <table width="100%" class="center" border="0px">
                         <tr>
+<!--                            <th></th>-->
                             <th>Username</th>
                             <th>Firstname</th>
                             <th>Lastname</th>
@@ -133,19 +146,18 @@
                             <th> </th>
                         </tr>
                         <tr th:each="user : ${userList}">
-<!--                            <td th:text="${user.id}"></td>-->
+<!--                            <td th:text="${userList[index]}"></td>-->
                             <td th:text="${user.userName}"></td>
                             <td th:text="${user.firstName}"></td>
                             <td th:text="${user.lastName}"></td>
                             <td th:text="${user.created}"></td>
 <!--                            <td th:text="${#dates.format(user.created, 'dd-MMM-yyyy')}"></td>-->
                             <td>
-                                <a href="#" th:href="@{/showCustomer/{id}(id=${user.id})}"
-                                    class="df-sq-btn active">read more</a>
+                                <a href="#" th:href="@{/showCustomer/{id}(id=${user.id})}">Read more ...</a>
                             </td>
                         </tr>
                         <tr th:if="${userList.isEmpty()}">
-                            <td class="text-center" colspan="3">No customers. Add a customer!
+                            <td class="text-center" colspan="2">No customers. Add a customer!
                                 <a href="/registerUser">
                                     <img width="25px" th:src="@{/assets/images/add.png}"/>
                                 </a> </td>
@@ -174,7 +186,7 @@
                 <div class="col-md-3 mb-sm-5 mb-md-0">
                     <div class="single-footer-widget">
                         <div class="logo-area">
-                            <a href="#"><span>bus</span>iness</a>
+                            <a href="#"><span>PIP</span>idaf</a>
                         </div>
                         <p>Harum repellat quis expedita saepe soluta voluptates error. Repudiandae eum ipsa, corporis
                             rerum necessitatibus?</p>

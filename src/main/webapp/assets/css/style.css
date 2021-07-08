@@ -185,7 +185,7 @@ h6 {
 
 .logo-area a img {
     max-width: 200px;
-    max-height: 93px
+    max-height: 70px
 }
 
 .logo-area a span {
@@ -380,11 +380,11 @@ section.slider-area-start,
 }
 
 .single-slider-content h1 {
-    text-transform: capitalize;
+    /*text-transform: capitalize;*/
     font-size: 87px;
-    font-weight: 700;
+    /*font-weight: 700;*/
     line-height: 75px;
-    margin-bottom: 33px;
+    /*margin-bottom: 33px;*/
 }
 
 .single-slider-content p {
@@ -445,7 +445,7 @@ section.slider-area-start,
     top: 8px;
     width: 45px;
     height: 5px;
-    background: #1ABC9C;
+    background: #bd3919;
 }
 
 .project-title-content span:after {
@@ -477,7 +477,7 @@ section.slider-area-start,
     height: 100%;
     transform: rotate(-45deg);
     content: '';
-    background: #1ABC9C;
+    background: #7b1d05;
     z-index: -1;
     opacity: 0;
     transition: 0.3s ease-in-out

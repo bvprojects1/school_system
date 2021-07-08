@@ -29,6 +29,19 @@
     <link rel="stylesheet" href="../assets/css/style.css">
     <!-- Responsive -->
     <link rel="stylesheet" href="../assets/css/responsive.css">
+
+    <style>
+        table, th, td {
+          border: 0px solid black;
+          align: center;
+        }
+        table.center {
+          margin-left: 50px;
+          margin-right: 50px;
+        }
+        tr:nth-child(even) {background-color: #D9E1F2;}
+    </style>
+
 </head>
 
 <body>
@@ -56,7 +69,7 @@
             <div class="row">
                 <div class="col-md-3 col-5 col-sm-5">
                     <div class="logo-area">
-                        <a href="index.html"><img th:src="@{/assets/images/logo.jpeg}"/> </a>
+                        <a href="index.html"><img th:src="@{/assets/images/logo.jpeg}"/> </a><br/>PIPIDAF
                     </div>
                 </div>
                 <!--Logo area end-->
@@ -65,7 +78,7 @@
                         <ul class="main-menu" id="mobile-menu">
                             <li><a th:href="@{/welcome}" href="/welcome"> Customer Home</a></li>
                             <li><a th:href="@{/welcomeGlobal}" href="/Logout">PIPIDAF Home</a></li>
-                            <li><a href="#">blog <i class="fas fa-angle-down"></i></a>
+                            <li><a href="#">Accounts <i class="fas fa-angle-down"></i></a>
                                 <ul class="sub-menu">
                                     <li class="drop-list"><a href="#">BLog Page</a>
                                         <ul class="sub-menu">
@@ -73,10 +86,9 @@
                                             <li><a href="blog-3-column.html">Blog 3 Column</a></li>
                                         </ul>
                                     </li>
-                                    <li><a href="left-sidebar.html">Left Sidebar</a></li>
-                                    <li><a href="right-sidebar.html">Sidebar Right</a></li>
-                                    <li><a href="single.html">Single Page</a></li>
-                                    <li><a href="blank.html">Blank Page</a></li>
+                                    <li><a href="left-sidebar.html">Loans</a></li>
+                                    <li><a href="right-sidebar.html">Retirement Savings</a></li>
+                                    <li><a href="single.html">Withdrawals</a></li>
                                 </ul>
                             </li>
                             <li>
@@ -99,71 +111,47 @@
     <!--Header navigation area end-->
 </header>
 
-
-
-<!--Slider area start-->
-<section class="slider-area-start owl-carousel">
-    <div class="single-slider-area-start"
-         style="background: url('assets/images/main-slider/slider-2.jpg') no-repeat scroll center center / cover">
-        <div class="single-slider-content">
-            <h1>Optimal custom saving plans</h1>
-            <p>We offer very competitive saving rates. We have many options to go with.</p>
-        </div>
-    </div>
-    <!--Single slider area end-->
-    <div class="single-slider-area-start"
-         style="background: url('assets/images/main-slider/slider-3.jpg') no-repeat scroll center center / cover">
-        <div class="single-slider-content">
-            <h1>We have a robust software and digitalized system.</h1>
-            <p>Savings is Silver &amp; but investment is Gold.</p>
-        </div>
-    </div>
-</section>
-<!--Slider area end-->
-
 <!--Choosen area start-->
 <section class="choosen-area-start space">
     <!-- Use this as a header after login-->
-    <table width="100%"><tr> <td><font size="10"> <span style th:text="${session.customerInUse.userName}"/>'s </font><button type="submit" ><a href="#" th:href="@{/file/{userName}(userName=${session.customerInUse.userName})}">Upload I.D</a></button>
+
+    <table class="center" width="100%"><tr> <td><font size="10"> <span style th:text="${session.customerInUse.userName}"/>'s </font><button type="submit" ><a href="#" th:href="@{/file/{userName}(userName=${session.customerInUse.userName})}">Upload I.D</a></button>
         <br/> Detail page to see all their accounts.  </td>
-        <td> Saving <br/><font size="6" color="green"> <font color="green" size="6px"> <div th:text="${session.savingBilanzList.totalSaving}"/></font></font></td>
-        <td> Current<br/> <font size="6" color="blue"> 0</font></td>
-        <td> Loan<br/> <font size="6" color="red"> 0</font></td>
-        <td>Retirement saving <br/> <font size="6" color="#A57C00">0 </font> </b></td>
+        <td> Saving <br/> <font color="green" size="6px"> <div th:text="${session.savingBilanzList.totalSaving}"/></font></td>
+        <td> Current<br/> <font size="6" color="gray"> 0</font>frs</td>
+        <td> Loan<br/> <font size="6" color="orange"> 0</font>frs</td>
+        <td>Retirement saving <br/> <font size="6" color="#A57C00">0 </font> frs</b></td>
     </tr></table>
     <!-- END -->
     <br/>
 
-    <font size="5" color="green"> SAVING ACCOUNT </font><a href="#" th:href="@{/registerSavingAccount}"> <img width="25px" th:src="@{/images/add.png}"/></a><br/></span>
-
-
-
-    <table>
+    &nbsp; <font size="5px" color="green"> <b>SAVING ACCOUNT</b> </font><a href="#" th:href="@{/registerSavingAccount}"> <img width="25px" th:src="@{/assets/images/add.png}"/></a><br/></span>
+    <table class="center" width="90%">
         <tr>
-            <th>
-                Account Type
-            </th>
-            <th>
-                Account Number
-            </th>
-            <th>
-                Account Minimum Balance
-            </th>
-            <th>
-                Interest Rate
-            </th>
-            <th>
-                Minimum Balance Locked
-            </th>
-            <th>
-                Created Date
-            </th>
-            <th>
-                Created By
-            </th>
-            <th>
+            <td>
+                Acc Type
+            </td>
+            <td>
+                Acc No.
+            </td>
+            <td>
+                Minimum Balance
+            </td>
+            <td>
+                %
+            </td>
+            <td>
+                Locked
+            </td>
+            <td>
+                Created
+            </td>
+            <td>
+                Creator
+            </td>
+            <td>
 
-            </th>
+            </td>
         </tr>
         <tr th:each="savingAccount : ${session.customerInUse.savingAccount}">
             <td>
@@ -174,7 +162,7 @@
             </td>
             <td>
                 <!--            <p th:text="${savingAccount.accountMinBalance}"/>-->
-                <span th:text="${#numbers.formatDecimal(savingAccount.accountMinBalance, 0, 'COMMA', 0, 'POINT')}">10.00</span> frs
+                <p th:text="${#numbers.formatDecimal(savingAccount.accountMinBalance, 0, 'COMMA', 0, 'POINT')}">10.00 </p>
 
             </td>
             <td>
@@ -191,7 +179,7 @@
                 <p th:text="${savingAccount.createdBy}"/>
             </td>
             <td>
-                <a href="#" th:href="@{/registerSavingAccountTransaction/{id}(id=${savingAccount.id})}"><img width="25px" th:src="@{/assets/images/add.png}"/>  Make a savings payment</a><br/>
+                <a href="#" th:href="@{/registerSavingAccountTransaction/{id}(id=${savingAccount.id})}"> Make a savings payment <img width="25px" th:src="@{/assets/images/add.png}"/> </a><br/>
                 <a href="#" th:href="@{/showSavingBilanz/{id}(id=${session.customerInUse.id})}"> Show Savings interest</a>
             </td>
         </tr>
@@ -199,211 +187,46 @@
 
     <br/> <br/> <br/> <br/>
 
-    <font size="5" color="blue"> CURRENT ACCOUNT </font> <a href="#"> <img width="25px" th:src="@{/assets/images/add.png}"/></a> <br/><br/><br/><br/>
+    &nbsp; <font size="5" color="gray"> <b> CURRENT ACCOUNT </b></font> <a href="#"> <img width="25px" th:src="@{/assets/images/add.png}"/></a> <br/><br/><br/><br/>
 
-    <font size="5" color="red"> LOAN ACCOUNT </font> <a href="#">  <img width="25px" th:src="@{/assets/images/add.png}"/></a><br/><br/><br/><br/>
+    &nbsp; <font size="5" color="orange"> <b> LOAN ACCOUNT </b></font> <a href="#">  <img width="25px" th:src="@{/assets/images/add.png}"/></a><br/><br/><br/><br/>
 
-    <font size="5" color="#A57C00"> RETIREMENT SAVING ACCOUNT </font> <a href="#"> <img width="25px" th:src="@{/assets/images/add.png}"/></a><br/><br/><br/><br/>
+    &nbsp; <font size="5" color="#A57C00"> <b> RETIREMENT SAVING ACCOUNT</b> </font> <a href="#"> <img width="25px" th:src="@{/assets/images/add.png}"/></a><br/>
 
 
     <!--Choosen main area end-->
 </section>
 <!--Choosen area end-->
 
-<!--About area start-->
-<section class="about-area-start df-bg">
-    <div class="container-fluid">
-        <div class="row">
-            <!--About-left area end-->
-            <div class="col-md-6">
-                <div class="about-right-area-content">
-                    <h3>LET'S MAKE GREAT THING TOGETHER !</h3>
-                    <ul class="about-lists">
-                        <li><i class="far fa-check-circle mr-3"></i> Consectetur adipisicing elit.</li>
-                        <li><i class="far fa-check-circle mr-3"></i> Animi dolorum minus harum reiciendis.</li>
-                        <li><i class="far fa-check-circle mr-3"></i> Voluptatibus quis sunt in repellendus.</li>
-                        <li><i class="far fa-check-circle mr-3"></i> Pero quod eos, iusto blanditiis culpa.</li>
-                        <li><i class="far fa-check-circle mr-3"></i> Dignissimos eum ipsam vitae?</li>
-                    </ul>
+<!--&lt;!&ndash;About area start&ndash;&gt;-->
+<!--<section class="about-area-start df-bg">-->
+<!--    <div class="container-fluid">-->
+<!--        <div class="row">-->
+<!--            &lt;!&ndash;About-left area end&ndash;&gt;-->
+<!--            <div class="col-md-6">-->
+<!--                <div class="about-right-area-content">-->
+<!--                    <h3>Our Product Recommendations</h3>-->
+<!--                    <ul class="about-lists">-->
+<!--                        <li><i class="far fa-check-circle mr-3"></i> Consectetur adipisicing elit.</li>-->
+<!--                        <li><i class="far fa-check-circle mr-3"></i> Animi dolorum minus harum reiciendis.</li>-->
+<!--                        <li><i class="far fa-check-circle mr-3"></i> Voluptatibus quis sunt in repellendus.</li>-->
+<!--                        <li><i class="far fa-check-circle mr-3"></i> Pero quod eos, iusto blanditiis culpa.</li>-->
+<!--                        <li><i class="far fa-check-circle mr-3"></i> Dignissimos eum ipsam vitae?</li>-->
+<!--                    </ul>-->
 
-                    <p class="mt-3">If you are going to use a passage of Lorem Ipsum, you need to be sure there isn't
-                        anything embarrassing hidden in the middle of text. All the Lorem Ipsum generators on the
-                        Internet tend to repeat predefined chunks as necessary,
-                        making this the first true generator on the Internet.</p>
-                    <a href="#" class="df-sq-btn active">read more</a>
-                </div>
-            </div>
-            <!--About right area end-->
-        </div>
-    </div>
-</section>
-<!--About area end-->
+<!--                    <p class="mt-3">If you are going to use a passage of Lorem Ipsum, you need to be sure there isn't-->
+<!--                        anything embarrassing hidden in the middle of text. All the Lorem Ipsum generators on the-->
+<!--                        Internet tend to repeat predefined chunks as necessary,-->
+<!--                        making this the first true generator on the Internet.</p>-->
+<!--                    <a href="#" class="df-sq-btn active">read more</a>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--            &lt;!&ndash;About right area end&ndash;&gt;-->
+<!--        </div>-->
+<!--    </div>-->
+<!--</section>-->
+<!--&lt;!&ndash;About area end&ndash;&gt;-->
 
-
-<!--Service area start-->
-<section class="service-area-start space">
-    <!--Project title area start-->
-    <div class="project-title-area text-center">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="project-title-content">
-                        <h3>AMAZING SERVICES</h3>
-                        <span><i class="fas fa-crosshairs"></i></span>
-                        <p>We provide customer care and overall financial advice.</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-<!--Project title area end-->
-
-<!--Testimonial area start-->
-<section class="testimonial-area-start space">
-    <div class="container">
-        <div class="row">
-            <div class="col-md-12">
-                <div class="testimonial-slider-active owl-carousel">
-                    <div class="single-testimonial-content text-center">
-                        <img src="assets/images/testimonial/01.jpg" alt="client-image" style="width:70px; height:70px"
-                             class="rounded-circle">
-                        <p>Molestias quia repellat eum commodi labore ex deleniti provident nostrum earum sapiente,
-                            quisquam tenetur adipisci fugit autem.</p>
-                        <ul class="review-list">
-                            <li><i class="fas fa-star"></i></li>
-                            <li><i class="fas fa-star"></i></li>
-                            <li><i class="fas fa-star"></i></li>
-                            <li><i class="fas fa-star"></i></li>
-                            <li><i class="fas fa-star-half-alt"></i></li>
-                        </ul>
-                        <h5>Mr. Jhonson</h5>
-                        <span>C.E.O Agency</span>
-                    </div>
-                    <!--Single testimonial content end-->
-                    <div class="single-testimonial-content text-center">
-                        <img src="assets/images/testimonial/02.jpg" alt="client-image" style="width:70px; height:70px"
-                             class="rounded-circle">
-                        <p>Molestias quia repellat eum commodi labore ex deleniti provident nostrum earum sapiente,
-                            quisquam tenetur adipisci fugit autem.</p>
-                        <ul class="review-list">
-                            <li><i class="fas fa-star"></i></li>
-                            <li><i class="fas fa-star"></i></li>
-                            <li><i class="fas fa-star"></i></li>
-                            <li><i class="fas fa-star"></i></li>
-                            <li><i class="fas fa-star-half-alt"></i></li>
-                        </ul>
-                        <h5>Mr. Jhonson</h5>
-                        <span>C.E.O Agency</span>
-                    </div>
-                    <!--Single testimonial content end-->
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-<!--Testimonial area end-->
-
-
-
-<!--Blog area start-->
-<section class="blog-area-start df-bg space">
-    <!--Project title area start-->
-    <div class="project-title-area text-center">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="project-title-content">
-                        <h3>LATEST NEWS</h3>
-                        <span><i class="fas fa-crosshairs"></i></span>
-                        <p>Cross-agency coordination clean water rural, promising development turmoil inclusive
-                            education transformative community.</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!--Project title area end-->
-
-    <!--Blog area content start-->
-    <div class="blog-area-content-start">
-        <div class="container">
-            <div class="row">
-                <!--Single blog content start-->
-                <div class="col-lg-4 col-md-6 mb-sm-5 mb-md-0">
-                    <div class="single-blog-content shadow rounded">
-                        <div class="blog-image">
-                            <a href="#"><img src="assets/images/blog/01.jpg" alt="blog-image"></a>
-                        </div>
-                        <div class="blog-content">
-                            <div class="blog-date">
-                                <span>05</span>
-                                <span>Sept</span>
-                            </div>
-                            <h4><a href="#">As stocks struggle, some strategists</a></h4>
-                            <p>Molestiae voluptates, soluta illo nostrum dolor ipsum vel repellendus at aut
-                                consequuntur.</p>
-                            <a href="#">Read More</a>
-                            <div class="blog-post-data">
-                                <a href="#"><i class="fas fa-tag"></i> business</a>
-                                <a href="#"><i class="fas fa-user"></i> Nobita</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!--Single blog content end-->
-                <!--Single blog content start-->
-                <div class="col-lg-4 col-md-6 mb-sm-5 mb-md-0">
-                    <div class="single-blog-content shadow rounded">
-                        <div class="blog-image">
-                            <a href="#"><img src="assets/images/blog/02.jpg" alt="blog-image"></a>
-                        </div>
-                        <div class="blog-content">
-                            <div class="blog-date">
-                                <span>05</span>
-                                <span>Sept</span>
-                            </div>
-                            <h4><a href="#">As stocks struggle, some strategists</a></h4>
-                            <p>Molestiae voluptates, soluta illo nostrum dolor ipsum vel repellendus at aut
-                                consequuntur.</p>
-                            <a href="#">Read More</a>
-                            <div class="blog-post-data">
-                                <a href="#"><i class="fas fa-tag"></i> business</a>
-                                <a href="#"><i class="fas fa-user"></i> Nobita</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!--Single blog content end-->
-                <!--Single blog content start-->
-                <div class="col-lg-4 col-md-6">
-                    <div class="single-blog-content shadow rounded">
-                        <div class="blog-image">
-                            <a href="#"><img src="assets/images/blog/03.jpg" alt="blog-image"></a>
-                        </div>
-                        <div class="blog-content">
-                            <div class="blog-date">
-                                <span>05</span>
-                                <span>Sept</span>
-                            </div>
-                            <h4><a href="#">As stocks struggle, some strategists</a></h4>
-                            <p>Molestiae voluptates, soluta illo nostrum dolor ipsum vel repellendus at aut
-                                consequuntur.</p>
-                            <a href="#">Read More</a>
-                            <div class="blog-post-data">
-                                <a href="#"><i class="fas fa-tag"></i> business</a>
-                                <a href="#"><i class="fas fa-user"></i> Nobita</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!--Single blog content end-->
-            </div>
-        </div>
-    </div>
-    <!--Blog area content end-->
-</section>
-<!--Blog area end-->
 
 <!--Footer content area start-->
 <div class="footer-content-area-start">

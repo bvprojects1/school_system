@@ -6,7 +6,7 @@
         <div class="row">
             <div class="col-md-8 mx-auto">
                 <h2>Upload Customer Identity Card info </h2>
-                User: <p th:text="${userName}"/>
+                User: <div th:text="${userName}"/>
                 <p th:text="${message}" th:if="${message ne null}" class="alert alert-primary"></p>
                 <form action="#" method="post" th:action="@{/upload}" enctype="multipart/form-data">
                     <div class="form-group">
