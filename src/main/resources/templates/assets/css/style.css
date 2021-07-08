@@ -185,7 +185,7 @@ h6 {
 
 .logo-area a img {
     max-width: 200px;
-    max-height: 93px
+    max-height: 63px
 }
 
 .logo-area a span {
@@ -445,7 +445,7 @@ section.slider-area-start,
     top: 8px;
     width: 45px;
     height: 5px;
-    background: #1ABC9C;
+    background: #dc3545;
 }
 
 .project-title-content span:after {
@@ -477,7 +477,7 @@ section.slider-area-start,
     height: 100%;
     transform: rotate(-45deg);
     content: '';
-    background: #1ABC9C;
+    background: #7b1d05;
     z-index: -1;
     opacity: 0;
     transition: 0.3s ease-in-out
