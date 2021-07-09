@@ -46,6 +46,10 @@ public class SavingAccountService extends SuperService{
         return savingAccountRepository.findByAccountNumber(accountNumber);
     }
 
+    public int findAllSavingAccountCount() {
+        return savingAccountRepository.findAllCount();
+    }
+
     public void createSavingAccount(SavingAccount savingAccount, User user) {
 
 //        User user = userService.findUserByUserName("admin");
