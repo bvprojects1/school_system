@@ -1,8 +1,11 @@
 package com.bitsvalley.micro.controllers;
 
 import com.bitsvalley.micro.domain.User;
+import com.bitsvalley.micro.domain.UserRole;
 import com.bitsvalley.micro.repositories.UserRepository;
+import com.bitsvalley.micro.repositories.UserRoleRepository;
 import com.bitsvalley.micro.services.SavingAccountService;
+import com.bitsvalley.micro.services.UserService;
 import com.bitsvalley.micro.utils.BVMicroUtils;
 import com.bitsvalley.micro.webdomain.SavingBilanz;
 import com.bitsvalley.micro.webdomain.SavingBilanzList;
@@ -13,6 +16,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Fru Chifen
@@ -27,6 +31,12 @@ public class WelcomeController extends SuperController{
 
     @Autowired
     UserRepository userRepository;
+
+    @Autowired
+    UserRoleRepository userRoleRepository;
+
+    @Autowired
+    UserService userService;
 
     @GetMapping(value = "/")
     public String showIndexPage(ModelMap model, HttpServletRequest request) {
@@ -54,6 +64,14 @@ public class WelcomeController extends SuperController{
             }
             request.getSession().setAttribute("savingBilanzList",savingBilanzByUserList);
             return "userHome";
+        }else{
+            int savingAccountCount = savingAccountService.findAllSavingAccountCount();
+            ArrayList<com.bitsvalley.micro.domain.UserRole> customerRole = new ArrayList<com.bitsvalley.micro.domain.UserRole>();
+            customerRole.add(userRoleRepository.findByName(com.bitsvalley.micro.utils.UserRole.CUSTOMER.name()));
+            ArrayList<User> allByUserRoleIn = userService.findAllByUserRoleIn(customerRole);
+            int customerAccountCount = allByUserRoleIn.size();
+            request.getSession().setAttribute("customerAccountCount",customerAccountCount);
+            request.getSession().setAttribute("savingAccountCount",savingAccountCount);
         }
         return "welcome";
     }
