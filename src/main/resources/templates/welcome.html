@@ -116,7 +116,7 @@
                             <a href="/findAllCustomers"><i class="far fa-user"></i></a>
 
                             <h4> CUSTOMERS</h4>
-                            <p>Create & View Customers.</p>
+                            <p>Create & View existing Customers</p>
                             <a href="/registerUser"> <img width="10px" th:src="@{/assets/images/add.png}"/> </a>
                             <a href="/findAllCustomers">Read More ...</a>
                         </div>
@@ -126,9 +126,10 @@
                         <div class="single-choosen-content text-center single-service-content box-pad">
                             <i class="fas fa-piggy-bank"></i>
                             <h4>SAVINGS</h4>
-                            <p>Create one or multiple saving accounts for a customer.</p>
-                            <a href="#">read more</a>
-                            <span class="fas fa-desktop"></span>
+                            <p>Create multiple Saving accounts</p>
+                            <a href="/registerUser"> <img width="10px" th:src="@{/assets/images/add.png}"/> </a>
+                            <a href="/findAllCustomers">Read More ...</a>
+                            <span class="fas fa-piggy-bank"></span>
                         </div>
                     </div>
                     <!--Single service area end-->
@@ -136,9 +137,9 @@
                         <div class="single-choosen-content text-center single-service-content box-pad">
                             <i class="fas fa-hand-holding-usd"></i>
                             <h4>LOANS</h4>
-                            <p>Get long term and short term loans Loans.</p>
+                            <p>Get long term and short term loans.</p>
                             <a href="#">read more</a>
-                            <span class="far fa-eye"></span>
+                            <span class="fas fa-hand-holding-usd"></span>
                         </div>
                     </div>
                     <!--Single service area end-->
@@ -186,7 +187,7 @@
                 <!-- Single award area start -->
                 <div class="col-md-3">
                     <div class="single-award-area-start media">
-                        <i class="fas fa-home"></i>
+                        <i class="fas fa-user"></i>
                         <div class="media-body">
                             <span class="award-counter"><div th:text="${session.customerAccountCount}"/></span>
                             <p>Customer Accounts</p>
@@ -197,7 +198,7 @@
                 <!-- Single award area start -->
                 <div class="col-md-3">
                     <div class="single-award-area-start media">
-                        <i class="fas fa-user"></i>
+                        <i class="fas fa-hand-holding-usd"></i>
                         <div class="media-body">
                             <span class="award-counter"><div th:text="${session.savingAccountCount}"/></span>
                             <p>Saving Accounts</p>
