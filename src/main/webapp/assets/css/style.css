@@ -139,7 +139,7 @@ h6 {
 
 .bg-primary,
 .btn-primary {
-    background: #1ABC9C !important
+    background: #3c4654 !important
 }
 
 /*================================================
@@ -201,7 +201,7 @@ nav.main-menu-area {
     width: 100%;
     z-index: 999;
     top: 39px;
-    background: #020235;
+    background: #0d0117;
     transition: 0.4s ease-in-out
 }
 

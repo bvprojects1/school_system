@@ -32,14 +32,14 @@
 
     <style>
         table, th, td {
-          border: 0px solid black;
+          border: 0px solid #BF360C;
           align: center;
         }
         table.center {
           margin-left: 50px;
           margin-right: 50px;
         }
-          tr:nth-child(even) {background-color: #D9E1F2;}
+          tr:nth-child(even) {background-color: #cda893;}
 
     </style>
 
@@ -53,7 +53,7 @@
             <!--Logo area start-->
             <div class="col-md-3 col-5 col-sm-5">
                 <div class="logo-area">
-                    <a href="index.html"><img th:src="@{/assets/images/logo.jpeg}"/> </a><br/>pipidaf
+                    <a href="index.html"><img th:src="@{/assets/images/logo.jpeg}"/> </a>
                 </div>
             </div>
             <div class="col-md-9 col-7 col-sm-7">
@@ -129,7 +129,7 @@
                 <div th:text="${savingAccountTransaction.savingAccount.savingAccountType.name}"/>
             </td>
             <td>
-                <div th:text="${savingAccountTransaction.savingAccount.accountNumber}"/>
+                <font color="#BF360C;"><b> <div th:text="${savingAccountTransaction.savingAccount.accountNumber}"/></b></font>
             </td>
             <td>
                 <div th:text="${session.customerInUse.userName}"/>
@@ -156,15 +156,16 @@
     <br/><br/>
 
     <table class="center" width="100%">
-        <tr><td colspan="4"><h4>Saving Account Payments Processed</h4></td></tr>
+        <tr><td colspan="4"><font color="#BF360C;"><h4>Saving Account Payments Processed</h4></font></td></tr>
     </table>
     <table class="center" width="100%">
         <tr>
             <td>
-                Amount
+                 Amount
             </td>
             <td>
                 Created Date
+
             </td>
             <td>
                 Created By

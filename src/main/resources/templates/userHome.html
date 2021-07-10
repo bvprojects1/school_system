@@ -32,14 +32,15 @@
 
     <style>
         table, th, td {
-          border: 0px solid black;
+          border: 1px solid black;
           align: center;
         }
         table.center {
           margin-left: 50px;
           margin-right: 50px;
+          text-align: center;
         }
-        tr:nth-child(even) {background-color: #D9E1F2;}
+        tr:nth-child(even) {background-color: #cda893;}
     </style>
 
 </head>
@@ -69,7 +70,7 @@
             <div class="row">
                 <div class="col-md-3 col-5 col-sm-5">
                     <div class="logo-area">
-                        <a href="index.html"><img th:src="@{/assets/images/logo.jpeg}"/> </a><br/>PIPIDAF
+                        <a href="index.html"><img th:src="@{/assets/images/logo.jpeg}"/> </a>
                     </div>
                 </div>
                 <!--Logo area end-->
@@ -91,13 +92,13 @@
                                     <li><a href="single.html">Withdrawals</a></li>
                                 </ul>
                             </li>
-                            <li>
-                                <form action="#" th:action="@{/findUserByUserName}" method="post" >
-                                    <nobr> Find:
-                                        <input type="text" name="userName" placeholder="Username" value=""/>
-                                        <input type="submit" value="Submit"> </nobr>
-                                </form>
-                            </li>
+<!--                            <li>-->
+<!--                                <form action="#" th:action="@{/findUserByUserName}" method="post" >-->
+<!--                                    <nobr> Find:-->
+<!--                                        <input type="text" name="userName" placeholder="Username" value=""/>-->
+<!--                                        <input type="submit" value="Submit"> </nobr>-->
+<!--                                </form>-->
+<!--                            </li>-->
                             <li>
                                 <a th:href="@{/logout}" href="/Logout"><i class="fas fa-sign-out-alt"></i>Logout</a>
                             </li>
@@ -115,9 +116,10 @@
 <section class="choosen-area-start space">
     <!-- Use this as a header after login-->
 
-    <table class="center" width="100%"><tr> <td><font size="10"> <span style th:text="${session.customerInUse.userName}"/>'s </font><button type="submit" ><a href="#" th:href="@{/file/{userName}(userName=${session.customerInUse.userName})}">Upload I.D</a></button>
-        <br/> Detail page to see all their accounts.  </td>
-        <td> Saving <br/> <font color="green" size="6px"> <div th:text="${session.savingBilanzList.totalSaving}"/></font>frs</td>
+    <table border="1" class="center" width="100%"><tr> <td><font size="10"> <span style th:text="${session.customerInUse.userName}"/>'s </font><button type="submit" ><a href="#" th:href="@{/file/{userName}(userName=${session.customerInUse.userName})}">Upload I.D</a></button>
+        <br/>
+        <td><font color="#BF360C;" size="4"><h4>Detail page to see all their accounts.</h4></font></td>
+        <td> Saving <br/> <font color="green" size="6px"><div th:text="${session.savingBilanzList.totalSaving}"/></font></td>
         <td> Current<br/> <font size="6" color="gray"> 0</font>frs</td>
         <td> Loan<br/> <font size="6" color="orange"> 0</font>frs</td>
         <td>Retirement saving <br/> <font size="6" color="#A57C00">0 </font>frs</b></td>
@@ -126,7 +128,7 @@
     <br/>
 
     &nbsp; <font size="5px" color="green"> <b>SAVING ACCOUNT</b> </font><a href="#" th:href="@{/registerSavingAccount}"> <img width="25px" th:src="@{/assets/images/add.png}"/></a><br/></span>
-    <table class="center" width="90%">
+    <table border="1" class="center" width="90%">
         <tr>
             <td>
                 Acc Type
@@ -228,119 +230,120 @@
 <!--&lt;!&ndash;About area end&ndash;&gt;-->
 
 
-<!--Footer content area start-->
-<div class="footer-content-area-start">
-    <div class="container">
-        <div class="row">
-            <!--Single footer widget start-->
-            <div class="col-md-3 mb-sm-5 mb-md-0">
-                <div class="single-footer-widget">
-                    <div class="logo-area">
-                        <a href="#"><span>PIP</span>idaf</a>
-                    </div>
-                    <p>Harum repellat quis expedita saepe soluta voluptates error. Repudiandae eum ipsa, corporis
-                        rerum necessitatibus?</p>
-                    <div class="team-member-social-icon">
-                        <a href="#"><i class="fab fa-facebook-f"></i></a>
-                        <a href="#"><i class="fab fa-dribbble"></i></a>
-                        <a href="#"><i class="fab fa-instagram"></i></a>
-                        <a href="#"><i class="fab fa-twitter"></i></a>
-                    </div>
-                </div>
-            </div>
-            <!--Single footer widget end-->
+<!--Footer area start-->
+<footer class="footer-area-start">
+    <!--Footer top area start-->
+    <!--Footer top area end-->
 
-
-            <!--Single footer widget footer menu start-->
-            <div class="col-md-2 mb-sm-5 mb-md-0">
-                <div class="single-footer-widget">
-                    <h5>Features</h5>
-                    <ul class="footer-menu">
-                        <li><a href="#">Home</a></li>
-                        <li><a href="#">About</a></li>
-                        <li><a href="#">Portfolio</a></li>
-                        <li><a href="#">Help</a></li>
-                        <li><a href="#">Policy</a></li>
-                    </ul>
-                </div>
-            </div>
-            <!--Single footer widget footer menu end-->
-
-            <!--Single footer widget footer menu start-->
-            <div class="col-md-4 mb-sm-5 mb-md-0">
-                <div class="single-footer-widget">
-                    <h5>Recent News</h5>
-                    <div class="media">
-                        <i class="fab fa-twitter mr-3 fa-1x"></i>
-                        <div class="media-body">
-                            <p>" Reprehenderit culpa aspernatur maiores natus impedit, veritatis cum ipsam ad illo
-                                assumenda earum non ut? Deleniti? "</p>
+    <!--Footer content area start-->
+    <div class="footer-content-area-start">
+        <div class="container">
+            <div class="row">
+                <!--Single footer widget start-->
+                <div class="col-md-3 mb-sm-5 mb-md-0">
+                    <div class="single-footer-widget">
+                        <div class="logo-area">
+                            <a href="#"><span>PIPI</span>DAF</a>
                         </div>
-                    </div>
-                    <div class="media">
-                        <i class="fab fa-twitter mr-3 fa-1x"></i>
-                        <div class="media-body">
-                            <p>" Vitae tenetur iure possimus facilis, similique soluta reiciendis voluptatibus
-                                tempore? Fugiat. "</p>
+                        <p>The bank on your side. We will consult with you one on one basis?</p>
+                        <div class="team-member-social-icon">
+                            <a href="#"><i class="fab fa-facebook-f"></i></a>
+                            <a href="#"><i class="fab fa-dribbble"></i></a>
+                            <a href="#"><i class="fab fa-instagram"></i></a>
+                            <a href="#"><i class="fab fa-twitter"></i></a>
                         </div>
                     </div>
                 </div>
-            </div>
-            <!--Single footer widget footer menu end-->
+                <!--Single footer widget end-->
 
-            <!--Single footer widget footer menu start-->
-            <div class="col-md-3">
-                <div class="single-footer-widget">
-                    <h5>Get In Touch</h5>
-                    <ul class="footer-menu-touch">
-                        <li><i class="fas fa-map-marker mr-2"></i> 27/1A Vangachura Road, Dhaka</li>
-                        <li><i class="fas fa-envelope mr-2"></i> root@example.com</li>
-                        <li><i class="fas fa-mobile mr-2"></i> +(012) 1234-5678</li>
-                        <li><i class="fas fa-globe-asia mr-2"></i> www.domain.com</li>
-                        <li><i class="fab fa-twitter mr-2"></i> www.socialmedia.com</li>
-                    </ul>
+
+                <!--Single footer widget footer menu start-->
+                <div class="col-md-2 mb-sm-5 mb-md-0">
+                    <div class="single-footer-widget">
+                        <h5>Features</h5>
+                        <ul class="footer-menu">
+                            <li><a href="#">Home</a></li>
+                            <li><a href="#">About</a></li>
+                            <li><a href="#">Portfolio</a></li>
+                            <li><a href="#">Help</a></li>
+                            <li><a href="#">Policy</a></li>
+                        </ul>
+                    </div>
                 </div>
+                <!--Single footer widget footer menu end-->
+
+                <!--Single footer widget footer menu start-->
+                <div class="col-md-4 mb-sm-5 mb-md-0">
+                    <div class="single-footer-widget">
+                        <h5>Recent News</h5>
+                        <div class="media">
+                            <i class="fab fa-twitter mr-3 fa-1x"></i>
+                            <div class="media-body">
+                                <p>" Reprehenderit culpa aspernatur maiores natus impedit, veritatis cum ipsam ad illo assumenda earum non ut? Deleniti? "</p>
+                            </div>
+                        </div>
+                        <div class="media">
+                            <i class="fab fa-twitter mr-3 fa-1x"></i>
+                            <div class="media-body">
+                                <p>" Vitae tenetur iure possimus facilis, similique soluta reiciendis voluptatibus tempore? Fugiat. "</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--Single footer widget footer menu end-->
+
+                <!--Single footer widget footer menu start-->
+                <div class="col-md-3">
+                    <div class="single-footer-widget">
+                        <h5>Get In Touch</h5>
+                        <ul class="footer-menu-touch">
+                            <li><i class="fas fa-map-marker mr-2"></i> 27/1A Vangachura Road, Dhaka</li>
+                            <li><i class="fas fa-envelope mr-2"></i> root@example.com</li>
+                            <li><i class="fas fa-mobile mr-2"></i> +(012) 1234-5678</li>
+                            <li><i class="fas fa-globe-asia mr-2"></i> www.domain.com</li>
+                            <li><i class="fab fa-twitter mr-2"></i> www.socialmedia.com</li>
+                        </ul>
+                    </div>
+                </div>
+                <!--Single footer widget footer menu end-->
             </div>
-            <!--Single footer widget footer menu end-->
         </div>
     </div>
-</div>
 
 </footer>
 <!--Footer area end-->
 
-
-<!--Modal area start-->
 <!-- Modal -->
-<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="exampleModal1" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header  bg-primary text-light">
-                <h5 class="modal-title text-uppercase" id="exampleModalLabel">Secure Login</h5>
+                <h5 class="modal-title text-uppercase" id="exampleModalLabel1">Register Form</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-                <form name='f' action="login" method='POST'>
-                    <label for="username">Username</label>
-                    <input type="text" name="username" id="username"
-                           class="form-control mb-3">
+                <form action="#" method="POST">
+                    <label for="uname">Username :</label>
+                    <input type="text" name="uname" id="uname" placeholder="Username" class="form-control mb-3">
 
-                    <label for="password">Password</label>
-                    <input type="password" name="password" id="password"
-                           class="form-control">
+                    <label for="email1">Email :</label>
+                    <input type="email" name="email" id="email1" placeholder="Email" class="form-control mb-3">
 
-                    <button type="submit" class=" mt-3 btn btn-primary text-uppercase text-light">Login</button>
+                    <label for="password1">Password :</label>
+                    <input type="password" name="password" id="password1" placeholder="*************" class="form-control">
+
+                    <button type="submit" class=" mt-3 btn btn-primary text-uppercase text-light">Register</button>
                 </form>
-
-                <div class="modal-footer">
-                </div>
             </div>
-
+            <div class="modal-footer">
+            </div>
         </div>
     </div>
 </div>
+<!--Modal area end-->
+
 
 <!--jQuery-->
 <script src="assets/js/jquery-3.5.1.min.js"></script>
