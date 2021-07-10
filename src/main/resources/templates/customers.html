@@ -27,16 +27,21 @@
     <link rel="stylesheet" href="assets/css/responsive.css">
 
     <style>
+        th {
+            border-top: solid orange;
+            border-right: blank;    /* prevent colgroup border */
+            border-left: blank      /* prevent cell border */
+        }
         table, th, td {
-          border: 0px solid black;
           align: center;
+          font-color: #212529;
         }
         table.center {
-          margin-left: 50px;
-          margin-right: 50px;
+          margin-left: 10px;
+          margin-right: 10px;
+          text-align: center;
         }
-          tr:nth-child(even) {background-color: #cda893;}
-
+        tr:nth-child(even) {background-color: #cda893;}
     </style>
 </head>
 
@@ -136,7 +141,7 @@
         <div class="container">
             <div class="row">
                 <div class="offset-md-2 col-md-8">
-                    <table width="100%" class="center" border="0px">
+                    <table width="100%" class="center" border="1px">
                         <tr>
 <!--                            <th></th>-->
                             <th>Username</th>

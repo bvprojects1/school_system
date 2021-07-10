@@ -31,9 +31,14 @@
     <link rel="stylesheet" href="../assets/css/responsive.css">
 
     <style>
+        th {
+            border-top: solid orange;
+            border-right: blank;    /* prevent colgroup border */
+            border-left: blank      /* prevent cell border */
+        }
         table, th, td {
-          border: 1px solid black;
           align: center;
+          font-color: #212529;
         }
         table.center {
           margin-left: 50px;
@@ -116,19 +121,20 @@
 <section class="choosen-area-start space">
     <!-- Use this as a header after login-->
 
-    <table border="1" class="center" width="100%"><tr> <td><font size="10"> <span style th:text="${session.customerInUse.userName}"/>'s </font><button type="submit" ><a href="#" th:href="@{/file/{userName}(userName=${session.customerInUse.userName})}">Upload I.D</a></button>
+    <table style="border:0px" class="center" width="100%"><tr> <td><font size="10"> <span style th:text="${session.customerInUse.userName}"/>'s </font><button type="submit" ><a href="#" th:href="@{/file/{userName}(userName=${session.customerInUse.userName})}">Upload I.D</a></button>
         <br/>
         <td><font color="#BF360C;" size="4"><h4>Detail page to see all their accounts.</h4></font></td>
-        <td> Saving <br/> <font color="green" size="6px"><div th:text="${session.savingBilanzList.totalSaving}"/></font></td>
-        <td> Current<br/> <font size="6" color="gray"> 0</font>frs</td>
-        <td> Loan<br/> <font size="6" color="orange"> 0</font>frs</td>
-        <td>Retirement saving <br/> <font size="6" color="#A57C00">0 </font>frs</b></td>
+        <td> Saving <br/> <font color="green" size="4px"><div th:text="${session.savingBilanzList.totalSaving}"/></font></td>
+        <td> Current<br/> <font size="4px" color="gray"> 0frs</font></td>
+        <td> Loan<br/> <font size="4px" color="orange"> 0frs</font></td>
+        <td>Retirement saving <br/> <font size="4px" color="#A57C00">0frs</font></b></td>
     </tr></table>
     <!-- END -->
     <br/>
 
-    &nbsp; <font size="5px" color="green"> <b>SAVING ACCOUNT</b> </font><a href="#" th:href="@{/registerSavingAccount}"> <img width="25px" th:src="@{/assets/images/add.png}"/></a><br/></span>
+    &nbsp;
     <table border="1" class="center" width="90%">
+        <tr><td colspan="8"><font size="5px" color="green"> <b>SAVING ACCOUNT</b> </font><a href="#" th:href="@{/registerSavingAccount}"> <img width="25px" th:src="@{/assets/images/add.png}"/></a><br/></span></td></tr>
         <tr>
             <td>
                 Acc Type
@@ -189,11 +195,19 @@
 
     <br/> <br/> <br/> <br/>
 
-    &nbsp; <font size="5" color="gray"> <b> CURRENT ACCOUNT </b></font> <a href="#"> <img width="25px" th:src="@{/assets/images/add.png}"/></a> <br/><br/><br/><br/>
+    <table border="1" class="center" width="90%">
+        <tr><td colspan="8"><font size="5px" color="green"> <b>CURRENT ACCOUNT</b> </font><a href="#"> <img width="25px" th:src="@{/assets/images/add.png}"/></a><br/></span></td></tr>
+    </table>
+    &nbsp;
+    <table border="1" class="center" width="90%">
+        <tr><td colspan="8"><font size="5px" color="green"> <b>LOAN ACCOUNT</b> </font><a href="#"> <img width="25px" th:src="@{/assets/images/add.png}"/></a><br/></span></td></tr>
+    </table>
 
-    &nbsp; <font size="5" color="orange"> <b> LOAN ACCOUNT </b></font> <a href="#">  <img width="25px" th:src="@{/assets/images/add.png}"/></a><br/><br/><br/><br/>
+    <br/>
 
-    &nbsp; <font size="5" color="#A57C00"> <b> RETIREMENT SAVING ACCOUNT</b> </font> <a href="#"> <img width="25px" th:src="@{/assets/images/add.png}"/></a><br/>
+    <table border="1" class="center" width="90%">
+        <tr><td colspan="8"><font size="5px" color="green"> <b>RETIREMENT SAVING ACCOUNT</b> </font><a href="#"> <img width="25px" th:src="@{/assets/images/add.png}"/></a><br/></span></td></tr>
+    </table>
 
 
     <!--Choosen main area end-->
