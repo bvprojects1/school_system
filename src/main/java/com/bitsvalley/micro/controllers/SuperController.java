@@ -32,14 +32,6 @@ public class SuperController {
     @Autowired
     private UserRoleService userRoleService;
 
-    public String getLoggedInUserName() {
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        if (principal instanceof UserDetails) {
-            return ((UserDetails) principal).getUsername();
-        }
-        return principal.toString();
-    }
-
 
     public String findUserByUserName(User user, ModelMap model, HttpServletRequest request) {
         User aUser = userService.findUserByUserName(user.getUserName());
@@ -68,14 +60,12 @@ public class SuperController {
         return customerList;
     }
 
-    public String getLoggedinUserName() {
-        Object principal = SecurityContextHolder.getContext()
-                .getAuthentication().getPrincipal();
 
+    public String getLoggedInUserName() {
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if (principal instanceof UserDetails) {
             return ((UserDetails) principal).getUsername();
         }
-
         return principal.toString();
     }
 }

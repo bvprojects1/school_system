@@ -28,7 +28,7 @@
 
     <style>
         th {
-            border-top: solid orange;
+            border-top: solid #b39c71;
             border-right: blank;    /* prevent colgroup border */
             border-left: blank      /* prevent cell border */
         }
@@ -140,14 +140,15 @@
     <div class="contact-from-area">
         <div class="container">
             <div class="row">
-                <div class="offset-md-2 col-md-8">
-                    <table width="100%" class="center" border="1px">
+                    <table width="100%" class="center" border="0px">
                         <tr>
 <!--                            <th></th>-->
                             <th>Username</th>
                             <th>Firstname</th>
                             <th>Lastname</th>
+                            <th>telephone</th>
                             <th>Member Since</th>
+                            <th>Creator</th>
                             <th> </th>
                         </tr>
                         <tr th:each="user : ${userList}">
@@ -155,7 +156,9 @@
                             <td th:text="${user.userName}"></td>
                             <td th:text="${user.firstName}"></td>
                             <td th:text="${user.lastName}"></td>
+                            <td th:text="${user.telephone1}"></td>
                             <td th:text="${user.created}"></td>
+                            <td th:text="${user.createdBy}"></td>
 <!--                            <td th:text="${#dates.format(user.created, 'dd-MMM-yyyy')}"></td>-->
                             <td>
                                 <a href="#" th:href="@{/showCustomer/{id}(id=${user.id})}">Read more ...</a>
@@ -172,7 +175,7 @@
                             <td></td>
                         </tr>
                     </table>
-                </div>
+
             </div>
         </div>
     </div>

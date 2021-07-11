@@ -85,7 +85,7 @@ a {
 
 p {
     font-family: 'Lato', sans-serif;
-    color: #6c757d;
+    color: #212529;
     letter-spacing: 1px;
     line-height: 28px
 }
@@ -110,7 +110,7 @@ h6 {
 }
 
 .df-bg {
-    background: #dee2e6
+    background: #f8f9fa
 }
 
 .df-sq-btn {
@@ -232,12 +232,12 @@ ul.main-menu li {
 }
 
 ul.main-menu li a {
-    color: #1C273B;
+    color: #35312e;
     font-family: 'Kanit', sans-serif;
     font-size: 17px;
     padding: 35.8px 16px;
     text-transform: capitalize;
-    font-weight: 700;
+    font-weight: 400;
     transition: 0.3s ease-in-out;
 }
 
@@ -1134,7 +1134,7 @@ footer.footer-area-start {
 }
 
 ul.footer-menu li a {
-    color: #212529;
+    color: #e5eaef;
     text-transform: capitalize;
     font-weight: 500;
     padding: 5px;
@@ -1145,7 +1145,7 @@ ul.footer-menu li:first-child a {
 }
 
 .single-footer-widget p {
-    color: #212529;
+    color: #e5eaef;
     font-size: 14px;
 }
 
@@ -1154,7 +1154,7 @@ ul.footer-menu li:first-child a {
 }
 
 ul.footer-menu-touch li {
-    color: #212529;
+    color: #e5eaef;
     font-size: 14px;
     margin-bottom: 15px;
 }

@@ -110,7 +110,12 @@ public class SavingAccountService extends SuperService{
 
 
     public SavingBilanzList getSavingBilanzByUser(User user) {
-        User aUser = userRepository.findById(user.getId()).get();
+        User aUser = null;
+        if(null != user.getUserName()){
+            aUser = userRepository.findByUserName(user.getUserName());
+        }else{
+            aUser = userRepository.findById(user.getId()).get();
+        }
         ArrayList<User> userList = new ArrayList<User>();
         userList.add(aUser);
         return calculateUsersInterest(userList);

@@ -48,6 +48,15 @@ public class User {
 
     private LocalDateTime lastUpdated;
     private LocalDateTime created;
+    private String createdBy;
+
+    public String getCreatedBy() {
+        return createdBy;
+    }
+
+    public void setCreatedBy(String createdBy) {
+        this.createdBy = createdBy;
+    }
 
     public String getTelephone1() {
         return telephone1;
