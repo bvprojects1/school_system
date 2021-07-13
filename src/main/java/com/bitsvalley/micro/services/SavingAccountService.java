@@ -14,7 +14,10 @@ import com.bitsvalley.micro.webdomain.SavingBilanzList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.text.NumberFormat;
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
@@ -75,7 +78,7 @@ public class SavingAccountService extends SuperService{
         //Get id of savingAccount transaction
 
         savingAccountTransaction.setCreatedBy(getLoggedInUserName());
-        savingAccountTransaction.setCreatedDate(LocalDateTime.now());
+//        savingAccountTransaction.setCreatedDate(LocalDateTime.now());
         savingAccountTransactionRepository.save(savingAccountTransaction);
 //        savingAccount.getSavingAccount().add(savingAccount);
 //        savingAccountRepository.get(savingAccountTransaction);
@@ -133,19 +136,21 @@ public class SavingAccountService extends SuperService{
                 savingAccountTransactions = savingAccounts.get(j).getSavingAccountTransaction();
                 for (int k = 0; k < savingAccountTransactions.size(); k++) {
                     final SavingAccountTransaction savingAccountTransaction = savingAccountTransactions.get(k);
+                    if(savingAccountTransaction.getSavingAmount() <= 0)
+                        continue;
 //                    LocalDateTime createdDate = savingAccountTransaction.getCreatedDate();
 //                    if (LocalDateTime.now().minusMonths(1).isAfter(createdDate)) {
                         SavingBilanz savingBilanz = calculateInterest(savingAccountTransaction);
                         savingBilanzsList.getSavingBilanzList().add(savingBilanz);
                         totalSaved = totalSaved + savingAccountTransaction.getSavingAmount();
                         savingAccountTransactionInterest = savingAccountTransactionInterest +
-                                calculateInterestAccrued(savingAccountTransaction);
+                                calculateInterestAccruedMonthCompounded(savingAccountTransaction);
 //                    }
                 }
             }
         }
         savingBilanzsList.setTotalSaving(formatCurrency(totalSaved));
-        savingBilanzsList.setTotalSavingInterest(savingAccountTransactionInterest);
+        savingBilanzsList.setTotalSavingInterest(formatCurrency(savingAccountTransactionInterest));
         return savingBilanzsList;
     }
 
@@ -167,13 +172,14 @@ public class SavingAccountService extends SuperService{
         savingBilanz.setCreatedBy(savingAccountTransaction.getCreatedBy());
 
         savingBilanz.setAgent(savingAccountTransaction.getCreatedBy());
+        savingBilanz.setInterestRate(""+savingAccountTransaction.getSavingAccount().getInterestRate());
         savingBilanz.setSavingAmount(formatCurrency(savingAccountTransaction.getSavingAmount()));
         savingBilanz.setCreatedDate(BVMicroUtils.formatDateTime(savingAccountTransaction.getCreatedDate()));
         savingBilanz.setNotes(savingAccountTransaction.getNotes());
         savingBilanz.setAccountNumber(savingAccountTransaction.getSavingAccount().getAccountNumber());
         savingBilanz.setNoOfDays(calculateNoOfDays(savingAccountTransaction.getCreatedDate()));
         savingBilanz.setModeOfPayment(savingAccountTransaction.getModeOfPayment());
-        savingBilanz.setInterestAccrued(formatCurrency(calculateInterestAccrued(savingAccountTransaction)));
+        savingBilanz.setInterestAccrued(formatCurrency(calculateInterestAccruedMonthCompounded(savingAccountTransaction)));
         return savingBilanz;
     }
 
@@ -182,10 +188,30 @@ public class SavingAccountService extends SuperService{
         return ""+noOfDays;
     }
 
-    private int calculateInterestAccrued(SavingAccountTransaction savingAccountTransaction){
-        int accrued = 197;
-//        return formatCurrency(accrued);
-        return 19;
+
+    private double calculateInterestAccruedMonthCompounded(SavingAccountTransaction savingAccountTransaction){
+//        = P [(1 + i/12)pow of NoOfMonths – 1]
+//        P = principal, i = nominal annual interest rate in percentage terms, n = number of compounding periods
+        double interestPlusOne = (savingAccountTransaction.getSavingAccount().getInterestRate()*.01*.0833333) + 1;
+        double temp = Math.pow(interestPlusOne,getNumberOfMonths(savingAccountTransaction.getCreatedDate()));
+        temp = temp - 1;
+        return savingAccountTransaction.getSavingAmount() * temp;
+    }
+
+//    private double calculateInterestAccruedYearCompounded(SavingAccountTransaction savingAccountTransaction){
+////        = P [(1 + i)pow of n – 1]
+////        P = principal, i = nominal annual interest rate in percentage terms, n = number of compounding periods
+//        double interestPlusOne = (savingAccountTransaction.getSavingAccount().getInterestRate()*.01) + 1;
+//        double temp = Math.pow(interestPlusOne,getNumberOfMonths(savingAccountTransaction.getCreatedDate()));
+//        temp = temp - 1;
+//        return savingAccountTransaction.getSavingAmount() * temp;
+//    }
+
+    private double getNumberOfMonths(LocalDateTime cretedDateInput) {
+        double noOfMonths = 0.0;
+        Duration diff = Duration.between(cretedDateInput, LocalDateTime.now() );
+        noOfMonths = diff.toDays() / 30;
+        return Math.floor(noOfMonths);
     }
 
 }

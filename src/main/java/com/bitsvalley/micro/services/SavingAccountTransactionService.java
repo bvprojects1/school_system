@@ -59,7 +59,7 @@ public class SavingAccountTransactionService extends SuperService{
     public void createSavingAccountTransaction(SavingAccountTransaction savingAccountTransaction, HttpServletRequest request) {
         User user = (User)request.getSession().getAttribute(BVMicroUtils.CUSTOMER_IN_USE);
         savingAccountTransaction.setCreatedBy(getLoggedInUserName());
-        savingAccountTransaction.setCreatedDate(LocalDateTime.now());
+//        savingAccountTransaction.setCreatedDate(LocalDateTime.now());
         SavingAccount savingAccount = (SavingAccount)request.getSession().getAttribute("savingAccount");
         savingAccountTransaction.setSavingAccount(savingAccount);
         savingAccountTransactionRepository.save(savingAccountTransaction);

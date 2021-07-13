@@ -46,7 +46,9 @@ public class WelcomeController extends SuperController{
 
     @GetMapping(value = "/login")
     public String login(ModelMap model, HttpServletRequest request) {
-        model.put("name", getLoggedInUserName());
+        if(request.getSession() != null){
+            request.getSession().invalidate();
+        }
         return "login";
     }
 
