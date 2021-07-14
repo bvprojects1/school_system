@@ -78,7 +78,7 @@ public class SavingAccountService extends SuperService{
         //Get id of savingAccount transaction
 
         savingAccountTransaction.setCreatedBy(getLoggedInUserName());
-//        savingAccountTransaction.setCreatedDate(LocalDateTime.now());
+        savingAccountTransaction.setCreatedDate(LocalDateTime.now());
         savingAccountTransactionRepository.save(savingAccountTransaction);
 //        savingAccount.getSavingAccount().add(savingAccount);
 //        savingAccountRepository.get(savingAccountTransaction);
