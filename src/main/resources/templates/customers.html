@@ -27,16 +27,21 @@
     <link rel="stylesheet" href="assets/css/responsive.css">
 
     <style>
+        th {
+            border-top: solid #b39c71;
+            border-right: blank;    /* prevent colgroup border */
+            border-left: blank      /* prevent cell border */
+        }
         table, th, td {
-          border: 0px solid black;
           align: center;
+          font-color: #212529;
         }
         table.center {
-          margin-left: 50px;
-          margin-right: 50px;
+          margin-left: 10px;
+          margin-right: 10px;
+          text-align: center;
         }
-          tr:nth-child(even) {background-color: #D9E1F2;}
-
+        tr:nth-child(even) {background-color: #99a1a9;}
     </style>
 </head>
 
@@ -124,7 +129,7 @@
             <div class="row">
                 <div class="col-md-12">
                     <div class="project-title-content">
-                        <font size="4px">All Customers with a Saving, Current, Loan, Retirement Saving</font>
+                        <font color="#BF360C;" size="4"><h4>All Customers with a Saving, Current, Loan, Retirement Savings</h4></font>
                         <!--                            <p>Cross-agency coordination clean water rural, promising development turmoil inclusive education transformative community.</p>-->
                     </div>
                 </div>
@@ -135,14 +140,15 @@
     <div class="contact-from-area">
         <div class="container">
             <div class="row">
-                <div class="offset-md-2 col-md-8">
                     <table width="100%" class="center" border="0px">
                         <tr>
 <!--                            <th></th>-->
                             <th>Username</th>
                             <th>Firstname</th>
                             <th>Lastname</th>
+                            <th>telephone</th>
                             <th>Member Since</th>
+                            <th>Creator</th>
                             <th> </th>
                         </tr>
                         <tr th:each="user : ${userList}">
@@ -150,7 +156,9 @@
                             <td th:text="${user.userName}"></td>
                             <td th:text="${user.firstName}"></td>
                             <td th:text="${user.lastName}"></td>
+                            <td th:text="${user.telephone1}"></td>
                             <td th:text="${user.created}"></td>
+                            <td th:text="${user.createdBy}"></td>
 <!--                            <td th:text="${#dates.format(user.created, 'dd-MMM-yyyy')}"></td>-->
                             <td>
                                 <a href="#" th:href="@{/showCustomer/{id}(id=${user.id})}">Read more ...</a>
@@ -167,7 +175,7 @@
                             <td></td>
                         </tr>
                     </table>
-                </div>
+
             </div>
         </div>
     </div>

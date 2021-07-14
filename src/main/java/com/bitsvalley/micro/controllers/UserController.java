@@ -58,6 +58,7 @@ public class UserController extends SuperController{
     public String registerUserPreviewForm(@ModelAttribute("user") User user, ModelMap model, HttpServletRequest request) {
         String aUserRole = (String) request.getParameter("userRoleTemp");
         user = getUserRoleFromRequest(user,aUserRole);
+        user.setCreatedBy(getLoggedInUserName());
         userService.createUser(user);
         model.put("user", user);
         model.put("userRoleTemp", aUserRole);
@@ -105,7 +106,7 @@ public class UserController extends SuperController{
     @GetMapping(value = "/findAllCustomers")
     public String findUserByUserRole(ModelMap model) {
         ArrayList<User> customerList = getAllCustomers();
-        model.put("name", getLoggedinUserName());
+        model.put("name", getLoggedInUserName());
         model.put("userList", customerList );
         return "customers";
     }
@@ -116,7 +117,7 @@ public class UserController extends SuperController{
         Optional<User> userById = userRepository.findById(id);
         User user = userById.get();
         SavingBilanzList savingBilanzByUserList = savingAccountService.getSavingBilanzByUser(user);
-        model.put("name", getLoggedinUserName());
+        model.put("name", getLoggedInUserName());
         request.getSession().setAttribute("savingBilanzList",savingBilanzByUserList);
         request.getSession().setAttribute(BVMicroUtils.CUSTOMER_IN_USE, user);
         return "userHome";

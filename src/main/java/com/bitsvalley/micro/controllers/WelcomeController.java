@@ -40,19 +40,21 @@ public class WelcomeController extends SuperController{
 
     @GetMapping(value = "/")
     public String showIndexPage(ModelMap model, HttpServletRequest request) {
-        model.put("name", getLoggedinUserName());
+        model.put("name", getLoggedInUserName());
         return "welcome";
     }
 
     @GetMapping(value = "/login")
     public String login(ModelMap model, HttpServletRequest request) {
-        model.put("name", getLoggedinUserName());
+        if(request.getSession() != null){
+            request.getSession().invalidate();
+        }
         return "login";
     }
 
     @GetMapping(value = "/welcome")
     public String welcome(ModelMap model, HttpServletRequest request) {
-        model.put("name", getLoggedinUserName());
+        model.put("name", getLoggedInUserName());
         User aUser = (User)request.getSession().getAttribute(BVMicroUtils.CUSTOMER_IN_USE);
         if(null != aUser){
             SavingBilanzList savingBilanzByUserList = savingAccountService.getSavingBilanzByUser(aUser);
@@ -85,7 +87,7 @@ public class WelcomeController extends SuperController{
 
     @GetMapping(value = "/searchCustomer")
     public String searchCustomer(ModelMap model, HttpServletRequest request) {
-        model.put("name", getLoggedinUserName());
+        model.put("name", getLoggedInUserName());
         return "welcome";
     }
 

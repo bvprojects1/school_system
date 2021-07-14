@@ -99,7 +99,7 @@ public class SavingAccountController extends SuperController{
     public String showSavingBilanz(@PathVariable("id") long id,ModelMap model, HttpServletRequest request) {
         User user = (User)request.getSession().getAttribute(BVMicroUtils.CUSTOMER_IN_USE);
         SavingBilanzList savingBilanzByUserList = savingAccountService.getSavingBilanzByUser(user);
-        model.put("name", getLoggedinUserName());
+        model.put("name", getLoggedInUserName());
         model.put("savingBilanzList", savingBilanzByUserList);
         return "savingBilanz";
     }

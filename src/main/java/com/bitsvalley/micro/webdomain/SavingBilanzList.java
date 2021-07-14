@@ -6,16 +6,16 @@ import java.util.List;
 public class SavingBilanzList {
 
     List<SavingBilanz> savingBilanzList = new ArrayList<SavingBilanz>();
-    double totalSavingInterest = 100.0;
+    String totalSavingInterest;
     String totalSaving = "0";
     String numberOfLoanAccounts = "0";
     String numberOfRetirementSavings = "0";
 
-    public double getTotalSavingInterest() {
+    public String getTotalSavingInterest() {
         return totalSavingInterest;
     }
 
-    public void setTotalSavingInterest(double totalSavingInterest) {
+    public void setTotalSavingInterest(String totalSavingInterest) {
         this.totalSavingInterest = totalSavingInterest;
     }
 

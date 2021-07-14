@@ -32,14 +32,14 @@
 
     <style>
         table, th, td {
-          border: 0px solid black;
+          border: 0px solid #BF360C;
           align: center;
         }
         table.center {
           margin-left: 50px;
           margin-right: 50px;
         }
-          tr:nth-child(even) {background-color: #D9E1F2;}
+          tr:nth-child(even) {background-color: #cda893;}
 
     </style>
 
@@ -53,7 +53,7 @@
             <!--Logo area start-->
             <div class="col-md-3 col-5 col-sm-5">
                 <div class="logo-area">
-                    <a href="index.html"><img th:src="@{/assets/images/logo.jpeg}"/> </a><br/>pipidaf
+                    <a href="index.html"><img th:src="@{/assets/images/logo.jpeg}"/> </a>
                 </div>
             </div>
             <div class="col-md-9 col-7 col-sm-7">
@@ -129,7 +129,7 @@
                 <div th:text="${savingAccountTransaction.savingAccount.savingAccountType.name}"/>
             </td>
             <td>
-                <div th:text="${savingAccountTransaction.savingAccount.accountNumber}"/>
+                <font color="#BF360C;"><b> <div th:text="${savingAccountTransaction.savingAccount.accountNumber}"/></b></font>
             </td>
             <td>
                 <div th:text="${session.customerInUse.userName}"/>
@@ -142,29 +142,33 @@
     <form action="#" th:action="@{/registerSavingAccountTransactionForm}" method="post" th:object="${savingAccountTransaction}" >
 
         <table  border="1" width="100%" class="center">
-            <tr><td colspan="2"><b>Amount received:</b><input type="number" th:field="*{savingAmount}"/></td> <td><label for="modeOfPayment"><b>Mode of Payment:</b></label><select name="modeOfPayment" id="modeOfPayment">
+            <tr><td colspan="2"><b>Amount:</b><input size="6" type="number" th:field="*{savingAmount}"/></td> <td><label for="modeOfPayment"><b>Mode:</b></label><select name="modeOfPayment" id="modeOfPayment">
                 <option value="CASH">CASH</option>
                 <option value="MOMO">MOMO</option>
                 <option value="ORANGE MONEY">ORANGE MONEY</option>
                 <option value="TRANSFER">TRANSFER</option>
                 <option value="RECEIPT">RECEIPT</option>
                 <option value="OTHER">OTHER</option>
-            </select></td> <td colspan="2"><label><b> Notes:</b></label> <input type="text" th:field="*{notes}"/></td><td><input type="hidden" th:value="${savingAccountTransaction.savingAccount.id}" th:attr="name='savingAccountId'"/><button type="submit" class="btn btn-success">Save Payment</button></td></tr>
+            </select></td>
+                <td colspan="2"><label><b> Notes:</b></label> <input type="text" th:field="*{notes}"/></td>  <td><input type="hidden" th:value="${savingAccountTransaction.savingAccount.id}" th:attr="name='savingAccountId'"/><button type="submit" class="btn btn-success">Save Payment</button></td></tr>
+
+
         </table>
     </form>
 
     <br/><br/>
 
     <table class="center" width="100%">
-        <tr><td colspan="4"><h4>Saving Account Payments Processed</h4></td></tr>
+        <tr><td colspan="4"><font color="#BF360C;"><h4>Saving Account Payments Processed</h4></font></td></tr>
     </table>
     <table class="center" width="100%">
         <tr>
             <td>
-                Amount
+                 Amount
             </td>
             <td>
                 Created Date
+
             </td>
             <td>
                 Created By
@@ -198,7 +202,6 @@
 
 
 <!--Blog area start-->
-<section class="blog-area-start df-bg space">
     <!--Project title area start-->
     <div class="project-title-area text-center">
         <div class="container">
@@ -220,7 +223,6 @@
         </div>
     </div>
     <!--Blog area content end-->
-</section>
 <!--Blog area end-->
 
 <!--Footer content area start-->

@@ -85,7 +85,7 @@ a {
 
 p {
     font-family: 'Lato', sans-serif;
-    color: #6c757d;
+    color: #212529;
     letter-spacing: 1px;
     line-height: 28px
 }
@@ -110,7 +110,7 @@ h6 {
 }
 
 .df-bg {
-    background: #f8f8f8
+    background: #f8f9fa
 }
 
 .df-sq-btn {
@@ -139,7 +139,7 @@ h6 {
 
 .bg-primary,
 .btn-primary {
-    background: #1ABC9C !important
+    background: #3c4654 !important
 }
 
 /*================================================
@@ -201,7 +201,7 @@ nav.main-menu-area {
     width: 100%;
     z-index: 999;
     top: 39px;
-    background: transparent;
+    background: #0d0117;
     transition: 0.4s ease-in-out
 }
 
@@ -232,12 +232,12 @@ ul.main-menu li {
 }
 
 ul.main-menu li a {
-    color: #1C273B;
+    color: #35312e;
     font-family: 'Kanit', sans-serif;
     font-size: 17px;
     padding: 35.8px 16px;
     text-transform: capitalize;
-    font-weight: 700;
+    font-weight: 400;
     transition: 0.3s ease-in-out;
 }
 
@@ -1122,7 +1122,7 @@ footer.footer-area-start {
 }
 
 .single-footer-widget h5 {
-    color: #d5d5d5;
+    color: #dee2e6;
     margin-top: 0px;
     margin-bottom: 15px;
 }
@@ -1134,7 +1134,7 @@ footer.footer-area-start {
 }
 
 ul.footer-menu li a {
-    color: #AAA1A1;
+    color: #e5eaef;
     text-transform: capitalize;
     font-weight: 500;
     padding: 5px;
@@ -1145,7 +1145,7 @@ ul.footer-menu li:first-child a {
 }
 
 .single-footer-widget p {
-    color: #A7ACA6;
+    color: #e5eaef;
     font-size: 14px;
 }
 
@@ -1154,7 +1154,7 @@ ul.footer-menu li:first-child a {
 }
 
 ul.footer-menu-touch li {
-    color: #A7ACA6;
+    color: #e5eaef;
     font-size: 14px;
     margin-bottom: 15px;
 }
@@ -1571,7 +1571,7 @@ section.error-404-area-start:after,
 }
 
 .contact-btn {
-    background: #1abc9c;
+    background: #6f8598;
     color: #fff;
 }
 

@@ -56,16 +56,6 @@ public class SavingAccountTransactionService extends SuperService{
 //        userService.saveUser(user);
 //    }
 
-    public void createSavingAccountTransaction(SavingAccountTransaction savingAccountTransaction, HttpServletRequest request) {
-        User user = (User)request.getSession().getAttribute(BVMicroUtils.CUSTOMER_IN_USE);
-        savingAccountTransaction.setCreatedBy(getLoggedInUserName());
-        savingAccountTransaction.setCreatedDate(LocalDateTime.now());
-        SavingAccount savingAccount = (SavingAccount)request.getSession().getAttribute("savingAccount");
-        savingAccountTransaction.setSavingAccount(savingAccount);
-        savingAccountTransactionRepository.save(savingAccountTransaction);
-        userService.saveUser(user);
-    }
-
 
     private com.bitsvalley.micro.domain.SavingAccountType insureAccountSavingTypeExists() {
         com.bitsvalley.micro.domain.SavingAccountType savingAccountType = savingAccountTypeRepository.findByName(com.bitsvalley.micro.utils.SavingAccountType.MONTHLY_SAVING.name());
