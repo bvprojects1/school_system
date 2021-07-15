@@ -106,13 +106,13 @@ public class SavingAccountService extends SuperService{
     }
 
 
-    public SavingBilanzList getSavingBilanzByUserRole(ArrayList<UserRole> userRole) {
-        ArrayList<User> users = userRepository.findAllByUserRoleIn(userRole);
-        return calculateUsersInterest(users);
-    }
+//    public SavingBilanzList getSavingBilanzByUserRole(ArrayList<UserRole> userRole) {
+//        ArrayList<User> users = userRepository.findAllByUserRoleIn(userRole);
+//        return calculateUsersInterest(users);
+//    }
 
 
-    public SavingBilanzList getSavingBilanzByUser(User user) {
+    public SavingBilanzList getSavingBilanzByUser(User user, boolean calculateInterest) {
         User aUser = null;
         if(null != user.getUserName()){
             aUser = userRepository.findByUserName(user.getUserName());
@@ -121,11 +121,44 @@ public class SavingAccountService extends SuperService{
         }
         ArrayList<User> userList = new ArrayList<User>();
         userList.add(aUser);
-        return calculateUsersInterest(userList);
+        return calculateUsersInterest(userList, calculateInterest);
+
     }
 
-    private SavingBilanzList calculateUsersInterest(ArrayList<User> users) {
+
+    public SavingBilanzList calculateAccountBilanz(
+            List<SavingAccountTransaction> savingAccountTransactions,
+                                                    boolean calculateInterest) {
         double totalSaved = 0.0;
+        double currentSaved = 0.0;
+        double savingAccountTransactionInterest = 0.0;
+
+        SavingBilanzList savingBilanzsList = new SavingBilanzList();
+
+                for (int k = 0; k < savingAccountTransactions.size(); k++) {
+                    final SavingAccountTransaction savingAccountTransaction = savingAccountTransactions.get(k);
+                    if(savingAccountTransaction.getSavingAmount() <= 0)
+                        continue;
+                    SavingBilanz savingBilanz = calculateInterest(savingAccountTransaction, calculateInterest);
+                    currentSaved = currentSaved + savingAccountTransaction.getSavingAmount();
+                    savingBilanz.setCurrentBalance(formatCurrency(currentSaved));
+                    savingBilanzsList.getSavingBilanzList().add(savingBilanz);
+                    totalSaved = totalSaved + savingAccountTransaction.getSavingAmount();
+                    if(calculateInterest){
+                        savingAccountTransactionInterest = savingAccountTransactionInterest +
+                                calculateInterestAccruedMonthCompounded(savingAccountTransaction);
+                    }
+                }
+        savingBilanzsList.setTotalSaving(formatCurrency(totalSaved));
+//        savingBilanzsList.setTotalSavingInterest(formatCurrency(savingAccountTransactionInterest));
+        Collections.reverse(savingBilanzsList.getSavingBilanzList());
+        return savingBilanzsList;
+    }
+
+
+    private SavingBilanzList calculateUsersInterest(ArrayList<User> users, boolean calculateInterest) {
+        double totalSaved = 0.0;
+        double currentSaved = 0.0;
         double savingAccountTransactionInterest = 0.0;
         SavingBilanzList savingBilanzsList = new SavingBilanzList();
         for (int i = 0; i < users.size(); i++) {
@@ -140,7 +173,9 @@ public class SavingAccountService extends SuperService{
                         continue;
 //                    LocalDateTime createdDate = savingAccountTransaction.getCreatedDate();
 //                    if (LocalDateTime.now().minusMonths(1).isAfter(createdDate)) {
-                        SavingBilanz savingBilanz = calculateInterest(savingAccountTransaction);
+                        SavingBilanz savingBilanz = calculateInterest(savingAccountTransaction, calculateInterest);
+                        currentSaved = currentSaved + savingAccountTransaction.getSavingAmount();
+                        savingBilanz.setCurrentBalance(formatCurrency(currentSaved));
                         savingBilanzsList.getSavingBilanzList().add(savingBilanz);
                         totalSaved = totalSaved + savingAccountTransaction.getSavingAmount();
                         savingAccountTransactionInterest = savingAccountTransactionInterest +
@@ -151,6 +186,7 @@ public class SavingAccountService extends SuperService{
         }
         savingBilanzsList.setTotalSaving(formatCurrency(totalSaved));
         savingBilanzsList.setTotalSavingInterest(formatCurrency(savingAccountTransactionInterest));
+        Collections.reverse(savingBilanzsList.getSavingBilanzList());
         return savingBilanzsList;
     }
 
@@ -163,7 +199,7 @@ public class SavingAccountService extends SuperService{
     }
 
 
-    private SavingBilanz calculateInterest(SavingAccountTransaction savingAccountTransaction) {
+    private SavingBilanz calculateInterest(SavingAccountTransaction savingAccountTransaction, boolean calculateInterest) {
         SavingBilanz savingBilanz = new SavingBilanz();
 
         savingBilanz.setAccountType(savingAccountTransaction.getSavingAccount().getAccountSavingType().getName());
@@ -179,7 +215,9 @@ public class SavingAccountService extends SuperService{
         savingBilanz.setAccountNumber(savingAccountTransaction.getSavingAccount().getAccountNumber());
         savingBilanz.setNoOfDays(calculateNoOfDays(savingAccountTransaction.getCreatedDate()));
         savingBilanz.setModeOfPayment(savingAccountTransaction.getModeOfPayment());
-        savingBilanz.setInterestAccrued(formatCurrency(calculateInterestAccruedMonthCompounded(savingAccountTransaction)));
+        if(calculateInterest){
+            savingBilanz.setInterestAccrued(formatCurrency(calculateInterestAccruedMonthCompounded(savingAccountTransaction)));
+        }
         return savingBilanz;
     }
 

@@ -44,7 +44,7 @@ public class SuperController {
         }
         if(null != aUser && null != aUser.getSavingAccount() && 0 < aUser.getSavingAccount().size()){
             model.put("user", aUser);
-            SavingBilanzList savingBilanzByUserList = savingAccountService.getSavingBilanzByUser(user);
+            SavingBilanzList savingBilanzByUserList = savingAccountService.getSavingBilanzByUser(user, false);
             request.getSession().setAttribute("savingBilanzList",savingBilanzByUserList);
             request.getSession().setAttribute(BVMicroUtils.CUSTOMER_IN_USE, aUser);
             return "userHome";

@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -57,7 +58,8 @@ public class WelcomeController extends SuperController{
         model.put("name", getLoggedInUserName());
         User aUser = (User)request.getSession().getAttribute(BVMicroUtils.CUSTOMER_IN_USE);
         if(null != aUser){
-            SavingBilanzList savingBilanzByUserList = savingAccountService.getSavingBilanzByUser(aUser);
+            SavingBilanzList savingBilanzByUserList = savingAccountService.getSavingBilanzByUser(aUser, false);
+            Collections.reverse(savingBilanzByUserList.getSavingBilanzList()); //TODO: reverse during search?
             if(null == savingBilanzByUserList || savingBilanzByUserList.getSavingBilanzList() == null
                     ||  savingBilanzByUserList.getSavingBilanzList().size() == 0 ){ //first time login
                 savingBilanzByUserList = new SavingBilanzList();

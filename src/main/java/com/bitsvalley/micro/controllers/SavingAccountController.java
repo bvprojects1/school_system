@@ -19,6 +19,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -64,9 +66,16 @@ public class SavingAccountController extends SuperController{
     public String registerSavingAccountTransaction(@PathVariable("id") long id,ModelMap model, HttpServletRequest request) {
         SavingAccountTransaction savingAccountTransaction = new SavingAccountTransaction();
         Optional<SavingAccount> savingAccount = savingAccountService.findById(id);
-        savingAccountTransaction.setSavingAccount(savingAccount.get());
+        SavingAccount aSavingAccount = savingAccount.get();
+        List<SavingAccountTransaction> savingAccountTransactionList = aSavingAccount.getSavingAccountTransaction();
+        SavingBilanzList savingBilanzByUserList = savingAccountService.calculateAccountBilanz(savingAccountTransactionList,false);
+        model.put("name", getLoggedInUserName());
+        model.put("savingBilanzList", savingBilanzByUserList);
+
+        savingAccountTransaction.setSavingAccount(aSavingAccount);
         model.put("savingAccountTransaction", savingAccountTransaction);
-        return "savingAccountTransaction";
+
+        return "savingBilanzNoInterest";
     }
 
 
@@ -88,17 +97,23 @@ public class SavingAccountController extends SuperController{
             savingAccount.get().getSavingAccountTransaction().add(savingAccountTransaction);
         }
         savingAccountService.save(savingAccount.get());
-        SavingBilanzList savingBilanzByUserList = savingAccountService.getSavingBilanzByUser(user);
-        request.getSession().setAttribute("savingBilanzList", savingBilanzByUserList);
+
+        SavingBilanzList savingBilanzByUserList = savingAccountService.calculateAccountBilanz(savingAccount.get().getSavingAccountTransaction(),false);
+        model.put("name", getLoggedInUserName());
+        model.put("savingBilanzList", savingBilanzByUserList);
+
+        savingAccountTransaction.setSavingAccount(savingAccount.get());
         model.put("savingAccountTransaction", savingAccountTransaction);
-        return "savingAccountTransaction";
+
+        return "savingBilanzNoInterest";
+
     }
 
 
     @GetMapping(value = "/showSavingBilanz/{id}")
     public String showSavingBilanz(@PathVariable("id") long id,ModelMap model, HttpServletRequest request) {
         User user = (User)request.getSession().getAttribute(BVMicroUtils.CUSTOMER_IN_USE);
-        SavingBilanzList savingBilanzByUserList = savingAccountService.getSavingBilanzByUser(user);
+        SavingBilanzList savingBilanzByUserList = savingAccountService.getSavingBilanzByUser(user,true);
         model.put("name", getLoggedInUserName());
         model.put("savingBilanzList", savingBilanzByUserList);
         return "savingBilanz";
