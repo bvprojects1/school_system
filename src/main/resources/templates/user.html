@@ -4,9 +4,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Business Theme Development</title>
+    <title>PIPIDAF - Micro Finance Software</title>
     <!-- Favicon  -->
-    <link rel="icon" type="image/x-icon" href="assets/images/favicon/favicon.ico">
+    <link rel="icon" type="image/x-icon" href="assets/images/favicon/faviconn.ico">
     <!--Bootstrap-->
     <link rel="stylesheet" href="assets/css/bootstrap.min.css">
     <!--Fontawesome-->
@@ -141,11 +141,14 @@
                                        placeholder="Username" class="form-control" required>
 
                                 <br/>
-                                <input th:field="*{gender}" type="radio" id="male" name="gender" value="Mr">
+                                <input th:field="*{gender}" type="radio" id="male" name="gender" value="Mr" checked="checked" />
                                 <label for="male">Mr</label>
 
                                 <input th:field="*{gender}" type="radio" id="female" name="gender" value="Mrs">
                                 <label for="female">Mrs</label>
+
+                                <input th:field="*{gender}" type="radio" id="miss" name="gender" value="Miss">
+                                <label for="Miss">Miss</label>
 
                                 <br/>
                                 <input type="text" name="firstName" th:field="*{firstName}" id="firstName"
@@ -181,7 +184,7 @@
                                        placeholder="Email" class="form-control" required>
 
                                 <br/>
-                                <input type="text" name="passwordInput" th:field="*{password}" id="passwordInput"
+                                <input type="password" name="passwordInput" th:field="*{password}" id="passwordInput"
                                        placeholder="Password" class="form-control" required>
 
                                 <br/>
@@ -225,7 +228,8 @@
 
 <!--Footer area start-->
 <footer class="footer-area-start">
-
+    <!--Footer top area start-->
+    <!--Footer top area end-->
 
     <!--Footer content area start-->
     <div class="footer-content-area-start">
@@ -235,10 +239,9 @@
                 <div class="col-md-3 mb-sm-5 mb-md-0">
                     <div class="single-footer-widget">
                         <div class="logo-area">
-                            <a href="#"><span>bus</span>iness</a>
+                            <a href="#"><span>PIPI</span>DAF</a>
                         </div>
-                        <p>Harum repellat quis expedita saepe soluta voluptates error. Repudiandae eum ipsa, corporis
-                            rerum necessitatibus?</p>
+                        <p>The bank on your side. We will consult with you one on one basis?</p>
                         <div class="team-member-social-icon">
                             <a href="#"><i class="fab fa-facebook-f"></i></a>
                             <a href="#"><i class="fab fa-dribbble"></i></a>
@@ -272,15 +275,13 @@
                         <div class="media">
                             <i class="fab fa-twitter mr-3 fa-1x"></i>
                             <div class="media-body">
-                                <p>" Reprehenderit culpa aspernatur maiores natus impedit, veritatis cum ipsam ad illo
-                                    assumenda earum non ut? Deleniti? "</p>
+                                <p>" Reprehenderit culpa aspernatur maiores natus impedit, veritatis cum ipsam ad illo assumenda earum non ut? Deleniti? "</p>
                             </div>
                         </div>
                         <div class="media">
                             <i class="fab fa-twitter mr-3 fa-1x"></i>
                             <div class="media-body">
-                                <p>" Vitae tenetur iure possimus facilis, similique soluta reiciendis voluptatibus
-                                    tempore? Fugiat. "</p>
+                                <p>" Vitae tenetur iure possimus facilis, similique soluta reiciendis voluptatibus tempore? Fugiat. "</p>
                             </div>
                         </div>
                     </div>
@@ -304,8 +305,6 @@
             </div>
         </div>
     </div>
-    <!--Footer content area end-->
-
 
 </footer>
 <!--Footer area end-->

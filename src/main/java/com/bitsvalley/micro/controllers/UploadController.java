@@ -78,7 +78,7 @@ public class UploadController extends SuperController{
 
         aUser.setIdFilePath(completePAth);
         userService.saveUser(aUser);
-        SavingBilanzList savingBilanzByUserList = savingAccountService.getSavingBilanzByUser(aUser);
+        SavingBilanzList savingBilanzByUserList = savingAccountService.getSavingBilanzByUser(aUser,false);
         request.getSession().setAttribute("savingBilanzList",savingBilanzByUserList);
         model.put("user",aUser);
         return "userHome";

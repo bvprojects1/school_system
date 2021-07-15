@@ -62,7 +62,7 @@ public class UserController extends SuperController{
         userService.createUser(user);
         model.put("user", user);
         model.put("userRoleTemp", aUserRole);
-        SavingBilanzList savingBilanzByUserList = savingAccountService.getSavingBilanzByUser(user);
+        SavingBilanzList savingBilanzByUserList = savingAccountService.getSavingBilanzByUser(user,false);
         if(null == savingBilanzByUserList || savingBilanzByUserList.getSavingBilanzList() == null
                 ||  savingBilanzByUserList.getSavingBilanzList().size() == 0 ){ //first time login
             savingBilanzByUserList = new SavingBilanzList();
@@ -116,7 +116,7 @@ public class UserController extends SuperController{
     public String showCustomer(@PathVariable("id") long id,ModelMap model, HttpServletRequest request) {
         Optional<User> userById = userRepository.findById(id);
         User user = userById.get();
-        SavingBilanzList savingBilanzByUserList = savingAccountService.getSavingBilanzByUser(user);
+        SavingBilanzList savingBilanzByUserList = savingAccountService.getSavingBilanzByUser(user,false);
         model.put("name", getLoggedInUserName());
         request.getSession().setAttribute("savingBilanzList",savingBilanzByUserList);
         request.getSession().setAttribute(BVMicroUtils.CUSTOMER_IN_USE, user);

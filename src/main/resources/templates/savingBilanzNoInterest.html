@@ -91,31 +91,47 @@
     </div>
 
 
-    <br/><br/><br/><br/><br/><br/>
+    <br/><br/><br/><br/><br/><br/><br/>
 
 
     <table width="100%"><tr>
         <td><font size="10"> <span style th:text="${session.customerInUse.userName}"/>'s </font><button type="submit" ><a href="#" th:href="@{/file/{userName}(userName=${session.customerInUse.userName})}">Upload I.D</a></button>
         </td>
-        <td> Saving <br/><font size="6" color="green"> <font color="green" size="6px"> <div th:text="${session.savingBilanzList.totalSaving}"/></font></td>
+        <td> Saving <br/><font size="6" color="green"> <font color="green" size="6px"> <div th:text="${savingBilanzList.totalSaving}"/></font></td>
         <td> Current<br/> <font size="6"> 0</font></td>
         <td> Loan<br/> <font size="6"> 0</font></td>
         <td>Retirement saving <br/> <font size="6" color="#A57C00">0 </font> </b></td>
     </tr></table>
 
-    <font size="5" color="green"> SAVING INTEREST CENTER </font>
+<br/>
+
+    <form action="#" th:action="@{/registerSavingAccountTransactionForm}" method="post" th:object="${savingAccountTransaction}" >
+
+        <table  border="1" width="100%" class="center">
+            <tr><td colspan="2"><b>Amount:</b><input size="6" type="number" th:field="*{savingAmount}"/></td> <td><label for="modeOfPayment"><b>Mode:</b></label><select name="modeOfPayment" id="modeOfPayment">
+                <option value="CASH">CASH</option>
+                <option value="MOMO">MOMO</option>
+                <option value="ORANGE MONEY">ORANGE MONEY</option>
+                <option value="TRANSFER">TRANSFER</option>
+                <option value="RECEIPT">RECEIPT</option>
+                <option value="OTHER">OTHER</option>
+            </select></td>
+                <td colspan="2"><label><b> Notes:</b></label> <input type="text" th:field="*{notes}"/></td>  <td><input type="hidden" th:value="${savingAccountTransaction.savingAccount.id}" th:attr="name='savingAccountId'"/><button type="submit" class="btn btn-success">Save Payment</button></td></tr>
+
+
+        </table>
+    </form>
+    <br/><br/>
+
+    <font size="5" color="green"> SAVING PAYMENTS PROCESSED </font>
     <br/><br/><br/>
         <table width="100%">
             <tr>
                 <th>Date of Payment</th>
                 <th>Mode of Payment </th>
                 <th>Agent</th>
-                <th>Account Number</th>
                 <th>Saving Amount</th>
-                <th>Interest</th>
                 <th>Notes</th>
-                <th>Number of Days</th>
-                <th>Interest Accrued </th>
                 <th></th>
             </tr>
 
@@ -123,25 +139,19 @@
                 <td th:text="${bilanz.createdDate}"></td>
                 <td th:text="${bilanz.modeOfPayment}"></td>
                 <td th:text="${bilanz.agent}"></td>
-                <td th:text="${bilanz.accountNumber}"></td>
                 <td th:text="${bilanz.savingAmount}"></td>
-                <td th:text="${bilanz.interestRate}"></td>
                 <td th:text="${bilanz.notes}"></td>
-                <td th:text="${bilanz.noOfDays}"></td>
-                <td th:text="${bilanz.interestAccrued}"></td>
-                <b></b><td th:text="${bilanz.currentBalance}"></td>
+                <td th:text="${bilanz.currentBalance}"></td>
             </tr>
 
             <tr>
                 <td></td>
                 <td></td>
                 <td></td>
-                <td>Interest Accrued</td>
-                <td><font color="green" size="4px"> <div th:text="${savingBilanzList.totalSavingInterest}"/></font></td>
+                <td></td>
                 <td>Total Saved</td>
                 <td><font color="green" size="6px"> <div th:text="${savingBilanzList.totalSaving}"/></font></td>
             </tr>
-
         </table>
 
     <br/> <br/>

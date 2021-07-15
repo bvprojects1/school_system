@@ -9,6 +9,7 @@ public class SavingBilanz {
     String modeOfPayment;
     String noOfDays;
     String savingAmount;
+    String currentBalance;
 
     String accountType;
     String accountNumber;
@@ -18,6 +19,13 @@ public class SavingBilanz {
     String locked;
     String createdBy;
 
+    public String getCurrentBalance() {
+        return currentBalance;
+    }
+
+    public void setCurrentBalance(String currentBalance) {
+        this.currentBalance = currentBalance;
+    }
 
     public String getModeOfPayment() {
         return modeOfPayment;
