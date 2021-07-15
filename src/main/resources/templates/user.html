@@ -141,11 +141,14 @@
                                        placeholder="Username" class="form-control" required>
 
                                 <br/>
-                                <input th:field="*{gender}" type="radio" id="male" name="gender" value="Mr">
+                                <input th:field="*{gender}" type="radio" id="male" name="gender" value="Mr" checked="checked" />
                                 <label for="male">Mr</label>
 
                                 <input th:field="*{gender}" type="radio" id="female" name="gender" value="Mrs">
                                 <label for="female">Mrs</label>
+
+                                <input th:field="*{gender}" type="radio" id="miss" name="gender" value="Miss">
+                                <label for="Miss">Miss</label>
 
                                 <br/>
                                 <input type="text" name="firstName" th:field="*{firstName}" id="firstName"
