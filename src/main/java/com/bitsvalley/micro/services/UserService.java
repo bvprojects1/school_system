@@ -41,7 +41,7 @@ public class UserService {
 
         user.setAccountExpired(false);
         user.setAccountLocked(false);
-        insureRolesExists(user.getUserRole().get(0).getName());
+        insureRolesExists();
         User save = userRepository.save(user);
         return save;
     }
@@ -50,36 +50,39 @@ public class UserService {
         userRepository.save(user);
     }
 
-    private UserRole insureRolesExists(String name) {
-        UserRole role = userRoleService.findUserRoleByName(name);
-        Iterable<UserRole> all = userRoleService.findAll();
-        if (role == null) {
-//            role = new UserRole();
-//            role.setName(name);
-//            userRoleService.saveUserRole(role);
-
-            List<UserRole> userRolesList = new ArrayList<UserRole>();
-            UserRole customer = new UserRole();
-            customer.setName("CUSTOMER");
-            userRolesList.add(customer);
-
-            UserRole admin = new UserRole();
-            admin.setName("ADMIN");
-            userRolesList.add(admin);
-
-            UserRole manager = new UserRole();
-            manager.setName("MANAGER");
-            userRolesList.add(manager);
-
-            UserRole agent = new UserRole();
-            agent.setName("AGENT");
-            userRolesList.add(agent);
-
-            UserRole auditor = new UserRole();
-            auditor.setName("AUDITOR");
-            userRolesList.add(auditor);
-            Iterable<UserRole> iterable = userRolesList;
-            userRoleService.saveAllRole(iterable);
+    private void insureRolesExists(){
+        SavingAccountType school_saving = savingAccountTypeRepository.findByName("SCHOOL SAVING");
+//        Iterable<UserRole> all = userRoleService.findAll();
+        if (school_saving == null) {
+//
+////            role = new UserRole();
+////            role.setName(name);
+////            userRoleService.saveUserRole(role);
+//
+//            List<UserRole> userRolesList = new ArrayList<UserRole>();
+//            UserRole customer = new UserRole();
+//            customer.setName("CUSTOMER");
+////            userRoleService.saveUserRole(customer);
+//            userRolesList.add(customer);
+//
+//            UserRole admin = new UserRole();
+//            admin.setName("ADMIN");
+////            userRoleService.saveUserRole(admin);
+//            userRolesList.add(admin);
+//
+//            UserRole manager = new UserRole();
+//            manager.setName("MANAGER");
+//            userRolesList.add(manager);
+//
+//            UserRole agent = new UserRole();
+//            agent.setName("AGENT");
+//            userRolesList.add(agent);
+//
+//            UserRole auditor = new UserRole();
+//            auditor.setName("AUDITOR");
+//            userRolesList.add(auditor);
+//            Iterable<UserRole> iterable = userRolesList;
+//            userRoleService.saveAllRole(iterable);
 // ----------------------------------------------------------------------------------------------
             List<SavingAccountType> savingAccountTypeList = new ArrayList<SavingAccountType>();
             SavingAccountType schoolSavingAccountType = new SavingAccountType();
@@ -106,10 +109,21 @@ public class UserService {
             otherSavingAccountType.setName("OTHER SAVING");
             savingAccountTypeList.add(otherSavingAccountType);
 
+            SavingAccountType yearlySavingAccountType = new SavingAccountType();
+            yearlySavingAccountType.setName("YEARLY SAVING");
+            savingAccountTypeList.add(yearlySavingAccountType);
+
+            SavingAccountType monthlSavingAccountType = new SavingAccountType();
+            monthlSavingAccountType.setName("MONTHLY SAVING");
+            savingAccountTypeList.add(monthlSavingAccountType);
+
+            SavingAccountType dailySavingAccountType = new SavingAccountType();
+            dailySavingAccountType.setName("DAILY SAVING");
+            savingAccountTypeList.add(dailySavingAccountType);
+
             Iterable<SavingAccountType> savingAccountTypeListIterable = savingAccountTypeList;
             savingAccountTypeRepository.saveAll(savingAccountTypeListIterable);
         }
-        return role;
     }
 
 

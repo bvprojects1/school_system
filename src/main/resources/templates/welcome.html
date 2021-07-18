@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
 <head>
     <meta charset="UTF-8">
@@ -36,18 +37,18 @@
     <!--Header area start-->
     <header class="header-area-start">
         <!--Header top area start-->
-        <div class="header-top-area-start">
-            <div class="container">
-                <div class="row">
-                    <div class="col-md-6 col-12 col-sm-5">
-                        <div class="header-top-left">
-                            <a href="#" data-toggle="modal" data-target="#exampleModal"><i class="fas fa-sign-in-alt"></i> login</a>
-<!--                            <a href="#" data-toggle="modal" data-target="#exampleModal1"><i class="far fa-user"></i> register</a>-->
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+<!--        <div class="header-top-area-start">-->
+<!--            <div class="container">-->
+<!--                <div class="row">-->
+<!--                    <div class="col-md-6 col-12 col-sm-5">-->
+<!--                        <div class="header-top-left">-->
+<!--                            <a href="#" data-toggle="modal" data-target="#exampleModal"><i class="fas fa-sign-in-alt"></i> login</a>-->
+<!--&lt;!&ndash;                            <a href="#" data-toggle="modal" data-target="#exampleModal1"><i class="far fa-user"></i> register</a>&ndash;&gt;-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
         <!--Header top area end-->
 
         <!--Header navigation area start-->
@@ -64,7 +65,8 @@
                     <div class="col-md-9 col-7 col-sm-7">
                         <nav class="main-menu-area">
                             <ul class="main-menu" id="mobile-menu">
-                                <li><a th:href="@{/welcome}" href="/welcome"> Customer Home</a></li>
+                                <li><a th:href="@{/welcome}" href="/welcome"><br/> Welcome
+                                    <span sec:authentication="name"></span></a></li>
                                 <li><a th:href="@{/welcomeGlobal}" href="/Logout">PIPIDAF Home</a></li>
                                 <li><a href="#">blog <i class="fas fa-angle-down"></i></a>
                                     <ul class="sub-menu">
@@ -102,7 +104,13 @@
     <!--Header area end-->
 
 
+    <br/>
 
+<!--    <span sec:authentication="principal.authorities"></span>-->
+
+<!--   <div th:if="${#authorization.expression('hasAnyAuthority(''ROLE_AGENT'')')}">-->
+<!--         3. User has authority AGENT.-->
+<!--       </div>-->
 
     <!--Service area start-->
     <section class="service-area-start space">
@@ -111,8 +119,9 @@
         <div class="service-area-content">
             <div class="container">
                 <div class="row">
-                    <div class="col-md-6 col-lg-4">
-                        <div class="single-choosen-content text-center single-service-content box-pad">
+<!--                   <div class="col-md-6 col-lg-4">-->
+                    <div th:if="${#authorization.expression('hasAnyAuthority(''ROLE_AGENT'')')} OR ${#authorization.expression('hasAnyAuthority(''ROLE_MANAGER'')')}" class="col-md-6 col-lg-4">
+                       <div class="single-choosen-content text-center single-service-content box-pad">
                             <a href="/findAllCustomers"><i class="far fa-user"></i></a>
 
                             <h4> CUSTOMERS</h4>
@@ -180,57 +189,140 @@
     </section>
     <!--Service area end-->
 
-    <!-- award area start -->
-    <div class="award-area-start space">
+
+
+
+    <!--Blog area content start-->
+    <div class="blog-area-content-start">
         <div class="container">
             <div class="row">
-                <!-- Single award area start -->
-                <div class="col-md-3">
-                    <div class="single-award-area-start media">
-                        <i class="fas fa-user"></i>
-                        <div class="media-body">
-                            <span class="award-counter"><div th:text="${session.customerAccountCount}"/></span>
-                            <p>Customer Accounts</p>
+                <!--Single blog content start-->
+                <div class="col-lg-4 col-md-6 mb-sm-5 mb-md-0">
+                    <div class="single-blog-content shadow rounded">
+                        <div class="blog-image">
+                            <a href="#"><img src="assets/images/blog/01.jpg" alt="blog-image"></a>
+                        </div>
+                        <div class="blog-content">
+                            <div class="blog-date">
+                                <span>2021</span>
+                                <span>Aug</span>
+                            </div>
+                            <h4><a href="#">Contact us for an Auto loan. Affordable payment plans.</a></h4>
+                            <!--                            <p>Molestiae voluptates, soluta illo nostrum dolor ipsum vel repellendus at aut-->
+                            <!--                                consequuntur.</p>-->
+                            <!--                            <a href="#">Read More</a>-->
+                            <div class="blog-post-data">
+                                <a href="#"><i class="fas fa-tag"></i> Read More</a>
+                                <!--                                <a href="#"><i class="fas fa-user"></i> Nobita</a>-->
+                            </div>
                         </div>
                     </div>
                 </div>
-                <!-- Single award area end -->
-                <!-- Single award area start -->
-                <div class="col-md-3">
-                    <div class="single-award-area-start media">
-                        <i class="fas fa-hand-holding-usd"></i>
-                        <div class="media-body">
-                            <span class="award-counter"><div th:text="${session.savingAccountCount}"/></span>
-                            <p>Saving Accounts</p>
+                <!--Single blog content end-->
+                <!--Single blog content start-->
+                <div class="col-lg-4 col-md-6 mb-sm-5 mb-md-0">
+                    <div class="single-blog-content shadow rounded">
+                        <div class="blog-image">
+                            <a href="#"><img src="assets/images/blog/02.jpg" alt="blog-image"></a>
+                        </div>
+                        <div class="blog-content">
+                            <div class="blog-date">
+                                <span>2021</span>
+                                <span>Aug</span>
+                            </div>
+                            <h4><a href="#">Retirement Savings with excellent conditions. Guaranteed returns.</a></h4>
+                            <!--                            <p>Molestiae voluptates, soluta illo nostrum dolor ipsum vel repellendus at aut-->
+                            <!--                                consequuntur.</p>-->
+                            <!--                            <a href="#">Read More</a>-->
+                            <div class="blog-post-data">
+                                <a href="#"><i class="fas fa-tag"></i> Read More</a>
+                                <!--                                <a href="#"><i class="fas fa-user"></i> Nobita</a>-->
+                            </div>
                         </div>
                     </div>
                 </div>
-                <!-- Single award area end -->
-                <!-- Single award area start -->
-                <div class="col-md-3">
-                    <div class="single-award-area-start media">
-                        <i class="fas fa-award"></i>
-                        <div class="media-body">
-                            <span class="award-counter">0</span>
-                            <p>Loans</p>
+                <!--Single blog content end-->
+                <!--Single blog content start-->
+                <div class="col-lg-4 col-md-6">
+                    <div class="single-blog-content shadow rounded">
+                        <div class="blog-image">
+                            <a href="#"><img src="assets/images/blog/03.jpg" alt="blog-image"></a>
+                        </div>
+                        <div class="blog-content">
+                            <div class="blog-date">
+                                <span>2021</span>
+                                <span>Sept</span>
+                            </div>
+                            <h4><a href="#">Digitization of supplies aim to lifting farmers out of poverty </a></h4>
+                            <!--                            <p>Molestiae voluptates, soluta illo nostrum dolor ipsum vel repellendus at aut-->
+                            <!--                                consequuntur.</p>-->
+                            <!--                            <a href="#">Read More</a>-->
+                            <div class="blog-post-data">
+                                <a href="#"><i class="fas fa-tag"></i> Read more</a>
+                                <!--                                <a href="#"><i class="fas fa-user"></i> Nobita</a>-->
+                            </div>
                         </div>
                     </div>
                 </div>
-                <!-- Single award area end -->
-                <!-- Single award area start -->
-                <div class="col-md-3">
-                    <div class="single-award-area-start media">
-                        <i class="fas fa-smile"></i>
-                        <div class="media-body">
-                            <span class="award-counter">0</span>
-                            <p>Retirement Savings</p>
-                        </div>
-                    </div>
-                </div>
-                <!-- Single award area end -->
+                <!--Single blog content end-->
             </div>
         </div>
     </div>
+    <!--Blog area content end-->
+
+
+
+<!--    &lt;!&ndash; award area start &ndash;&gt;-->
+<!--    <div class="award-area-start space">-->
+<!--        <div class="container">-->
+<!--            <div class="row">-->
+<!--                &lt;!&ndash; Single award area start &ndash;&gt;-->
+<!--                <div class="col-md-3">-->
+<!--                    <div class="single-award-area-start media">-->
+<!--                        <i class="fas fa-user"></i>-->
+<!--                        <div class="media-body">-->
+<!--                            <span class="award-counter"><div th:text="${session.customerAccountCount}"/></span>-->
+<!--                            <p>Customer Accounts</p>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--                &lt;!&ndash; Single award area end &ndash;&gt;-->
+<!--                &lt;!&ndash; Single award area start &ndash;&gt;-->
+<!--                <div class="col-md-3">-->
+<!--                    <div class="single-award-area-start media">-->
+<!--                        <i class="fas fa-hand-holding-usd"></i>-->
+<!--                        <div class="media-body">-->
+<!--                            <span class="award-counter"><div th:text="${session.savingAccountCount}"/></span>-->
+<!--                            <p>Saving Accounts</p>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--                &lt;!&ndash; Single award area end &ndash;&gt;-->
+<!--                &lt;!&ndash; Single award area start &ndash;&gt;-->
+<!--                <div class="col-md-3">-->
+<!--                    <div class="single-award-area-start media">-->
+<!--                        <i class="fas fa-award"></i>-->
+<!--                        <div class="media-body">-->
+<!--                            <span class="award-counter">0</span>-->
+<!--                            <p>Loans</p>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--                &lt;!&ndash; Single award area end &ndash;&gt;-->
+<!--                &lt;!&ndash; Single award area start &ndash;&gt;-->
+<!--                <div class="col-md-3">-->
+<!--                    <div class="single-award-area-start media">-->
+<!--                        <i class="fas fa-smile"></i>-->
+<!--                        <div class="media-body">-->
+<!--                            <span class="award-counter">0</span>-->
+<!--                            <p>Retirement Savings</p>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--                &lt;!&ndash; Single award area end &ndash;&gt;-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
 
     <!-- Service sencod area end -->
 

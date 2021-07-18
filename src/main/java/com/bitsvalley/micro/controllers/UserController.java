@@ -78,6 +78,8 @@ public class UserController extends SuperController{
     public String registerUserForm(@ModelAttribute("user") User user, ModelMap model, HttpServletRequest request) {
         String aUserRole = (String) request.getParameter("aUserRole");
 //        ArrayList<UserRole> userRole = getUserRoleFromRequest(user, aUserRole);
+        String gender = (String) request.getParameter("gender");
+        user.setGender(gender); //TODO: Check thymeleaf! should map automatically
         model.put("userRoleTemp", aUserRole);
         model.put("user", user);
         return "userSavedPreview";
