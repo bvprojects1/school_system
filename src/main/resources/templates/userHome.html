@@ -121,7 +121,7 @@
 <section class="choosen-area-start space">
     <!-- Use this as a header after login-->
 
-    <table style="border:0px" class="center" width="100%"><tr> <td><font size="10"> <span style th:text="${session.customerInUse.userName}"/>'s </font><button type="submit" ><a href="#" th:href="@{/file/{userName}(userName=${session.customerInUse.userName})}">Upload I.D</a></button>
+    <table style="border:0px" class="center" width="100%"><tr> <td><font size="6"> <span style th:text="${session.customerInUse.userName}"/>'s </font><button type="submit" ><a href="#" th:href="@{/file/{userName}(userName=${session.customerInUse.userName})}">Upload I.D</a></button>
         <br/>
         <td><font color="#BF360C;" size="4"><h4>View Accounts</h4></font></td>
         <td> Saving <br/> <font color="gray" size="4px"><div th:text="${session.savingBilanzList.totalSaving}"/></font></td>
@@ -213,6 +213,85 @@
     <!--Choosen main area end-->
 </section>
 <!--Choosen area end-->
+
+
+<!--Blog area content start-->
+<div class="blog-area-content-start">
+    <div class="container">
+        <div class="row">
+            <!--Single blog content start-->
+            <div class="col-lg-4 col-md-6 mb-sm-5 mb-md-0">
+                <div class="single-blog-content shadow rounded">
+                    <div class="blog-image">
+                        <a href="#"><img th:src="@{/assets/images/blog/01.jpg}" alt="blog-image"></a>
+                    </div>
+                    <div class="blog-content">
+                        <div class="blog-date">
+                            <span>2021</span>
+                            <span>Aug</span>
+                        </div>
+                        <h4><a href="#">Contact us for an Auto loan. Convenient and affordable payment plans.</a></h4>
+                        <!--                            <p>Molestiae voluptates, soluta illo nostrum dolor ipsum vel repellendus at aut-->
+                        <!--                                consequuntur.</p>-->
+                        <!--                            <a href="#">Read More</a>-->
+                        <div class="blog-post-data">
+                            <a href="#"><i class="fas fa-tag"></i> Read More</a>
+                            <!--                                <a href="#"><i class="fas fa-user"></i> Nobita</a>-->
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--Single blog content end-->
+            <!--Single blog content start-->
+            <div class="col-lg-4 col-md-6 mb-sm-5 mb-md-0">
+                <div class="single-blog-content shadow rounded">
+                    <div class="blog-image">
+                        <a href="#"><img th:src="@{/assets/images/blog/02.jpg}" alt="blog-image"></a>
+                    </div>
+                    <div class="blog-content">
+                        <div class="blog-date">
+                            <span>2021</span>
+                            <span>Aug</span>
+                        </div>
+                        <h4><a href="#">Retirement Savings with excellent conditions. Guaranteed returns.</a></h4>
+                        <!--                            <p>Molestiae voluptates, soluta illo nostrum dolor ipsum vel repellendus at aut-->
+                        <!--                                consequuntur.</p>-->
+                        <!--                            <a href="#">Read More</a>-->
+                        <div class="blog-post-data">
+                            <a href="#"><i class="fas fa-tag"></i> Read More</a>
+                            <!--                                <a href="#"><i class="fas fa-user"></i> Nobita</a>-->
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--Single blog content end-->
+            <!--Single blog content start-->
+            <div class="col-lg-4 col-md-6">
+                <div class="single-blog-content shadow rounded">
+                    <div class="blog-image">
+                        <a href="#"><img th:src="@{/assets/images/blog/03.jpg}" alt="blog-image"></a>
+                    </div>
+                    <div class="blog-content">
+                        <div class="blog-date">
+                            <span>2021</span>
+                            <span>Sept</span>
+                        </div>
+                        <h4><a href="#">Digitization of supplies aim to lifting farmers out of poverty </a></h4>
+                        <!--                            <p>Molestiae voluptates, soluta illo nostrum dolor ipsum vel repellendus at aut-->
+                        <!--                                consequuntur.</p>-->
+                        <!--                            <a href="#">Read More</a>-->
+                        <div class="blog-post-data">
+                            <a href="#"><i class="fas fa-tag"></i> Read more</a>
+                            <!--                                <a href="#"><i class="fas fa-user"></i> Nobita</a>-->
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--Single blog content end-->
+        </div>
+    </div>
+</div>
+<!--Blog area content end-->
 
 <!--&lt;!&ndash;About area start&ndash;&gt;-->
 <!--<section class="about-area-start df-bg">-->

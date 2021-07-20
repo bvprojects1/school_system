@@ -139,16 +139,21 @@
                             <div class="col-md-12">
                                 <input type="text" name="userName" th:field="*{userName}" id="userName"
                                        placeholder="Username" class="form-control" required>
+                                <br/>
+                                <label>
+                                    Mr
+                                    <input type="radio" value="Mr" th:field="*{gender}" name="gender" checked>
+                                </label>
+                                <label>
+                                    Mrs
+                                    <input type="radio" value="Mrs" th:field="*{gender}" name="gender">
+                                </label>
+                                <label>
+                                    Miss
+                                    <input type="radio" value="Miss" th:field="*{gender}" name="gender">
+                                </label>
 
                                 <br/>
-                                <input th:field="*{gender}" type="radio" id="male" name="gender" value="Mr" checked="checked" />
-                                <label for="male">Mr</label>
-
-                                <input th:field="*{gender}" type="radio" id="female" name="gender" value="Mrs">
-                                <label for="female">Mrs</label>
-
-                                <input th:field="*{gender}" type="radio" id="miss" name="gender" value="Miss">
-                                <label for="Miss">Miss</label>
 
                                 <br/>
                                 <input type="text" name="firstName" th:field="*{firstName}" id="firstName"
@@ -208,12 +213,12 @@
 
                                 <label for="aUserRole">Choose a User Role:</label>
                                 <select  name="aUserRole" id="aUserRole">
-                                   <option value="CUSTOMER">CUSTOMER</option>
-                                    <option value="AGENT">AGENT</option>
-                                    <option value="AUDITOR">AUDITOR</option>
-                                    <option value="BOARD MEMBER">BOARD MEMBER</option>
-                                    <option value="MANAGER">MANAGER</option>
-                                    <option value="ADMIN">ADMIN</option>
+                                   <option value="ROLE_CUSTOMER">CUSTOMER</option>
+                                    <option value="ROLE_AGENT">AGENT</option>
+                                    <option value="ROLE_AUDITOR">AUDITOR</option>
+                                    <option value="ROLE_BOARD_MEMBER">BOARD MEMBER</option>
+                                    <option value="ROLE_MANAGER">MANAGER</option>
+                                    <option value="ROLE_ADMIN">ADMIN</option>
                                 </select>
 
                                 <input type="submit" class="btn-block btn contact-btn" value="CREATE USER"/>

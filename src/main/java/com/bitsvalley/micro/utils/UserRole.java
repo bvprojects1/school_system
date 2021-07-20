@@ -3,7 +3,7 @@ package com.bitsvalley.micro.utils;
 public enum UserRole {
 
 
-    AGENT("AGENT"), BOARD_MEMBER("BOARD_MEMBER"), MANAGER("MANAGER"), CUSTOMER("CUSTOMER"), AUDITOR("AUDITOR");
+    AGENT("ROLE_AGENT"), BOARD_MEMBER("ROLE_BOARD_MEMBER"), MANAGER("ROLE_MANAGER"), CUSTOMER("ROLE_CUSTOMER"), AUDITOR("ROLE_AUDITOR");
 
     private final String displayValue;
 
