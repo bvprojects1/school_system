@@ -152,14 +152,15 @@
                         </select>
                         <br/>
                         <label> Notes:</label>
-                        <input type="text" th:field="*{notes}"/>
+                        <textarea  id="notes" rows="3" cols="30" th:field="*{notes}">
+                        </textarea>
                         <br/>
                         <label> Savings Type:</label>
                         <select name="savingType" id="savingType">
-                            <option value="SCHOOL SAVINMG">SCHOOL</option>
-                            <option value="VACATION SAVINMG">VACATION</option>
-                            <option value="FAMILY SAVINMG">FAMILY</option>
-                            <option value="AUTO SAVINMG">AUTO</option>
+                            <option value="SCHOOL SAVING">SCHOOL</option>
+                            <option value="VACATION SAVING">VACATION</option>
+                            <option value="FAMILY SAVING">FAMILY</option>
+                            <option value="AUTO SAVING">AUTO</option>
                             <option value="CONSTRUCTION SAVING">CONSTRUCTION</option>
                             <option value="DAILY SAVING">DAILY</option>
                             <option value="MONTHLY SAVING">MONTHLY</option>

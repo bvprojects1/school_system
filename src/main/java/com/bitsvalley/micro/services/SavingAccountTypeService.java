@@ -14,6 +14,9 @@ public class SavingAccountTypeService extends SuperService{
 
     public SavingAccountType getSavingAccountType(String name){
         SavingAccountType byName = savingAccountTypeRepository.findByName(name);
+//        if(null == byName){
+//            savingAccountTypeRepository.save();
+//        }
         return byName;
     }
 

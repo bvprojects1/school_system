@@ -71,7 +71,7 @@ public class WelcomeController extends SuperController{
         }else{
             int savingAccountCount = savingAccountService.findAllSavingAccountCount();
             ArrayList<com.bitsvalley.micro.domain.UserRole> customerRole = new ArrayList<com.bitsvalley.micro.domain.UserRole>();
-            customerRole.add(userRoleRepository.findByName(com.bitsvalley.micro.utils.UserRole.CUSTOMER.name()));
+            customerRole.add(userRoleRepository.findByName(com.bitsvalley.micro.utils.UserRole.ROLE_CUSTOMER.name()));
             ArrayList<User> allByUserRoleIn = userService.findAllByUserRoleIn(customerRole);
             int customerAccountCount = allByUserRoleIn.size();
             request.getSession().setAttribute("customerAccountCount",customerAccountCount);

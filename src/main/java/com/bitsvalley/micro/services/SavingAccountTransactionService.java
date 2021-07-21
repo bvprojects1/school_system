@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 @Service
 public class SavingAccountTransactionService extends SuperService{
@@ -39,6 +40,11 @@ public class SavingAccountTransactionService extends SuperService{
 
     public SavingAccount findByAccountNumber(String accountNumber) {
         return savingAccountRepository.findByAccountNumber(accountNumber);
+    }
+
+    public Optional<SavingAccountTransaction> findById(long id){
+        Optional<SavingAccountTransaction> savingAccountTransaction = savingAccountTransactionRepository.findById(id);
+        return savingAccountTransaction;
     }
 
 //    public void createSavingAccount(SavingAccount savingAccount, User user) {

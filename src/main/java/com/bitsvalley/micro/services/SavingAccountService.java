@@ -1,13 +1,7 @@
 package com.bitsvalley.micro.services;
 
-import com.bitsvalley.micro.domain.SavingAccount;
-import com.bitsvalley.micro.domain.SavingAccountTransaction;
-import com.bitsvalley.micro.domain.User;
-import com.bitsvalley.micro.domain.UserRole;
-import com.bitsvalley.micro.repositories.SavingAccountRepository;
-import com.bitsvalley.micro.repositories.SavingAccountTransactionRepository;
-import com.bitsvalley.micro.repositories.SavingAccountTypeRepository;
-import com.bitsvalley.micro.repositories.UserRepository;
+import com.bitsvalley.micro.domain.*;
+import com.bitsvalley.micro.repositories.*;
 import com.bitsvalley.micro.utils.BVMicroUtils;
 import com.bitsvalley.micro.webdomain.SavingBilanz;
 import com.bitsvalley.micro.webdomain.SavingBilanzList;
@@ -43,6 +37,10 @@ public class SavingAccountService extends SuperService{
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private CallCenterRepository callCenterRepository;
+
+
     private double minimumSaving;
 
     public SavingAccount findByAccountNumber(String accountNumber) {
@@ -67,11 +65,22 @@ public class SavingAccountService extends SuperService{
         savingAccount.setAccountLocked(false);
         savingAccount.setLastUpdatedDate(new Date(System.currentTimeMillis()));
 //        savingAccount.setSavingAccountType(insureAccountSavingTypeExists());
-        savingAccount.setUser(user); //TODO:Add User
+        savingAccount.setUser(user);
         savingAccountRepository.save(savingAccount);
+
+
         user = userRepository.findById(user.getId()).get();//TODO handle optional
         user.getSavingAccount().add(savingAccount);
         userService.saveUser(user);
+
+        //TODO: Move to callCenter service
+        CallCenter callCenter = new CallCenter();
+        callCenter.setAccountHolderName(savingAccount.getAccountNumber());
+        callCenter.setDate(new Date(System.currentTimeMillis()));
+        callCenter.setNotes("Savings Account Created: "+ savingAccount.getAccountNumber() + "Savings Type: "+ savingAccount.getAccountSavingType().getName());
+        callCenter.setUserName(savingAccount.getUser().getUserName());
+        callCenterRepository.save(callCenter);
+
     }
 
     public void createSavingAccountTransaction(SavingAccountTransaction savingAccountTransaction, User user) {
@@ -202,6 +211,7 @@ public class SavingAccountService extends SuperService{
     private SavingBilanz calculateInterest(SavingAccountTransaction savingAccountTransaction, boolean calculateInterest) {
         SavingBilanz savingBilanz = new SavingBilanz();
 
+        savingBilanz.setId(""+savingAccountTransaction.getId());
         savingBilanz.setAccountType(savingAccountTransaction.getSavingAccount().getAccountSavingType().getName());
         savingBilanz.setAccountMinimumBalance(formatCurrency(savingAccountTransaction.getSavingAccount().getAccountMinBalance()));
         savingBilanz.setMinimumBalance(formatCurrency(savingAccountTransaction.getSavingAccount().getAccountMinBalance()));

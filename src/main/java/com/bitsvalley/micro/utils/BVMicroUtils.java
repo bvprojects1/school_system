@@ -1,9 +1,13 @@
 package com.bitsvalley.micro.utils;
 
 import java.nio.charset.Charset;
+import java.text.NumberFormat;
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.Month;
 import java.time.format.DateTimeFormatter;
+import java.util.Date;
+import java.util.Locale;
 import java.util.Random;
 
 public class BVMicroUtils {
@@ -13,7 +17,7 @@ public class BVMicroUtils {
     public static final String DATE_FORMATTER= "dd-MM-yyyy HH:mm:ss";
 
     public static  String getSaltString() {
-        String SALTCHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
+        String SALTCHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890"; //TODO: avoid collision
         StringBuilder salt = new StringBuilder();
         Random rnd = new Random();
         while (salt.length() < 9) { // length of the random string.
@@ -54,5 +58,20 @@ public class BVMicroUtils {
             return formatDateTime;
 
         }
+
+    public static String formatCurrency(double totalSaved) {
+        Locale locale = new Locale("en", "CM");
+        NumberFormat fmt = NumberFormat.getCurrencyInstance(locale);
+        String total = fmt.format(totalSaved);
+        return total.substring(3,total.length());
+    }
+
+    public static String formatDate(Date date) {
+        SimpleDateFormat formatter = new SimpleDateFormat("dd MMMM yyyy 'at' hh:mm");
+        String format = formatter.format(date);
+        return format;
+
+    }
+
 
 }

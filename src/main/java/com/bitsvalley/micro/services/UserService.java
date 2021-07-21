@@ -1,6 +1,7 @@
 package com.bitsvalley.micro.services;
 
 import com.bitsvalley.micro.domain.*;
+import com.bitsvalley.micro.repositories.CallCenterRepository;
 import com.bitsvalley.micro.repositories.SavingAccountTypeRepository;
 import com.bitsvalley.micro.repositories.UserRepository;
 import com.bitsvalley.micro.domain.SavingAccountType;
@@ -12,6 +13,10 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.*;
 
+/**
+ * @author Fru Chifen
+ * 11.06.2021
+ */
 @Service
 public class UserService {
 
@@ -20,6 +25,9 @@ public class UserService {
 
     @Autowired
     private UserRoleService userRoleService;
+
+    @Autowired
+    private CallCenterRepository callCenterRepository;
 
     @Autowired
     private SavingAccountTypeRepository savingAccountTypeRepository;
@@ -43,6 +51,15 @@ public class UserService {
         user.setAccountLocked(false);
         insureRolesExists();
         User save = userRepository.save(user);
+
+        // - Update callcenter
+        CallCenter cc = new CallCenter();
+        cc.setUserName(user.getUserName());
+        cc.setDate(new Date(System.currentTimeMillis()));
+        cc.setAccountHolderName(user.getFirstName() +", "+ user.getLastName());
+        cc.setNotes("Login account created by "+ user.getCreatedBy() + " on " + user.getCreated() );
+        callCenterRepository.save(cc);
+
         return save;
     }
 
