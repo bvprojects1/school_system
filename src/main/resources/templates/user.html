@@ -41,8 +41,8 @@
             <div class="row">
                 <div class="col-md-6 col-12 col-sm-5">
                     <div class="header-top-left">
-                        <a href="#" data-toggle="modal" data-target="#exampleModal"><i class="fas fa-sign-in-alt"></i>
-                            login</a>
+<!--                        <a href="#" data-toggle="modal" data-target="#exampleModal"><i class="fas fa-sign-in-alt"></i>-->
+<!--                            login</a>-->
 <!--                        <a href="#" data-toggle="modal" data-target="#exampleModal1"><i class="far fa-user"></i>-->
 <!--                            register</a>-->
                     </div>
@@ -93,7 +93,7 @@
                                 <form action="#" th:action="@{/findUserByUserName}" method="post" >
                                     <nobr> Find:
                                         <input type="text" name="userName" placeholder="Username" value=""/>
-                                        <input type="submit" value="Submit"> </nobr>
+                                        <input style="font-size:12pt;color:white;background-color:green;border:2px solid #336600;padding:3px" type="submit" value="Submit"> </nobr>
                                 </form>
                             </li>
                             <li>
@@ -137,6 +137,19 @@
 
 
                             <div class="col-md-12">
+
+                                <label for="aUserRole">Choose a User Role:</label>
+                                <select  name="aUserRole" id="aUserRole">
+                                    <option value="ROLE_CUSTOMER">CUSTOMER</option>
+                                    <option value="ROLE_AGENT">AGENT</option>
+                                    <option value="ROLE_AUDITOR">AUDITOR</option>
+                                    <option value="ROLE_BOARD_MEMBER">BOARD MEMBER</option>
+                                    <option value="ROLE_MANAGER">MANAGER</option>
+                                    <option value="ROLE_ADMIN">ADMIN</option>
+                                </select>
+
+                                <br/>
+
                                 <input type="text" name="userName" th:field="*{userName}" id="userName"
                                        placeholder="Username" class="form-control" required>
                                 <br/>
@@ -209,17 +222,7 @@
                                     True<input th:field="*{accountLocked}" type="radio" id="true" name="accountLocked" value="true">
 
                                 <br/>
-                                <br/>
 
-                                <label for="aUserRole">Choose a User Role:</label>
-                                <select  name="aUserRole" id="aUserRole">
-                                   <option value="ROLE_CUSTOMER">CUSTOMER</option>
-                                    <option value="ROLE_AGENT">AGENT</option>
-                                    <option value="ROLE_AUDITOR">AUDITOR</option>
-                                    <option value="ROLE_BOARD_MEMBER">BOARD MEMBER</option>
-                                    <option value="ROLE_MANAGER">MANAGER</option>
-                                    <option value="ROLE_ADMIN">ADMIN</option>
-                                </select>
 
                                 <input type="submit" class="btn-block btn contact-btn" value="CREATE USER"/>
 

@@ -1,11 +1,11 @@
 package com.bitsvalley.micro.controllers;
 
+import com.bitsvalley.micro.domain.SavingAccount;
+import com.bitsvalley.micro.domain.SavingAccountTransaction;
 import com.bitsvalley.micro.domain.User;
 import com.bitsvalley.micro.domain.UserRole;
 import com.bitsvalley.micro.repositories.UserRepository;
-import com.bitsvalley.micro.services.SavingAccountService;
-import com.bitsvalley.micro.services.UserRoleService;
-import com.bitsvalley.micro.services.UserService;
+import com.bitsvalley.micro.services.*;
 import com.bitsvalley.micro.utils.BVMicroUtils;
 import com.bitsvalley.micro.webdomain.SavingBilanz;
 import com.bitsvalley.micro.webdomain.SavingBilanzList;
@@ -17,6 +17,8 @@ import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.*;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -36,10 +38,16 @@ public class UserController extends SuperController{
     private SavingAccountService savingAccountService;
 
     @Autowired
+    SavingAccountTransactionService savingAccountTransactionService;
+
+    @Autowired
     private UserRepository userRepository;
 
     @Autowired
     private UserRoleService userRoleService;
+
+    @Autowired
+    private PdfService pdfService;
 
     @InitBinder
     public void initBinder(WebDataBinder binder) {
@@ -87,15 +95,15 @@ public class UserController extends SuperController{
 
     private User getUserRoleFromRequest(User user, String aUserRoleInput) {
 
-        UserRole aUserRole = userRoleService.findUserRoleByName(com.bitsvalley.micro.utils.UserRole.CUSTOMER.name());
+        UserRole aUserRole = userRoleService.findUserRoleByName(aUserRoleInput);
         if(aUserRole==null){
             aUserRole = new UserRole();
             aUserRole.setName(aUserRoleInput);
             userRoleService.saveUserRole(aUserRole);
+            aUserRole = userRoleService.findUserRoleByName(aUserRoleInput);
         }
-        UserRole userRoleByName = userRoleService.findUserRoleByName(aUserRoleInput);
         ArrayList<UserRole> roles = new ArrayList<UserRole>();
-        roles.add(userRoleByName);
+        roles.add(aUserRole);
         user.setUserRole(roles);
         return user;
     }
@@ -122,13 +130,73 @@ public class UserController extends SuperController{
         model.put("name", getLoggedInUserName());
         request.getSession().setAttribute("savingBilanzList",savingBilanzByUserList);
         request.getSession().setAttribute(BVMicroUtils.CUSTOMER_IN_USE, user);
+        if( null == savingBilanzByUserList.getSavingBilanzList()
+                || savingBilanzByUserList.getSavingBilanzList().size() == 0 ){
+            return "userHomeNoAccount";
+        }
         return "userHome";
     }
 
-//            ArrayList<User> customerList = getAllCustomers();
-//            model.put("name", getLoggedinUserName());
-//            model.put("userList", customerList );
-//            return "customers";
-//        }
 
+
+    @GetMapping(value = "/createSavingAccountReceiptPdf/{id}")
+    public void savingReceiptPDF(@PathVariable("id") long id, ModelMap model, HttpServletRequest request, HttpServletResponse response) throws IOException {
+        response.setContentType("application/pdf");
+        response.setHeader("Content-disposition","attachment;filename="+ "statementPDF.pdf");
+        ByteArrayOutputStream byteArrayOutputStream = null;
+        ByteArrayInputStream byteArrayInputStream = null;
+        try {
+            OutputStream responseOutputStream = response.getOutputStream();
+            Optional<SavingAccountTransaction> savingAccountTransaction = savingAccountTransactionService.findById(new Long(id));
+            SavingAccountTransaction aSavingAccountTransaction = savingAccountTransaction.get();
+
+
+            String htmlInput = pdfService.generateTransactionReceiptPDF(aSavingAccountTransaction,"");
+
+            byteArrayOutputStream = pdfService.generatePDF(htmlInput, response);
+            response.setHeader("Content-Length",String.valueOf(byteArrayOutputStream.size()));
+            byteArrayInputStream = new ByteArrayInputStream(byteArrayOutputStream.toByteArray());
+            int bytes;
+            while ((bytes = byteArrayInputStream.read()) != -1) {
+                responseOutputStream.write(bytes);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            byteArrayInputStream.close();
+            byteArrayOutputStream.flush();
+            byteArrayOutputStream.close();
+        }
+        response.setHeader("X-Frame-Options", "SAMEORIGIN");
+    }
+
+
+    @GetMapping(value = "/statementPDF/{id}")
+    public void generateStatementPDF(@PathVariable("id") long id, ModelMap model, HttpServletRequest request, HttpServletResponse response) throws IOException {
+        response.setContentType("application/pdf");
+        response.setHeader("Content-disposition","attachment;filename="+ "statementPDF.pdf");
+        ByteArrayOutputStream byteArrayOutputStream = null;
+        ByteArrayInputStream byteArrayInputStream = null;
+        try {
+            OutputStream responseOutputStream = response.getOutputStream();
+            Optional<SavingAccount> savingAccount = savingAccountService.findById(new Long(id));
+            SavingBilanzList savingBilanzByUserList = savingAccountService.
+                    calculateAccountBilanz(savingAccount.get().getSavingAccountTransaction(),false);
+            String htmlInput = pdfService.generatePDFSavingBilanzList(savingBilanzByUserList, savingAccount.get(),"");
+            byteArrayOutputStream = pdfService.generatePDF(htmlInput, response);
+            response.setHeader("Content-Length",String.valueOf(byteArrayOutputStream.size()));
+            byteArrayInputStream = new ByteArrayInputStream(byteArrayOutputStream.toByteArray());
+            int bytes;
+            while ((bytes = byteArrayInputStream.read()) != -1) {
+                responseOutputStream.write(bytes);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            byteArrayInputStream.close();
+            byteArrayOutputStream.flush();
+            byteArrayOutputStream.close();
+        }
+        response.setHeader("X-Frame-Options", "SAMEORIGIN");
+    }
 }

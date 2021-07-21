@@ -159,37 +159,14 @@
             </td>
             <td>
             </td>
+        <tr>
+            <td colspan="8">
+                No Account exists
+            </td>
+    </tr>
         </tr>
 
-        <tr th:each="savingAccount : ${session.customerInUse.savingAccount}">
-            <td>
-                <p th:text="${savingAccount.savingAccountType.name}"/>
-            </td>
-            <td>
-                <p th:text="${savingAccount.accountNumber}"/>
-            </td>
-            <td>
-                <!-- <p th:text="${savingAccount.accountMinBalance}"/>-->
-                <p th:text="${#numbers.formatDecimal(savingAccount.accountMinBalance, 0, 'COMMA', 0, 'POINT')}">10.00 </p>
-            </td>
-            <td>
-                <p th:text="${savingAccount.interestRate}"/>
-            </td>
-            <td>
-                <p th:text="${savingAccount.accountMinBalanceLocked}"/>
-                <!--            ${#numbers.formatDecimal(abc.value, 1, 'DEFAULT', 2, 'DEFAULT')}-->
-            </td>
-            <td>
-                <p th:text="${#dates.format(savingAccount.createdDate, 'dd-MMM-yyyy')}">
-            </td>
-            <td>
-                <p th:text="${savingAccount.createdBy}"/>
-            </td>
-            <td>
-                <a href="#" th:href="@{/registerSavingAccountTransaction/{id}(id=${savingAccount.id})}"> Make payment/ withdrawal <img width="25px" th:src="@{/assets/images/add.png}"/> </a><br/>
-                <a href="#" th:href="@{/showSavingBilanz/{id}(id=${session.customerInUse.id})}"> Show Savings interest</a>
-            </td>
-        </tr>
+
     </table>
 
     <br/> <br/> <br/> <br/>

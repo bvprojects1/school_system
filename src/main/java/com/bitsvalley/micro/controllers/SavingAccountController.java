@@ -4,6 +4,7 @@ import com.bitsvalley.micro.domain.SavingAccount;
 import com.bitsvalley.micro.domain.SavingAccountTransaction;
 import com.bitsvalley.micro.domain.SavingAccountType;
 import com.bitsvalley.micro.domain.User;
+import com.bitsvalley.micro.services.PdfService;
 import com.bitsvalley.micro.services.SavingAccountService;
 import com.bitsvalley.micro.services.SavingAccountTypeService;
 import com.bitsvalley.micro.services.UserService;
@@ -18,6 +19,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -39,6 +45,9 @@ public class SavingAccountController extends SuperController{
 
     @Autowired
     SavingAccountTypeService savingAccountTypeService;
+
+    @Autowired
+    PdfService pdfService;
 
     @GetMapping(value = "/registerSavingAccount")
     public String registerSaving(ModelMap model, HttpServletRequest request) {
@@ -77,6 +86,52 @@ public class SavingAccountController extends SuperController{
 
         return "savingBilanzNoInterest";
     }
+
+
+    @GetMapping(value = "/printSavingAccountDetails/{id}")
+    public String printSavingAccountDetails(@PathVariable("id") long id, ModelMap model,
+                  @ModelAttribute("savingAccountTransaction") SavingAccountTransaction savingAccountTransaction,
+                  HttpServletRequest request, HttpServletResponse response) throws IOException {
+        String username = getLoggedInUserName();
+        Optional<SavingAccount> savingAccount = savingAccountService.findById(new Long(id));
+        SavingBilanzList savingBilanzByUserList = savingAccountService.
+                calculateAccountBilanz(savingAccount.get().getSavingAccountTransaction(),false);
+        String htmlInput =    null;
+//                pdfService.generatePDFSavingBilanzList(savingBilanzByUserList, username);
+
+        response.setContentType("application/pdf");
+        response.setHeader("Content-disposition","attachment;filename="+ "statementPDF.pdf");
+        ByteArrayOutputStream byteArrayOutputStream = null;
+        ByteArrayInputStream byteArrayInputStream = null;
+        try {
+            OutputStream responseOutputStream = response.getOutputStream();
+            byteArrayOutputStream = pdfService.generatePDF(htmlInput, response);
+            byteArrayInputStream = new ByteArrayInputStream(byteArrayOutputStream.toByteArray());
+            int bytes;
+            while ((bytes = byteArrayInputStream.read()) != -1) {
+                responseOutputStream.write(bytes);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            byteArrayInputStream.close();
+            byteArrayOutputStream.flush();
+            byteArrayOutputStream.close();
+        }
+        response.setHeader("X-Frame-Options", "SAMEORIGIN");
+        return "userHome";
+
+
+//        model.put("name", getLoggedInUserName());
+//        model.put("savingBilanzList", savingBilanzByUserList);
+//
+//        savingAccountTransaction.setSavingAccount(savingAccount.get());
+//        model.put("savingAccountTransaction", savingAccountTransaction);
+//
+//        return "savingBilanzNoInterest";
+    }
+
+
 
 
     @PostMapping(value = "/registerSavingAccountTransactionForm")

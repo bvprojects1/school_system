@@ -20,7 +20,11 @@ public class SavingAccountTransaction {
     private int savingAmount;
     private String notes;
     private String modeOfPayment;
-    
+
+    public long getId() {
+        return id;
+    }
+
     @ManyToOne
     private SavingAccount savingAccount;
 

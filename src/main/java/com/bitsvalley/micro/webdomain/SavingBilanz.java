@@ -18,6 +18,15 @@ public class SavingBilanz {
     String minimumBalance;
     String locked;
     String createdBy;
+    String id;
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
 
     public String getCurrentBalance() {
         return currentBalance;

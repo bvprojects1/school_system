@@ -82,11 +82,11 @@
                                         <li><a href="blank.html">Blank Page</a></li>
                                     </ul>
                                 </li>
-                                <li>
+                                <li th:if="${#authorization.expression('hasAnyAuthority(''ROLE_AGENT'')')} OR ${#authorization.expression('hasAnyAuthority(''ROLE_MANAGER'')')}">
                                     <form action="#" th:action="@{/findUserByUserName}" method="post" >
                                         <nobr> Find:
                                             <input type="text" name="userName" placeholder="Username" value=""/>
-                                            <input type="submit" value="Submit"> </nobr>
+                                            <input style="font-size:12pt;color:white;background-color:green;border:2px solid #336600;padding:3px" type="submit" value="Submit"> </nobr>
                                     </form>
                                 </li>
                                 <li>
@@ -103,14 +103,14 @@
     </header>
     <!--Header area end-->
 
-
+    <br/>
     <br/>
 
 <!--    <span sec:authentication="principal.authorities"></span>-->
 
 <!--   <div th:if="${#authorization.expression('hasAnyAuthority(''ROLE_AGENT'')')}">-->
 <!--         3. User has authority AGENT.-->
-<!--       </div>-->
+<!--   </div>-->
 
     <!--Service area start-->
     <section class="service-area-start space">
@@ -120,7 +120,7 @@
             <div class="container">
                 <div class="row">
 <!--                   <div class="col-md-6 col-lg-4">-->
-                    <div th:if="${#authorization.expression('hasAnyAuthority(''ROLE_AGENT'')')} OR ${#authorization.expression('hasAnyAuthority(''ROLE_MANAGER'')')}" class="col-md-6 col-lg-4">
+                    <div th:if="${#authorization.expression('hasAnyAuthority(''ROLE_CUSTOMER'')')} OR ${#authorization.expression('hasAnyAuthority(''ROLE_MANAGER'')')} OR ${#authorization.expression('hasAnyAuthority(''ROLE_ADMIN'')')} OR ${#authorization.expression('hasAnyAuthority(''ROLE_AGENT'')')} " class="col-md-6 col-lg-4">
                        <div class="single-choosen-content text-center single-service-content box-pad">
                             <a href="/findAllCustomers"><i class="far fa-user"></i></a>
 
@@ -131,7 +131,7 @@
                         </div>
                     </div>
                     <!--Single service area end-->
-                    <div class="col-md-6 col-lg-4">
+                    <div th:if="${#authorization.expression('hasAnyAuthority(''ROLE_MANAGER'')')} OR ${#authorization.expression('hasAnyAuthority(''ROLE_AGENT'')')}" class="col-md-6 col-lg-4">
                         <div class="single-choosen-content text-center single-service-content box-pad">
                             <i class="fas fa-piggy-bank"></i>
                             <h4>SAVINGS</h4>
@@ -142,7 +142,7 @@
                         </div>
                     </div>
                     <!--Single service area end-->
-                    <div class="col-md-6 col-lg-4">
+                    <div th:if="${#authorization.expression('hasAnyAuthority(''ROLE_MANAGER'')')} OR ${#authorization.expression('hasAnyAuthority(''ROLE_AGENT'')')}" class="col-md-6 col-lg-4">
                         <div class="single-choosen-content text-center single-service-content box-pad">
                             <i class="fas fa-hand-holding-usd"></i>
                             <h4>LOANS</h4>
@@ -152,7 +152,7 @@
                         </div>
                     </div>
                     <!--Single service area end-->
-                    <div class="col-md-6 col-lg-4">
+                    <div th:if="${#authorization.expression('hasAnyAuthority(''ROLE_MANAGER'')')} OR ${#authorization.expression('hasAnyAuthority(''ROLE_AGENT'')')}" class="col-md-6 col-lg-4">
                         <div class="single-choosen-content text-center single-service-content box-pad">
                             <i class="fas fa-landmark"></i>
                             <h4>WITHDRAWAL</h4>
@@ -162,7 +162,7 @@
                         </div>
                     </div>
                     <!--Single service area end-->
-                    <div class="col-md-6 col-lg-4">
+                    <div th:if="${#authorization.expression('hasAnyAuthority(''ROLE_MANAGER'')')} OR ${#authorization.expression('hasAnyAuthority(''ROLE_AGENT'')')}" class="col-md-6 col-lg-4">
                         <div class="single-choosen-content text-center single-service-content box-pad">
                             <i class="fas fa-umbrella"></i>
                             <h4>RETIREMENT SAVINGS</h4>
@@ -172,7 +172,7 @@
                         </div>
                     </div>
                     <!--Single service area end-->
-                    <div class="col-md-6 col-lg-4">
+                    <div th:if="${#authorization.expression('hasAnyAuthority(''ROLE_MANAGER'')')} OR ${#authorization.expression('hasAnyAuthority(''ROLE_AGENT'')')}" class="col-md-6 col-lg-4">
                         <div class="single-choosen-content text-center single-service-content box-pad">
                             <i class="fas fa-ethernet"></i>
                             <h4>LOCATION/ BRANCHES</h4>

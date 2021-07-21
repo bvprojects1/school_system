@@ -78,7 +78,7 @@
                             <form action="#" th:action="@{/findUserByUserName}" method="post" >
                                 <nobr> Find:
                                     <input type="text" name="userName" placeholder="Username" value=""/>
-                                    <input type="submit" value="Submit"> </nobr>
+                                    <input style="font-size:12pt;color:white;background-color:green;border:2px solid #336600;padding:3px" type="submit" value="Submit"> </nobr>
                             </form>
                         </li>
                         <li>
@@ -122,7 +122,6 @@
             </th>
             <th>
                 Account holder
-            </th>
         </tr>
         <tr>
             <td>
@@ -149,9 +148,10 @@
                 <option value="ORANGE MONEY">ORANGE MONEY</option>
                 <option value="TRANSFER">TRANSFER</option>
                 <option value="RECEIPT">RECEIPT</option>
-                <option value="OTHER">OTHEddddR</option>
+                <option value="OTHER">OTHER</option>
             </select></td>
-                <td colspan="2"><label><b> Notes:</b></label> <input type="text" th:field="*{notes}"/></td>  <td><input type="hidden" th:value="${savingAccountTransaction.savingAccount.id}" th:attr="name='savingAccountId'"/><button type="submit" class="btn btn-success">Save Payment</button></td></tr>
+                <td colspan="2"><label><b> Notes:</b></label> <textarea  id="notes" rows="3" cols="30" th:field="*{notes}">
+                    </textarea> </td>  <td><input type="hidden" th:value="${savingAccountTransaction.savingAccount.id}" th:attr="name='savingAccountId'"/><button type="submit" class="btn btn-success">Save Payment</button></td></tr>
 
 
         </table>
