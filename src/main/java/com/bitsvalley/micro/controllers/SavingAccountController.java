@@ -4,11 +4,13 @@ import com.bitsvalley.micro.domain.SavingAccount;
 import com.bitsvalley.micro.domain.SavingAccountTransaction;
 import com.bitsvalley.micro.domain.SavingAccountType;
 import com.bitsvalley.micro.domain.User;
+import com.bitsvalley.micro.repositories.UserRepository;
 import com.bitsvalley.micro.services.PdfService;
 import com.bitsvalley.micro.services.SavingAccountService;
 import com.bitsvalley.micro.services.SavingAccountTypeService;
 import com.bitsvalley.micro.services.UserService;
 import com.bitsvalley.micro.utils.BVMicroUtils;
+import com.bitsvalley.micro.webdomain.SavingBilanz;
 import com.bitsvalley.micro.webdomain.SavingBilanzList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -45,6 +47,9 @@ public class SavingAccountController extends SuperController{
 
     @Autowired
     SavingAccountTypeService savingAccountTypeService;
+
+    @Autowired
+    UserRepository userRepository;
 
     @Autowired
     PdfService pdfService;
@@ -156,9 +161,12 @@ public class SavingAccountController extends SuperController{
         SavingBilanzList savingBilanzByUserList = savingAccountService.calculateAccountBilanz(savingAccount.get().getSavingAccountTransaction(),false);
         model.put("name", getLoggedInUserName());
         model.put("savingBilanzList", savingBilanzByUserList);
-
+        request.getSession().setAttribute("savingBilanzList",savingBilanzByUserList);
+        Optional<User> byId = userRepository.findById(user.getId());
+        request.getSession().setAttribute(BVMicroUtils.CUSTOMER_IN_USE, byId.get());
         savingAccountTransaction.setSavingAccount(savingAccount.get());
         model.put("savingAccountTransaction", savingAccountTransaction);
+
 
         return "savingBilanzNoInterest";
 

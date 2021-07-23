@@ -7,6 +7,7 @@ import com.bitsvalley.micro.utils.BVMicroUtils;
 import com.bitsvalley.micro.webdomain.SavingBilanz;
 import com.bitsvalley.micro.webdomain.SavingBilanzList;
 import com.lowagie.text.pdf.PdfDocument;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
 import org.xhtmlrenderer.pdf.ITextRenderer;
 
@@ -25,6 +26,8 @@ public class PdfService {
 
 
     public String generateTransactionReceiptPDF(SavingAccountTransaction savingAccountTransaction, String logoFilePath) {
+        ClassPathResource classPathResource = new ClassPathResource("assets/image/logo.jpeg");
+
         String savingBilanzNoInterest = "<html><head>" +
                 "</head><body><br/><br/>" +
                 "    <table width=\"100%\">" +
@@ -64,7 +67,7 @@ public class PdfService {
                 "        </table>" +
                 "<br/><br/><br/><br/><br/>" +
                 "       <table><tr><td></td>" +
-                "       <td>--------------------------------<br/>Bamenda Branch, N W Region</td>" +
+                "       <td>Agent Signature: --------------------------------<br/>Bamenda Branch, N W Region</td>" +
                 "       <td></td>" +
                 "       <td></td>" +
                 "       <td></td>" +
@@ -76,11 +79,11 @@ public class PdfService {
     public String generatePDFSavingBilanzList(SavingBilanzList savingBilanzList, SavingAccount savingAccount, String logoFilePath) {
         String savingBilanzNoInterest = "<html><head>" +
                 "</head><body><br/><br/>" +
-                "    <table width=\"100%\">" +
+                "    <table border=\"0\" width=\"100%\">" +
                 "        <tr><td colspan=\"3\"> <img width=\"50px\" src=\"/Users/frusamachifen/bv_micro_workspace/bv_micro/src/main/webapp/assets/images/logo.jpeg\"/> </td><td>Customer Name:<b>"+savingAccount.getUser().getFirstName() +" "+savingAccount.getUser().getLastName() +"</b></td><td>Account No. <b>"+savingAccount.getAccountNumber()+"</b></td></tr><tr>" +
-                "        <td><font size=\"6\"><b>"+savingAccount.getUser().getUserName()+"</b>\'s </font>" +
+                "        <td><font size=\"6\"><b><br/>"+savingAccount.getUser().getUserName()+"</b>\'s </font>" +
                 "        </td>\n" +
-                "        <td> Saving <br/><font color=\"green\" size=\"6px\"><b>"+savingBilanzList.getTotalSaving()+"</b></font></td>\n" +
+                "        <td> Saving <br/><font color=\"green\"><b>"+savingBilanzList.getTotalSaving()+"</b></font></td>\n" +
                 "        <td> Current<br/> <font size=\"6\"> 0</font></td>\n" +
                 "        <td> Loan<br/> <font size=\"6\"> 0</font></td>\n" +
                 "        <td>Retirement saving <br/> <font size=\"6\" color=\"#A57C00\">0 </font></td>\n" +
@@ -99,8 +102,8 @@ public class PdfService {
                     "                <td></td>\n" +
                     "                <td></td>\n" +
                     "                <td></td>\n" +
-                    "                <td>Total Saved</td>\n" +
-                    "                <td><font color=\"green\" size=\"10px\"><b>" +savingBilanzList.getTotalSaving()+"</b></font></td>\n" +
+                    "                <td>Total Saved:<font size=\"10px\"><b>" +savingBilanzList.getTotalSaving()+"</b></font></td>\n" +
+                    "                <td></td>\n" +
                     "            </tr>"+
                     "        </table>" +
                 "       <table><tr><td></td>" +

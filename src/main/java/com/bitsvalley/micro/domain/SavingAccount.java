@@ -21,6 +21,7 @@ public class SavingAccount {
     private Date createdDate;
     private Date lastUpdatedDate;
     private boolean accountMinBalanceLocked;
+    private boolean defaultedPayment;
     private int minimumPayment;
     private String intervalOfSaving;
 
@@ -38,6 +39,14 @@ public class SavingAccount {
 
     private String notes;
     private double accountMinBalance;
+
+    public boolean isDefaultedPayment() {
+        return defaultedPayment;
+    }
+
+    public void setDefaultedPayment(boolean defaultedPayment) {
+        this.defaultedPayment = defaultedPayment;
+    }
 
     public long getId() {
         return id;

@@ -18,6 +18,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * @author Fru Chifen
@@ -57,6 +58,8 @@ public class WelcomeController extends SuperController{
     public String welcome(ModelMap model, HttpServletRequest request) {
         model.put("name", getLoggedInUserName());
         User aUser = (User)request.getSession().getAttribute(BVMicroUtils.CUSTOMER_IN_USE);
+        User byUserName = userRepository.findByUserName(getLoggedInUserName());
+        request.getSession().setAttribute(BVMicroUtils.CUSTOMER_IN_USE, byUserName);
         if(null != aUser){
             SavingBilanzList savingBilanzByUserList = savingAccountService.getSavingBilanzByUser(aUser, false);
             Collections.reverse(savingBilanzByUserList.getSavingBilanzList()); //TODO: reverse during search?
