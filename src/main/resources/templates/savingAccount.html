@@ -25,6 +25,16 @@
     <link rel="stylesheet" href="assets/css/style.css">
     <!-- Responsive -->
     <link rel="stylesheet" href="assets/css/responsive.css">
+
+    <style>
+        table, th, td {
+        }
+        th, td {
+          padding: 2px;
+        }
+        tr:nth-child(even) {background-color: #e6b486;}
+    </style>
+
 </head>
 
 <body>
@@ -130,33 +140,16 @@
     </div>
     <!--Project title area end-->
 
-    <div class="contact-from-area">
-        <div class="container">
-            <div class="row">
-                <div class="offset-md-2 col-md-8">
-                    <form action="#" th:action="@{/registerSavingAccountForm}" method="post" th:object="${savingAccount}" >
-                        <label> Minimum balance:</label>
-                        <input type="number" th:field="*{accountMinBalance}"/> <br/>
-                        <label> Interest Rate:</label>
-                        <input type="number" th:field="*{interestRate}"/> <br/>
+<!--    <div class="contact-from-area">-->
+<!--        <div class="container">-->
+<!--            <div class="row">-->
+<!--                <div class="offset-md-2 col-md-8">-->
 
-                        <label> Minimum Payment:</label>
-                        <input type="number" th:field="*{minimumPayment}"/> <br/>
-
-                        <label for="intervalOfSaving">Saving Interval:</label>
-
-                        <select name="intervalOfSaving" id="intervalOfSaving">
-                            <option value="01 DAY">01 DAY</option>
-                            <option value="15 DAY">15 DAY</option>
-                            <option value="OTHER">OTHER</option>
-                        </select>
-                        <br/>
-                        <label> Notes:</label>
-                        <textarea  id="notes" rows="3" cols="30" th:field="*{notes}">
-                        </textarea>
-                        <br/>
-                        <label> Savings Type:</label>
-                        <select name="savingType" id="savingType">
+                    <form action="#" th:action="@{/registerSavingAccountForm}" method="post" th:object="${savingAccount}">
+                        <table class="center" width="100%"><tr>
+                            <td width="33%"></td>
+                        <td><label> Savings Type:</label></td>
+                        <td><select name="savingType" id="savingType">
                             <option value="SCHOOL SAVING">SCHOOL</option>
                             <option value="VACATION SAVING">VACATION</option>
                             <option value="FAMILY SAVING">FAMILY</option>
@@ -166,14 +159,38 @@
                             <option value="MONTHLY SAVING">MONTHLY</option>
                             <option value="YEARLY SAVING">YEARLY</option>
                             <option value="OTHER">OTHER</option>
-                        </select>
-                        <br/>
-                        <button type="submit" class="btn btn-success">Create Account</button>
+                        </select></td></tr>
+                        <tr><td width="33%"></td><td width="10%"><label> Minimum balance:</label></td>
+                            <td><label> <input type="number" th:field="*{accountMinBalance}"/></label></td>
+                        </tr>
+                            <tr><td width="33%"></td><td width="10%"><label> Interest Rate:</label></td>
+                                <td><label> <input type="number" th:field="*{interestRate}"/></label></td>
+                            </tr>
+
+                            <tr><td width="33%"></td><td width="10%"><label> Minimum Payment:</label></td>
+                                <td><input type="number" th:field="*{minimumPayment}"/></td>
+                            </tr>
+
+                            <tr><td width="33%"></td><td width="10%"><label for="intervalOfSaving">Saving Interval:</label></td>
+                                <td><select name="intervalOfSaving" id="intervalOfSaving">
+                                    <option value="01 DAY">01 DAY</option>
+                                    <option value="15 DAY">15 DAY</option>
+                                    <option value="OTHER">OTHER</option>
+                                </select></td>
+                            </tr>
+
+                            <tr><td width="33%"></td><td width="10%"><label> Notes:</label></td>
+                                <td><textarea  id="notes" rows="3" cols="30" th:field="*{notes}">
+                        </textarea></td></tr>
+
+                        <tr><td width="33%"></td><td width="10%"></td><td>
+                            <button type="submit" class="btn btn-success">Create Account</button>
+                        </td></tr></table>
                     </form>
-                </div>
-            </div>
-        </div>
-    </div>
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
 </section>
 
 <!--Footer area start-->

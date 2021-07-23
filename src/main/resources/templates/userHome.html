@@ -38,14 +38,14 @@
         }
         table, th, td {
           align: center;
-          font-color: #212529;
+          font-color: #9e4a17;
         }
         table.center {
           margin-left: 50px;
           margin-right: 50px;
           text-align: center;
         }
-        tr:nth-child(even) {background-color:  #6c757d;}
+        tr:nth-child(even) {background-color: #e6b486;}
     </style>
 
 </head>
@@ -133,14 +133,17 @@
     <br/>
 
     &nbsp;
-    <table border="1" class="center" width="90%">
-        <tr><td colspan="8"><font size="5px" color="#738980"> <b>SAVING ACCOUNT</b> </font><a href="#" th:href="@{/registerSavingAccount}"> <img width="25px" th:src="@{/assets/images/add.png}"/></a><br/></span></td></tr>
+    <table border="0" class="center" width="90%">
+        <tr><td colspan="9"><font size="5px" color="#738980"> <b>SAVING ACCOUNT</b> </font><a href="#" th:href="@{/registerSavingAccount}"> <img width="25px" th:src="@{/assets/images/add.png}"/></a><br/></span></td></tr>
         <tr>
             <td>
                 Acc Type
             </td>
             <td>
                 Acc No.
+            </td>
+            <td>
+                Description
             </td>
             <td>
                 Minimum Balance
@@ -166,7 +169,10 @@
                 <p th:text="${savingAccount.savingAccountType.name}"/>
             </td>
             <td>
-                <p th:text="${savingAccount.accountNumber}"/>
+                <font color="red"><span th:if="${savingAccount.defaultedPayment}"><b>**</b></span></font>  <p th:text="${savingAccount.accountNumber}"/>
+            </td>
+            <td>
+                <p th:text="${savingAccount.notes}"/>
             </td>
             <td>
                 <!-- <p th:text="${savingAccount.accountMinBalance}"/>-->
@@ -291,37 +297,6 @@
     </div>
 </div>
 <br/>
-<!--Blog area content end-->
-
-<!--&lt;!&ndash;About area start&ndash;&gt;-->
-<!--<section class="about-area-start df-bg">-->
-<!--    <div class="container-fluid">-->
-<!--        <div class="row">-->
-<!--            &lt;!&ndash;About-left area end&ndash;&gt;-->
-<!--            <div class="col-md-6">-->
-<!--                <div class="about-right-area-content">-->
-<!--                    <h3>Our Product Recommendations</h3>-->
-<!--                    <ul class="about-lists">-->
-<!--                        <li><i class="far fa-check-circle mr-3"></i> Consectetur adipisicing elit.</li>-->
-<!--                        <li><i class="far fa-check-circle mr-3"></i> Animi dolorum minus harum reiciendis.</li>-->
-<!--                        <li><i class="far fa-check-circle mr-3"></i> Voluptatibus quis sunt in repellendus.</li>-->
-<!--                        <li><i class="far fa-check-circle mr-3"></i> Pero quod eos, iusto blanditiis culpa.</li>-->
-<!--                        <li><i class="far fa-check-circle mr-3"></i> Dignissimos eum ipsam vitae?</li>-->
-<!--                    </ul>-->
-
-<!--                    <p class="mt-3">If you are going to use a passage of Lorem Ipsum, you need to be sure there isn't-->
-<!--                        anything embarrassing hidden in the middle of text. All the Lorem Ipsum generators on the-->
-<!--                        Internet tend to repeat predefined chunks as necessary,-->
-<!--                        making this the first true generator on the Internet.</p>-->
-<!--                    <a href="#" class="df-sq-btn active">read more</a>-->
-<!--                </div>-->
-<!--            </div>-->
-<!--            &lt;!&ndash;About right area end&ndash;&gt;-->
-<!--        </div>-->
-<!--    </div>-->
-<!--</section>-->
-<!--&lt;!&ndash;About area end&ndash;&gt;-->
-
 
 <!--Footer area start-->
 <footer class="footer-area-start">

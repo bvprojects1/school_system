@@ -63,15 +63,15 @@ public class SavingAccountTransactionService extends SuperService{
 //    }
 
 
-    private com.bitsvalley.micro.domain.SavingAccountType insureAccountSavingTypeExists() {
-        com.bitsvalley.micro.domain.SavingAccountType savingAccountType = savingAccountTypeRepository.findByName(com.bitsvalley.micro.utils.SavingAccountType.MONTHLY_SAVING.name());
-        if( null == savingAccountType ){
-            savingAccountType = new com.bitsvalley.micro.domain.SavingAccountType();
-            savingAccountType.setName(com.bitsvalley.micro.utils.SavingAccountType.MONTHLY_SAVING.name());
-            savingAccountTypeRepository.save(savingAccountType);
-            return savingAccountType;
-        }
-        return savingAccountType;
-    }
+//    private com.bitsvalley.micro.domain.SavingAccountType insureAccountSavingTypeExists() {
+//        com.bitsvalley.micro.domain.SavingAccountType savingAccountType = savingAccountTypeRepository.findByName(com.bitsvalley.micro.utils.SavingAccountType.MONTHLY_SAVING.name());
+//        if( null == savingAccountType ){
+//            savingAccountType = new com.bitsvalley.micro.domain.SavingAccountType();
+//            savingAccountType.setName(com.bitsvalley.micro.utils.SavingAccountType.MONTHLY_SAVING.name());
+//            savingAccountTypeRepository.save(savingAccountType);
+//            return savingAccountType;
+//        }
+//        return savingAccountType;
+//    }
 
 }

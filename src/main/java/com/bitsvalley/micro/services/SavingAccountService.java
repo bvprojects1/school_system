@@ -8,11 +8,11 @@ import com.bitsvalley.micro.webdomain.SavingBilanzList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.text.NumberFormat;
 import java.time.Duration;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.YearMonth;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
 
@@ -53,11 +53,6 @@ public class SavingAccountService extends SuperService{
 
     public void createSavingAccount(SavingAccount savingAccount, User user) {
 
-//        User user = userService.findUserByUserName("admin");
-//        request.getSession().getAttribute("customerInUse");
-//        NumberFormat formatter = NumberFormat.getCurrencyInstance(new Locale("en", "CM"));
-//        savingAccount.setAccountMinBalance(new Double(formatter.format(savingAccount.getAccountMinBalance())));
-
         savingAccount.setAccountNumber(BVMicroUtils.getSaltString()); //Collision
         savingAccount.setCreatedBy(getLoggedInUserName());
         savingAccount.setCreatedDate(new Date(System.currentTimeMillis()));
@@ -93,17 +88,6 @@ public class SavingAccountService extends SuperService{
 //        savingAccountRepository.get(savingAccountTransaction);
     }
 
-
-//    private com.bitsvalley.micro.domain.SavingAccountType insureAccountSavingTypeExists() {
-//        com.bitsvalley.micro.domain.SavingAccountType savingAccountType = savingAccountTypeRepository.findByName(com.bitsvalley.micro.utils.SavingAccountType.MONTHLY_SAVING.name());
-//        if( null == savingAccountType ){
-//            savingAccountType = new com.bitsvalley.micro.domain.SavingAccountType();
-//            savingAccountType.setName(com.bitsvalley.micro.utils.SavingAccountType.MONTHLY_SAVING.name());
-//            savingAccountTypeRepository.save(savingAccountType);
-//            return savingAccountType;
-//        }
-//        return savingAccountType;
-//    }
 
     public Optional<SavingAccount> findById(long id){
         Optional<SavingAccount> savingAccount = savingAccountRepository.findById(id);
@@ -173,9 +157,13 @@ public class SavingAccountService extends SuperService{
         for (int i = 0; i < users.size(); i++) {
             List<SavingAccount> savingAccounts = users.get(i).getSavingAccount();
 //            savingBilanzsList.setSavingsAccount(savingAccounts);
+
             List<SavingAccountTransaction> savingAccountTransactions = new ArrayList<SavingAccountTransaction>();
             for (int j = 0; j < savingAccounts.size(); j++) {
-                savingAccountTransactions = savingAccounts.get(j).getSavingAccountTransaction();
+                SavingAccount savingAccount = savingAccounts.get(j);
+                boolean defaultedPayments = checkDefaultLogic(savingAccount);
+                savingAccount.setDefaultedPayment(defaultedPayments); //TODO:defaultLogic
+                savingAccountTransactions = savingAccount.getSavingAccountTransaction();
                 for (int k = 0; k < savingAccountTransactions.size(); k++) {
                     final SavingAccountTransaction savingAccountTransaction = savingAccountTransactions.get(k);
                     if(savingAccountTransaction.getSavingAmount() <= 0)
@@ -225,6 +213,8 @@ public class SavingAccountService extends SuperService{
         savingBilanz.setAccountNumber(savingAccountTransaction.getSavingAccount().getAccountNumber());
         savingBilanz.setNoOfDays(calculateNoOfDays(savingAccountTransaction.getCreatedDate()));
         savingBilanz.setModeOfPayment(savingAccountTransaction.getModeOfPayment());
+
+
         if(calculateInterest){
             savingBilanz.setInterestAccrued(formatCurrency(calculateInterestAccruedMonthCompounded(savingAccountTransaction)));
         }
@@ -260,6 +250,36 @@ public class SavingAccountService extends SuperService{
         Duration diff = Duration.between(cretedDateInput, LocalDateTime.now() );
         noOfMonths = diff.toDays() / 30;
         return Math.floor(noOfMonths);
+    }
+
+    public boolean checkDefaultLogic(SavingAccount savingAccount){
+
+        if(savingAccount.getAccountSavingType().getName().equals("MONTHLY SAVING")){
+            List<SavingAccountTransaction> savingAccountTransactionList = savingAccount.getSavingAccountTransaction();
+
+            Date createdDate = savingAccount.getCreatedDate();
+            Date currentDate = new Date(System.currentTimeMillis());
+
+            Calendar currentDateCal = GregorianCalendar.getInstance();
+            currentDateCal.setTime(currentDate);
+
+            Calendar createdCalenderCal = GregorianCalendar.getInstance();
+            createdCalenderCal.setTime(createdDate);
+
+            long monthsBetween = ChronoUnit.MONTHS.between(
+                    YearMonth.from(LocalDate.parse(createdCalenderCal.get(GregorianCalendar.YEAR)+"-"+padding(createdCalenderCal.get(GregorianCalendar.MONTH))+"-"+padding(createdCalenderCal.get(GregorianCalendar.DAY_OF_MONTH)))),
+                    YearMonth.from(LocalDate.parse(currentDateCal.get(GregorianCalendar.YEAR)+"-"+padding(currentDateCal.get(GregorianCalendar.MONTH))+"-"+padding(currentDateCal.get(GregorianCalendar.DAY_OF_MONTH)))));
+
+            if (monthsBetween >= savingAccountTransactionList.size())
+                return true;
+        }
+        return false;
+    }
+
+    private String padding(int i) {
+        if (i < 10)
+            return ""+0+1;
+        return ""+i;
     }
 
 }
