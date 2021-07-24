@@ -46,6 +46,9 @@
           text-align: center;
         }
         tr:nth-child(even) {background-color: #e6b486;}
+
+
+
     </style>
 
 </head>
@@ -60,7 +63,8 @@
             <div class="row">
                 <div class="col-md-6 col-12 col-sm-5">
                     <div class="header-top-left">
-                        <a href="#" data-toggle="modal" data-target="#exampleModal"><i class="fas fa-sign-in-alt"></i> login</a>
+                        <a href="#" data-toggle="modal" data-target="#exampleModal"><i class="fas fa-sign-in-alt"></i>
+                            login</a>
                         <!--                            <a href="#" data-toggle="modal" data-target="#exampleModal1"><i class="far fa-user"></i> register</a>-->
                     </div>
                 </div>
@@ -82,7 +86,10 @@
                 <div class="col-md-9 col-7 col-sm-7">
                     <nav class="main-menu-area">
                         <ul class="main-menu" id="mobile-menu">
-                            <li><a th:href="@{/welcome}" href="/welcome"> Customer Home</a></li>
+                            <li> Welcome
+                                <span sec:authentication="name"></span>,
+                            </li>
+                            <!--                            <li><a th:href="@{/welcome}" href="/welcome"> Customer Home</a></li>-->
                             <li><a th:href="@{/welcomeGlobal}" href="/Logout">PIPIDAF Home</a></li>
                             <li><a href="#">Accounts <i class="fas fa-angle-down"></i></a>
                                 <ul class="sub-menu">
@@ -97,13 +104,6 @@
                                     <li><a href="single.html">Withdrawals</a></li>
                                 </ul>
                             </li>
-<!--                            <li>-->
-<!--                                <form action="#" th:action="@{/findUserByUserName}" method="post" >-->
-<!--                                    <nobr> Find:-->
-<!--                                        <input type="text" name="userName" placeholder="Username" value=""/>-->
-<!--                                        <input type="submit" value="Submit"> </nobr>-->
-<!--                                </form>-->
-<!--                            </li>-->
                             <li>
                                 <a th:href="@{/logout}" href="/Logout"><i class="fas fa-sign-out-alt"></i>Logout</a>
                             </li>
@@ -121,20 +121,39 @@
 <section class="choosen-area-start space">
     <!-- Use this as a header after login-->
 
-    <table style="border:0px" class="center" width="100%"><tr> <td><font size="6"> <span style th:text="${session.customerInUse.userName}"/>'s </font><button type="submit" ><a href="#" th:href="@{/file/{userName}(userName=${session.customerInUse.userName})}">Upload I.D</a></button>
-        <br/>
-        <td><font color="#BF360C;" size="4"><h4>View Accounts</h4></font></td>
-        <td> Saving <br/> <font color="gray" size="4px"><div th:text="${session.savingBilanzList.totalSaving}"/></font></td>
-        <td> Current<br/> <font size="4px" color="gray"> 0</font></td>
-        <td> Loan<br/> <font size="4px" color="gray"> 0</font></td>
-        <td>Retirement saving <br/> <font size="4px" color="gray">0</font></b></td>
-    </tr></table>
+    <table style="border:0px" class="center" width="100%">
+        <tr>
+            <td><font size="3">Account Owner</font><br/><font size="4"> <span style
+                                                                              th:text="${session.customerInUse.userName}"/>
+            </font>
+                <button type="submit"><a href="#"
+                                         th:href="@{/file/{userName}(userName=${session.customerInUse.userName})}">Upload
+                    I.D</a></button>
+                <br/>
+            <td><font color="#BF360C;" size="4"><h4>View Accounts</h4></font></td>
+            <td> Saving <br/> <font color="gray" size="4px">
+                <div th:text="${session.savingBilanzList.totalSaving}"/>
+            </font></td>
+            <td> Current<br/> <font size="4px" color="gray"> 0</font></td>
+            <td> Loan<br/> <font size="4px" color="gray"> 0</font></td>
+            <td>Retirement saving <br/> <font size="4px" color="gray">0</font></b></td>
+        </tr>
+    </table>
     <!-- END -->
     <br/>
 
     &nbsp;
     <table border="0" class="center" width="90%">
-        <tr><td colspan="9"><font size="5px" color="#738980"> <b>SAVING ACCOUNT</b> </font><a href="#" th:href="@{/registerSavingAccount}"> <img width="25px" th:src="@{/assets/images/add.png}"/></a><br/></span></td></tr>
+        <tr>
+            <td colspan="9"><font size="5px" color="#738980"> <b>SAVING ACCOUNT</b> </font>
+                <div th:if="${createSavingAccountEligible}">
+                    <a href="#" th:href="@{/registerSavingAccount}">
+                        <img width="25px" th:src="@{/assets/images/add.png}"/>
+                    </a>
+                </div>
+                <br/>
+            </td>
+        </tr>
         <tr>
             <td>
                 Acc Type
@@ -169,14 +188,17 @@
                 <p th:text="${savingAccount.savingAccountType.name}"/>
             </td>
             <td>
-                <font color="red"><span th:if="${savingAccount.defaultedPayment}"><b>**</b></span></font>  <p th:text="${savingAccount.accountNumber}"/>
+                <a th:href="@{/callcenter/{id}(id=${savingAccount.accountNumber})}" href="/callcenter"><span
+                        th:if="${savingAccount.defaultedPayment}"><b><font size="6" color="red">**</font></b></span>
+                    <p th:text="${savingAccount.accountNumber}"/></a>
             </td>
             <td>
                 <p th:text="${savingAccount.notes}"/>
             </td>
             <td>
                 <!-- <p th:text="${savingAccount.accountMinBalance}"/>-->
-                <p th:text="${#numbers.formatDecimal(savingAccount.accountMinBalance, 0, 'COMMA', 0, 'POINT')}">10.00 </p>
+                <p th:text="${#numbers.formatDecimal(savingAccount.accountMinBalance, 0, 'COMMA', 0, 'POINT')}">
+                    10.00 </p>
             </td>
             <td>
                 <p th:text="${savingAccount.interestRate}"/>
@@ -186,14 +208,16 @@
                 <!--            ${#numbers.formatDecimal(abc.value, 1, 'DEFAULT', 2, 'DEFAULT')}-->
             </td>
             <td>
-                <p th:text="${#dates.format(savingAccount.createdDate, 'dd-MMM-yyyy')}">
+                <p th:text="${#dates.format(savingAccount.createdDate, 'dd-MMM-yyyy HH:mm')}">
             </td>
             <td>
                 <p th:text="${savingAccount.createdBy}"/>
             </td>
             <td>
-                <a href="#" th:href="@{/registerSavingAccountTransaction/{id}(id=${savingAccount.id})}"> Make payment/ withdrawal <img width="25px" th:src="@{/assets/images/add.png}"/> </a><br/>
-                <a href="#" th:href="@{/showSavingBilanz/{id}(id=${session.customerInUse.id})}"> Show Savings interest</a>
+                <a href="#" th:href="@{/registerSavingAccountTransaction/{id}(id=${savingAccount.id})}"> Make payment/
+                    withdrawal <img width="25px" th:src="@{/assets/images/add.png}"/> </a><br/>
+                <a href="#" th:href="@{/showSavingBilanz/{id}(id=${session.customerInUse.id})}"> Show Savings
+                    interest</a>
             </td>
         </tr>
     </table>
@@ -201,17 +225,27 @@
     <br/> <br/> <br/> <br/>
 
     <table border="1" class="center" width="90%">
-        <tr><td colspan="8"><font size="5px" color="#738980"> <b>CURRENT ACCOUNT</b> </font><a href="#"> <img width="25px" th:src="@{/assets/images/add.png}"/></a><br/></span></td></tr>
+        <tr>
+            <td colspan="8"><font size="5px" color="#738980"> <b>CURRENT ACCOUNT</b> </font><a href="#"> <img
+                    width="25px" th:src="@{/assets/images/add.png}"/></a><br/></span></td>
+        </tr>
     </table>
     &nbsp;
     <table border="1" class="center" width="90%">
-        <tr><td colspan="8"><font size="5px" color="#738980"> <b>LOAN ACCOUNT</b> </font><a href="#"> <img width="25px" th:src="@{/assets/images/add.png}"/></a><br/></span></td></tr>
+        <tr>
+            <td colspan="8"><font size="5px" color="#738980"> <b>LOAN ACCOUNT</b> </font><a href="#"> <img width="25px"
+                                                                                                           th:src="@{/assets/images/add.png}"/></a><br/></span>
+            </td>
+        </tr>
     </table>
 
     <br/>
 
     <table border="1" class="center" width="90%">
-        <tr><td colspan="8"><font size="5px" color="#738980"> <b>RETIREMENT SAVING ACCOUNT</b> </font><a href="#"> <img width="25px" th:src="@{/assets/images/add.png}"/></a><br/></span></td></tr>
+        <tr>
+            <td colspan="8"><font size="5px" color="#738980"> <b>RETIREMENT SAVING ACCOUNT</b> </font><a href="#"> <img
+                    width="25px" th:src="@{/assets/images/add.png}"/></a><br/></span></td>
+        </tr>
     </table>
 
 
@@ -347,13 +381,15 @@
                         <div class="media">
                             <i class="fab fa-twitter mr-3 fa-1x"></i>
                             <div class="media-body">
-                                <p>" Reprehenderit culpa aspernatur maiores natus impedit, veritatis cum ipsam ad illo assumenda earum non ut? Deleniti? "</p>
+                                <p>" Reprehenderit culpa aspernatur maiores natus impedit, veritatis cum ipsam ad illo
+                                    assumenda earum non ut? Deleniti? "</p>
                             </div>
                         </div>
                         <div class="media">
                             <i class="fab fa-twitter mr-3 fa-1x"></i>
                             <div class="media-body">
-                                <p>" Vitae tenetur iure possimus facilis, similique soluta reiciendis voluptatibus tempore? Fugiat. "</p>
+                                <p>" Vitae tenetur iure possimus facilis, similique soluta reiciendis voluptatibus
+                                    tempore? Fugiat. "</p>
                             </div>
                         </div>
                     </div>
@@ -400,7 +436,8 @@
                     <input type="email" name="email" id="email1" placeholder="Email" class="form-control mb-3">
 
                     <label for="password1">Password :</label>
-                    <input type="password" name="password" id="password1" placeholder="*************" class="form-control">
+                    <input type="password" name="password" id="password1" placeholder="*************"
+                           class="form-control">
 
                     <button type="submit" class=" mt-3 btn btn-primary text-uppercase text-light">Register</button>
                 </form>

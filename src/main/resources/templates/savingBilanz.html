@@ -58,7 +58,10 @@
                 <div class="col-md-9 col-7 col-sm-7">
                     <nav class="main-menu-area">
                         <ul class="main-menu" id="mobile-menu">
-                            <li><a th:href="@{/welcome}" href="/welcome"> Customer Home</a></li>
+                            <li>
+                                <a th:href="@{/logout}" href="/Logout"><i class="fas fa-sign-out-alt"></i>Logout</a>
+                            </li>
+<!--                            <li><a th:href="@{/welcome}" href="/welcome"> Customer Home</a></li>-->
                             <li><a th:href="@{/welcomeGlobal}" href="/Logout">PIPIDAF Home</a></li>
                             <li><a href="#">Accounts <i class="fas fa-angle-down"></i></a>
                                 <ul class="sub-menu">
@@ -80,9 +83,7 @@
                                         <input style="font-size:12pt;color:white;background-color:green;border:2px solid #336600;padding:3px" type="submit" value="Submit"> </nobr>
                                 </form>
                             </li>
-                            <li>
-                                <a th:href="@{/logout}" href="/Logout"><i class="fas fa-sign-out-alt"></i>Logout</a>
-                            </li>
+
                         </ul>
                     </nav>
                 </div>
@@ -95,7 +96,7 @@
 
 
     <table width="100%"><tr>
-        <td><font size="10"> <span style th:text="${session.customerInUse.userName}"/>'s </font><button type="submit" ><a href="#" th:href="@{/file/{userName}(userName=${session.customerInUse.userName})}">Upload I.D</a></button>
+        <td><font size="3">Account Owner</font><br/><font size="4"> <span style th:text="${session.customerInUse.userName}"/>'s </font><button type="submit" ><a href="#" th:href="@{/file/{userName}(userName=${session.customerInUse.userName})}">Upload I.D</a></button>
         </td>
         <td> Saving <br/><font size="6" color="green"> <font color="green" size="6px"> <div th:text="${session.savingBilanzList.totalSaving}"/></font></td>
         <td> Current<br/> <font size="6"> 0</font></td>

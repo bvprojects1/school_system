@@ -68,7 +68,7 @@ public class SavingAccountController extends SuperController{
     @PostMapping(value = "/registerSavingAccountForm")
     public String registerSavingForm( @ModelAttribute("saving") SavingAccount savingAccount, ModelMap model, HttpServletRequest request) {
         User user = (User)request.getSession().getAttribute(BVMicroUtils.CUSTOMER_IN_USE);
-
+        user = userRepository.findById(user.getId()).get();
         String savingType = request.getParameter("savingType");
         SavingAccountType savingAccountType = savingAccountTypeService.getSavingAccountType(savingType);
         savingAccount.setSavingAccountType(savingAccountType);

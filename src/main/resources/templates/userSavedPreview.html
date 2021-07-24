@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
 <head>
     <meta charset="UTF-8">
@@ -28,45 +29,15 @@
 </head>
 
 <body>
-<!--Preloader area start-->
-<!--<div id="preloader">-->
-<!--    <div class="pre-loader-icon"></div>-->
-<!--</div>-->
-<!--Preloader area end-->
-<!--Header area start-->
-<header class="header-area-start">
-    <!--Header top area start-->
-    <div class="header-top-area-start">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-6 col-12 col-sm-5">
-                    <div class="header-top-left">
-                        <a href="#" data-toggle="modal" data-target="#exampleModal"><i class="fas fa-sign-in-alt"></i>
-                            login</a>
-                        <!--                        <a href="#" data-toggle="modal" data-target="#exampleModal1"><i class="far fa-user"></i>-->
-                        <!--                            register</a>-->
-                    </div>
-                </div>
-                <!--Header top left area end-->
-                <div class="col-md-6 col-12 col-sm-7">
-                    <div class="header-top-right">
-                        <a href="#"><i class="fab fa-facebook-square"></i></a>
-                        <a href="#"><i class="fab fa-twitter-square"></i></a>
-                        <a href="#"><i class="fab fa-youtube-square"></i></a>
-                    </div>
-                </div>
-                <!--Header top right area end-->
-            </div>
-        </div>
-    </div>
-    <!--Header top area end-->
 
+<header class="header-area-start">
     <!--Header navigation area start-->
     <div class="navigation-area-start shadow">
         <div class="container">
             <div class="row">
                 <div class="col-md-3 col-5 col-sm-5">
                     <div class="logo-area">
+                        <br/>
                         <a href="index.html"><img th:src="@{/assets/images/logo.jpeg}"/> </a>
                     </div>
                 </div>
@@ -74,10 +45,33 @@
                 <div class="col-md-9 col-7 col-sm-7">
                     <nav class="main-menu-area">
                         <ul class="main-menu" id="mobile-menu">
-                            <li><a href="index.html">Home</a></li>
-                            <li><a href="about.html">About</a></li>
-                            <li><a href="service.html">services</a></li>
-
+                            <li> Welcome
+                                <span sec:authentication="name"></span>,</li>
+                            <li><a th:href="@{/welcomeGlobal}" href="/Logout">PIPIDAF Home</a></li>
+                            <li><a href="#">blog <i class="fas fa-angle-down"></i></a>
+                                <ul class="sub-menu">
+                                    <li class="drop-list"><a href="#">BLog Page</a>
+                                        <ul class="sub-menu">
+                                            <li><a href="blog-2-column.html">Blog 2 Column</a></li>
+                                            <li><a href="blog-3-column.html">Blog 3 Column</a></li>
+                                        </ul>
+                                    </li>
+                                    <li><a href="left-sidebar.html">Left Sidebar</a></li>
+                                    <li><a href="right-sidebar.html">Sidebar Right</a></li>
+                                    <li><a href="single.html">Single Page</a></li>
+                                    <li><a href="blank.html">Blank Page</a></li>
+                                </ul>
+                            </li>
+                            <li th:if="${#authorization.expression('hasAnyAuthority(''ROLE_AGENT'')')} OR ${#authorization.expression('hasAnyAuthority(''ROLE_MANAGER'')')}">
+                                <form action="#" th:action="@{/findUserByUserName}" method="post" >
+                                    <nobr> Find:
+                                        <input type="text" name="userName" placeholder="Username" value=""/>
+                                        <input style="font-size:12pt;color:white;background-color:green;border:2px solid #336600;padding:3px" type="submit" value="Submit"> </nobr>
+                                </form>
+                            </li>
+                            <li>
+                                <a th:href="@{/logout}" href="/Logout"><i class="fas fa-sign-out-alt"></i>Logout</a>
+                            </li>
                         </ul>
                     </nav>
                 </div>
@@ -113,6 +107,10 @@
             <div class="row">
                 <div class="offset-md-2 col-md-8">
                     <form action="#" th:action="@{/registerUserPreviewForm}" method="post" th:object="${user}" >
+
+                        <label> <p>UserRole:</p></label>
+                        <input type="text" name="userRoleTemp" th:value="${userRoleTemp}" readonly/><br/>
+
                         <label> <p>Username:</p> </label>
                         <input type="text" th:field="*{userName}" readonly/> <br/>
 
@@ -153,8 +151,6 @@
                         <input type="text" th:field="*{accountLocked}" readonly/><br/>
 
 
-                        <label> <p>UserRole:</p></label>
-                        <input type="text" name="userRoleTemp" th:value="${userRoleTemp}" readonly/><br/>
 
 
 <!--                        <select name="aUserRole" id="aUserRole">-->

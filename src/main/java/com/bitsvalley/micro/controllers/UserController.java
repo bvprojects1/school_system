@@ -11,6 +11,9 @@ import com.bitsvalley.micro.webdomain.SavingBilanz;
 import com.bitsvalley.micro.webdomain.SavingBilanzList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.WebDataBinder;
@@ -21,6 +24,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.Optional;
 
@@ -60,6 +64,13 @@ public class UserController extends SuperController{
         User user = new User();
         model.put("user", user);
         return "user";
+    }
+
+    @GetMapping(value = "/registerCustomer")
+    public String registerCustomer(ModelMap model) {
+        User user = new User();
+        model.put("user", user);
+        return "userCustomer";
     }
 
     @PostMapping(value = "/registerUserPreviewForm")
@@ -115,9 +126,23 @@ public class UserController extends SuperController{
 
     @GetMapping(value = "/findAllCustomers")
     public String findUserByUserRole(ModelMap model) {
-        ArrayList<User> customerList = getAllCustomers();
+        Collection<? extends GrantedAuthority> authorities = SecurityContextHolder.getContext().getAuthentication().getAuthorities();
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Collection<? extends GrantedAuthority> authorities1 = authentication.getAuthorities();
+        GrantedAuthority next = authorities1.iterator().next();
+        String authority = next.getAuthority();
+        if( authority.equals("ROLE_AGENT") ){
+            model.put("userList", getAllCustomers() );
+        }else if(authority.equals("ROLE_MANAGER")){
+            model.put("userList", getAllUsers() );
+        }
+        else if (authority.equals("ROLE_ADMIN")){
+            model.put("userList", getAllUsers() );
+        }else{
+            model.put("userList", getAllCustomers() );
+        }
         model.put("name", getLoggedInUserName());
-        model.put("userList", customerList );
         return "customers";
     }
 
@@ -126,6 +151,11 @@ public class UserController extends SuperController{
     public String showCustomer(@PathVariable("id") long id,ModelMap model, HttpServletRequest request) {
         Optional<User> userById = userRepository.findById(id);
         User user = userById.get();
+        if("ROLE_CUSTOMER".equals(user.getUserRole().get(0).getName())){
+            model.put("createSavingAccountEligible", true);
+        }else{
+            model.put("createSavingAccountEligible", false);
+        }
         SavingBilanzList savingBilanzByUserList = savingAccountService.getSavingBilanzByUser(user,false);
         model.put("name", getLoggedInUserName());
         request.getSession().setAttribute("savingBilanzList",savingBilanzByUserList);

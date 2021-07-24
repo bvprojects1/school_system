@@ -3,6 +3,7 @@ package com.bitsvalley.micro.controllers;
 import com.bitsvalley.micro.domain.SavingAccount;
 import com.bitsvalley.micro.domain.User;
 import com.bitsvalley.micro.domain.UserRole;
+import com.bitsvalley.micro.repositories.UserRepository;
 import com.bitsvalley.micro.services.SavingAccountService;
 import com.bitsvalley.micro.services.UserRoleService;
 import com.bitsvalley.micro.services.UserService;
@@ -14,7 +15,11 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.ui.ModelMap;
 
 import javax.servlet.http.HttpServletRequest;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Optional;
 
 /**
  * @author Fru Chifen
@@ -27,6 +32,9 @@ public class SuperController {
     private UserService userService;
 
     @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
     private SavingAccountService savingAccountService;
 
     @Autowired
@@ -35,6 +43,9 @@ public class SuperController {
 
     public String findUserByUserName(User user, ModelMap model, HttpServletRequest request) {
         User aUser = userService.findUserByUserName(user.getUserName());
+        if(aUser == null){
+            aUser = savingAccountService.findByAccountNumber(user.getUserName()).getUser();
+        }
         if(null != aUser && null != aUser.getSavingAccount() && 0 < aUser.getSavingAccount().size()){
         }else {
             SavingAccount savingAccount = savingAccountService.findByAccountNumber(user.getUserName());
@@ -42,14 +53,18 @@ public class SuperController {
                 aUser = savingAccount.getUser();
             }
         }
+        SavingBilanzList savingBilanzByUserList = savingAccountService.getSavingBilanzByUser(aUser, false);
         if(null != aUser && null != aUser.getSavingAccount() && 0 < aUser.getSavingAccount().size()){
             model.put("user", aUser);
-            SavingBilanzList savingBilanzByUserList = savingAccountService.getSavingBilanzByUser(user, false);
+
             request.getSession().setAttribute("savingBilanzList",savingBilanzByUserList);
             request.getSession().setAttribute(BVMicroUtils.CUSTOMER_IN_USE, aUser);
             return "userHome";
         }
-            return "userDetailsNoAccount";
+            model.put("name", getLoggedInUserName());
+            request.getSession().setAttribute("savingBilanzList",savingBilanzByUserList);
+            request.getSession().setAttribute(BVMicroUtils.CUSTOMER_IN_USE, aUser);
+            return "userHomeNoAccount";
     }
 
     public ArrayList<User> getAllCustomers() {
@@ -58,6 +73,23 @@ public class SuperController {
         userRoleList.add(customer);
         ArrayList<User> customerList = userService.findAllByUserRoleIn(userRoleList);
         return customerList;
+    }
+
+    public ArrayList<User> getAllManager() {
+        ArrayList<UserRole> userRoleList = new ArrayList<UserRole>();
+        UserRole manager = userRoleService.findUserRoleByName("ROLE_MANAGER");
+        userRoleList.add(manager);
+        ArrayList<User> managerList = userService.findAllByUserRoleIn(userRoleList);
+        return managerList;
+    }
+
+
+    public ArrayList<User> getAllUsers() {
+        Iterable<User> all = userRepository.findAll();
+        Iterator<User> iterator = all.iterator();
+        ArrayList<User> userList = new ArrayList<>();
+        iterator.forEachRemaining(userList::add);
+        return userList;
     }
 
 

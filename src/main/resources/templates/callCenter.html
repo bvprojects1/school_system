@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PIPIDAF - MICRO FINANCE</title>
     <!-- Favicon  -->
-    <link rel="icon" type="image/x-icon" href="assets/images/favicon/faviconn.ico">
+    <link rel="icon" type="image/x-icon" href="assets/images/favicon/favicon.ico">
 
     <link rel="stylesheet" href="../css/main.css" th:href="@{css/main.css}" type="text/css"/>
 
@@ -31,27 +31,21 @@
     <link rel="stylesheet" href="../assets/css/responsive.css">
 
     <style>
-        th {
-            border-top: solid orange;
-            border-right: blank;    /* prevent colgroup border */
-            border-left: blank      /* prevent cell border */
-        }
         table, th, td {
+<!--          border: 0px solid #BF360C;-->
           align: center;
-          font-color: #9e4a17;
         }
         table.center {
           margin-left: 50px;
           margin-right: 50px;
-          text-align: center;
         }
-        tr:nth-child(even) {background-color: #e6b486;}
+          tr:nth-child(even) {background-color: #cda893;}
+
+
     </style>
 
 </head>
-
 <body>
-
 
 <header class="header-area-start">
     <!--Header top area start-->
@@ -60,7 +54,8 @@
             <div class="row">
                 <div class="col-md-6 col-12 col-sm-5">
                     <div class="header-top-left">
-                        <a href="#" data-toggle="modal" data-target="#exampleModal"><i class="fas fa-sign-in-alt"></i> login</a>
+                        <a href="#" data-toggle="modal" data-target="#exampleModal"><i class="fas fa-sign-in-alt"></i>
+                            login</a>
                         <!--                            <a href="#" data-toggle="modal" data-target="#exampleModal1"><i class="far fa-user"></i> register</a>-->
                     </div>
                 </div>
@@ -83,22 +78,23 @@
                     <nav class="main-menu-area">
                         <ul class="main-menu" id="mobile-menu">
                             <li> Welcome
-                                <span sec:authentication="name"></span>,</li>
+                                <span sec:authentication="name"></span>,
+                            </li>
 <!--                            <li><a th:href="@{/welcome}" href="/welcome"> Customer Home</a></li>-->
                             <li><a th:href="@{/welcomeGlobal}" href="/Logout">PIPIDAF Home</a></li>
-                            <li><a href="#">Accounts <i class="fas fa-angle-down"></i></a>
-                                <ul class="sub-menu">
-                                    <li class="drop-list"><a href="#">BLog Page</a>
-                                        <ul class="sub-menu">
-                                            <li><a href="blog-2-column.html">Blog 2 Column</a></li>
-                                            <li><a href="blog-3-column.html">Blog 3 Column</a></li>
-                                        </ul>
-                                    </li>
-                                    <li><a href="left-sidebar.html">Loans</a></li>
-                                    <li><a href="right-sidebar.html">Retirement Savings</a></li>
-                                    <li><a href="single.html">Withdrawals</a></li>
-                                </ul>
-                            </li>
+<!--                            <li><a href="#">Accounts <i class="fas fa-angle-down"></i></a>-->
+<!--                                <ul class="sub-menu">-->
+<!--                                    <li class="drop-list"><a href="#">BLog Page</a>-->
+<!--                                        <ul class="sub-menu">-->
+<!--                                            <li><a href="blog-2-column.html">Blog 2 Column</a></li>-->
+<!--                                            <li><a href="blog-3-column.html">Blog 3 Column</a></li>-->
+<!--                                        </ul>-->
+<!--                                    </li>-->
+<!--                                    <li><a href="left-sidebar.html">Loans</a></li>-->
+<!--                                    <li><a href="right-sidebar.html">Retirement Savings</a></li>-->
+<!--                                    <li><a href="single.html">Withdrawals</a></li>-->
+<!--                                </ul>-->
+<!--                            </li>-->
                             <li>
                                 <a th:href="@{/logout}" href="/Logout"><i class="fas fa-sign-out-alt"></i>Logout</a>
                             </li>
@@ -111,28 +107,41 @@
     </div>
     <!--Header navigation area end-->
 </header>
-<section class="my-5">
-    <div class="container">
-        <div class="row">
-            <div class="col-md-8 mx-auto">
-                <br/><br/><br/>
-                <h2>Upload Customer Identity Card info </h2>
-                User: <div th:text="${userName}"/>
-                <p th:text="${message}" th:if="${message ne null}" class="alert alert-primary"></p>
-                <form action="#" method="post" th:action="@{/upload}" enctype="multipart/form-data">
-                    <div class="form-group">
-                        <input type="file" name="file" class="form-control-file">
-<!--                        <input type="hidden" th:value="${userName}" th:attr="userName='userName'"/>-->
-                    </div><br/><br/>
-                    <button type="submit" class="btn btn-primary">Upload File</button>
-                </form>
+
+<table> <tr><td> <h3 th:text="${accountNumber}"></h3> </td> <td><h3 th:text="${accountHolderName}"></h3> </td></tr></table>
+
+<section class="contact-form-area-start space df-bg">
+    <!--Project title area start-->
+    <div class="project-title-area text-center">
+                <div class="col-md-12">
+                    <div class="project-title-content">
+                        <font color="#BF360C;" size="4"><h4>Notifications and Warning related to this account </h4></font> </div>
+                </div>
+    </div>
+    <!--Project title area end-->
+    <div class="contact-from-area">
+        <div class="container">
+            <div class="row">
+
+                <table border="0" width="100%" class="center">
+                    <tr>
+                        <th>Date</th>
+                        <th>Agent</th>
+                        <th>Notes</th>
+                    </tr>
+                    <tr th:each="callCenter : ${callCenterList}">
+                        <td><p th:text="${#dates.format(callCenter.date, 'dd-MMM-yyyy HH:mm')}"></p></td>
+                        <td> System Generated</td>
+                        <td th:text="${callCenter.notes}"></td>
+                    </tr>
+                </table>
             </div>
         </div>
     </div>
+
 </section>
 
-
-
+<br/> <br/>
 
 <!--Footer area start-->
 <footer class="footer-area-start">
@@ -180,16 +189,18 @@
                 <div class="col-md-4 mb-sm-5 mb-md-0">
                     <div class="single-footer-widget">
                         <h5>Recent News</h5>
-                        <!--                            <div class="media">-->
-                        <!--                                <i class="fab fa-google mr-3 fa-1x"></i>-->
-                        <!--                                <div class="media-body">-->
-                        <!--                                    <p>Proparco has just signed a financing agreement with Agence de Crédit pour l’Entreprise Privée au Cameroun S.A. (ACEP Cameroun, or Cameroon Private Enterprise Credit Agency), a member of the pan-African microfinance network ACEP International. The local currency loan of 2bn CFA francs (equal to €3m) will go to support the expansion of ACEP Cameroun’s work in Cameroon, with SMEs in the countryside as primary targets.</p>-->
-                        <!--                                </div>-->
-                        <!--                            </div>-->
                         <div class="media">
-                            <i class="fab fa-google mr-3 fa-1x"></i>
+                            <i class="fab fa-twitter mr-3 fa-1x"></i>
                             <div class="media-body">
-                                <p>Cameroon’s microfinance institutions are still largely concentrated in the cities, although 60% of the total population lives in the countryside. That imbalance led ACEP Cameroun in 2013 to start focusing on expanding its work into the countryside, setting up five rural agencies thanks to AFD support. Farm lending has been a big success with coffee and cocoa growers, and the plan is for it to become a growing share of ACEP Cameroun’s activity.</p>
+                                <p>" Reprehenderit culpa aspernatur maiores natus impedit, veritatis cum ipsam ad illo
+                                    assumenda earum non ut? Deleniti? "</p>
+                            </div>
+                        </div>
+                        <div class="media">
+                            <i class="fab fa-twitter mr-3 fa-1x"></i>
+                            <div class="media-body">
+                                <p>" Vitae tenetur iure possimus facilis, similique soluta reiciendis voluptatibus
+                                    tempore? Fugiat. "</p>
                             </div>
                         </div>
                     </div>
@@ -201,11 +212,11 @@
                     <div class="single-footer-widget">
                         <h5>Get In Touch</h5>
                         <ul class="footer-menu-touch">
-                            <li><i class="fas fa-map-marker mr-2"></i> LaChance bridge, Mankon</li>
-                            <li><i class="fas fa-envelope mr-2"></i> info@bitsvalley.com</li>
+                            <li><i class="fas fa-map-marker mr-2"></i> 27/1A Vangachura Road, Dhaka</li>
+                            <li><i class="fas fa-envelope mr-2"></i> root@example.com</li>
                             <li><i class="fas fa-mobile mr-2"></i> +(012) 1234-5678</li>
-                            <li><i class="fas fa-globe-asia mr-2"></i> www.pipidaf.com</li>
-                            <!--<li><i class="fab fa-twitter mr-2"></i> www.socialmedia.com</li>-->
+                            <li><i class="fas fa-globe-asia mr-2"></i> www.domain.com</li>
+                            <li><i class="fab fa-twitter mr-2"></i> www.socialmedia.com</li>
                         </ul>
                     </div>
                 </div>
@@ -246,7 +257,3 @@
 </body>
 
 </html>
-
-<!--<br/><br/><br/><br/><br/><br/>-->
-<!--<div th:insert="/footer::navbar">  </div>-->
-<!--</body>-->

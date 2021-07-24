@@ -59,7 +59,8 @@
             <div class="col-md-9 col-7 col-sm-7">
                 <nav class="main-menu-area">
                     <ul class="main-menu" id="mobile-menu">
-                        <li><a th:href="@{/welcome}" href="/welcome"> Customer Home</a></li>
+                        <li> Welcome<span sec:authentication="name"></span>,</li>
+<!--                        <li><a th:href="@{/welcome}" href="/welcome"> Customer Home</a></li>-->
                         <li><a th:href="@{/welcomeGlobal}" href="/Logout">PIPIDAF Home</a></li>
                         <li><a href="#">Accounts <i class="fas fa-angle-down"></i></a>
                             <ul class="sub-menu">

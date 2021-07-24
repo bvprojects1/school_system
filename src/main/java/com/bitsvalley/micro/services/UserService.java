@@ -39,7 +39,6 @@ public class UserService {
         return userRepository.findByUserName(userName);
     }
 
-
     public User createUser(User user) {
 
         user.setCreated(LocalDateTime.now());
