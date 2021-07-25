@@ -107,7 +107,7 @@
 
                             <h4> USERS</h4>
                             <p>Create & View existing Users</p>
-                           <div th:if="${#authorization.expression('hasAnyAuthority(''ROLE_MANAGER'')')}">
+                           <div th:if="${#authorization.expression('hasAnyAuthority(''ROLE_MANAGER'')')}OR ${#authorization.expression('hasAnyAuthority(''ROLE_ADMIN'')')}">
                             <a href="/registerUser"> <img width="10px" th:src="@{/assets/images/add.png}"/> </a>
                            </div>
                            <div th:if="${#authorization.expression('hasAnyAuthority(''ROLE_AGENT'')')}">

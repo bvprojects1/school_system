@@ -53,6 +53,11 @@ public class SuperController {
                 aUser = savingAccount.getUser();
             }
         }
+                if("ROLE_CUSTOMER".equals(aUser.getUserRole().get(0).getName())){
+            model.put("createSavingAccountEligible", true);
+        }else{
+            model.put("createSavingAccountEligible", false);
+        }
         SavingBilanzList savingBilanzByUserList = savingAccountService.getSavingBilanzByUser(aUser, false);
         if(null != aUser && null != aUser.getSavingAccount() && 0 < aUser.getSavingAccount().size()){
             model.put("user", aUser);

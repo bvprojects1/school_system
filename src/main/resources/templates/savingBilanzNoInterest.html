@@ -127,7 +127,7 @@
     <br/><br/>
 
     <form action="#" th:action="@{/registerSavingAccountTransactionForm}" method="post" th:object="${savingAccountTransaction}" >
-
+        <font size="4px"> <b>MAKE A PAYMENT</b></font>
         <table border="width:thick" width="90%" class="center">
             <tr>
                 <td width="15%">
@@ -137,7 +137,7 @@
                     </select>
 
                 </td>
-                <td><font size="4px"> MAKE A PAYMENT</font><br/><input placeholder="Enter Amount" size="6" type="number" th:field="*{savingAmount}"/>
+                <td><input placeholder="Enter Amount" size="6" type="number" th:field="*{savingAmount}"/>
                <select name="modeOfPayment" id="modeOfPayment">
                     <option value="CASH">CASH</option>
                     <option value="MOMO">MOMO</option>

@@ -1,9 +1,7 @@
 package com.bitsvalley.micro.controllers;
 
-import com.bitsvalley.micro.domain.SavingAccount;
-import com.bitsvalley.micro.domain.SavingAccountTransaction;
-import com.bitsvalley.micro.domain.SavingAccountType;
-import com.bitsvalley.micro.domain.User;
+import com.bitsvalley.micro.domain.*;
+import com.bitsvalley.micro.repositories.CallCenterRepository;
 import com.bitsvalley.micro.repositories.UserRepository;
 import com.bitsvalley.micro.services.PdfService;
 import com.bitsvalley.micro.services.SavingAccountService;
@@ -26,10 +24,7 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 /**
  * @author Fru Chifen
@@ -39,8 +34,10 @@ import java.util.Optional;
 public class SavingAccountController extends SuperController{
 
     @Autowired
-
     UserService userService;
+
+    @Autowired
+    CallCenterRepository callCenterRepository;
 
     @Autowired
     SavingAccountService savingAccountService;
@@ -161,6 +158,14 @@ public class SavingAccountController extends SuperController{
             savingAccount.get().getSavingAccountTransaction().add(savingAccountTransaction);
         }
         savingAccountService.save(savingAccount.get());
+
+        CallCenter callCenter = new CallCenter();
+        callCenter.setUserName(savingAccount.get().getUser().getUserName());
+        callCenter.setAccountNumber(savingAccount.get().getAccountNumber());
+        callCenter.setDate(new Date(System.currentTimeMillis()));
+        callCenter.setNotes(savingAccountTransaction.getModeOfPayment() + " Payment/ Deposit made into account amount: " + savingAccountTransaction.getSavingAmount());
+
+        callCenterRepository.save(callCenter);
 
         SavingBilanzList savingBilanzByUserList = savingAccountService.calculateAccountBilanz(savingAccount.get().getSavingAccountTransaction(),false);
         model.put("name", getLoggedInUserName());
