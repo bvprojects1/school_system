@@ -139,6 +139,10 @@
                             <th>Role</th>
                             <th>telephone</th>
                             <th>Member Since</th>
+                            <div th:if="${#authorization.expression('hasAnyAuthority(''ROLE_MANAGER'')')}">
+                                <th>Locked</th>
+                            </div>
+
                             <th>Creator</th>
                             <th> </th>
                         </tr>
@@ -147,13 +151,21 @@
                             <td th:text="${user.userName}"></td>
                             <td th:text="${user.firstName}"></td>
                             <td th:text="${user.lastName}"></td>
-                            <td>
-                                <div th:each="userRole : ${user.userRole}">
-                                    <span th:text="${userRole.name}"></span>
-                                </div>
-                            </td>
+                            <div th:if="${#authorization.expression('hasAnyAuthority(''ROLE_MANAGER'')')}">
+                                <td>
+                                    <div th:each="userRole : ${user.userRole}">
+                                        <span th:text="${userRole.name}"></span>
+                                    </div>
+                                </td>
+                            </div>
+
                             <td th:text="${user.telephone1}"></td>
                             <td th:text="${user.created}"></td>
+                            <td>
+                                <a href="#" th:href="@{/lockAccount/{id}(id=${user.id})}">
+                                    <span th:text="${user.accountLocked}"/>
+                                </a>
+                            </td>
                             <td th:text="${user.createdBy}"></td>
 <!--                            <td th:text="${#dates.format(user.created, 'dd-MMM-yyyy')}"></td>-->
                             <td>

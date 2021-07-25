@@ -67,6 +67,8 @@ public class SuperController {
             return "userHomeNoAccount";
     }
 
+
+
     public ArrayList<User> getAllCustomers() {
         ArrayList<UserRole> userRoleList = new ArrayList<UserRole>();
         UserRole customer = userRoleService.findUserRoleByName("ROLE_CUSTOMER");

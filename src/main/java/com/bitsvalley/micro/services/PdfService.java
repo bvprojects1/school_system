@@ -36,7 +36,7 @@ public class PdfService {
                 "<td>Customer Name:<b>"+savingAccountTransaction.getSavingAccount().getUser().getFirstName() +" "+savingAccountTransaction.getSavingAccount().getUser().getLastName() +"</b></td><td>Account No. <b>"+savingAccountTransaction.getSavingAccount().getAccountNumber()+"</b></td></tr>" +
                 "<tr><td></td>\n" +
                 "        <td> <font color=\"green\" size=\"8px\"><b>RECEIPT FOR PAYMENT MADE</b></font></td>\n" +
-                "        <td>Total: <font color=\"green\" size=\"8px\"><b>"+BVMicroUtils.formatCurrency(savingAccountTransaction.getSavingAmount())+"</b></font></td>\n" +
+                "        <td>Total: <font color=\"green\" size=\"8px\"><b>"+BVMicroUtils.formatCurrency(savingAccountTransaction.getSavingAmount())+"</b>frs</font></td>\n" +
                 "        <td></td>\n" +
                 "        <td></td>\n" +
                 "        </tr></table><br/><br/><br/>" +
@@ -72,6 +72,49 @@ public class PdfService {
                 "       <td></td>" +
                 "       <td></td>" +
                 "       <td>"+ BVMicroUtils.formatDate(new Date(System.currentTimeMillis())) +"</td></tr>" +
+                "       </table><br/><br/><br/><br/><br/><br/>" +
+                "       <table width=\"100%\">" +
+                "        <tr><td colspan=\"3\">" +
+                "<img width=\"50px\" src=\"/Users/frusamachifen/bv_micro_workspace/bv_micro/src/main/webapp/assets/images/logo.jpeg\"/> </td>" +
+                "<td>Customer Name:<b>"+savingAccountTransaction.getSavingAccount().getUser().getFirstName() +" "+savingAccountTransaction.getSavingAccount().getUser().getLastName() +"</b></td><td>Account No. <b>"+savingAccountTransaction.getSavingAccount().getAccountNumber()+"</b></td></tr>" +
+                "<tr><td></td>\n" +
+                "        <td> <font color=\"green\" size=\"8px\"><b>RECEIPT FOR PAYMENT MADE</b></font></td>\n" +
+                "        <td>Total: <font color=\"green\" size=\"8px\"><b>"+BVMicroUtils.formatCurrency(savingAccountTransaction.getSavingAmount())+"</b>frs cfa</font></td>\n" +
+                "        <td></td>\n" +
+                "        <td></td>\n" +
+                "        </tr></table><br/><br/><br/>" +
+                "    <table  border=\"0\" width=\"100%\" class=\"center\">\n" +
+                "            <tr>\n" +
+                "                <th>Date</th>\n" +
+                "                <th>Mode </th>\n" +
+                "                <th>Agent</th>\n" +
+                "                <th>Amount</th>\n" +
+                "                <th>Notes</th>\n" +
+                "                <th></th>\n" +
+                "            </tr>\n" +
+                "            <tr>\n" +
+                "                <td>"+BVMicroUtils.formatDateTime(savingAccountTransaction.getCreatedDate())+"</td>\n" +
+                "                <td>"+savingAccountTransaction.getModeOfPayment()+"</td>\n" +
+                "                <td>"+savingAccountTransaction.getCreatedBy()+"</td>\n" +
+                "                <td>"+BVMicroUtils.formatCurrency(savingAccountTransaction.getSavingAmount())+"frs cfa</td>\n" +
+                "                <td>"+savingAccountTransaction.getNotes()+"</td>\n" +
+                "                <td></td>\n" +
+                "            </tr>" +
+                "            <tr>" +
+                "                <td></td>" +
+                "                <td></td>" +
+                "                <td></td>" +
+                "               <td></td>" +
+                "                <td></td>" +
+                "                <td></td></tr>" +
+                "        </table>" +
+                "<br/><br/><br/><br/><br/>" +
+                "       <table><tr><td></td>" +
+                "       <td>Agent Signature: --------------------------------<br/>Bamenda Branch, N W Region</td>" +
+                "       <td></td>" +
+                "       <td></td>" +
+                "       <td></td>" +
+                "       <td>"+ BVMicroUtils.formatDate(new Date(System.currentTimeMillis())) +"</td></tr>" +
                 "       </table></body></html>";
         return savingBilanzNoInterest;
     }
@@ -80,14 +123,14 @@ public class PdfService {
         String savingBilanzNoInterest = "<html><head>" +
                 "</head><body><br/><br/>" +
                 "    <table border=\"0\" width=\"100%\">" +
-                "        <tr><td colspan=\"3\"> <img width=\"50px\" src=\"/Users/frusamachifen/bv_micro_workspace/bv_micro/src/main/webapp/assets/images/logo.jpeg\"/> </td><td>Customer Name:<b>"+savingAccount.getUser().getFirstName() +" "+savingAccount.getUser().getLastName() +"</b></td><td>Account No. <b>"+savingAccount.getAccountNumber()+"</b></td></tr><tr>" +
+                "        <tr><td colspan=\"3\"> <img width=\"50px\" src=\"/Users/frusamachifen/bv_micro_workspace/bv_micro/src/main/webapp/assets/images/logo.jpeg\"/><br/>PIPIDAF </td><td>Customer Name:<b>"+savingAccount.getUser().getFirstName() +" "+savingAccount.getUser().getLastName() +"</b></td><td>Account No. <b>"+savingAccount.getAccountNumber()+"</b></td></tr><tr>" +
                 "        <td><font size=\"6\"><b><br/>"+savingAccount.getUser().getUserName()+"</b>\'s </font>" +
                 "        </td>\n" +
-                "        <td> Saving <br/><font color=\"green\"><b>"+savingBilanzList.getTotalSaving()+"</b></font></td>\n" +
+                "        <td> Saving <br/><font color=\"green\"><b>"+savingBilanzList.getTotalSaving()+"</b>frs cfa</font></td>\n" +
                 "        <td> Current<br/> <font size=\"6\"> 0</font></td>\n" +
                 "        <td> Loan<br/> <font size=\"6\"> 0</font></td>\n" +
                 "        <td>Retirement saving <br/> <font size=\"6\" color=\"#A57C00\">0 </font></td>\n" +
-                "        </tr></table><br/><br/><br/>" +
+                "        </tr></table><br/><br/> <font size=\"8\"> ACCOUNT STATEMENT</font> <br/>" +
                 "    <table  border=\"0\" width=\"100%\" class=\"center\">\n" +
                 "            <tr>\n" +
                 "                <th>Date</th>\n" +

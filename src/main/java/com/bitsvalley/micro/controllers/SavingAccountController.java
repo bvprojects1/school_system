@@ -146,6 +146,10 @@ public class SavingAccountController extends SuperController{
         savingAccountTransaction.setSavingAccount(savingAccount.get());
         User user = (User)request.getSession().getAttribute(BVMicroUtils.CUSTOMER_IN_USE);
 
+        if(request.getParameter("deposit_withdrawal").equals("WITHDRAWAL")){
+            savingAccountTransaction.setSavingAmount(savingAccountTransaction.getSavingAmount()*-1);
+        }
+
         String modeOfPayment = request.getParameter("modeOfPayment");
         savingAccountTransaction.setModeOfPayment(modeOfPayment);
 

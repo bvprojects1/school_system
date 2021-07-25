@@ -214,10 +214,13 @@
                 <p th:text="${savingAccount.createdBy}"/>
             </td>
             <td>
-                <a href="#" th:href="@{/registerSavingAccountTransaction/{id}(id=${savingAccount.id})}"> Make payment/
-                    withdrawal <img width="25px" th:src="@{/assets/images/add.png}"/> </a><br/>
-                <a href="#" th:href="@{/showSavingBilanz/{id}(id=${session.customerInUse.id})}"> Show Savings
-                    interest</a>
+                <a href="#" th:href="@{/registerSavingAccountTransaction/{id}(id=${savingAccount.id})}">
+                    <font size="4"> Make payment/
+                    withdrawal</font> <img width="25px" th:src="@{/assets/images/add.png}"/> </a><br/>
+                <a href="#" th:href="@{/showSavingBilanz/{id}(id=${session.customerInUse.id})}">
+                    <font size="4">  Show Savings
+                        interest</font></a>
+                </font>
             </td>
         </tr>
     </table>
