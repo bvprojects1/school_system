@@ -1,9 +1,7 @@
 package com.bitsvalley.micro.controllers;
 
-import com.bitsvalley.micro.domain.SavingAccount;
-import com.bitsvalley.micro.domain.SavingAccountTransaction;
-import com.bitsvalley.micro.domain.User;
-import com.bitsvalley.micro.domain.UserRole;
+import com.bitsvalley.micro.domain.*;
+import com.bitsvalley.micro.repositories.CallCenterRepository;
 import com.bitsvalley.micro.repositories.UserRepository;
 import com.bitsvalley.micro.services.*;
 import com.bitsvalley.micro.utils.BVMicroUtils;
@@ -11,6 +9,9 @@ import com.bitsvalley.micro.webdomain.SavingBilanz;
 import com.bitsvalley.micro.webdomain.SavingBilanzList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.WebDataBinder;
@@ -20,9 +21,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.Optional;
+import java.util.*;
 
 /**
  * @author Fru Chifen
@@ -49,6 +48,9 @@ public class UserController extends SuperController{
     @Autowired
     private PdfService pdfService;
 
+    @Autowired
+    CallCenterRepository callCenterRepository;
+
     @InitBinder
     public void initBinder(WebDataBinder binder) {
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
@@ -60,6 +62,13 @@ public class UserController extends SuperController{
         User user = new User();
         model.put("user", user);
         return "user";
+    }
+
+    @GetMapping(value = "/registerCustomer")
+    public String registerCustomer(ModelMap model) {
+        User user = new User();
+        model.put("user", user);
+        return "userCustomer";
     }
 
     @PostMapping(value = "/registerUserPreviewForm")
@@ -115,10 +124,29 @@ public class UserController extends SuperController{
 
     @GetMapping(value = "/findAllCustomers")
     public String findUserByUserRole(ModelMap model) {
-        ArrayList<User> customerList = getAllCustomers();
+        String authority = getAuthorityString();
+        if( authority.equals("ROLE_AGENT") ){
+            model.put("userList", getAllCustomers() );
+        }else if(authority.equals("ROLE_MANAGER")){
+            model.put("userList", getAllUsers() );
+        }
+        else if (authority.equals("ROLE_ADMIN")){
+            model.put("userList", getAllUsers() );
+        }else{
+            model.put("userList", getAllCustomers() );
+        }
         model.put("name", getLoggedInUserName());
-        model.put("userList", customerList );
         return "customers";
+    }
+
+    private String getAuthorityString() {
+        Collection<? extends GrantedAuthority> authorities = SecurityContextHolder.getContext().
+                getAuthentication().getAuthorities();
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Collection<? extends GrantedAuthority> authorities1 = authentication.getAuthorities();
+        GrantedAuthority next = authorities1.iterator().next();
+        String authority = next.getAuthority();
+        return authority;
     }
 
 
@@ -126,20 +154,49 @@ public class UserController extends SuperController{
     public String showCustomer(@PathVariable("id") long id,ModelMap model, HttpServletRequest request) {
         Optional<User> userById = userRepository.findById(id);
         User user = userById.get();
-        SavingBilanzList savingBilanzByUserList = savingAccountService.getSavingBilanzByUser(user,false);
+        return findUserByUsername(user,model,request);
+//        if("ROLE_CUSTOMER".equals(user.getUserRole().get(0).getName())){
+//            model.put("createSavingAccountEligible", true);
+//        }else{
+//            model.put("createSavingAccountEligible", false);
+//        }
+//        SavingBilanzList savingBilanzByUserList = savingAccountService.getSavingBilanzByUser(user,false);
+//        model.put("name", getLoggedInUserName());
+//        request.getSession().setAttribute("savingBilanzList",savingBilanzByUserList);
+//        request.getSession().setAttribute(BVMicroUtils.CUSTOMER_IN_USE, user);
+//        if( null == savingBilanzByUserList.getSavingBilanzList()
+//                || savingBilanzByUserList.getSavingBilanzList().size() == 0 ){
+//            return "userHomeNoAccount";
+//        }
+//        return "userHome";
+    }
+
+    @GetMapping(value = "/lockAccount/{id}")
+    public String lockAccount(@PathVariable("id") long id, ModelMap model,
+                                 HttpServletRequest request,
+                            HttpServletResponse response) throws IOException {
+        if(getAuthorityString().equals("ROLE_MANAGER")){
+            Optional<User> userById = userRepository.findById(id);
+            User user = userById.get();
+            user.setAccountLocked(!user.isAccountLocked());
+            userService.saveUser(user);
+            String blocked = user.isAccountLocked()?"Blocked":"UnBlocked";
+            CallCenter callCenter = new CallCenter();
+            callCenter.setNotes(blocked);
+            callCenter.setAccountHolderName(user.getFirstName() + " " +user.getLastName());
+            callCenter.setUserName(user.getUserName());
+
+            callCenter.setDate(new Date(System.currentTimeMillis()));
+            callCenter.setNotes("Account has been switched "+ "Account is now "+ blocked +"by " + getLoggedInUserName());
+            callCenterRepository.save(callCenter);
+        };
+        model.put("userList", getAllUsers() );
         model.put("name", getLoggedInUserName());
-        request.getSession().setAttribute("savingBilanzList",savingBilanzByUserList);
-        request.getSession().setAttribute(BVMicroUtils.CUSTOMER_IN_USE, user);
-        if( null == savingBilanzByUserList.getSavingBilanzList()
-                || savingBilanzByUserList.getSavingBilanzList().size() == 0 ){
-            return "userHomeNoAccount";
-        }
-        return "userHome";
+        return "customers";
     }
 
 
-
-    @GetMapping(value = "/createSavingAccountReceiptPdf/{id}")
+        @GetMapping(value = "/createSavingAccountReceiptPdf/{id}")
     public void savingReceiptPDF(@PathVariable("id") long id, ModelMap model, HttpServletRequest request, HttpServletResponse response) throws IOException {
         response.setContentType("application/pdf");
         response.setHeader("Content-disposition","attachment;filename="+ "statementPDF.pdf");

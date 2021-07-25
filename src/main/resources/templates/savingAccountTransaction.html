@@ -41,6 +41,7 @@
         }
           tr:nth-child(even) {background-color: #cda893;}
 
+
     </style>
 
 </head>
@@ -59,7 +60,8 @@
             <div class="col-md-9 col-7 col-sm-7">
                 <nav class="main-menu-area">
                     <ul class="main-menu" id="mobile-menu">
-                        <li><a th:href="@{/welcome}" href="/welcome"> Customer Home</a></li>
+                        <li> Welcome<span sec:authentication="name"></span>,</li>
+                        <!--                        <li><a th:href="@{/welcome}" href="/welcome"> Customer Home</a></li>-->
                         <li><a th:href="@{/welcomeGlobal}" href="/Logout">PIPIDAF Home</a></li>
                         <li><a href="#">Accounts <i class="fas fa-angle-down"></i></a>
                             <ul class="sub-menu">
@@ -75,10 +77,11 @@
                             </ul>
                         </li>
                         <li>
-                            <form action="#" th:action="@{/findUserByUserName}" method="post" >
+                            <form action="#" th:action="@{/findUserByUserName}" method="post">
                                 <nobr> Find:
                                     <input type="text" name="userName" placeholder="Username" value=""/>
-                                    <input style="font-size:12pt;color:white;background-color:green;border:2px solid #336600;padding:3px" type="submit" value="Submit"> </nobr>
+                                    <input style="font-size:12pt;color:white;background-color:green;border:2px solid #336600;padding:3px"
+                                           type="submit" value="Submit"></nobr>
                             </form>
                         </li>
                         <li>
@@ -105,7 +108,7 @@
                     <div class="project-title-content">
                         <h3 th:text="${savingAccountTransaction.savingAccount.accountNumber}"></h3>
                         <span><i class="fas fa-crosshairs"></i></span><br/>
-                        <font color="#BF360C;" size="4"><h4>Make a payment into this saving account</h4></font>
+                        <font color="#BF360C;" size="4"><h4>Make a payment/ withdrawal transaction with this Saving Account</h4></font>
                     </div>
                 </div>
             </div>
@@ -128,7 +131,9 @@
                 <div th:text="${savingAccountTransaction.savingAccount.savingAccountType.name}"/>
             </td>
             <td>
-                <font color="#BF360C;"><b> <div th:text="${savingAccountTransaction.savingAccount.accountNumber}"/></b></font>
+                <font color="#BF360C;"><b>
+                    <div th:text="${savingAccountTransaction.savingAccount.accountNumber}"/>
+                </b></font>
             </td>
             <td>
                 <div th:text="${session.customerInUse.userName}"/>
@@ -137,35 +142,59 @@
     </table>
 
 
-    <br/><br/>
+    <br/><br/><br/>
 
-    <form action="#" th:action="@{/registerSavingAccountTransactionForm}" method="post" th:object="${savingAccountTransaction}" >
+    <form action="#" th:action="@{/registerSavingAccountTransactionForm}" method="post"
+          th:object="${savingAccountTransaction}">
 
-        <table  border="1" width="100%" class="center">
-            <tr><td colspan="2"><b>Amount:</b><input size="6" type="number" th:field="*{savingAmount}"/></td> <td><label for="modeOfPayment"><b>Mode:</b></label><select name="modeOfPayment" id="modeOfPayment">
-                <option value="CASH">CASH</option>
-                <option value="MOMO">MOMO</option>
-                <option value="ORANGE MONEY">ORANGE MONEY</option>
-                <option value="TRANSFER">TRANSFER</option>
-                <option value="RECEIPT">RECEIPT</option>
-                <option value="OTHER">OTHER</option>
-            </select></td>
-                <td colspan="2"><label><b> Notes:</b></label> <textarea  id="notes" rows="3" cols="30" th:field="*{notes}">
-                    </textarea> </td>  <td><input type="hidden" th:value="${savingAccountTransaction.savingAccount.id}" th:attr="name='savingAccountId'"/><button type="submit" class="btn btn-success">Save Payment</button></td></tr>
-
-
+        <table border="1" width="100%" class="center">
+            <tr>
+                <td>
+                        <select name="deposit_withdrawal">
+                            <option value="DEPOSIT">DEPOSIT</option>
+                            <option value="WITHDRAWAL">WITHDRAWAL</option>
+                        </select>
+                </td>
+            </tr>
+            <tr>
+                <td><b>Amount:</b><input size="6" type="number" th:field="*{savingAmount}"/></td>
+            </tr>
+            <tr>
+                <td><label for="modeOfPayment"><b>Mode:</b></label><select name="modeOfPayment" id="modeOfPayment">
+                    <option value="CASH">CASH</option>
+                    <option value="MOMO">MOMO</option>
+                    <option value="ORANGE MONEY">ORANGE MONEY</option>
+                    <option value="TRANSFER">TRANSFER</option>
+                    <option value="RECEIPT">RECEIPT</option>
+                    <option value="OTHER">OTHER</option>
+                </select></td>
+                </tr>
+                <tr>
+                <td colspan="2"><label><b> Notes:</b></label>
+                    <textarea id="notes" rows="3" cols="30"
+                        th:field="*{notes}">
+                    </textarea>
+                </td>
+                </tr><tr>
+                <td><input type="hidden" th:value="${savingAccountTransaction.savingAccount.id}"
+                           th:attr="name='savingAccountId'"/>
+                    <button type="submit" class="btn btn-success">Save Payment</button>
+                </td>
+            </tr>
         </table>
     </form>
 
     <br/><br/>
 
     <table class="center" width="100%">
-        <tr><td colspan="4"><font color="#BF360C;"><h4>Saving Account Payments Processed</h4></font></td></tr>
+        <tr>
+            <td colspan="4"><font color="#BF360C;"><h4>Saving Account Payments Processed</h4></font></td>
+        </tr>
     </table>
     <table class="center" width="100%">
         <tr>
             <td>
-                 Amount
+                Amount
             </td>
             <td>
                 Created Date
@@ -179,23 +208,22 @@
             </td>
         </tr>
         <div th:if="${session.savingBilanzList != null}">
-        <tr th:each="aSavingAccountTransaction : ${session.savingBilanzList.savingBilanzList}">
-            <td>
-                <p th:text="${aSavingAccountTransaction.savingAmount}"/>
-            </td>
-            <td>
-                <p th:text="${aSavingAccountTransaction.createdDate}"/>
-            </td>
-            <td>
-                <p th:text="${aSavingAccountTransaction.createdBy}"/>
-            </td>
-            <td>
-                <p th:text="${aSavingAccountTransaction.notes}"/>
-            </td>
-        </tr>
+            <tr th:each="aSavingAccountTransaction : ${session.savingBilanzList.savingBilanzList}">
+                <td>
+                    <p th:text="${aSavingAccountTransaction.savingAmount}"/>
+                </td>
+                <td>
+                    <p th:text="${aSavingAccountTransaction.createdDate}"/>
+                </td>
+                <td>
+                    <p th:text="${aSavingAccountTransaction.createdBy}"/>
+                </td>
+                <td>
+                    <p th:text="${aSavingAccountTransaction.notes}"/>
+                </td>
+            </tr>
         </div>
     </table>
-
 
 
     <!--Choosen main area end-->
@@ -252,13 +280,15 @@
                         <div class="media">
                             <i class="fab fa-twitter mr-3 fa-1x"></i>
                             <div class="media-body">
-                                <p>" Reprehenderit culpa aspernatur maiores natus impedit, veritatis cum ipsam ad illo assumenda earum non ut? Deleniti? "</p>
+                                <p>" Reprehenderit culpa aspernatur maiores natus impedit, veritatis cum ipsam ad illo
+                                    assumenda earum non ut? Deleniti? "</p>
                             </div>
                         </div>
                         <div class="media">
                             <i class="fab fa-twitter mr-3 fa-1x"></i>
                             <div class="media-body">
-                                <p>" Vitae tenetur iure possimus facilis, similique soluta reiciendis voluptatibus tempore? Fugiat. "</p>
+                                <p>" Vitae tenetur iure possimus facilis, similique soluta reiciendis voluptatibus
+                                    tempore? Fugiat. "</p>
                             </div>
                         </div>
                     </div>
@@ -306,7 +336,8 @@
                     <input type="email" name="email" id="email1" placeholder="Email" class="form-control mb-3">
 
                     <label for="password1">Password :</label>
-                    <input type="password" name="password" id="password1" placeholder="*************" class="form-control">
+                    <input type="password" name="password" id="password1" placeholder="*************"
+                           class="form-control">
 
                     <button type="submit" class=" mt-3 btn btn-primary text-uppercase text-light">Register</button>
                 </form>

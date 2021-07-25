@@ -46,8 +46,9 @@ public class UserDetailsServiceImpl implements UserDetailsService {
             grantedAuthority.add(new SimpleGrantedAuthority(userRole.getName()));
         }
         grantedAuthority.add(new SimpleGrantedAuthority(user.getUserRole().get(0).getName()));//one role
-        return new org.springframework.security.core.userdetails.User(user.getUserName(), user.getPassword(), grantedAuthority);
-
+        return new org.springframework.security.core.userdetails.User(user.getUserName(), user.getPassword(),true, true, true,!user.isAccountLocked(), grantedAuthority);
+//        public User(String username, String password, Collection<? extends GrantedAuthority> authorities) {
+//            this(username, password, true, true, true, true, authorities);
     }
 
 

@@ -1,6 +1,6 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
-
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -82,29 +82,23 @@
                 <div class="col-md-9 col-7 col-sm-7">
                     <nav class="main-menu-area">
                         <ul class="main-menu" id="mobile-menu">
-                            <li><a href="index.html">Home</a></li>
-                            <li><a href="service.html">services</a></li>
-                            <li><a href="#">blog <i class="fas fa-angle-down"></i></a>
-                                <ul class="sub-menu">
-                                    <li class="drop-list"><a href="#">BLog Page</a>
-                                        <ul class="sub-menu">
-                                            <li><a href="blog-2-column.html">Blog 2 Column</a></li>
-                                            <li><a href="blog-3-column.html">Blog 3 Column</a></li>
-                                        </ul>
-                                    </li>
-                                    <li><a href="left-sidebar.html">Left Sidebar</a></li>
-                                    <li><a href="right-sidebar.html">Sidebar Right</a></li>
-                                    <li><a href="single.html">Single Page</a></li>
-                                    <li><a href="blank.html">Blank Page</a></li>
-                                </ul>
-                            </li>
-                            <li>
-                                <form action="#" th:action="@{/findUserByUserName}" method="post" >
-                                    <nobr> Find:
-                                        <input type="text" name="userName" placeholder="Username" value=""/>
-                                        <input style="font-size:12pt;color:white;background-color:green;border:2px solid #336600;padding:3px" type="submit" value="Submit"> </nobr>
-                                </form>
-                            </li>
+                            <li> Welcome
+                                <span sec:authentication="name"></span>,</li>
+<!--                            <li><a th:href="@{/welcome}" href="/welcome"> Customer Home</a></li>-->
+                            <li><a th:href="@{/welcomeGlobal}" href="/Logout">PIPIDAF Home</a></li>
+<!--                            <li><a href="#">Accounts <i class="fas fa-angle-down"></i></a>-->
+<!--                                <ul class="sub-menu">-->
+<!--                                    <li class="drop-list"><a href="#">BLog Page</a>-->
+<!--                                        <ul class="sub-menu">-->
+<!--                                            <li><a href="blog-2-column.html">Blog 2 Column</a></li>-->
+<!--                                            <li><a href="blog-3-column.html">Blog 3 Column</a></li>-->
+<!--                                        </ul>-->
+<!--                                    </li>-->
+<!--                                    <li><a href="left-sidebar.html">Loans</a></li>-->
+<!--                                    <li><a href="right-sidebar.html">Retirement Savings</a></li>-->
+<!--                                    <li><a href="single.html">Withdrawals</a></li>-->
+<!--                                </ul>-->
+<!--                            </li>-->
                             <li>
                                 <a th:href="@{/logout}" href="/Logout"><i class="fas fa-sign-out-alt"></i>Logout</a>
                             </li>
@@ -117,11 +111,7 @@
     </div>
     <!--Header navigation area end-->
 </header>
-<!--Header area end-->
 
-<!-- Contact information area end -->
-
-<!-- Contact form area start -->
 <section class="contact-form-area-start space df-bg">
     <!--Project title area start-->
     <div class="project-title-area text-center">
@@ -129,7 +119,7 @@
             <div class="row">
                 <div class="col-md-12">
                     <div class="project-title-content">
-                        <font color="#BF360C;" size="4"><h4>All Customers with a Saving, Current, Loan, Retirement Savings</h4></font>
+                        <font color="#BF360C;" size="4"><h4>All System users with a Saving, Current, Loan, Retirement Savings</h4></font>
                         <!--                            <p>Cross-agency coordination clean water rural, promising development turmoil inclusive education transformative community.</p>-->
                     </div>
                 </div>
@@ -146,8 +136,13 @@
                             <th>Username</th>
                             <th>Firstname</th>
                             <th>Lastname</th>
+                            <th>Role</th>
                             <th>telephone</th>
                             <th>Member Since</th>
+                            <div th:if="${#authorization.expression('hasAnyAuthority(''ROLE_MANAGER'')')}">
+                                <th>Locked</th>
+                            </div>
+
                             <th>Creator</th>
                             <th> </th>
                         </tr>
@@ -156,14 +151,27 @@
                             <td th:text="${user.userName}"></td>
                             <td th:text="${user.firstName}"></td>
                             <td th:text="${user.lastName}"></td>
+                            <div th:if="${#authorization.expression('hasAnyAuthority(''ROLE_MANAGER'')')}">
+                                <td>
+                                    <div th:each="userRole : ${user.userRole}">
+                                        <span th:text="${userRole.name}"></span>
+                                    </div>
+                                </td>
+                            </div>
+
                             <td th:text="${user.telephone1}"></td>
                             <td th:text="${user.created}"></td>
+                            <td>
+                                <a href="#" th:href="@{/lockAccount/{id}(id=${user.id})}">
+                                    <span th:text="${user.accountLocked}"/>
+                                </a>
+                            </td>
                             <td th:text="${user.createdBy}"></td>
 <!--                            <td th:text="${#dates.format(user.created, 'dd-MMM-yyyy')}"></td>-->
                             <td>
                                 <a href="#" th:href="@{/showCustomer/{id}(id=${user.id})}">Read more ...</a>
                             </td>
-                        </tr>
+                        </div>
                         <tr th:if="${userList.isEmpty()}">
                             <td class="text-center" colspan="2">No customers. Add a customer!
                                 <a href="/registerUser">

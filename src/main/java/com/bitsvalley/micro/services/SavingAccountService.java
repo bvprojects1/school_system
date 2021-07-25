@@ -70,9 +70,10 @@ public class SavingAccountService extends SuperService{
 
         //TODO: Move to callCenter service
         CallCenter callCenter = new CallCenter();
-        callCenter.setAccountHolderName(savingAccount.getAccountNumber());
+        callCenter.setAccountHolderName(savingAccount.getUser().getFirstName()+ " "+savingAccount.getUser().getFirstName());
+        callCenter.setAccountNumber(savingAccount.getAccountNumber());
         callCenter.setDate(new Date(System.currentTimeMillis()));
-        callCenter.setNotes("Savings Account Created: "+ savingAccount.getAccountNumber() + "Savings Type: "+ savingAccount.getAccountSavingType().getName());
+        callCenter.setNotes("Savings Account Created: "+ savingAccount.getAccountNumber() + " Savings Type: "+ savingAccount.getAccountSavingType().getName());
         callCenter.setUserName(savingAccount.getUser().getUserName());
         callCenterRepository.save(callCenter);
 
@@ -156,7 +157,6 @@ public class SavingAccountService extends SuperService{
         SavingBilanzList savingBilanzsList = new SavingBilanzList();
         for (int i = 0; i < users.size(); i++) {
             List<SavingAccount> savingAccounts = users.get(i).getSavingAccount();
-//            savingBilanzsList.setSavingsAccount(savingAccounts);
 
             List<SavingAccountTransaction> savingAccountTransactions = new ArrayList<SavingAccountTransaction>();
             for (int j = 0; j < savingAccounts.size(); j++) {
@@ -179,12 +179,30 @@ public class SavingAccountService extends SuperService{
                                 calculateInterestAccruedMonthCompounded(savingAccountTransaction);
 //                    }
                 }
+                if(checkMinBalanceLogin(currentSaved, savingAccount)){
+                    savingAccount.setDefaultedPayment(true);// Minimum balance check
+                }
             }
         }
         savingBilanzsList.setTotalSaving(formatCurrency(totalSaved));
         savingBilanzsList.setTotalSavingInterest(formatCurrency(savingAccountTransactionInterest));
         Collections.reverse(savingBilanzsList.getSavingBilanzList());
         return savingBilanzsList;
+    }
+
+    private boolean checkMinBalanceLogin(double currentSaved, SavingAccount savingAccount) {
+
+        if(savingAccount.getAccountMinBalance() > currentSaved){
+            CallCenter callCenter = new CallCenter();
+            callCenter.setDate(new Date(System.currentTimeMillis()));
+            callCenter.setNotes("Minimum Balance not met for this account");
+            callCenter.setAccountHolderName(savingAccount.getUser().getFirstName() + " " + savingAccount.getUser().getLastName());
+            callCenter.setAccountNumber(savingAccount.getAccountNumber());
+            callCenterRepository.save(callCenter);
+            return true;
+        }
+
+        return false;
     }
 
 
@@ -270,8 +288,27 @@ public class SavingAccountService extends SuperService{
                     YearMonth.from(LocalDate.parse(createdCalenderCal.get(GregorianCalendar.YEAR)+"-"+padding(createdCalenderCal.get(GregorianCalendar.MONTH))+"-"+padding(createdCalenderCal.get(GregorianCalendar.DAY_OF_MONTH)))),
                     YearMonth.from(LocalDate.parse(currentDateCal.get(GregorianCalendar.YEAR)+"-"+padding(currentDateCal.get(GregorianCalendar.MONTH))+"-"+padding(currentDateCal.get(GregorianCalendar.DAY_OF_MONTH)))));
 
-            if (monthsBetween >= savingAccountTransactionList.size())
+            if (monthsBetween >= savingAccountTransactionList.size()){
+                CallCenter callCenter = new CallCenter();
+//                callCenter.setUserName(savingAccount.getUser().getUserName());
+                callCenter.setNotes("Regular Monthly payment not on schedule might be missing payment for some months. " +
+                        "Please check the account statement");
+                callCenter.setDate(new Date(System.currentTimeMillis()));
+                callCenter.setAccountHolderName(savingAccount.getUser().getFirstName() + " "+ savingAccount.getUser().getLastName());
+                callCenter.setAccountNumber(savingAccount.getAccountNumber());
+                callCenterRepository.save(callCenter);
                 return true;
+            }
+//            if (savingAccount.getAccountMinBalance() > totalSaved){
+//                CallCenter callCenter = new CallCenter();
+////                callCenter.setUserName(savingAccount.getUser().getUserName());
+//                callCenter.setNotes("Minimum payment not met");
+//                callCenter.setDate(new Date(System.currentTimeMillis()));
+//                callCenter.setAccountHolderName(savingAccount.getUser().getFirstName() + " "+ savingAccount.getUser().getLastName());
+//                callCenter.setAccountNumber(savingAccount.getAccountNumber());
+//                callCenterRepository.save(callCenter);
+//                return true;
+//            }
         }
         return false;
     }

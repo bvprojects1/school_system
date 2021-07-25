@@ -58,7 +58,9 @@
                 <div class="col-md-9 col-7 col-sm-7">
                     <nav class="main-menu-area">
                         <ul class="main-menu" id="mobile-menu">
-                            <li><a th:href="@{/welcome}" href="/welcome"> Customer Home</a></li>
+                            <li> Welcome
+                                <span sec:authentication="name"></span>,</li>
+<!--                            <li><a th:href="@{/welcome}" href="/welcome"> Customer Home</a></li>-->
                             <li><a th:href="@{/welcomeGlobal}" href="/Logout">PIPIDAF Home</a></li>
                             <li><a href="#">Accounts <i class="fas fa-angle-down"></i></a>
                                 <ul class="sub-menu">
@@ -122,12 +124,20 @@
         </tr>
     </table>
 
-    <form action="#" th:action="@{/registerSavingAccountTransactionForm}" method="post" th:object="${savingAccountTransaction}" >
+    <br/><br/>
 
+    <form action="#" th:action="@{/registerSavingAccountTransactionForm}" method="post" th:object="${savingAccountTransaction}" >
+        <font size="4px"> <b>MAKE A PAYMENT</b></font>
         <table border="width:thick" width="90%" class="center">
             <tr>
-                <td width="15%"></td>
-                <td><font size="4px"> MAKE A PAYMENT</font><br/><input placeholder="Enter Amount" size="6" type="number" th:field="*{savingAmount}"/>
+                <td width="15%">
+                    <select name="deposit_withdrawal">
+                        <option value="DEPOSIT">DEPOSIT</option>
+                        <option value="WITHDRAWAL">WITHDRAWAL</option>
+                    </select>
+
+                </td>
+                <td><input placeholder="Enter Amount" size="6" type="number" th:field="*{savingAmount}"/>
                <select name="modeOfPayment" id="modeOfPayment">
                     <option value="CASH">CASH</option>
                     <option value="MOMO">MOMO</option>
@@ -301,9 +311,3 @@
     </body>
 
 </html>
-
-
-<!--    <br/> <br/>-->
-<!--    <div th:insert="/footer::navbar">  </div>-->
-<!--    </body>-->
-<!--</html>-->

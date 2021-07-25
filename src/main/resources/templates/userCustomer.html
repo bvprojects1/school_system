@@ -74,23 +74,26 @@
                 <div class="col-md-9 col-7 col-sm-7">
                     <nav class="main-menu-area">
                         <ul class="main-menu" id="mobile-menu">
+                            <li>
+                                <a th:href="@{/logout}" href="/Logout"><i class="fas fa-sign-out-alt"></i>Logout</a>
+                            </li>
                             <li> Welcome
                                 <span sec:authentication="name"></span>,</li>
 <!--                            <li><a th:href="@{/welcome}" href="/welcome"> Customer Home</a></li>-->
-                            <li><a th:href="@{/welcomeGlobal}" href="/Logout">PIPIDAF Home</a></li>
-                            <li><a href="#">Accounts <i class="fas fa-angle-down"></i></a>
-                                <ul class="sub-menu">
-                                    <li class="drop-list"><a href="#">BLog Page</a>
-                                        <ul class="sub-menu">
-                                            <li><a href="blog-2-column.html">Blog 2 Column</a></li>
-                                            <li><a href="blog-3-column.html">Blog 3 Column</a></li>
-                                        </ul>
-                                    </li>
-                                    <li><a href="left-sidebar.html">Loans</a></li>
-                                    <li><a href="right-sidebar.html">Retirement Savings</a></li>
-                                    <li><a href="single.html">Withdrawals</a></li>
-                                </ul>
-                            </li>
+<!--                            <li><a th:href="@{/welcomeGlobal}" href="/Logout">PIPIDAF Home</a></li>-->
+<!--                            <li><a href="#">Accounts <i class="fas fa-angle-down"></i></a>-->
+<!--                                <ul class="sub-menu">-->
+<!--                                    <li class="drop-list"><a href="#">BLog Page</a>-->
+<!--                                        <ul class="sub-menu">-->
+<!--                                            <li><a href="blog-2-column.html">Blog 2 Column</a></li>-->
+<!--                                            <li><a href="blog-3-column.html">Blog 3 Column</a></li>-->
+<!--                                        </ul>-->
+<!--                                    </li>-->
+<!--                                    <li><a href="left-sidebar.html">Loans</a></li>-->
+<!--                                    <li><a href="right-sidebar.html">Retirement Savings</a></li>-->
+<!--                                    <li><a href="single.html">Withdrawals</a></li>-->
+<!--                                </ul>-->
+<!--                            </li>-->
                             <li>
                                 <form action="#" th:action="@{/findUserByUserName}" method="post" >
                                     <nobr> Find:
@@ -98,9 +101,9 @@
                                         <input style="font-size:12pt;color:white;background-color:green;border:2px solid #336600;padding:3px" type="submit" value="Submit"> </nobr>
                                 </form>
                             </li>
-                            <li>
-                                <a th:href="@{/logout}" href="/Logout"><i class="fas fa-sign-out-alt"></i>Logout</a>
-                            </li>
+<!--                            <li>-->
+<!--                                <a th:href="@{/logout}" href="/Logout"><i class="fas fa-sign-out-alt"></i>Logout</a>-->
+<!--                            </li>-->
                         </ul>
                     </nav>
                 </div>
@@ -140,23 +143,13 @@
 
                             <div class="col-md-12">
 
-                                <label for="aUserRole">Choose a User Role:</label>
-                                <div th:if="${#authorization.expression('hasAnyAuthority(''ROLE_MANAGER'')')} OR ${#authorization.expression('hasAnyAuthority(''ROLE_ADMIN'')')}">
-                                    <select  name="aUserRole" id="aUserRole">
-                                        <option value="ROLE_CUSTOMER">CUSTOMER</option>
-                                        <option value="ROLE_AGENT">AGENT</option>
-                                        <option value="ROLE_AUDITOR">AUDITOR</option>
-                                        <option value="ROLE_BOARD_MEMBER">BOARD MEMBER</option>
-                                        <option value="ROLE_MANAGER">MANAGER</option>
-                                        <option value="ROLE_ADMIN">ADMIN</option>
-                                    </select>
-                                </div>
-                                <div th:if="${#authorization.expression('hasAnyAuthority(''ROLE_AGENT'')')}">
-                                    <select  name="aUserRole">
-                                        <option value="ROLE_CUSTOMER">CUSTOMER</option>
-                                    </select>
-                                </div>
+                                <label for="aUserRole">User Role:</label>
+                                <select  name="aUserRole" id="aUserRole">
+                                    <option value="ROLE_CUSTOMER">CUSTOMER</option>
+                                </select>
+
                                 <br/>
+
                                 <input type="text" name="userName" th:field="*{userName}" id="userName"
                                        placeholder="Username" class="form-control" required>
                                 <br/>
