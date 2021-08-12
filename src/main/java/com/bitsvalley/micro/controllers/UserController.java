@@ -77,18 +77,19 @@ public class UserController extends SuperController{
         user = getUserRoleFromRequest(user,aUserRole);
         user.setCreatedBy(getLoggedInUserName());
         userService.createUser(user);
-        model.put("user", user);
-        model.put("userRoleTemp", aUserRole);
-        SavingBilanzList savingBilanzByUserList = savingAccountService.getSavingBilanzByUser(user,false);
-        if(null == savingBilanzByUserList || savingBilanzByUserList.getSavingBilanzList() == null
-                ||  savingBilanzByUserList.getSavingBilanzList().size() == 0 ){ //first time login
-            savingBilanzByUserList = new SavingBilanzList();
-            savingBilanzByUserList.setSavingBilanzList(new ArrayList<SavingBilanz>());
-            savingBilanzByUserList.setTotalSaving("0");
-        }
-        request.getSession().setAttribute("savingBilanzList",savingBilanzByUserList);
-        request.getSession().setAttribute(BVMicroUtils.CUSTOMER_IN_USE, user);
-        return "userHome";
+        return findUserByUsername(user,model,request);
+//        model.put("user", user);
+//        model.put("userRoleTemp", aUserRole);
+//        SavingBilanzList savingBilanzByUserList = savingAccountService.getSavingBilanzByUser(user,false);
+//        if(null == savingBilanzByUserList || savingBilanzByUserList.getSavingBilanzList() == null
+//                ||  savingBilanzByUserList.getSavingBilanzList().size() == 0 ){ //first time login
+//            savingBilanzByUserList = new SavingBilanzList();
+//            savingBilanzByUserList.setSavingBilanzList(new ArrayList<SavingBilanz>());
+//            savingBilanzByUserList.setTotalSaving("0");
+//        }
+//        request.getSession().setAttribute("savingBilanzList",savingBilanzByUserList);
+//        request.getSession().setAttribute(BVMicroUtils.CUSTOMER_IN_USE, user);
+//        return "userHome";
     }
 
     @PostMapping(value = "/registerUserForm")

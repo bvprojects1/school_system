@@ -1,4 +1,6 @@
 package com.bitsvalley.micro.domain;
+import com.bitsvalley.micro.utils.AccountStatus;
+
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -11,7 +13,7 @@ import java.util.List;
  */
 @Entity
 @Table(name = "savingaccount")
-public class SavingAccount {
+public class SavingAccount{
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -22,11 +24,15 @@ public class SavingAccount {
     private Date lastUpdatedDate;
     private boolean accountMinBalanceLocked;
     private boolean defaultedPayment;
+
+    private AccountStatus accountStatus;
     private int minimumPayment;
     private String intervalOfSaving;
-
-    private String accountNumber;
     private int interestRate;
+    private String country;
+    private String branch;
+    private String productCode;
+    private String accountNumber;
 
     @ManyToOne
     private User user;
@@ -64,6 +70,14 @@ public class SavingAccount {
         this.savingAccountTransaction = savingAccountTransaction;
     }
 
+    public AccountStatus getAccountStatus() {
+        return accountStatus;
+    }
+
+    public void setAccountStatus(AccountStatus accountStatus) {
+        this.accountStatus = accountStatus;
+    }
+
     public int getMinimumPayment() {
         return minimumPayment;
     }
@@ -82,14 +96,6 @@ public class SavingAccount {
 
     public SavingAccountType getAccountSavingType() {
         return savingAccountType;
-    }
-
-    public String getAccountNumber() {
-        return accountNumber;
-    }
-
-    public void setAccountNumber(String accountNumber) {
-        this.accountNumber = accountNumber;
     }
 
     public double getAccountMinBalance() {
@@ -179,6 +185,38 @@ public class SavingAccount {
 
     public void setSavingAccountType(SavingAccountType savingAccountType) {
         this.savingAccountType = savingAccountType;
+    }
+
+    public String getCountry() {
+        return country;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
+    }
+
+    public String getBranch() {
+        return branch;
+    }
+
+    public void setBranch(String branch) {
+        this.branch = branch;
+    }
+
+    public String getProductCode() {
+        return productCode;
+    }
+
+    public void setProductCode(String productCode) {
+        this.productCode = productCode;
+    }
+
+    public String getAccountNumber() {
+        return accountNumber;
+    }
+
+    public void setAccountNumber(String accountNumber) {
+        this.accountNumber = accountNumber;
     }
 
 }

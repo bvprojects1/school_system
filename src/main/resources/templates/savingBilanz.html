@@ -5,7 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PIPIDAF - MICRO FINANCE</title>
+    <title>TBC MFI PLC - MICRO FINANCE</title>
     <!-- Favicon  -->
     <link rel="icon" type="image/x-icon" href="assets/images/favicon/favicon.ico">
 
@@ -62,7 +62,7 @@
                                 <a th:href="@{/logout}" href="/Logout"><i class="fas fa-sign-out-alt"></i>Logout</a>
                             </li>
 <!--                            <li><a th:href="@{/welcome}" href="/welcome"> Customer Home</a></li>-->
-                            <li><a th:href="@{/welcomeGlobal}" href="/Logout">PIPIDAF Home</a></li>
+                            <li><a th:href="@{/welcomeGlobal}" href="/Logout">TBC MFI PLC Home</a></li>
                             <li><a href="#">Accounts <i class="fas fa-angle-down"></i></a>
                                 <ul class="sub-menu">
                                     <li class="drop-list"><a href="#">BLog Page</a>
@@ -126,7 +126,9 @@
                 <td th:text="${bilanz.agent}"></td>
                 <td th:text="${bilanz.accountNumber}"></td>
                 <td th:text="${bilanz.savingAmount}"></td>
-                <td th:text="${bilanz.interestRate}"></td>
+                <td th:text="${bilanz.interestRate}">
+
+                </td>
                 <td th:text="${bilanz.notes}"></td>
                 <td th:text="${bilanz.noOfDays}"></td>
                 <td th:text="${bilanz.interestAccrued}"></td>
@@ -138,7 +140,13 @@
                 <td></td>
                 <td></td>
                 <td>Interest Accrued</td>
-                <td><font color="green" size="4px"> <div th:text="${savingBilanzList.totalSavingInterest}"/></font></td>
+
+                <td>
+                    <div th:if="${#authorization.expression('hasAnyAuthority(''ROLE_MANAGER'')')}">
+                        <font color="green" size="4px"> <div th:text="${savingBilanzList.totalSavingInterest}"/></font>
+                    </div>
+                </td>
+
                 <td>Total Saved:<font color="green" size="6px"> <div th:text="${savingBilanzList.totalSaving}"/></font></td>
                 <td></td>
             </tr>
@@ -160,7 +168,7 @@
                     <div class="col-md-3 mb-sm-5 mb-md-0">
                         <div class="single-footer-widget">
                             <div class="logo-area">
-                                <a href="#"><span>PIPI</span>DAF</a>
+                                <a href="#"><span>TBC MFI</span>PLC</a>
                             </div>
                             <p>The bank on your side. We will consult with you one on one basis?</p>
                             <div class="team-member-social-icon">

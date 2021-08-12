@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PIPIDAF - Micro Finance Software</title>
+    <title>TBC MFI PLC - Micro Finance Software</title>
     <!-- Favicon  -->
     <link rel="icon" type="image/x-icon" href="assets/images/favicon/faviconn.ico">
     <!--Bootstrap-->
@@ -77,7 +77,7 @@
                             <li> Welcome
                                 <span sec:authentication="name"></span>,</li>
 <!--                            <li><a th:href="@{/welcome}" href="/welcome"> Customer Home</a></li>-->
-                            <li><a th:href="@{/welcomeGlobal}" href="/Logout">PIPIDAF Home</a></li>
+                            <li><a th:href="@{/welcomeGlobal}" href="/Logout">TBC MFI PLC Home</a></li>
                             <li><a href="#">Accounts <i class="fas fa-angle-down"></i></a>
                                 <ul class="sub-menu">
                                     <li class="drop-list"><a href="#">BLog Page</a>
@@ -143,13 +143,23 @@
                                 <label for="aUserRole">Choose a User Role:</label>
                                 <div th:if="${#authorization.expression('hasAnyAuthority(''ROLE_MANAGER'')')} OR ${#authorization.expression('hasAnyAuthority(''ROLE_ADMIN'')')}">
                                     <select  name="aUserRole" id="aUserRole">
-                                        <option value="ROLE_CUSTOMER">CUSTOMER</option>
-                                        <option value="ROLE_AGENT">AGENT</option>
+
+                                        <option value="ROLE_ACCOUNTANT">ACCOUNTANT</option>
                                         <option value="ROLE_AUDITOR">AUDITOR</option>
+                                        <option value="ROLE_AGENT">AGENT</option>
                                         <option value="ROLE_BOARD_MEMBER">BOARD MEMBER</option>
+                                        <option value="ROLE_CASHIER">CASHIER</option>
+                                        <option value="ROLE_CUSTOMER">CUSTOMER</option>
+                                        <option value="ROLE_CUSTOMER_SERVICE">CUSTOMER SERVICE</option>
+                                        <option value="ROLE_EXECUTIVE_DIRECTOR">EXECUTIVE DIRECTOR</option>
+                                        <option value="ROLE_GENERAL_MANAGER">GENERAL_MANAGER</option>
+                                        <option value="ROLE_LOAN_OFFICER">LOAD OFFICER</option>
                                         <option value="ROLE_MANAGER">MANAGER</option>
-                                        <option value="ROLE_ADMIN">ADMIN</option>
+                                        <option value="ROLE_MARKETER">MARKETER</option>
+                                        <option value="ROLE_OPERATION_OFFICER">OPERATIONS OFFICER</option>
+
                                     </select>
+
                                 </div>
                                 <div th:if="${#authorization.expression('hasAnyAuthority(''ROLE_AGENT'')')}">
                                     <select  name="aUserRole">
@@ -193,7 +203,7 @@
 
                                 <br/>
                                 <input type="text" name="telephone2" th:field="*{telephone2}" id="telephone2"
-                                       placeholder="Telephone 2" class="form-control" required>
+                                       placeholder="Telephone 2" class="form-control">
 
                                 <br/>
                                 <input type="text" name="address" th:field="*{address}" id="address"
@@ -222,17 +232,15 @@
                                 <br/>
 
 
-                                <label for="true">This new user CANNOT login</label><br/>
-                                    False<input th:field="*{accountLocked}"  type="radio" id="false" name="accountLocked" value="false"
+                                <label for="true">This new user will be able to login</label><br/>
+                                    False<input th:field="*{accountLocked}"  type="radio" id="true" name="accountLocked" value="true"
                                            checked>
                                     <br/>
-                                    True<input th:field="*{accountLocked}" type="radio" id="true" name="accountLocked" value="true">
+                                    True<input th:field="*{accountLocked}" type="radio" id="false" name="accountLocked" value="false">
 
                                 <br/>
 
-
                                 <input type="submit" class="btn-block btn contact-btn" value="CREATE USER"/>
-
                         </div>
                     </form>
                 </div>
@@ -254,7 +262,7 @@
                 <div class="col-md-3 mb-sm-5 mb-md-0">
                     <div class="single-footer-widget">
                         <div class="logo-area">
-                            <a href="#"><span>PIPI</span>DAF</a>
+                            <a href="#"><span>TBC MFI</span>PLC</a>
                         </div>
                         <p>The bank on your side. We will consult with you one on one basis?</p>
                         <div class="team-member-social-icon">

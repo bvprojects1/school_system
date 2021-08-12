@@ -17,6 +17,17 @@ public class SavingAccountType {
     @Column(unique = true)
     String name;
 
+    @Column(unique = true)
+    String number;
+
+    public String getNumber() {
+        return number;
+    }
+
+    public void setNumber(String number) {
+        this.number = number;
+    }
+
     public String getName() {
         return name;
     }

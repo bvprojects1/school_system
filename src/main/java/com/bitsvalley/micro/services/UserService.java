@@ -42,13 +42,13 @@ public class UserService {
     public User createUser(User user) {
 
         user.setCreated(LocalDateTime.now());
-        user.setAccountExpiredDate(LocalDateTime.now().plusYears(99));
-        user.setAccountBlockedDate(LocalDateTime.now().plusYears(99));
+        user.setAccountExpiredDate(LocalDateTime.now().plusMonths(6));
+        user.setAccountBlockedDate(LocalDateTime.now().plusMonths(6));
         user.setLastUpdated(LocalDateTime.now());
 
         user.setAccountExpired(false);
         user.setAccountLocked(false);
-        insureRolesExists();
+        insureSavingAccountExists();
         User save = userRepository.save(user);
 
         // - Update callcenter
@@ -66,10 +66,10 @@ public class UserService {
         userRepository.save(user);
     }
 
-    private void insureRolesExists(){
-        SavingAccountType school_saving = savingAccountTypeRepository.findByName("SCHOOL SAVING");
+    private void insureSavingAccountExists(){
+        SavingAccountType genral_saving = savingAccountTypeRepository.findByName("GENERAL SAVINGS");
 //        Iterable<UserRole> all = userRoleService.findAll();
-        if (school_saving == null) {
+        if (genral_saving == null) {
 //
 ////            role = new UserRole();
 ////            role.setName(name);
@@ -100,41 +100,51 @@ public class UserService {
 //            Iterable<UserRole> iterable = userRolesList;
 //            userRoleService.saveAllRole(iterable);
 // ----------------------------------------------------------------------------------------------
+
             List<SavingAccountType> savingAccountTypeList = new ArrayList<SavingAccountType>();
             SavingAccountType schoolSavingAccountType = new SavingAccountType();
-            schoolSavingAccountType.setName("SCHOOL SAVING");
+            schoolSavingAccountType.setNumber("11");
+            schoolSavingAccountType.setName("GENERAL SAVINGS");
             savingAccountTypeList.add(schoolSavingAccountType);
 
             SavingAccountType autoSavingAccountType = new SavingAccountType();
-            autoSavingAccountType.setName("AUTO SAVING");
+            autoSavingAccountType.setName("RETIREMENT SAVINGS");
+            autoSavingAccountType.setNumber("12");
             savingAccountTypeList.add(autoSavingAccountType);
 
             SavingAccountType vacationSavingAccountType = new SavingAccountType();
-            vacationSavingAccountType.setName("VACATION SAVING");
+            vacationSavingAccountType.setName("DAILY SAVINGS");
+            vacationSavingAccountType.setNumber("13");
             savingAccountTypeList.add(vacationSavingAccountType);
 
             SavingAccountType constructionSavingAccountType = new SavingAccountType();
-            constructionSavingAccountType.setName("CONSTRUCTION SAVING");
+            constructionSavingAccountType.setName("MEDICAL SAVINGS");
+            constructionSavingAccountType.setNumber("14");
             savingAccountTypeList.add(constructionSavingAccountType);
 
             SavingAccountType familySavingAccountType = new SavingAccountType();
-            familySavingAccountType.setName("FAMILY SAVING");
+            familySavingAccountType.setName("SOCIAL SAVINGS");
+            familySavingAccountType.setNumber("15");
             savingAccountTypeList.add(familySavingAccountType);
 
             SavingAccountType otherSavingAccountType = new SavingAccountType();
-            otherSavingAccountType.setName("OTHER SAVING");
+            otherSavingAccountType.setName("BUSINESS SAVINGS");
+            otherSavingAccountType.setNumber("16");
             savingAccountTypeList.add(otherSavingAccountType);
 
             SavingAccountType yearlySavingAccountType = new SavingAccountType();
-            yearlySavingAccountType.setName("YEARLY SAVING");
+            yearlySavingAccountType.setName("CHILDREN SAVINGS");
+            yearlySavingAccountType.setNumber("17");
             savingAccountTypeList.add(yearlySavingAccountType);
 
             SavingAccountType monthlSavingAccountType = new SavingAccountType();
-            monthlSavingAccountType.setName("MONTHLY SAVING");
+            monthlSavingAccountType.setName("REAL ESTATE SAVINGS");
+            monthlSavingAccountType.setNumber("18");
             savingAccountTypeList.add(monthlSavingAccountType);
 
             SavingAccountType dailySavingAccountType = new SavingAccountType();
-            dailySavingAccountType.setName("DAILY SAVING");
+            dailySavingAccountType.setName("EDUCATION SAVINGS");
+            dailySavingAccountType.setNumber("19");
             savingAccountTypeList.add(dailySavingAccountType);
 
             Iterable<SavingAccountType> savingAccountTypeListIterable = savingAccountTypeList;

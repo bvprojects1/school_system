@@ -2,6 +2,7 @@ package com.bitsvalley.micro.services;
 
 import com.bitsvalley.micro.domain.*;
 import com.bitsvalley.micro.repositories.*;
+import com.bitsvalley.micro.utils.AccountStatus;
 import com.bitsvalley.micro.utils.BVMicroUtils;
 import com.bitsvalley.micro.webdomain.SavingBilanz;
 import com.bitsvalley.micro.webdomain.SavingBilanzList;
@@ -53,12 +54,18 @@ public class SavingAccountService extends SuperService{
 
     public void createSavingAccount(SavingAccount savingAccount, User user) {
 
-        savingAccount.setAccountNumber(BVMicroUtils.getSaltString()); //Collision
+//      savingAccount.setAccountNumber(BVMicroUtils.getSaltString()); //Collision
+        savingAccount.setAccountNumber(getCobacSavingsAccountNumber(savingAccount)); //Collision
+        savingAccount.setAccountStatus(AccountStatus.ACTIVE);
         savingAccount.setCreatedBy(getLoggedInUserName());
         savingAccount.setCreatedDate(new Date(System.currentTimeMillis()));
         savingAccount.setLastUpdatedBy(getLoggedInUserName());
         savingAccount.setAccountLocked(false);
         savingAccount.setLastUpdatedDate(new Date(System.currentTimeMillis()));
+
+        com.bitsvalley.micro.domain.SavingAccountType savingAccountType = savingAccountTypeRepository.findByName("GENERAL SAVINGS");
+        savingAccount.setSavingAccountType(savingAccountType);
+
 //        savingAccount.setSavingAccountType(insureAccountSavingTypeExists());
         savingAccount.setUser(user);
         savingAccountRepository.save(savingAccount);
@@ -79,9 +86,18 @@ public class SavingAccountService extends SuperService{
 
     }
 
+    public String getCobacSavingsAccountNumber(SavingAccount savingAccount) {
+            long count = savingAccountRepository.count();
+            count = count + 1000000001;
+            String accountNumber = count + "";
+            accountNumber = accountNumber.replaceFirst("1", "");
+            accountNumber = savingAccount.getCountry()+savingAccount.getProductCode()+accountNumber+savingAccount.getBranch();
+            return accountNumber;
+    }
+
     public void createSavingAccountTransaction(SavingAccountTransaction savingAccountTransaction, User user) {
         //Get id of savingAccount transaction
-
+        savingAccountTransaction.setReference(BVMicroUtils.getSaltString()); //Collision
         savingAccountTransaction.setCreatedBy(getLoggedInUserName());
         savingAccountTransaction.setCreatedDate(LocalDateTime.now());
         savingAccountTransactionRepository.save(savingAccountTransaction);
@@ -216,13 +232,12 @@ public class SavingAccountService extends SuperService{
 
     private SavingBilanz calculateInterest(SavingAccountTransaction savingAccountTransaction, boolean calculateInterest) {
         SavingBilanz savingBilanz = new SavingBilanz();
-
         savingBilanz.setId(""+savingAccountTransaction.getId());
         savingBilanz.setAccountType(savingAccountTransaction.getSavingAccount().getAccountSavingType().getName());
         savingBilanz.setAccountMinimumBalance(formatCurrency(savingAccountTransaction.getSavingAccount().getAccountMinBalance()));
         savingBilanz.setMinimumBalance(formatCurrency(savingAccountTransaction.getSavingAccount().getAccountMinBalance()));
         savingBilanz.setCreatedBy(savingAccountTransaction.getCreatedBy());
-
+        savingBilanz.setReference(savingAccountTransaction.getReference());
         savingBilanz.setAgent(savingAccountTransaction.getCreatedBy());
         savingBilanz.setInterestRate(""+savingAccountTransaction.getSavingAccount().getInterestRate());
         savingBilanz.setSavingAmount(formatCurrency(savingAccountTransaction.getSavingAmount()));
@@ -231,7 +246,8 @@ public class SavingAccountService extends SuperService{
         savingBilanz.setAccountNumber(savingAccountTransaction.getSavingAccount().getAccountNumber());
         savingBilanz.setNoOfDays(calculateNoOfDays(savingAccountTransaction.getCreatedDate()));
         savingBilanz.setModeOfPayment(savingAccountTransaction.getModeOfPayment());
-
+        savingBilanz.setAccountOwner(savingAccountTransaction.getAccountOwner());
+        savingBilanz.setBranch(savingAccountTransaction.getSavingAccount().getBranch());
 
         if(calculateInterest){
             savingBilanz.setInterestAccrued(formatCurrency(calculateInterestAccruedMonthCompounded(savingAccountTransaction)));
@@ -272,7 +288,8 @@ public class SavingAccountService extends SuperService{
 
     public boolean checkDefaultLogic(SavingAccount savingAccount){
 
-        if(savingAccount.getAccountSavingType().getName().equals("MONTHLY SAVING")){
+//        if(savingAccount.getAccountSavingType().getName().equals("GENERAL SAVINGS")){
+        if(savingAccount.getAccountSavingType().getName().equals("GENERAL SAVINGS")){
             List<SavingAccountTransaction> savingAccountTransactionList = savingAccount.getSavingAccountTransaction();
 
             Date createdDate = savingAccount.getCreatedDate();

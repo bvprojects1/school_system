@@ -5,7 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PIPIDAF - Micro Finance Software</title>
+    <title>TBC MFI PLC - Micro Finance Software</title>
     <!-- Favicon  -->
     <link rel="icon" type="image/x-icon" href="assets/images/favicon/faviconn.ico">
     <!--Bootstrap-->
@@ -34,6 +34,7 @@
           padding: 2px;
         }
 <!--        tr:nth-child(even) {background-color: #e6b486;}-->
+
     </style>
 
 </head>
@@ -90,27 +91,28 @@
                                 <a th:href="@{/logout}" href="/Logout"><i class="fas fa-sign-out-alt"></i>Logout</a>
                             </li>
                             <li> Welcome
-                                <span sec:authentication="name"></span>,</li>
-<!--                            <li><a th:href="@{/welcome}" href="/welcome"> Customer Home</a></li>-->
-                            <li><a th:href="@{/welcomeGlobal}" href="/Logout">PIPIDAF Home</a></li>
-<!--                            <li><a href="#">Accounts <i class="fas fa-angle-down"></i></a>-->
-<!--                                <ul class="sub-menu">-->
-<!--                                    <li class="drop-list"><a href="#">BLog Page</a>-->
-<!--                                        <ul class="sub-menu">-->
-<!--                                            <li><a href="blog-2-column.html">Blog 2 Column</a></li>-->
-<!--                                            <li><a href="blog-3-column.html">Blog 3 Column</a></li>-->
-<!--                                        </ul>-->
-<!--                                    </li>-->
-<!--                                    <li><a href="left-sidebar.html">Loans</a></li>-->
-<!--                                    <li><a href="right-sidebar.html">Retirement Savings</a></li>-->
-<!--                                    <li><a href="single.html">Withdrawals</a></li>-->
-<!--                                </ul>-->
-<!--                            </li>-->
+                                <span sec:authentication="name"></span>,
+                            </li>
+                            <!--                            <li><a th:href="@{/welcome}" href="/welcome"> Customer Home</a></li>-->
+                            <li><a th:href="@{/welcomeGlobal}" href="/Logout">PIPTBC MFI PLIDAF Home</a></li>
+                            <!--                            <li><a href="#">Accounts <i class="fas fa-angle-down"></i></a>-->
+                            <!--                                <ul class="sub-menu">-->
+                            <!--                                    <li class="drop-list"><a href="#">BLog Page</a>-->
+                            <!--                                        <ul class="sub-menu">-->
+                            <!--                                            <li><a href="blog-2-column.html">Blog 2 Column</a></li>-->
+                            <!--                                            <li><a href="blog-3-column.html">Blog 3 Column</a></li>-->
+                            <!--                                        </ul>-->
+                            <!--                                    </li>-->
+                            <!--                                    <li><a href="left-sidebar.html">Loans</a></li>-->
+                            <!--                                    <li><a href="right-sidebar.html">Retirement Savings</a></li>-->
+                            <!--                                    <li><a href="single.html">Withdrawals</a></li>-->
+                            <!--                                </ul>-->
+                            <!--                            </li>-->
                             <li>
-                                <form action="#" th:action="@{/findUserByUserName}" method="post" >
+                                <form action="#" th:action="@{/findUserByUserName}" method="post">
                                     <nobr> Find:
                                         <input type="text" name="userName" placeholder="Username" value=""/>
-                                        <input type="submit" value="Submit"> </nobr>
+                                        <input type="submit" value="Submit"></nobr>
                                 </form>
                             </li>
 
@@ -146,57 +148,89 @@
     </div>
     <!--Project title area end-->
 
-<!--    <div class="contact-from-area">-->
-<!--        <div class="container">-->
-<!--            <div class="row">-->
-<!--                <div class="offset-md-2 col-md-8">-->
+    <!--    <div class="contact-from-area">-->
+    <!--        <div class="container">-->
+    <!--            <div class="row">-->
+    <!--                <div class="offset-md-2 col-md-8">-->
 
-                    <form action="#" th:action="@{/registerSavingAccountForm}" method="post" th:object="${savingAccount}">
-                        <table class="center" width="100%"><tr>
-                            <td width="33%"></td>
-                        <td><label> Savings Type:</label></td>
-                        <td><select name="savingType" id="savingType">
-                            <option value="SCHOOL SAVING">SCHOOL</option>
-                            <option value="VACATION SAVING">VACATION</option>
-                            <option value="FAMILY SAVING">FAMILY</option>
-                            <option value="AUTO SAVING">AUTO</option>
-                            <option value="CONSTRUCTION SAVING">CONSTRUCTION</option>
-                            <option value="DAILY SAVING">DAILY</option>
-                            <option value="MONTHLY SAVING">MONTHLY</option>
-                            <option value="YEARLY SAVING">YEARLY</option>
-                            <option value="OTHER">OTHER</option>
-                        </select></td></tr>
-                        <tr><td width="33%"></td><td width="10%"><label> Minimum balance:</label></td>
-                            <td><label> <input type="number" th:field="*{accountMinBalance}"/></label></td>
-                        </tr>
-                            <tr><td width="33%"></td><td width="10%"><label> Interest Rate:</label></td>
-                                <td><label> <input type="number" th:field="*{interestRate}"/></label></td>
-                            </tr>
+    <form action="#" th:action="@{/registerSavingAccountForm}" method="post" th:object="${savingAccount}">
+        <table class="center" width="100%">
+            <tr>
+                <td width="33%"></td>
+                <td><label>Country/Branch:</label></td>
+                <td><select name="country" id="country" th:field="*{country}">
+                    <option value="01">Cameroon (01)</option>
+                    <option value="02">Gabon (02)</option>
+                </select>
+                    <select name="branch" id="branch" th:field="*{branch}">
+                        <option value="01">Nkwen, Bamenda (01)</option>
+                        <option value="02">LaChance, Bamenda (02)</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td width="33%"></td>
+                <td><label> Savings Type:</label></td>
+                <td><select name="savingType" id="savingType" th:field="*{productCode}">
+                    <option value="11">GENERAL SAVINGS - 11</option>
+                    <option value="12">RETIREMENT SAVINGS - 12 </option>
+                    <option value="13">DAILY SAVINGS - 13</option>
+                    <option value="14">MEDICAL SAVINGS - 14</option>
+                    <option value="15">SOCIAL SAVINGS - 15</option>
+                    <option value="16">BUSINESS SAVINGS - 16</option>
+                    <option value="17">CHILDREN SAVINGS - 17</option>
+                    <option value="18">REAL ESTATE SAVINGS - 18</option>
+                    <option value="19">EDUCATION SAVINGS - 19</option>
+                </select>
+                </td>
+            </tr>
+            <tr>
+                <td width="33%"></td>
+                <td width="10%"><label> Minimum balance:</label></td>
+                <td><label> <input type="number" th:field="*{accountMinBalance}"/></label></td>
+            </tr>
+            <tr>
+                <td width="33%"></td>
+                <td width="10%"><label> Interest Rate:</label></td>
+                <td><label> <input type="number" th:field="*{interestRate}"/></label></td>
+            </tr>
 
-                            <tr><td width="33%"></td><td width="10%"><label> Minimum Payment:</label></td>
-                                <td><input type="number" th:field="*{minimumPayment}"/></td>
-                            </tr>
+            <tr>
+                <td width="33%"></td>
+                <td width="10%"><label> Minimum Payment:</label></td>
+                <td><input type="number" th:field="*{minimumPayment}"/></td>
+            </tr>
 
-                            <tr><td width="33%"></td><td width="10%"><label for="intervalOfSaving">Saving Interval:</label></td>
-                                <td><select name="intervalOfSaving" id="intervalOfSaving">
-                                    <option value="01 DAY">01 DAY</option>
-                                    <option value="15 DAY">15 DAY</option>
-                                    <option value="OTHER">OTHER</option>
-                                </select></td>
-                            </tr>
+            <tr>
+                <td width="33%"></td>
+                <td width="10%"><label for="intervalOfSaving">Saving Interval:</label></td>
+                <td><select name="intervalOfSaving" id="intervalOfSaving">
+                    <option value="01 DAY">01 DAY</option>
+                    <option value="15 DAY">15 DAY</option>
+                    <option value="OTHER">OTHER</option>
+                </select></td>
+            </tr>
 
-                            <tr><td width="33%"></td><td width="10%"><label> Notes:</label></td>
-                                <td><textarea  id="notes" rows="3" cols="30" th:field="*{notes}">
-                        </textarea></td></tr>
+            <tr>
+                <td width="33%"></td>
+                <td width="10%"><label> Notes:</label></td>
+                <td><textarea id="notes" rows="3" cols="30" th:field="*{notes}">
+                        </textarea></td>
+            </tr>
 
-                        <tr><td width="33%"></td><td width="10%"></td><td>
-                            <button type="submit" class="btn btn-success">Create Account</button>
-                        </td></tr></table>
-                    </form>
-<!--                </div>-->
-<!--            </div>-->
-<!--        </div>-->
-<!--    </div>-->
+            <tr>
+                <td width="33%"></td>
+                <td width="10%"></td>
+                <td>
+                    <button type="submit" class="btn btn-success">Create Account</button>
+                </td>
+            </tr>
+        </table>
+    </form>
+    <!--                </div>-->
+    <!--            </div>-->
+    <!--        </div>-->
+    <!--    </div>-->
 </section>
 
 <!--Footer area start-->
@@ -271,7 +305,7 @@
                             <li><i class="fas fa-map-marker mr-2"></i> LaChance bridge, Mankon</li>
                             <li><i class="fas fa-envelope mr-2"></i> info@bitsvalley.com</li>
                             <li><i class="fas fa-mobile mr-2"></i> +(012) 1234-5678</li>
-                            <li><i class="fas fa-globe-asia mr-2"></i> www.pipidaf.com</li>
+                            <li><i class="fas fa-globe-asia mr-2"></i> www.TBC-MFI.com</li>
                             <!--<li><i class="fab fa-twitter mr-2"></i> www.socialmedia.com</li>-->
                         </ul>
                     </div>
@@ -316,7 +350,6 @@
     </div>
 </div>
 <!--Modal area end-->
-
 
 
 <!--jQuery-->
