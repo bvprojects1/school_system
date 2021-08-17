@@ -120,7 +120,29 @@ public class PdfService {
     }
 
     public String generatePDFSavingBilanzList(SavingBilanzList savingBilanzList, SavingAccount savingAccount, String logoFilePath) {
-        String savingBilanzNoInterest = "<html><head>" +
+        String savingBilanzNoInterest = "<html><head><style>\n" +
+                "#transactions {\n" +
+                "  border-collapse: collapse;\n" +
+                "  width: 100%;\n" +
+                "}\n" +
+                "\n" +
+                "#transactions td, #customers th {\n" +
+                "  border: 1px solid #ddd;\n" +
+                "  padding: 4px;\n" +
+                "}\n" +
+                "\n" +
+                "#transactions tr:nth-child(even){background-color: #f2f2f2;}\n" +
+                "\n" +
+                "#transactions tr:hover {background-color: #ddd;}\n" +
+                "\n" +
+                "#transactions th {\n" +
+                "  padding-top: 6px;\n" +
+                "  padding-bottom: 6px;\n" +
+                "  text-align: left;\n" +
+                "  background-color: #cda893;\n" +
+                "  color: white;\n" +
+                "}\n" +
+                "</style>" +
                 "</head><body><br/><br/>" +
                 "    <table border=\"0\" width=\"100%\">" +
                 "        <tr><td align=\"center\"> <img width=\"50px\" src=\"/Users/frusamachifen/bv_micro_workspace/bv_micro/src/main/webapp/assets/images/logo.jpeg\"/><br/>TBC MFI PLC <br/> Together each achieves more</td>" +
@@ -148,19 +170,7 @@ public class PdfService {
                 "       <td align=\"right\"><font size=\"4\" color=\"green\">Customer Shortname:</font></td>" +
                 "       <td align=\"right\">" + savingAccount.getUser().getLastName() +"</td></tr>" +
                 "       </table><br/><br/><br/>" +
-
-
-
-//                "    <table border=\"0\" width=\"100%\">" +
-//                "        <tr><td colspan=\"3\"> <img width=\"50px\" src=\"/Users/frusamachifen/bv_micro_workspace/bv_micro/src/main/webapp/assets/images/logo.jpeg\"/><br/>TBC MFI PLC </td><td>Customer Name:<b>"+savingAccount.getUser().getFirstName() +" "+savingAccount.getUser().getLastName() +"</b></td><td>Account No. <b>"+savingAccount.getAccountNumber()+"</b></td></tr><tr>" +
-//                "        <td><font size=\"6\"><b><br/>"+savingAccount.getUser().getUserName()+"</b>\'s </font>" +
-//                "        </td>\n" +
-//                "        <td> Saving <br/><font color=\"green\"><b>"+savingBilanzList.getTotalSaving()+"</b>frs cfa</font></td>\n" +
-//                "        <td> Current<br/> <font size=\"6\"> 0</font></td>\n" +
-//                "        <td> Loan<br/> <font size=\"6\"> 0</font></td>\n" +
-//                "        <td>Retirement saving <br/> <font size=\"6\" color=\"#A57C00\">0 </font></td>\n" +
-//                "        </tr></table><br/><br/> <font size=\"8\"> ACCOUNT STATEMENT</font> <br/>" +
-                "    <table  border=\"0\" width=\"100%\" class=\"center\">\n" +
+                "    <table id=\"transactions\" border=\"0\" width=\"100%\" class=\"center\">\n" +
                 "            <tr>\n" +
                 "                <th>Date</th>\n" +
                 "                <th>Branch</th>\n" +
@@ -178,16 +188,16 @@ public class PdfService {
                     "                <td></td>\n" +
                     "                <td></td>\n" +
                     "                <td></td>\n" +
-                    "                <td>Total Saved:<font size=\"10px\"><b>" +savingBilanzList.getTotalSaving()+"</b></font></td>\n" +
-                    "                <td></td>\n" +
+                    "                <td colspan=\"2\">Total Saved:<font size=\"10px\"><b>" +savingBilanzList.getTotalSaving()+"</b></font></td>\n" +
+                    "                \n" +
                     "            </tr>"+
-                    "        </table>" +
-                "       <table><tr><td></td>" +
-                "       <td>Bamenda Branch, N W Region</td>" +
-                "       <td></td>" +
-                "       <td></td>" +
-                "       <td></td>" +
-                "       <td>"+ BVMicroUtils.formatDate(new Date(System.currentTimeMillis())) +"</td></tr>" +
+                    "        </table><br/>" +
+                "    <table id=\"transactions\" border=\"0\" width=\"100%\" class=\"center\">\n" +
+                "       <tr><th id=\"transactions\">Opening Balance</th><th>1000</th></tr>" +
+                "       <tr><td>Credit Sum</td> <td></td></tr>" +
+                "       <tr><td>Debit Sum</td> <td></td></tr></table>" +
+                "       <table><tr><th>Closing Balance</th><th>" +savingBilanzList.getTotalSaving()+ "</th></tr>" +
+//              "       <tr><td>Bamenda Branch, N W Region</td><td>"+ BVMicroUtils.formatDate(new Date(System.currentTimeMillis())) +"</td></tr>" +
                 "       </table></body></html>";
         return savingBilanzNoInterest;
     }

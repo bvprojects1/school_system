@@ -39,7 +39,10 @@
                     <div class="col-md-3 col-5 col-sm-5">
                         <div class="logo-area">
                             <br/>
-                            <a href="index.html"><img th:src="@{/assets/images/logo.jpeg}"/> </a>
+<!--                            &#45;&#45;<div th:text="${session.customerInUse.idFilePath}"/>&#45;&#45;-->
+
+                            <a href="index.html"><img th:src="@{/getLogoImage}"/> </a>
+<!--                            <a href="index.html"><img th:src="@{/assets/images/logo.jpeg}"/> </a>-->
                         </div>
                     </div>
                     <!--Logo area end-->
@@ -88,7 +91,6 @@
     <br/>
 
 <!--    <span sec:authentication="principal.authorities"></span>-->
-
 <!--   <div th:if="${#authorization.expression('hasAnyAuthority(''ROLE_AGENT'')')}">-->
 <!--         3. User has authority AGENT.-->
 <!--   </div>-->
@@ -148,13 +150,13 @@
                         </div>
                     </div>
                     <!--Single service area end-->
-                    <div th:if="${#authorization.expression('hasAnyAuthority(''ROLE_MANAGER'')')} OR ${#authorization.expression('hasAnyAuthority(''ROLE_AGENT'')')}" class="col-md-6 col-lg-4">
+                    <div th:if="${#authorization.expression('hasAnyAuthority(''ROLE_ADMIN'')')} OR ${#authorization.expression('hasAnyAuthority(''ROLE_MANAGER'')')} " class="col-md-6 col-lg-4">
                         <div class="single-choosen-content text-center single-service-content box-pad">
-                            <i class="fas fa-umbrella"></i>
-                            <h4>RETIREMENT SAVINGS</h4>
-                            <p>Promising development turmoil inclusive education transformative community.</p>
-                            <a href="#">read more</a>
-                            <span class="fas fa-umbrella"></span>
+                            <i class="fas fa-cogs"></i>
+                            <h4>SETINGS</h4>
+                            <p>Init settings</p>
+                            <a href="#" th:href="@{/initsettings}"> init settings </a> <a href="#" th:href="@{/viewsettings}">view settings</a>
+                            <span class="fas fa-cogs"></span>
                         </div>
                     </div>
                     <!--Single service area end-->

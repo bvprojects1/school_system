@@ -13,6 +13,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
@@ -71,25 +72,27 @@ public class UserController extends SuperController{
         return "userCustomer";
     }
 
+    @GetMapping(value = "/reloadUser")
+    public String reloadUser(ModelMap model, HttpServletRequest request) {
+        User user = (User)request.getSession().getAttribute(BVMicroUtils.CUSTOMER_IN_USE);
+        model.put("user", user);
+        return "reloadUser";
+    }
+    @Transactional
     @PostMapping(value = "/registerUserPreviewForm")
     public String registerUserPreviewForm(@ModelAttribute("user") User user, ModelMap model, HttpServletRequest request) {
         String aUserRole = (String) request.getParameter("userRoleTemp");
         user = getUserRoleFromRequest(user,aUserRole);
         user.setCreatedBy(getLoggedInUserName());
-        userService.createUser(user);
+        if(user.getId()>0){ //TODO: hmmm operations movin' accounts
+            Optional<User> byId = userRepository.findById(user.getId());
+            List<SavingAccount> savingAccount = byId.get().getSavingAccount();
+            user.setSavingAccount(savingAccount);
+            userService.saveUser(user);
+        }else{
+            userService.createUser(user);
+        }
         return findUserByUsername(user,model,request);
-//        model.put("user", user);
-//        model.put("userRoleTemp", aUserRole);
-//        SavingBilanzList savingBilanzByUserList = savingAccountService.getSavingBilanzByUser(user,false);
-//        if(null == savingBilanzByUserList || savingBilanzByUserList.getSavingBilanzList() == null
-//                ||  savingBilanzByUserList.getSavingBilanzList().size() == 0 ){ //first time login
-//            savingBilanzByUserList = new SavingBilanzList();
-//            savingBilanzByUserList.setSavingBilanzList(new ArrayList<SavingBilanz>());
-//            savingBilanzByUserList.setTotalSaving("0");
-//        }
-//        request.getSession().setAttribute("savingBilanzList",savingBilanzByUserList);
-//        request.getSession().setAttribute(BVMicroUtils.CUSTOMER_IN_USE, user);
-//        return "userHome";
     }
 
     @PostMapping(value = "/registerUserForm")
@@ -156,20 +159,6 @@ public class UserController extends SuperController{
         Optional<User> userById = userRepository.findById(id);
         User user = userById.get();
         return findUserByUsername(user,model,request);
-//        if("ROLE_CUSTOMER".equals(user.getUserRole().get(0).getName())){
-//            model.put("createSavingAccountEligible", true);
-//        }else{
-//            model.put("createSavingAccountEligible", false);
-//        }
-//        SavingBilanzList savingBilanzByUserList = savingAccountService.getSavingBilanzByUser(user,false);
-//        model.put("name", getLoggedInUserName());
-//        request.getSession().setAttribute("savingBilanzList",savingBilanzByUserList);
-//        request.getSession().setAttribute(BVMicroUtils.CUSTOMER_IN_USE, user);
-//        if( null == savingBilanzByUserList.getSavingBilanzList()
-//                || savingBilanzByUserList.getSavingBilanzList().size() == 0 ){
-//            return "userHomeNoAccount";
-//        }
-//        return "userHome";
     }
 
     @GetMapping(value = "/lockAccount/{id}")

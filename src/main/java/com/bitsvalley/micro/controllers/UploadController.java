@@ -1,6 +1,9 @@
 package com.bitsvalley.micro.controllers;
 
+import com.bitsvalley.micro.domain.RuntimeProperties;
 import com.bitsvalley.micro.domain.User;
+import com.bitsvalley.micro.repositories.RuntimePropertiesRepository;
+import com.bitsvalley.micro.services.InitSystemService;
 import com.bitsvalley.micro.services.SavingAccountService;
 import com.bitsvalley.micro.services.UserService;
 import com.bitsvalley.micro.webdomain.SavingBilanzList;
@@ -36,16 +39,30 @@ public class UploadController extends SuperController{
     @Autowired
     SavingAccountService savingAccountService;
 
-    private final String UPLOAD_DIR = "/Users/frusamachifen/";
+    @Autowired
+    InitSystemService initSystemService;
+
+    @Autowired
+    RuntimePropertiesRepository runtimePropertiesRepository;
+
+
+    private final String UPLOAD_DIR = "assets/images/";
 
     @GetMapping("/file")
     public String uploadFile(){
-
         return "upload";
     }
 
+    @GetMapping(value = "/fileLogo/{userName}")
+    public String uploadLogoUsername(@PathVariable("userName") String userName, ModelMap model, HttpServletRequest request) {
+        User user = userService.findUserByUserName(userName);
+        request.getSession().setAttribute("userName",user.getUserName());
+        model.put("userName", user.getUserName());
+        return "uploadLogo";
+    }
+
     @GetMapping(value = "/file/{userName}")
-    public String registerSavingAccountTransaction(@PathVariable("userName") String userName, ModelMap model, HttpServletRequest request) {
+    public String uploadFileUsername(@PathVariable("userName") String userName, ModelMap model, HttpServletRequest request) {
         User user = userService.findUserByUserName(userName);
         request.getSession().setAttribute("userName",user.getUserName());
         model.put("userName", user.getUserName());
@@ -62,7 +79,11 @@ public class UploadController extends SuperController{
         }
         // normalize the file path
         String fileName = StringUtils.cleanPath(file.getOriginalFilename());
-        String completePAth = UPLOAD_DIR +"_"+ userName +"_id_"+fileName;
+
+        String rpath = request.getRealPath("/");
+//        rpath = rpath + "/assets/images/" + imageId; // whatever path you used for storing the file
+
+        String completePAth = rpath + UPLOAD_DIR +"_"+ userName +"_id_"+fileName;
         // save the file on the local file system
         Path path = null;
         try {
@@ -84,4 +105,28 @@ public class UploadController extends SuperController{
         return "userHome";
     }
 
+
+    @PostMapping("/uploadLogo")
+    public String uploadLogo(@RequestParam("file") MultipartFile file, RedirectAttributes attributes,HttpServletRequest request, ModelMap model) {
+
+        if (file.isEmpty()) {
+            attributes.addFlashAttribute("message", "Please select a file to upload.");
+            return "redirect:/";
+        }
+        String fileName = StringUtils.cleanPath(file.getOriginalFilename());
+        String rpath = request.getRealPath("/");
+        String completePath = rpath + UPLOAD_DIR +fileName;
+        RuntimeProperties logo = runtimePropertiesRepository.findByPropertyName("logo");
+        logo.setPropertyValue(completePath);
+        Path path = null;
+        try {
+            path = Paths.get(completePath);
+            Files.copy(file.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        model.put("runtimeSetting",initSystemService.findAll());
+        attributes.addFlashAttribute("message", "You successfully uploaded " + fileName + '!');
+        return "settings";
+    }
 }

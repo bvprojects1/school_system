@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -29,15 +28,45 @@
 </head>
 
 <body>
-
+<!--Preloader area start-->
+<!--<div id="preloader">-->
+<!--    <div class="pre-loader-icon"></div>-->
+<!--</div>-->
+<!--Preloader area end-->
+<!--Header area start-->
 <header class="header-area-start">
+    <!--Header top area start-->
+    <div class="header-top-area-start">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 col-12 col-sm-5">
+                    <div class="header-top-left">
+                        <!--                        <a href="#" data-toggle="modal" data-target="#exampleModal"><i class="fas fa-sign-in-alt"></i>-->
+                        <!--                            login</a>-->
+                        <!--                        <a href="#" data-toggle="modal" data-target="#exampleModal1"><i class="far fa-user"></i>-->
+                        <!--                            register</a>-->
+                    </div>
+                </div>
+                <!--Header top left area end-->
+                <div class="col-md-6 col-12 col-sm-7">
+                    <div class="header-top-right">
+                        <a href="#"><i class="fab fa-facebook-square"></i></a>
+                        <a href="#"><i class="fab fa-twitter-square"></i></a>
+                        <a href="#"><i class="fab fa-youtube-square"></i></a>
+                    </div>
+                </div>
+                <!--Header top right area end-->
+            </div>
+        </div>
+    </div>
+    <!--Header top area end-->
+
     <!--Header navigation area start-->
     <div class="navigation-area-start shadow">
         <div class="container">
             <div class="row">
                 <div class="col-md-3 col-5 col-sm-5">
                     <div class="logo-area">
-                        <br/>
                         <a href="index.html"><img th:src="@{/getLogoImage}"/> </a>
                     </div>
                 </div>
@@ -47,8 +76,9 @@
                         <ul class="main-menu" id="mobile-menu">
                             <li> Welcome
                                 <span sec:authentication="name"></span>,</li>
+                            <!--                            <li><a th:href="@{/welcome}" href="/welcome"> Customer Home</a></li>-->
                             <li><a th:href="@{/welcomeGlobal}" href="/Logout">TBC MFI PLC Home</a></li>
-                            <li><a href="#">blog <i class="fas fa-angle-down"></i></a>
+                            <li><a href="#">Accounts <i class="fas fa-angle-down"></i></a>
                                 <ul class="sub-menu">
                                     <li class="drop-list"><a href="#">BLog Page</a>
                                         <ul class="sub-menu">
@@ -56,13 +86,12 @@
                                             <li><a href="blog-3-column.html">Blog 3 Column</a></li>
                                         </ul>
                                     </li>
-                                    <li><a href="left-sidebar.html">Left Sidebar</a></li>
-                                    <li><a href="right-sidebar.html">Sidebar Right</a></li>
-                                    <li><a href="single.html">Single Page</a></li>
-                                    <li><a href="blank.html">Blank Page</a></li>
+                                    <li><a href="left-sidebar.html">Loans</a></li>
+                                    <li><a href="right-sidebar.html">Retirement Savings</a></li>
+                                    <li><a href="single.html">Withdrawals</a></li>
                                 </ul>
                             </li>
-                            <li th:if="${#authorization.expression('hasAnyAuthority(''ROLE_AGENT'')')} OR ${#authorization.expression('hasAnyAuthority(''ROLE_MANAGER'')')}">
+                            <li>
                                 <form action="#" th:action="@{/findUserByUserName}" method="post" >
                                     <nobr> Find:
                                         <input type="text" name="userName" placeholder="Username" value=""/>
@@ -92,7 +121,8 @@
             <div class="row">
                 <div class="col-md-12">
                     <div class="project-title-content">
-                        <h3>CONFIRM USER DETAILS</h3>
+                        <h3>SYSTEM SETTINGS</h3>
+                        <font color="orange"><div th:text="${notify}"/></font>
                         <span><i class="fas fa-crosshairs"></i></span>
                         <!--                            <p>Cross-agency coordination clean water rural, promising development turmoil inclusive education transformative community.</p>-->
                     </div>
@@ -106,57 +136,31 @@
         <div class="container">
             <div class="row">
                 <div class="offset-md-2 col-md-8">
-                    <form action="#" th:action="@{/registerUserPreviewForm}" method="post" th:object="${user}" >
 
-                        <label> <p>UserRole:</p></label>
-                        <input type="text" name="userRoleTemp" th:value="${userRoleTemp}" readonly/><br/>
-
-                        <input type="hidden" th:field="*{id}"/> <br/>
-
-                        <label> <p>Username:</p> </label>
-                        <input type="text" th:field="*{userName}" readonly/> <br/>
-
-                        <label><p>Gender:</p></label>
-                        <input type="text" th:field="*{gender}" readonly/><br/>
-
-                        <label><p>Firstname and Lastname:</p></p></label>
-                        <input type="text" th:field="*{firstName}" readonly/> <input type="text" th:field="*{lastName}" readonly/><br/>
-
-                        <label><p>Telephone1:</p></label>
-                        <input type="text" th:field="*{telephone1}" readonly/><br/>
-
-                        <label><p>Telephone2:</p></label>
-                        <input type="text" th:field="*{telephone2}" readonly/><br/>
-
-                        <label><p>Address:</p></label>
-                        <input type="text" size="50px" th:field="*{address}" readonly/><br/>
-
-                        <label><p>Date of birth:</p></label>
-                        <input type="text" th:field="*{dateOfBirth}" readonly/><br/>
-
-                        <label><p>Beneficiary:</p></label>
-                        <input type="text" th:field="*{beneficiary}" readonly/><br/>
-
-                        <label><p>Email:</p></label>
-                        <input type="text" size="10px" th:field="*{email}" readonly/><br/>
-
-                        <label><p>Password:</p></label>
-                        <input type="text" th:field="*{password}" readonly/><br/>
-
-                        <label><p>Identity Card No:</p></label>
-                        <input type="text" th:field="*{identityCardNumber}" readonly/><br/>
-
-                        <label><p>Profession:</p></label>
-                        <input type="text" th:field="*{profession}" readonly/><br/>
-
-                        <label> <p>Account Locked:</p></label>
-                        <input type="text" th:field="*{accountLocked}" readonly/><br/>
-
-                        <input type="hidden" th:field="*{idFilePath}" readonly/><br/>
-
-                        <a href="user.html">Back</a><br/><br/>
-                        <button type="submit" class="btn btn-success">Confirm and Save</button>
+                    <form action="#" method="post" th:action="@{/uploadLogo}" enctype="multipart/form-data">
+                        <div class="form-group">
+                            <input type="file" name="file" class="form-control-file">
+                        </div>
+                        <button type="submit" class="btn btn-primary">Upload File And Save To See Changes</button>
                     </form>
+
+                    <form action="#" th:action="@{/saveSettingForm}" method="post" th:object="${runtimeSetting}">
+                        <div class="col-md-12">
+                           Business Name:<input type="text" name="businessName" th:field="*{businessName}" id="businessName"
+                                   placeholder="Enter business name" class="form-control" required>
+                            <br/>
+                            Logo: <input type="text" name="logo" th:field="*{logo}" id="logo"
+                                   placeholder="Upload logo" class="form-control" required>
+                            <br/>
+
+
+                            <img width="100px" th:src="@{/getLogoImage}"/>
+                            <br/>
+
+                            <input type="submit" class="btn-block btn contact-btn" value="Save"/>
+                        </div>
+                    </form>
+
                 </div>
             </div>
         </div>
@@ -230,11 +234,11 @@
                     <div class="single-footer-widget">
                         <h5>Get In Touch</h5>
                         <ul class="footer-menu-touch">
-                            <li><i class="fas fa-map-marker mr-2"></i> LaChance bridge, Mankon</li>
-                            <li><i class="fas fa-envelope mr-2"></i> info@bitsvalley.com</li>
+                            <li><i class="fas fa-map-marker mr-2"></i> 27/1A Vangachura Road, Dhaka</li>
+                            <li><i class="fas fa-envelope mr-2"></i> root@example.com</li>
                             <li><i class="fas fa-mobile mr-2"></i> +(012) 1234-5678</li>
-                            <li><i class="fas fa-globe-asia mr-2"></i> www.pipidaf.com</li>
-                            <!--<li><i class="fab fa-twitter mr-2"></i> www.socialmedia.com</li>-->
+                            <li><i class="fas fa-globe-asia mr-2"></i> www.domain.com</li>
+                            <li><i class="fab fa-twitter mr-2"></i> www.socialmedia.com</li>
                         </ul>
                     </div>
                 </div>
@@ -247,35 +251,6 @@
 <!--Footer area end-->
 
 
-<!--Modal area start-->
-<!-- Modal -->
-<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header  bg-primary text-light">
-                <h5 class="modal-title text-uppercase" id="exampleModalLabel">Login Form</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <form action="#" method="POST">
-                    <label for="email">Email :</label>
-                    <input type="email" name="email" id="email" placeholder="Email" class="form-control mb-3">
-
-                    <label for="password">Password :</label>
-                    <input type="password" name="password" id="password" placeholder="*************"
-                           class="form-control">
-
-                    <button type="submit" class=" mt-3 btn btn-primary text-uppercase text-light">Login</button>
-                </form>
-            </div>
-            <div class="modal-footer">
-            </div>
-        </div>
-    </div>
-</div>
-<!--Modal area end-->
 
 
 <!-- Modal -->
@@ -338,41 +313,6 @@
 
 <!--Message send script-->
 <script>
-        function sendContact() {
-            var valid;
-            valid = validateContact();
-            if (valid) {
-                jQuery.ajax({
-                    url: "assets/php/contact.php",
-                    data: 'userName=' + $("#cuname").val() + '&userEmail=' + $("#cemail").val() + '&subject=' + $("#csubject").val() + '&content=' + $("#cmessage").val(),
-                    type: "POST",
-                    success: function(data) {
-                        $("#mail-status").html(data);
-                    },
-                    error: function() {}
-                });
-            } else {
-                $("#mail-status").html("Something Missing");
-            }
-        }
-
-        function validateContact() {
-            var valid = true;
-            if (!$("#cuname").val()) {
-                valid = false;
-            }
-            if (!$("#cemail").val()) {
-                valid = false;
-            }
-            if (!$("#csubject").val()) {
-                valid = false;
-            }
-            if (!$("#cmessage").val()) {
-                valid = false;
-            }
-            return valid;
-        }
-
 
 </script>
 </body>

@@ -1,24 +1,29 @@
 package com.bitsvalley.micro.controllers;
 
 import com.bitsvalley.micro.domain.User;
-import com.bitsvalley.micro.domain.UserRole;
 import com.bitsvalley.micro.repositories.UserRepository;
 import com.bitsvalley.micro.repositories.UserRoleRepository;
+import com.bitsvalley.micro.services.InitSystemService;
 import com.bitsvalley.micro.services.SavingAccountService;
 import com.bitsvalley.micro.services.UserService;
 import com.bitsvalley.micro.utils.BVMicroUtils;
+import com.bitsvalley.micro.webdomain.RuntimeSetting;
 import com.bitsvalley.micro.webdomain.SavingBilanz;
 import com.bitsvalley.micro.webdomain.SavingBilanzList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
+
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
 
 /**
  * @author Fru Chifen
@@ -27,6 +32,8 @@ import java.util.Optional;
 @Controller
 public class WelcomeController extends SuperController{
 
+    @Autowired
+    InitSystemService initSystemService;
 
     @Autowired
     SavingAccountService savingAccountService;
@@ -60,6 +67,8 @@ public class WelcomeController extends SuperController{
         User aUser = (User)request.getSession().getAttribute(BVMicroUtils.CUSTOMER_IN_USE);
         User byUserName = userRepository.findByUserName(getLoggedInUserName());
         request.getSession().setAttribute(BVMicroUtils.CUSTOMER_IN_USE, byUserName);
+        request.getSession().setAttribute("runtimeSettings",initSystemService.findAll());
+
         if(null != aUser){
             SavingBilanzList savingBilanzByUserList = savingAccountService.getSavingBilanzByUser(aUser, false);
             Collections.reverse(savingBilanzByUserList.getSavingBilanzList()); //TODO: reverse during search?
@@ -72,13 +81,8 @@ public class WelcomeController extends SuperController{
             request.getSession().setAttribute("savingBilanzList",savingBilanzByUserList);
             return "userHome";
         }else{
-            int savingAccountCount = savingAccountService.findAllSavingAccountCount();
             ArrayList<com.bitsvalley.micro.domain.UserRole> customerRole = new ArrayList<com.bitsvalley.micro.domain.UserRole>();
             customerRole.add(userRoleRepository.findByName(com.bitsvalley.micro.utils.UserRole.ROLE_CUSTOMER.name()));
-            ArrayList<User> allByUserRoleIn = userService.findAllByUserRoleIn(customerRole);
-            int customerAccountCount = allByUserRoleIn.size();
-            request.getSession().setAttribute("customerAccountCount",customerAccountCount);
-            request.getSession().setAttribute("savingAccountCount",savingAccountCount);
         }
         return "welcome";
     }
@@ -96,11 +100,30 @@ public class WelcomeController extends SuperController{
         return "welcome";
     }
 
-
     @GetMapping(value = "/landing")
     public String showLandingPage(ModelMap model) {
         return "landing";
     }
 
+
+    @GetMapping(value = "/getImage")
+    @ResponseBody
+    public byte[] getImage(HttpServletRequest request) throws IOException {
+//        String rpath = request.getRealPath("/");
+        User user = (User)request.getSession().getAttribute(BVMicroUtils.CUSTOMER_IN_USE);
+//        rpath = rpath + "assets/images/"+user.getIdFilePath(); // whatever path you used for storing the file
+        Path path = Paths.get(user.getIdFilePath());
+        byte[] data = Files.readAllBytes(path);
+        return data;
+    }
+
+    @GetMapping(value = "/getLogoImage")
+    @ResponseBody
+    public byte[] getLogoImage(HttpServletRequest request) throws IOException {
+        RuntimeSetting runtimeSetting = (RuntimeSetting)request.getSession().getAttribute("runtimeSettings");
+        Path path = Paths.get(runtimeSetting.getLogo());
+        byte[] data = Files.readAllBytes(path);
+        return data;
+    }
 
 }
