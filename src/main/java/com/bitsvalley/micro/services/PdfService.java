@@ -123,24 +123,57 @@ public class PdfService {
         String savingBilanzNoInterest = "<html><head>" +
                 "</head><body><br/><br/>" +
                 "    <table border=\"0\" width=\"100%\">" +
-                "        <tr><td colspan=\"3\"> <img width=\"50px\" src=\"/Users/frusamachifen/bv_micro_workspace/bv_micro/src/main/webapp/assets/images/logo.jpeg\"/><br/>PIPIDAF </td><td>Customer Name:<b>"+savingAccount.getUser().getFirstName() +" "+savingAccount.getUser().getLastName() +"</b></td><td>Account No. <b>"+savingAccount.getAccountNumber()+"</b></td></tr><tr>" +
-                "        <td><font size=\"6\"><b><br/>"+savingAccount.getUser().getUserName()+"</b>\'s </font>" +
-                "        </td>\n" +
-                "        <td> Saving <br/><font color=\"green\"><b>"+savingBilanzList.getTotalSaving()+"</b>frs cfa</font></td>\n" +
-                "        <td> Current<br/> <font size=\"6\"> 0</font></td>\n" +
-                "        <td> Loan<br/> <font size=\"6\"> 0</font></td>\n" +
-                "        <td>Retirement saving <br/> <font size=\"6\" color=\"#A57C00\">0 </font></td>\n" +
-                "        </tr></table><br/><br/> <font size=\"8\"> ACCOUNT STATEMENT</font> <br/>" +
+                "        <tr><td align=\"center\"> <img width=\"50px\" src=\"/Users/frusamachifen/bv_micro_workspace/bv_micro/src/main/webapp/assets/images/logo.jpeg\"/><br/>TBC MFI PLC <br/> Together each achieves more</td>" +
+                "       <td colspan=\"2\"><b><font size=\"4\" color=\"green\">ACCOUNT STATEMENT</font></b></td>" +
+                "       <td align=\"right\"><font size=\"4\">"+ BVMicroUtils.formatDate(new Date(System.currentTimeMillis())) +"</font></td></tr>" +
+                "        <tr><td> </td><td> </td>" +
+                "       <td align=\"right\"><font size=\"6\" color=\"green\">Period From:</font></td>" +
+                "       <td align=\"right\"><font size=\"4\"> 01 January 2021 </font></td></tr>" +
+                "        <tr><td> </td><td> </td>" +
+                "       <td align=\"right\"><font size=\"6\" color=\"green\">Period To</font></td>" +
+                "       <td align=\"right\"><font size=\"4\">"+ BVMicroUtils.formatDate(new Date(System.currentTimeMillis())) +"</font></td></tr>" +
+                "        <tr><td> </td><td> </td>" +
+                "       <td align=\"right\"><font size=\"6\" color=\"green\">Account Number:</font></td>" +
+                "       <td align=\"right\"><font size=\"4\">"+ savingAccount.getAccountNumber() +"</font></td></tr>" +
+                "        <tr><td> </td><td> </td>" +
+                "       <td align=\"right\"><font size=\"6\" color=\"green\">Product Number:</font></td>" +
+                "       <td align=\"right\"><font size=\"4\">"+ savingAccount.getProductCode() +"</font></td></tr>" +
+                "        <tr><td> </td><td> </td>" +
+                "       <td align=\"right\"><font size=\"6\" color=\"green\">Branch Code:</font></td>" +
+                "       <td align=\"right\"><font size=\"4\">"+ savingAccount.getBranch() +"</font></td></tr>" +
+                "        <tr><td> </td><td> </td>" +
+                "       <td align=\"right\"><font size=\"6\" color=\"green\">Branch Name:</font></td>" +
+                "       <td align=\"right\"><font size=\"4\"> Bamenda Branch </font></td></tr>" +
+                "        <tr><td> </td><td> </td>" +
+                "       <td align=\"right\"><font size=\"4\" color=\"green\">Customer Shortname:</font></td>" +
+                "       <td align=\"right\">" + savingAccount.getUser().getLastName() +"</td></tr>" +
+                "       </table><br/><br/><br/>" +
+
+
+
+//                "    <table border=\"0\" width=\"100%\">" +
+//                "        <tr><td colspan=\"3\"> <img width=\"50px\" src=\"/Users/frusamachifen/bv_micro_workspace/bv_micro/src/main/webapp/assets/images/logo.jpeg\"/><br/>TBC MFI PLC </td><td>Customer Name:<b>"+savingAccount.getUser().getFirstName() +" "+savingAccount.getUser().getLastName() +"</b></td><td>Account No. <b>"+savingAccount.getAccountNumber()+"</b></td></tr><tr>" +
+//                "        <td><font size=\"6\"><b><br/>"+savingAccount.getUser().getUserName()+"</b>\'s </font>" +
+//                "        </td>\n" +
+//                "        <td> Saving <br/><font color=\"green\"><b>"+savingBilanzList.getTotalSaving()+"</b>frs cfa</font></td>\n" +
+//                "        <td> Current<br/> <font size=\"6\"> 0</font></td>\n" +
+//                "        <td> Loan<br/> <font size=\"6\"> 0</font></td>\n" +
+//                "        <td>Retirement saving <br/> <font size=\"6\" color=\"#A57C00\">0 </font></td>\n" +
+//                "        </tr></table><br/><br/> <font size=\"8\"> ACCOUNT STATEMENT</font> <br/>" +
                 "    <table  border=\"0\" width=\"100%\" class=\"center\">\n" +
                 "            <tr>\n" +
                 "                <th>Date</th>\n" +
+                "                <th>Branch</th>\n" +
                 "                <th>Mode </th>\n" +
                 "                <th>Agent</th>\n" +
-                "                <th>Amount</th>\n" +
+                "                <th>Reference</th>\n" +
                 "                <th>Notes</th>\n" +
+                "                <th>Credit</th>\n" +
                 "                <th></th>\n" +
                 "            </tr>\n" + getTableList(savingBilanzList) +
                     "            <tr>\n" +
+                    "                <td></td>\n" +
+                    "                <td></td>\n" +
                     "                <td></td>\n" +
                     "                <td></td>\n" +
                     "                <td></td>\n" +
@@ -163,10 +196,13 @@ public class PdfService {
         String tableHtml = "";
         for (SavingBilanz bilanz: savingBilanzList.getSavingBilanzList()){
             tableHtml = tableHtml +  "<tr><td>"+bilanz.getCreatedDate()+"</td>" +
+                    "<td>"+bilanz.getBranch()+"</td>" +
                     "<td>"+bilanz.getModeOfPayment()+"</td>" +
                     "<td>"+bilanz.getAgent()+"</td>" +
-                            "<td>"+bilanz.getSavingAmount()+"</td>" +
+
+                            "<td>"+bilanz.getReference()+"</td>" +
                             "<td>"+bilanz.getNotes()+"</td>" +
+                            "<td>"+bilanz.getSavingAmount()+"</td>" +
                             "<td>"+bilanz.getCurrentBalance()+"</td>" +
                     "</tr>";
         }

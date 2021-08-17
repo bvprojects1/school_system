@@ -2,6 +2,7 @@ package com.bitsvalley.micro.webdomain;
 
 public class SavingBilanz {
 
+    String branch;
     String createdDate;
     String interestAccrued;
     String notes;
@@ -10,7 +11,7 @@ public class SavingBilanz {
     String noOfDays;
     String savingAmount;
     String currentBalance;
-
+    String reference;
     String accountType;
     String accountNumber;
     String accountMinimumBalance;
@@ -19,6 +20,15 @@ public class SavingBilanz {
     String locked;
     String createdBy;
     String id;
+    String accountOwner;
+
+    public String getBranch() {
+        return branch;
+    }
+
+    public void setBranch(String branch) {
+        this.branch = branch;
+    }
 
     public String getId() {
         return id;
@@ -26,6 +36,14 @@ public class SavingBilanz {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public String getAccountOwner() {
+        return accountOwner;
+    }
+
+    public void setAccountOwner(String accountOwner) {
+        this.accountOwner = accountOwner;
     }
 
     public String getCurrentBalance() {
@@ -146,5 +164,13 @@ public class SavingBilanz {
 
     public void setSavingAmount(String savingAmount) {
         this.savingAmount = savingAmount;
+    }
+
+    public String getReference() {
+        return reference;
+    }
+
+    public void setReference(String reference) {
+        this.reference = reference;
     }
 }

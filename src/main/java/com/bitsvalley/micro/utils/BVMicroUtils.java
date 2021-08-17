@@ -28,6 +28,8 @@ public class BVMicroUtils {
         return saltStr;
     }
 
+
+
 //    public static String dateFormatter(LocalDateTime localDateTime){
 //        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 //        String formattedDateTime = localDateTime.format(formatter);
@@ -67,7 +69,7 @@ public class BVMicroUtils {
     }
 
     public static String formatDate(Date date) {
-        SimpleDateFormat formatter = new SimpleDateFormat("dd MMMM yyyy 'at' hh:mm");
+        SimpleDateFormat formatter = new SimpleDateFormat("dd MMMM yyyy hh:mm");
         String format = formatter.format(date);
         return format;
 

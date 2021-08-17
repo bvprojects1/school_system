@@ -66,16 +66,17 @@ public class SavingAccountController extends SuperController{
     public String registerSavingForm( @ModelAttribute("saving") SavingAccount savingAccount, ModelMap model, HttpServletRequest request) {
         User user = (User)request.getSession().getAttribute(BVMicroUtils.CUSTOMER_IN_USE);
         user = userRepository.findById(user.getId()).get();
-        String savingType = request.getParameter("savingType");
-        SavingAccountType savingAccountType = savingAccountTypeService.getSavingAccountType(savingType);
-        savingAccount.setSavingAccountType(savingAccountType);
         savingAccountService.createSavingAccount(savingAccount, user);
         return findUserByUserName(user, model, request);
     }
 
     @GetMapping(value = "/registerSavingAccountTransaction/{id}")
-    public String registerSavingAccountTransaction(@PathVariable("id") long id,ModelMap model, HttpServletRequest request) {
+    public String registerSavingAccountTransaction(@PathVariable("id") long id,ModelMap model) {
         SavingAccountTransaction savingAccountTransaction = new SavingAccountTransaction();
+        return  displaySavingBilanzNoInterest(id, model, savingAccountTransaction);
+    }
+
+    private String displaySavingBilanzNoInterest(long id, ModelMap model, SavingAccountTransaction savingAccountTransaction) {
         Optional<SavingAccount> savingAccount = savingAccountService.findById(id);
         SavingAccount aSavingAccount = savingAccount.get();
         List<SavingAccountTransaction> savingAccountTransactionList = aSavingAccount.getSavingAccountTransaction();
@@ -85,7 +86,6 @@ public class SavingAccountController extends SuperController{
 
         savingAccountTransaction.setSavingAccount(aSavingAccount);
         model.put("savingAccountTransaction", savingAccountTransaction);
-
         return "savingBilanzNoInterest";
     }
 
@@ -122,15 +122,6 @@ public class SavingAccountController extends SuperController{
         }
         response.setHeader("X-Frame-Options", "SAMEORIGIN");
         return "userHome";
-
-
-//        model.put("name", getLoggedInUserName());
-//        model.put("savingBilanzList", savingBilanzByUserList);
-//
-//        savingAccountTransaction.setSavingAccount(savingAccount.get());
-//        model.put("savingAccountTransaction", savingAccountTransaction);
-//
-//        return "savingBilanzNoInterest";
     }
 
 
@@ -142,6 +133,14 @@ public class SavingAccountController extends SuperController{
         Optional<SavingAccount> savingAccount = savingAccountService.findById(new Long(savingAccountId));
         savingAccountTransaction.setSavingAccount(savingAccount.get());
         User user = (User)request.getSession().getAttribute(BVMicroUtils.CUSTOMER_IN_USE);
+
+        if("CASH".equals(savingAccountTransaction.getModeOfPayment())){
+            if(!checkBillSelectionMatchesEnteredAmount(savingAccountTransaction)){
+                model.put("billSelectionError", "Bills Selection does not match entered amount");
+                savingAccountTransaction.setNotes("");
+                return displaySavingBilanzNoInterest(new Long(savingAccountId),model,savingAccountTransaction);
+            }
+        }
 
         if(request.getParameter("deposit_withdrawal").equals("WITHDRAWAL")){
             savingAccountTransaction.setSavingAmount(savingAccountTransaction.getSavingAmount()*-1);
@@ -174,11 +173,60 @@ public class SavingAccountController extends SuperController{
         Optional<User> byId = userRepository.findById(user.getId());
         request.getSession().setAttribute(BVMicroUtils.CUSTOMER_IN_USE, byId.get());
         savingAccountTransaction.setSavingAccount(savingAccount.get());
+        resetSavingsAccountTransaction(savingAccountTransaction); //reset BillSelection and amount
+        savingAccountTransaction.setNotes("");
         model.put("savingAccountTransaction", savingAccountTransaction);
-
 
         return "savingBilanzNoInterest";
 
+    }
+
+    private void resetSavingsAccountTransaction(SavingAccountTransaction sat) {
+        sat.setSavingAmount(0);
+        sat.setFifty(0);
+        sat.setFiveHundred(0);
+        sat.setFiveThousand(0);
+        sat.setOneHundred(0);
+        sat.setOneThousand(0);
+        sat.setTenThousand(0);
+        sat.setTwentyFive(0);
+        sat.setTwoThousand(0);
+    }
+
+    private boolean checkBillSelectionMatchesEnteredAmount(SavingAccountTransaction sat) {
+        boolean match = (sat.getSavingAmount() == (sat.getTenThousand()*10000) +
+                (sat.getFiveThousand()*5000) +
+                (sat.getTwoThousand()*2000) +
+                (sat.getOneThousand()*1000) +
+                (sat.getFiveHundred()*500) +
+                (sat.getOneHundred()*100) +
+                (sat.getFifty()*50) +
+                (sat.getTwentyFive()*25));
+        if(match){
+            sat.setNotes( sat.getNotes()
+                + addBillSelection(sat) );
+        }
+        return match;
+    }
+
+    private String addBillSelection(SavingAccountTransaction sat) {
+        String billSelection =  " Bill Selection \n";
+        billSelection = billSelection + concatBillSelection(" 10 000x", sat.getTenThousand()) + "\n";
+        billSelection = billSelection + concatBillSelection(" 5 000x", sat.getFiveThousand()) + "\n";
+        billSelection = billSelection +  concatBillSelection(" 2 000x", sat.getTwoThousand()) + "\n";
+        billSelection = billSelection +  concatBillSelection(" 1 000x", sat.getOneThousand())+ "\n";
+        billSelection = billSelection +  concatBillSelection(" 500x", sat.getFiveHundred()) + "\n";
+        billSelection = billSelection +  concatBillSelection(" 100x", sat.getOneHundred()) + "\n";
+        billSelection = billSelection +  concatBillSelection(" 50x", sat.getFifty());
+        return billSelection;
+    }
+
+    private String concatBillSelection(String s, int qty) {
+        if(qty == 0){
+            return "";
+        }
+        s = s + qty;
+        return s;
     }
 
 
