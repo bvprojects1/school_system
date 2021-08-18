@@ -1,6 +1,6 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
-
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -28,12 +28,6 @@
 </head>
 
 <body>
-<!--Preloader area start-->
-<!--<div id="preloader">-->
-<!--    <div class="pre-loader-icon"></div>-->
-<!--</div>-->
-<!--Preloader area end-->
-<!--Header area start-->
 <header class="header-area-start">
     <!--Header top area start-->
     <div class="header-top-area-start">
@@ -41,10 +35,6 @@
             <div class="row">
                 <div class="col-md-6 col-12 col-sm-5">
                     <div class="header-top-left">
-                        <a href="#" data-toggle="modal" data-target="#exampleModal"><i class="fas fa-sign-in-alt"></i>
-                            login</a>
-<!--                        <a href="#" data-toggle="modal" data-target="#exampleModal1"><i class="far fa-user"></i>-->
-<!--                            register</a>-->
                     </div>
                 </div>
                 <!--Header top left area end-->
@@ -67,18 +57,25 @@
             <div class="row">
                 <div class="col-md-3 col-5 col-sm-5">
                     <div class="logo-area">
-                        <br/>
-                        <a href="/welcome"><img th:src="@{/getLogoImage}"/> </a>
+                        <a href="index.html"><img th:src="@{/getLogoImage}"/> </a>
                     </div>
                 </div>
                 <!--Logo area end-->
                 <div class="col-md-9 col-7 col-sm-7">
                     <nav class="main-menu-area">
                         <ul class="main-menu" id="mobile-menu">
-                            <li><a href="index.html">Home</a></li>
-                            <li><a href="about.html">About</a></li>
-                            <li><a href="service.html">services</a></li>
-
+                            <li>
+                                <a th:href="@{/logout}" href="/Logout"><i class="fas fa-sign-out-alt"></i>Logout</a>
+                            </li>
+                            <li> Welcome
+                                <span sec:authentication="name"></span>,</li>
+                            <li>
+                                <form action="#" th:action="@{/findUserByUserName}" method="post" >
+                                    <nobr> Find:
+                                        <input type="text" name="userName" placeholder="Username" value=""/>
+                                        <input style="font-size:12pt;color:white;background-color:green;border:2px solid #336600;padding:3px" type="submit" value="Submit"> </nobr>
+                                </form>
+                            </li>
                         </ul>
                     </nav>
                 </div>
@@ -113,26 +110,92 @@
         <div class="container">
             <div class="row">
                 <div class="offset-md-2 col-md-8">
-                    <form action="#" th:action="@{/findCustomerForm}" method="post" th:object="${user}">
-                        <div class="row">
+                    <form action="#" th:action="@{/registerUserForm}" method="post" th:object="${user}">
+
 
                             <div class="col-md-12">
 
-                                FIND CUSTOMER FOR MORE ACCOUNT DETAILS<br/>
+                                <label for="aUserRole">User Role:</label>
+                                <select  name="aUserRole" id="aUserRole">
+                                    <option value="ROLE_CUSTOMER">CUSTOMER</option>
+                                </select>
 
-                                <form action="#" th:action="@{/findUserByUserName}" method="post" >
-                                    <nobr>  Username
-                                        <input type="text" name="userName" th:field="*{userName}" id="userName"
-                                               placeholder="Username" class="form-control" required>
-                                    </nobr>
-                                </form>
+                                <br/>
 
-                                <div class="col-md-12">
-                                <button type="button" class="btn-block btn contact-btn"
-                                        id="message-btn">Create User
-                                </button>
-                                <!--                                    <div class="mt-4 text-uppercase custom-color text-center" id="mail-status"></div>-->
-                            </div>
+                                <input type="text" name="userName" th:field="*{userName}" id="userName"
+                                       placeholder="Username" class="form-control" required>
+                                <br/>
+                                <label>
+                                    Mr
+                                    <input type="radio" value="Mr" th:field="*{gender}" name="gender" checked>
+                                </label>
+                                <label>
+                                    Mrs
+                                    <input type="radio" value="Mrs" th:field="*{gender}" name="gender">
+                                </label>
+                                <label>
+                                    Miss
+                                    <input type="radio" value="Miss" th:field="*{gender}" name="gender">
+                                </label>
+
+                                <br/>
+
+                                <br/>
+                                <input type="text" name="firstName" th:field="*{firstName}" id="firstName"
+                                       placeholder="First Name" class="form-control" required>
+
+                                <br/>
+                                <input type="text" name="lastName" th:field="*{lastName}" id="lastName"
+                                       placeholder="Last Name" class="form-control" required>
+
+                                <br/>
+                                <input type="text" name="profession" th:field="*{profession}" id="profession"
+                                       placeholder="Profession" class="form-control" required>
+
+                                <br/>
+                                <input type="text" name="telephone1" th:field="*{telephone1}" id="telephone1"
+                                       placeholder="Telephone 1" class="form-control" required>
+
+                                <br/>
+                                <input type="text" name="telephone2" th:field="*{telephone2}" id="telephone2"
+                                       placeholder="Telephone 2" class="form-control" required>
+
+                                <br/>
+                                <input type="text" name="address" th:field="*{address}" id="address"
+                                       placeholder="Address" class="form-control" required>
+
+                                <br/>
+
+                                <input type="date" name="dateOfBirth" th:field="*{dateOfBirth}" id="dateOfBirth"
+                                       placeholder="Date of Birth:" class="form-control" required>
+
+                                <br/>
+                                <input type="text" name="emailInput" th:field="*{email}" id="emailInout"
+                                       placeholder="Email" class="form-control" required>
+
+                                <br/>
+                                <input type="password" name="passwordInput" th:field="*{password}" id="passwordInput"
+                                       placeholder="Password" class="form-control" required>
+
+                                <br/>
+                                <input type="text" name="beneficiary" th:field="*{beneficiary}" id="beneficiary"
+                                       placeholder="Beneficiary Username" class="form-control" required>
+                                <br/>
+                                <input type="text" name="identityCardNumber" th:field="*{identityCardNumber}" id="identityCardNumber"
+                                       placeholder="Identity Card No" class="form-control" required>
+                                <br/>
+                                <label for="true">This new user CANNOT login</label><br/>
+                                    False<input th:field="*{accountLocked}"  type="radio" id="false" name="accountLocked" value="false"
+                                           checked>
+                                    <br/>
+                                    True<input th:field="*{accountLocked}" type="radio" id="true" name="accountLocked" value="true">
+                                <br/>
+                                <input type="hidden" name="id" th:field="*{id}" id="id"
+                                       class="form-control" required>
+                                <br/>
+                                <input type="hidden" th:field="*{idFilePath}" readonly/><br/>
+                                <img width="100px" th:src="@{/getImage}"/>
+<!--                                <input type="submit" class="btn-block btn contact-btn" value="UPDATE USER"/>-->
                         </div>
                     </form>
                 </div>
@@ -143,6 +206,8 @@
 
 <!--Footer area start-->
 <footer class="footer-area-start">
+    <!--Footer top area start-->
+    <!--Footer top area end-->
 
     <!--Footer content area start-->
     <div class="footer-content-area-start">
@@ -152,10 +217,9 @@
                 <div class="col-md-3 mb-sm-5 mb-md-0">
                     <div class="single-footer-widget">
                         <div class="logo-area">
-                            <a href="#"><span>PIP</span>idaf</a>
+                            <a href="#"><span>TBC MFI</span>PLC</a>
                         </div>
-                        <p>Harum repellat quis expedita saepe soluta voluptates error. Repudiandae eum ipsa, corporis
-                            rerum necessitatibus?</p>
+                        <p>The bank on your side. We will consult with you one on one basis?</p>
                         <div class="team-member-social-icon">
                             <a href="#"><i class="fab fa-facebook-f"></i></a>
                             <a href="#"><i class="fab fa-dribbble"></i></a>
@@ -189,15 +253,13 @@
                         <div class="media">
                             <i class="fab fa-twitter mr-3 fa-1x"></i>
                             <div class="media-body">
-                                <p>" Reprehenderit culpa aspernatur maiores natus impedit, veritatis cum ipsam ad illo
-                                    assumenda earum non ut? Deleniti? "</p>
+                                <p>" Reprehenderit culpa aspernatur maiores natus impedit, veritatis cum ipsam ad illo assumenda earum non ut? Deleniti? "</p>
                             </div>
                         </div>
                         <div class="media">
                             <i class="fab fa-twitter mr-3 fa-1x"></i>
                             <div class="media-body">
-                                <p>" Vitae tenetur iure possimus facilis, similique soluta reiciendis voluptatibus
-                                    tempore? Fugiat. "</p>
+                                <p>" Vitae tenetur iure possimus facilis, similique soluta reiciendis voluptatibus tempore? Fugiat. "</p>
                             </div>
                         </div>
                     </div>
@@ -221,15 +283,7 @@
             </div>
         </div>
     </div>
-    <!--Footer content area end-->
 
-    <!--Footer bottom area start-->
-    <div class="footer-bootom-area-start text-center">
-        <p>&copy; 2020-15, All rights reserved, Developed <i class="fas fa-heart"></i> by <a href="#">PrantoPlanet</a>
-        </p>
-        <a href="#" class="btm-to-top"><i class="fas fa-angle-up"></i></a>
-    </div>
-    <!--Footer bottom area end-->
 </footer>
 <!--Footer area end-->
 

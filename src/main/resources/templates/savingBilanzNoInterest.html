@@ -56,7 +56,7 @@
                 <!--Logo area start-->
                 <div class="col-md-3 col-5 col-sm-5">
                     <div class="logo-area">
-                        <a href="index.html"><img th:src="@{/assets/images/logo.jpeg}"/> </a>
+                        <a href="index.html"><img th:src="@{/getLogoImage}"/> </a>
                     </div>
                 </div>
                 <div class="col-md-9 col-7 col-sm-7">
@@ -99,7 +99,10 @@
     <br/><br/><br/><br/><br/><br/><br/>
 
     <table class="center" width="80%" border="0"><tr>
-        <td><font size="6"> <span style th:text="${session.customerInUse.userName}"/>'s </font><button style="font-face: 'Comic Sans MS'; font-size: larger; color: teal; background-color: #FFFFC0; border: 3pt ridge lightgrey" type="submit" ><a href="#" th:href="@{/file/{userName}(userName=${session.customerInUse.userName})}">Upload I.D</a></button>
+        <td><font size="6"> <span style th:text="${session.customerInUse.userName}"/>'s </font>
+            <button style="font-face: 'Comic Sans MS'; font-size: larger; color: teal; background-color: #FFFFC0; border: 3pt ridge lightgrey" type="submit" >
+                <a href="#" th:href="@{/file/{userName}(userName=${session.customerInUse.userName})}">Upload I.D</a></button>
+                <a href="#" th:href="@{/reloadUser}"><img width="100px" th:src="@{/getImage}"/> </a>
         </td>
         <td> <font size="1.5px">Saving</font> <br/> <font color="green" size="6px"> <div th:text="${savingBilanzList.totalSaving}"/></font></td>
         <td> <font size="1.5px">Current</font> <br/> <font size="6"> 0</font></td>
@@ -167,7 +170,7 @@
 
                     <br/>
 
-                    <font size="3" color="green"><strong> Bill Selection:</strong></font><br/>
+                    <font size="3" color="green"><strong> BS:</strong></font><br/>
                     <input name="tenThousand" th:field="*{tenThousand}" type="number" min="0" max="999" maxlength="4" value="${savingAccountTransaction.tenThousand}" size="4"/>10 000 &nbsp;
                     <input name="fiveThousand" th:field="*{fiveThousand}" type="number" min="0" max="999" maxlength="4" size="4"/> 5 000 &nbsp;
                     <input name="twoThousand" th:field="*{twoThousand}" type="number" min="0" max="999" maxlength="4" size="4"/>2 000 &nbsp;
