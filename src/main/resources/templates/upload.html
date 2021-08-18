@@ -48,76 +48,75 @@
         tr:nth-child(even) {background-color: #e6b486;}
     </style>
 
-</head>
-
-<body>
-
-
-<header class="header-area-start">
-    <!--Header top area start-->
-    <div class="header-top-area-start">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-6 col-12 col-sm-5">
-                    <div class="header-top-left">
-                        <a href="#" data-toggle="modal" data-target="#exampleModal"><i class="fas fa-sign-in-alt"></i> login</a>
-                        <!--                            <a href="#" data-toggle="modal" data-target="#exampleModal1"><i class="far fa-user"></i> register</a>-->
+    <header class="header-area-start">
+        <!--Header top area start-->
+        <div class="header-top-area-start">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-6 col-12 col-sm-5">
+                        <div class="header-top-left">
+                            <a href="#" data-toggle="modal" data-target="#exampleModal"><i class="fas fa-sign-in-alt"></i>
+                                login</a>
+                            <!--                            <a href="#" data-toggle="modal" data-target="#exampleModal1"><i class="far fa-user"></i> register</a>-->
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-    <!--Header top area end-->
+        <!--Header top area end-->
 
-    <!--Header navigation area start-->
-    <div class="navigation-area-start shadow">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-3 col-5 col-sm-5">
-                    <div class="logo-area">
-                        <a href="index.html"><img th:src="@{/getLogoImage}"/> </a>
+        <!--Header navigation area start-->
+        <div class="navigation-area-start shadow">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-3 col-5 col-sm-5">
+                        <div class="logo-area">
+                            <a href="index.html"><img th:src="@{/assets/images/logo.jpeg}"/> </a>
+                        </div>
                     </div>
+                    <!--Logo area end-->
+                    <div class="col-md-9 col-7 col-sm-7">
+                        <nav class="main-menu-area">
+                            <ul class="main-menu" id="mobile-menu">
+                                <li> Welcome
+                                    <span sec:authentication="name"></span>,
+                                </li>
+                                <!--                            <li><a th:href="@{/welcome}" href="/welcome"> Customer Home</a></li>-->
+                                <li><a th:href="@{/welcomeGlobal}" href="/Logout">TBC MFI PLC Home</a></li>
+                                <li><a href="#">Accounts <i class="fas fa-angle-down"></i></a>
+                                    <ul class="sub-menu">
+                                        <li class="drop-list"><a href="#">BLog Page</a>
+                                            <ul class="sub-menu">
+                                                <li><a href="blog-2-column.html">Blog 2 Column</a></li>
+                                                <li><a href="blog-3-column.html">Blog 3 Column</a></li>
+                                            </ul>
+                                        </li>
+                                        <li><a href="left-sidebar.html">Loans</a></li>
+                                        <li><a href="right-sidebar.html">Retirement Savings</a></li>
+                                        <li><a href="single.html">Withdrawals</a></li>
+                                    </ul>
+                                </li>
+                                <li>
+                                    <a th:href="@{/logout}" href="/Logout"><i class="fas fa-sign-out-alt"></i>Logout</a>
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
+                    <!--Menu area end-->
                 </div>
-                <!--Logo area end-->
-                <div class="col-md-9 col-7 col-sm-7">
-                    <nav class="main-menu-area">
-                        <ul class="main-menu" id="mobile-menu">
-                            <li> Welcome
-                                <span sec:authentication="name"></span>,</li>
-<!--                            <li><a th:href="@{/welcome}" href="/welcome"> Customer Home</a></li>-->
-                            <li><a th:href="@{/welcomeGlobal}" href="/Logout">TBC MFI PLC Home</a></li>
-                            <li><a href="#">Accounts <i class="fas fa-angle-down"></i></a>
-                                <ul class="sub-menu">
-                                    <li class="drop-list"><a href="#">BLog Page</a>
-                                        <ul class="sub-menu">
-                                            <li><a href="blog-2-column.html">Blog 2 Column</a></li>
-                                            <li><a href="blog-3-column.html">Blog 3 Column</a></li>
-                                        </ul>
-                                    </li>
-                                    <li><a href="left-sidebar.html">Loans</a></li>
-                                    <li><a href="right-sidebar.html">Retirement Savings</a></li>
-                                    <li><a href="single.html">Withdrawals</a></li>
-                                </ul>
-                            </li>
-                            <li>
-                                <a th:href="@{/logout}" href="/Logout"><i class="fas fa-sign-out-alt"></i>Logout</a>
-                            </li>
-                        </ul>
-                    </nav>
-                </div>
-                <!--Menu area end-->
             </div>
         </div>
-    </div>
-    <!--Header navigation area end-->
-</header>
+        <!--Header navigation area end-->
+    </header>
+
 <section class="my-5">
     <div class="container">
         <div class="row">
             <div class="col-md-8 mx-auto">
                 <br/><br/><br/>
                 <h2>Upload Customer Identity Card info </h2>
-                User: <div th:text="${userName}"/>
+<!--                User: <div th:text="${userName}"/>-->
+                Name:<div style th:text="${session.customerInUse.lastName}"/>
                 <p th:text="${message}" th:if="${message ne null}" class="alert alert-primary"></p>
                 <form action="#" method="post" th:action="@{/upload}" enctype="multipart/form-data">
                     <div class="form-group">
@@ -131,117 +130,5 @@
     </div>
 </section>
 
-
-
-
-<!--Footer area start-->
-<footer class="footer-area-start">
-    <!--Footer top area start-->
-    <!--Footer top area end-->
-
-    <!--Footer content area start-->
-    <div class="footer-content-area-start">
-        <div class="container">
-            <div class="row">
-                <!--Single footer widget start-->
-                <div class="col-md-3 mb-sm-5 mb-md-0">
-                    <div class="single-footer-widget">
-                        <div class="logo-area">
-                            <a href="#"><span>PIPI</span>DAF</a>
-                        </div>
-                        <p>The bank on your side. We will consult with you one on one basis?</p>
-                        <div class="team-member-social-icon">
-                            <a href="#"><i class="fab fa-facebook-f"></i></a>
-                            <a href="#"><i class="fab fa-dribbble"></i></a>
-                            <a href="#"><i class="fab fa-instagram"></i></a>
-                            <a href="#"><i class="fab fa-twitter"></i></a>
-                        </div>
-                    </div>
-                </div>
-                <!--Single footer widget end-->
-
-
-                <!--Single footer widget footer menu start-->
-                <div class="col-md-2 mb-sm-5 mb-md-0">
-                    <div class="single-footer-widget">
-                        <h5>Features</h5>
-                        <ul class="footer-menu">
-                            <li><a href="#">Home</a></li>
-                            <li><a href="#">About</a></li>
-                            <li><a href="#">Portfolio</a></li>
-                            <li><a href="#">Help</a></li>
-                            <li><a href="#">Policy</a></li>
-                        </ul>
-                    </div>
-                </div>
-                <!--Single footer widget footer menu end-->
-
-                <!--Single footer widget footer menu start-->
-                <div class="col-md-4 mb-sm-5 mb-md-0">
-                    <div class="single-footer-widget">
-                        <h5>Recent News</h5>
-
-                        <div class="media">
-                            <i class="fab fa-google mr-3 fa-1x"></i>
-                            <div class="media-body">
-                                <p>Cameroon’s microfinance institutions are still largely concentrated in the cities, although 60% of the total population lives in the countryside. That imbalance led ACEP Cameroun in 2013 to start focusing on expanding its work into the countryside, setting up five rural agencies thanks to AFD support. Farm lending has been a big success with coffee and cocoa growers, and the plan is for it to become a growing share of ACEP Cameroun’s activity.</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!--Single footer widget footer menu end-->
-
-                <!--Single footer widget footer menu start-->
-                <div class="col-md-3">
-                    <div class="single-footer-widget">
-                        <h5>Get In Touch</h5>
-                        <ul class="footer-menu-touch">
-                            <li><i class="fas fa-map-marker mr-2"></i> LaChance bridge, Mankon</li>
-                            <li><i class="fas fa-envelope mr-2"></i> info@bitsvalley.com</li>
-                            <li><i class="fas fa-mobile mr-2"></i> +(012) 1234-5678</li>
-                            <li><i class="fas fa-globe-asia mr-2"></i> www.TBC-MFI.com</li>
-                            <!--<li><i class="fab fa-twitter mr-2"></i> www.socialmedia.com</li>-->
-                        </ul>
-                    </div>
-                </div>
-                <!--Single footer widget footer menu end-->
-            </div>
-        </div>
-    </div>
-
-</footer>
-<!--Footer area end-->
-
-
-<!--jQuery-->
-<script src="assets/js/jquery-3.5.1.min.js"></script>
-<!--Bootstrap-->
-<script src="assets/js/bootstrap.min.js"></script>
-<!-- Waypoint js -->
-<script src="assets/js/jquery.waypoints.js"></script>
-<!-- Counter Up -->
-<script src="assets/js/jquery.counterup.min.js"></script>
-<!--Owl-Carousel-->
-<script src="assets/js/owl.carousel.min.js"></script>
-<!--Parallax-->
-<script src="assets/js/parallax.min.js"></script>
-<!-- Isotope JS -->
-<script src="assets/js/isotope.pkgd.min.js"></script>
-<!-- MMenu JS -->
-<script src="assets/js/jquery.slicknav.min.js"></script>
-<!-- magnific Js -->
-<script src="assets/js/jquery.magnific-popup.min.js"></script>
-<!-- Progress Bar -->
-<script src="assets/js/jquery.lineProgressbar.js"></script>
-<!-- Countdown Js -->
-<script src="assets/js/jquery.countdown.min.js"></script>
-<!--Custom Js-->
-<script src="assets/js/custom.js"></script>
-
-</body>
-
+<div th:insert="/footer::navbar">  </div>
 </html>
-
-<!--<br/><br/><br/><br/><br/><br/>-->
-<!--<div th:insert="/footer::navbar">  </div>-->
-<!--</body>-->

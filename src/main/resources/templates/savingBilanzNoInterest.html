@@ -48,303 +48,196 @@
     </style>
 
 </head>
-    <body>
+<body>
 
-    <div class="navigation-area-start shadow">
-        <div class="container">
-            <div class="row">
-                <!--Logo area start-->
-                <div class="col-md-3 col-5 col-sm-5">
-                    <div class="logo-area">
-                        <a href="index.html"><img th:src="@{/getLogoImage}"/> </a>
-                    </div>
+<div class="navigation-area-start shadow">
+    <div class="container">
+        <div class="row">
+            <!--Logo area start-->
+            <div class="col-md-3 col-5 col-sm-5">
+                <div class="logo-area">
+<!--                    <a href="index.html"><img th:src="@{/assets/images/logo.jpeg}"/> </a>-->
+                    <a href="index.html"><img th:src="@{/getLogoImage}"/> </a>
                 </div>
-                <div class="col-md-9 col-7 col-sm-7">
-                    <nav class="main-menu-area">
-                        <ul class="main-menu" id="mobile-menu">
-                            <li> Welcome
-                                <span sec:authentication="name"></span>,</li>
-<!--                            <li><a th:href="@{/welcome}" href="/welcome"> Customer Home</a></li>-->
-                            <li><a th:href="@{/welcomeGlobal}" href="/Logout">TBC MFI PLC Home</a></li>
-                            <li><a href="#">Accounts <i class="fas fa-angle-down"></i></a>
-                                <ul class="sub-menu">
-                                    <li class="drop-list"><a href="#">BLog Page</a>
-                                        <ul class="sub-menu">
-                                            <li><a href="blog-2-column.html">Blog 2 Column</a></li>
-                                            <li><a href="blog-3-column.html">Blog 3 Column</a></li>
-                                        </ul>
-                                    </li>
-                                    <li><a href="left-sidebar.html">Loans</a></li>
-                                    <li><a href="right-sidebar.html">Retirement Savings</a></li>
-                                    <li><a href="single.html">Withdrawals</a></li>
-                                </ul>
-                            </li>
-                            <li>
-                                <form action="#" th:action="@{/findUserByUserName}" method="post" >
-                                    <nobr> Find:
-                                        <input type="text" name="userName" placeholder="Username" value=""/>
-                                        <input style="font-size:12pt;color:white;background-color:green;border:2px solid #336600;padding:3px" type="submit" value="Submit"> </nobr>
-                                </form>
-                            </li>
-                            <li>
-                                <a th:href="@{/logout}" href="/Logout"><i class="fas fa-sign-out-alt"></i>Logout</a>
-                            </li>
-                        </ul>
-                    </nav>
-                </div>
+            </div>
+            <div class="col-md-9 col-7 col-sm-7">
+                <nav class="main-menu-area">
+                    <ul class="main-menu" id="mobile-menu">
+                        <li> Welcome
+                            <span sec:authentication="name"></span>,</li>
+                        <!--                            <li><a th:href="@{/welcome}" href="/welcome"> Customer Home</a></li>-->
+                        <li><a th:href="@{/welcomeGlobal}" href="/Logout">TBC MFI PLC Home</a></li>
+                        <li><a href="#">Accounts <i class="fas fa-angle-down"></i></a>
+                            <ul class="sub-menu">
+                                <li class="drop-list"><a href="#">BLog Page</a>
+                                    <ul class="sub-menu">
+                                        <li><a href="blog-2-column.html">Blog 2 Column</a></li>
+                                        <li><a href="blog-3-column.html">Blog 3 Column</a></li>
+                                    </ul>
+                                </li>
+                                <li><a href="left-sidebar.html">Loans</a></li>
+                                <li><a href="right-sidebar.html">Retirement Savings</a></li>
+                                <li><a href="single.html">Withdrawals</a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <form action="#" th:action="@{/findUserByUserName}" method="post" >
+                                <nobr>
+                                    <input type="text" name="userName" placeholder="Search.." value=""/>
+                                    <input style="font-size:12pt;color:white;background-color:green;border:2px solid #336600;padding:3px" type="submit" value="Submit"> </nobr>
+                            </form>
+                        </li>
+                        <li>
+<!--                            <a th:href="@{/logout}" href="/Logout"><i class="fas fa-sign-out-alt"></i>Logout</a>-->
+                        </li>
+                    </ul>
+                </nav>
             </div>
         </div>
     </div>
+</div>
 
-    <br/><br/><br/><br/><br/><br/><br/>
+<br/><br/><br/><br/><br/><br/><br/>
 
-    <table class="center" width="80%" border="0"><tr>
-        <td><font size="6"> <span style th:text="${session.customerInUse.userName}"/>'s </font>
-            <button style="font-face: 'Comic Sans MS'; font-size: larger; color: teal; background-color: #FFFFC0; border: 3pt ridge lightgrey" type="submit" >
-                <a href="#" th:href="@{/file/{userName}(userName=${session.customerInUse.userName})}">Upload I.D</a></button>
-                <a href="#" th:href="@{/reloadUser}"><img width="100px" th:src="@{/getImage}"/> </a>
+<table class="center" width="80%" border="0"><tr>
+    <td><font size="6"> <span style th:text="${session.customerInUse.userName}"/>'s </font>
+        <button style="font-face: 'Comic Sans MS'; font-size: larger; color: teal; background-color: #FFFFC0; border: 3pt ridge lightgrey" type="submit" >
+            <a href="#" th:href="@{/file/{userName}(userName=${session.customerInUse.userName})}">Upload I.D</a></button>
+        <a href="#" th:href="@{/reloadUser}"><img width="100px" th:src="@{/getImage}"/> </a>
+    </td>
+    <td> <font size="1.5px">Saving</font> <br/> <font color="green" size="6px"> <div th:text="${savingBilanzList.totalSaving}"/></font></td>
+    <td> <font size="1.5px">Current</font> <br/> <font size="6"> 0</font></td>
+    <td> <font size="1.5px">Loan</font> <br/> <font size="6"> 0</font></td>
+    <td><font size="1.5px"> Retirement saving </font> <br/> <font size="6" color="#A57C00">0 </font> </td>
+</tr></table>
+
+<table border="0" width="90%" class="center">
+
+    <tr>
+        <td>
+            <font size="1.5px"> Account Type:</font><font color="#2d363f" size="4px"> <div th:text="${savingAccountTransaction.savingAccount.savingAccountType.name}"/></font>
         </td>
-        <td> <font size="1.5px">Saving</font> <br/> <font color="green" size="6px"> <div th:text="${savingBilanzList.totalSaving}"/></font></td>
-        <td> <font size="1.5px">Current</font> <br/> <font size="6"> 0</font></td>
-        <td> <font size="1.5px">Loan</font> <br/> <font size="6"> 0</font></td>
-        <td><font size="1.5px"> Retirement saving </font> <br/> <font size="6" color="#A57C00">0 </font> </td>
-    </tr></table>
+        <td>
+            <font size="1.5px"> Account Number:</font><font color="#2d363f" size="4px"> <div th:text="${savingAccountTransaction.savingAccount.accountNumber}"/></font>
+        </td>
+        <td>
+            <font size="1.5px"> Account Owner:</font><font color="#2d363f" size="4px">  <div th:text="${savingAccountTransaction.savingAccount.user.lastName}"/></font>
+        </td>
+        <td>
+            <font size="1.5px"> Notes:</font><font color="#2d363f" size="4px"><div th:text="${savingAccountTransaction.savingAccount.notes}"/></font>
+        </td>
+        <td>
+            <font size="1.5px"> Min. Balance:</font><font color="#2d363f" size="4px"> <div th:text="${#numbers.formatDecimal(savingAccountTransaction.savingAccount.accountMinBalance, 0, 'COMMA', 0, 'POINT')}"/></font>
+        </td>
+        <td>
+            <font size="1.5px"> Rate:</font><font color="#2d363f" size="4px"><div th:text="${savingAccountTransaction.savingAccount.interestRate}"/></font>
+        </td>
+    </tr>
+</table>
+
+<form action="#" th:action="@{/registerSavingAccountTransactionForm}" method="post" th:object="${savingAccountTransaction}" >
 
     <table border="0" width="90%" class="center">
-
+        <tr>
+            <th>
+                <font size="5" color="green"> MAKE A PAYMENT</font><div class="error" th:text="${billSelectionError}"/>
+            </th>
+        </tr>
         <tr>
             <td>
-                 <font size="1.5px"> Account Type:</font><font color="#2d363f" size="4px"> <div th:text="${savingAccountTransaction.savingAccount.savingAccountType.name}"/></font>
-            </td>
-            <td>
-                <font size="1.5px"> Account Number:</font><font color="#2d363f" size="4px"> <div th:text="${savingAccountTransaction.savingAccount.accountNumber}"/></font>
-            </td>
-            <td>
-                <font size="1.5px"> Account Owner:</font><font color="#2d363f" size="4px">  <div th:text="${savingAccountTransaction.savingAccount.user.lastName}"/></font>
-            </td>
-            <td>
-                <font size="1.5px"> Notes:</font><font color="#2d363f" size="4px"><div th:text="${savingAccountTransaction.savingAccount.notes}"/></font>
-            </td>
-            <td>
-                <font size="1.5px"> Min. Balance:</font><font color="#2d363f" size="4px"> <div th:text="${#numbers.formatDecimal(savingAccountTransaction.savingAccount.accountMinBalance, 0, 'COMMA', 0, 'POINT')}"/></font>
-            </td>
-            <td>
-                <font size="1.5px"> Rate:</font><font color="#2d363f" size="4px"><div th:text="${savingAccountTransaction.savingAccount.interestRate}"/></font>
-            </td>
-        </tr>
-    </table>
+                <br/>
+                <select name="deposit_withdrawal">
+                    <option value="DEPOSIT">DEPOSIT</option>
+                    <option value="WITHDRAWAL">WITHDRAWAL</option>
+                </select>
+                <select name="modeOfPayment" id="modeOfPayment">
+                    <option value="CASH">CASH</option>
+                    <option value="MOMO">MOMO</option>
+                    <option value="ORANGE MONEY">ORANGE MONEY</option>
+                    <option value="TRANSFER">TRANSFER</option>
+                    <option value="RECEIPT">RECEIPT</option>
+                    <option value="OTHER">OTHER</option>
+                </select>
+                Enter Amount:<input placeholder="Enter Amount" size="6" type="number" th:field="*{savingAmount}" value="${savingAccountTransaction.savingAmount}"/>
 
-    <form action="#" th:action="@{/registerSavingAccountTransactionForm}" method="post" th:object="${savingAccountTransaction}" >
-
-        <table border="0" width="90%" class="center">
-                <tr>
-                    <th>
-                        <font size="5" color="green"> MAKE A PAYMENT</font><div class="error" th:text="${billSelectionError}"/>
-                    </th>
-                </tr>
-            <tr>
-                <td>
-                    <br/>
-                    <select name="deposit_withdrawal">
-                        <option value="DEPOSIT">DEPOSIT</option>
-                        <option value="WITHDRAWAL">WITHDRAWAL</option>
-                    </select>
-                    <select name="modeOfPayment" id="modeOfPayment">
-                        <option value="CASH">CASH</option>
-                        <option value="MOMO">MOMO</option>
-                        <option value="ORANGE MONEY">ORANGE MONEY</option>
-                        <option value="TRANSFER">TRANSFER</option>
-                        <option value="RECEIPT">RECEIPT</option>
-                        <option value="OTHER">OTHER</option>
-                    </select>
-                    Enter Amount:<input placeholder="Enter Amount" size="6" type="number" th:field="*{savingAmount}" value="${savingAccountTransaction.savingAmount}"/>
-
-                    <textarea placeholder="Notes"  id="notes" rows="3" cols="30" th:field="*{notes}">
+                <textarea placeholder="Notes"  id="notes" rows="3" cols="30" th:field="*{notes}">
                     </textarea>
 
 
-                    <label for="true">Account Owner:</label>
-                    True<input th:field="*{accountOwner}"  type="radio" id="true" name="accountOwner" value="true">
+                <label for="true">Account Owner:</label>
+                True<input th:field="*{accountOwner}"  type="radio" id="true" name="accountOwner" value="true">
 
-                    False<input th:field="*{accountOwner}" type="radio" id="false" name="accountOwner" value="false">
+                False<input th:field="*{accountOwner}" type="radio" id="false" name="accountOwner" value="false">
 
-                    <br/>
+                <br/>
 
-                    <font size="3" color="green"><strong> BS:</strong></font><br/>
-                    <input name="tenThousand" th:field="*{tenThousand}" type="number" min="0" max="999" maxlength="4" value="${savingAccountTransaction.tenThousand}" size="4"/>10 000 &nbsp;
-                    <input name="fiveThousand" th:field="*{fiveThousand}" type="number" min="0" max="999" maxlength="4" size="4"/> 5 000 &nbsp;
-                    <input name="twoThousand" th:field="*{twoThousand}" type="number" min="0" max="999" maxlength="4" size="4"/>2 000 &nbsp;
-                    <input name="oneThousand" th:field="*{oneThousand}" type="number" min="0" max="999" maxlength="4" size="4"/>1 000 &nbsp;
-                    <input name="fiveHundred" th:field="*{fiveHundred}" type="number" min="0" max="999" maxlength="4" size="4"/>500 &nbsp;
-                    <input name="oneHundred" th:field="*{oneHundred}" type="number" min="0" max="999" maxlength="4" size="4"/>100 &nbsp;
-                    <input name="fifty" th:field="*{fifty}" type="number" min="0" max="999" maxlength="4" size="4"/>50 &nbsp;
-                    <input name="twentyFive" th:field="*{twentyFive}" type="number" min="0" max="999" value="0" maxlength="4" size="4"/>25 &nbsp;
+                <font size="3" color="green"><strong> BS:</strong></font><br/>
+                <input name="tenThousand" th:field="*{tenThousand}" type="number" min="0" max="999" maxlength="4" value="${savingAccountTransaction.tenThousand}" size="4"/>10 000 &nbsp;
+                <input name="fiveThousand" th:field="*{fiveThousand}" type="number" min="0" max="999" maxlength="4" size="4"/> 5 000 &nbsp;
+                <input name="twoThousand" th:field="*{twoThousand}" type="number" min="0" max="999" maxlength="4" size="4"/>2 000 &nbsp;
+                <input name="oneThousand" th:field="*{oneThousand}" type="number" min="0" max="999" maxlength="4" size="4"/>1 000 &nbsp;
+                <input name="fiveHundred" th:field="*{fiveHundred}" type="number" min="0" max="999" maxlength="4" size="4"/>500 &nbsp;
+                <input name="oneHundred" th:field="*{oneHundred}" type="number" min="0" max="999" maxlength="4" size="4"/>100 &nbsp;
+                <input name="fifty" th:field="*{fifty}" type="number" min="0" max="999" maxlength="4" size="4"/>50 &nbsp;
+                <input name="twentyFive" th:field="*{twentyFive}" type="number" min="0" max="999" value="0" maxlength="4" size="4"/>25 &nbsp;
 
-                    <button type="submit" class="btn btn-success">Save </button>
-                    <input type="hidden" th:value="${savingAccountTransaction.savingAccount.id}" th:attr="name='savingAccountId'"/>
-                    <br/>
-                </td>
-            </tr>
-        </table>
-    </form>
-    <br/>
-    <table  border="0" width="100%" class="center">
-        <tr>
-            <th>
-                <font size="5" color="green"> SAVING PAYMENTS PROCESSED </font>
-                <a href="#" th:href="@{/statementPDF/{id}(id=${savingAccountTransaction.savingAccount.id})}"><img width="40px" th:src="@{/assets/images/pdfIcon.png}"/> </a>
-            </th>
+                <button type="submit" class="btn btn-success">Save </button>
+                <input type="hidden" th:value="${savingAccountTransaction.savingAccount.id}" th:attr="name='savingAccountId'"/>
+                <br/>
+            </td>
         </tr>
     </table>
-    <table  border="0" width="90%" class="center">
-            <tr>
-                <th>DOP</th>
-                <th>MOP </th>
-                <th>Reference </th>
-                <th>Agent</th>
-                <th>Amount</th>
-                <th>Owner</th>
-                <th>Notes</th>
-                <th></th>
-                <th></th>
-            </tr>
+</form>
+<br/>
+<table  border="0" width="100%" class="center">
+    <tr>
+        <th>
+            <font size="5" color="green"> SAVING PAYMENTS PROCESSED </font>
+            <a href="#" th:href="@{/statementPDF/{id}(id=${savingAccountTransaction.savingAccount.id})}"><img width="40px" th:src="@{/assets/images/pdfIcon.png}"/> </a>
+        </th>
+    </tr>
+</table>
+<table  border="0" width="90%" class="center">
+    <tr>
+        <th>DOP</th>
+        <th>MOP </th>
+        <th>Reference </th>
+        <th>Agent</th>
+        <th>Amount</th>
+        <th>Owner</th>
+        <th>Notes</th>
+        <th></th>
+        <th></th>
+    </tr>
 
-            <tr th:each="bilanz : ${savingBilanzList.savingBilanzList}">
-                <td th:text="${bilanz.createdDate}"></td>
-                <td th:text="${bilanz.modeOfPayment}"></td>
-                <td th:text="${bilanz.reference}"></td>
-                <td th:text="${bilanz.agent}"></td>
-                <td th:text="${bilanz.savingAmount}"></td>
-                <td th:text="${bilanz.accountOwner}"></td>
-                <td th:text="${bilanz.notes}"></td>
-                <td th:text="${bilanz.currentBalance}"></td>
-                <td><a href="#" th:href="@{/createSavingAccountReceiptPdf/{id}(id=${bilanz.id})}"><img width="30px" th:src="@{/assets/images/pdfIcon.png}"/> </a></td>
-            </tr>
+    <tr th:each="bilanz : ${savingBilanzList.savingBilanzList}">
+        <td th:text="${bilanz.createdDate}"></td>
+        <td th:text="${bilanz.modeOfPayment}"></td>
+        <td th:text="${bilanz.reference}"></td>
+        <td th:text="${bilanz.agent}"></td>
+        <td th:text="${bilanz.savingAmount}"></td>
+        <td th:text="${bilanz.accountOwner}"></td>
+        <td th:text="${bilanz.notes}"></td>
+        <td th:text="${bilanz.currentBalance}"></td>
+        <td><a href="#" th:href="@{/createSavingAccountReceiptPdf/{id}(id=${bilanz.id})}"><img width="30px" th:src="@{/assets/images/pdfIcon.png}"/> </a></td>
+    </tr>
 
-            <tr>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td>Total Saved:<font color="green" size="6px"> <div th:text="${savingBilanzList.totalSaving}"/></font></td>
-                <td></td>
-                <td></td>
-            </tr>
-        </table>
+    <tr>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td>Total Saved:</td>
+        <td colspan="2"><font color="green" size="6px"> <div th:text="${savingBilanzList.totalSaving}"/></font></td>
+    </tr>
+</table>
 
-    <br/> <br/>
+<br/> <br/>
 
-    <!--Footer area start-->
-    <footer class="footer-area-start">
-        <!--Footer top area start-->
-        <!--Footer top area end-->
+<div th:insert="/footer::navbar"></div>
 
-        <!--Footer content area start-->
-        <div class="footer-content-area-start">
-            <div class="container">
-                <div class="row">
-                    <!--Single footer widget start-->
-                    <div class="col-md-3 mb-sm-5 mb-md-0">
-                        <div class="single-footer-widget">
-                            <div class="logo-area">
-                                <a href="#"><span>TBC MFI</span>PLC</a>
-                            </div>
-                            <p>The bank on your side. We will consult with you one on one basis?</p>
-                            <div class="team-member-social-icon">
-                                <a href="#"><i class="fab fa-facebook-f"></i></a>
-                                <a href="#"><i class="fab fa-dribbble"></i></a>
-                                <a href="#"><i class="fab fa-instagram"></i></a>
-                                <a href="#"><i class="fab fa-twitter"></i></a>
-                            </div>
-                        </div>
-                    </div>
-                    <!--Single footer widget end-->
-
-
-                    <!--Single footer widget footer menu start-->
-                    <div class="col-md-2 mb-sm-5 mb-md-0">
-                        <div class="single-footer-widget">
-                            <h5>Features</h5>
-                            <ul class="footer-menu">
-                                <li><a href="#">Home</a></li>
-                                <li><a href="#">About</a></li>
-                                <li><a href="#">Portfolio</a></li>
-                                <li><a href="#">Help</a></li>
-                                <li><a href="#">Policy</a></li>
-                            </ul>
-                        </div>
-                    </div>
-                    <!--Single footer widget footer menu end-->
-
-                    <!--Single footer widget footer menu start-->
-                    <div class="col-md-4 mb-sm-5 mb-md-0">
-                        <div class="single-footer-widget">
-                            <h5>Recent News</h5>
-                            <div class="media">
-                                <i class="fab fa-twitter mr-3 fa-1x"></i>
-                                <div class="media-body">
-                                    <p>" Reprehenderit culpa aspernatur maiores natus impedit, veritatis cum ipsam ad illo assumenda earum non ut? Deleniti? "</p>
-                                </div>
-                            </div>
-                            <div class="media">
-                                <i class="fab fa-twitter mr-3 fa-1x"></i>
-                                <div class="media-body">
-                                    <p>" Vitae tenetur iure possimus facilis, similique soluta reiciendis voluptatibus tempore? Fugiat. "</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!--Single footer widget footer menu end-->
-
-                    <!--Single footer widget footer menu start-->
-                    <div class="col-md-3">
-                        <div class="single-footer-widget">
-                            <h5>Get In Touch</h5>
-                            <ul class="footer-menu-touch">
-                                <li><i class="fas fa-map-marker mr-2"></i> 27/1A Vangachura Road, Dhaka</li>
-                                <li><i class="fas fa-envelope mr-2"></i> root@example.com</li>
-                                <li><i class="fas fa-mobile mr-2"></i> +(012) 1234-5678</li>
-                                <li><i class="fas fa-globe-asia mr-2"></i> www.domain.com</li>
-                                <li><i class="fab fa-twitter mr-2"></i> www.socialmedia.com</li>
-                            </ul>
-                        </div>
-                    </div>
-                    <!--Single footer widget footer menu end-->
-                </div>
-            </div>
-        </div>
-
-    </footer>
-    <!--Footer area end-->
-
-
-    <!--jQuery-->
-    <script src="assets/js/jquery-3.5.1.min.js"></script>
-    <!--Bootstrap-->
-    <script src="assets/js/bootstrap.min.js"></script>
-    <!-- Waypoint js -->
-    <script src="assets/js/jquery.waypoints.js"></script>
-    <!-- Counter Up -->
-    <script src="assets/js/jquery.counterup.min.js"></script>
-    <!--Owl-Carousel-->
-    <script src="assets/js/owl.carousel.min.js"></script>
-    <!--Parallax-->
-    <script src="assets/js/parallax.min.js"></script>
-    <!-- Isotope JS -->
-    <script src="assets/js/isotope.pkgd.min.js"></script>
-    <!-- MMenu JS -->
-    <script src="assets/js/jquery.slicknav.min.js"></script>
-    <!-- magnific Js -->
-    <script src="assets/js/jquery.magnific-popup.min.js"></script>
-    <!-- Progress Bar -->
-    <script src="assets/js/jquery.lineProgressbar.js"></script>
-    <!-- Countdown Js -->
-    <script src="assets/js/jquery.countdown.min.js"></script>
-    <!--Custom Js-->
-    <script src="assets/js/custom.js"></script>
-
-    </body>
+</body>
 
 </html>

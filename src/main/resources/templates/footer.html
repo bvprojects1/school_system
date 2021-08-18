@@ -1,39 +1,116 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
       xsi:schemaLocation="http://www.thymeleaf.org ">
-<head>
-    <meta charset="UTF-8"/>
-    <title>Footer Nav Bar</title>
+<div th:fragment="navbar" class="navbar">
 
-</head>
-<body>
-<div>
-    <div th:fragment="navbar" class="navbar">
-        <div class="navbar-inner">
+    <table width="80%" class="center" border="0px"><tr><td align="left">
 
-            <br/><br/>
-            <table width="75%">
-                <tr><td align="center">
+<!--Footer area start-->
+<footer class="footer-area-start">
 
-<!--            <a th:href="@{/welcome}" href="/welcome"> Customer Home</a>-->
-                </td><td>
-            <a th:href="@{/logout}" href="/Logout">Logout</a>
-                </td><td>
-                    <a th:href="@{/welcomeGlobal}" href="/Logout">TBC MFI PLC Home</a>
-                </td><td>
-            <form action="#" th:action="@{/findUserByUserName}" method="post" >
-               <nobr>  Username:
-                <input type="text" name="userName" value=""/>
-                <input type="submit" value="submit"> </nobr>
-            </form>
-                </td>
-                    <td>All currencies are in CFA frs - XAF</td>
-                </tr>
-            </table>
+    <!--Footer content area start-->
+    <div class="footer-content-area-start">
+        <div class="container">
+            <div class="row">
+                <!--Single footer widget start-->
+                <div class="col-md-3 mb-sm-5 mb-md-0">
+                    <div class="single-footer-widget">
+                        <div class="logo-area">
+                            <a href="#"><span>TBC MFI</span>PLC</a>
+                        </div>
+                        <p>The bank on your side. We will consult with you one on one basis?</p>
+                        <div class="team-member-social-icon">
+                            <a href="#"><i class="fab fa-facebook-f"></i></a>
+                            <a href="#"><i class="fab fa-dribbble"></i></a>
+                            <a href="#"><i class="fab fa-instagram"></i></a>
+                            <a href="#"><i class="fab fa-twitter"></i></a>
+                        </div>
+                    </div>
+                </div>
+                <!--Single footer widget end-->
+
+
+                <!--Single footer widget footer menu start-->
+                <div class="col-md-2 mb-sm-5 mb-md-0">
+                    <div class="single-footer-widget">
+                        <h5>Features</h5>
+                        <ul class="footer-menu">
+                            <li><a href="#">Home</a></li>
+                            <li><a href="#">About</a></li>
+                            <li><a href="#">Portfolio</a></li>
+                            <li><a href="#">Help</a></li>
+                            <li><a href="#">Policy</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <!--Single footer widget footer menu end-->
+
+                <!--Single footer widget footer menu start-->
+                <div class="col-md-4 mb-sm-5 mb-md-0">
+                    <div class="single-footer-widget">
+                        <h5>Recent News</h5>
+                        <!--                            <div class="media">-->
+                        <!--                                <i class="fab fa-google mr-3 fa-1x"></i>-->
+                        <!--                                <div class="media-body">-->
+                        <!--                                    <p>Proparco has just signed a financing agreement with Agence de Crédit pour l’Entreprise Privée au Cameroun S.A. (ACEP Cameroun, or Cameroon Private Enterprise Credit Agency), a member of the pan-African microfinance network ACEP International. The local currency loan of 2bn CFA francs (equal to €3m) will go to support the expansion of ACEP Cameroun’s work in Cameroon, with SMEs in the countryside as primary targets.</p>-->
+                        <!--                                </div>-->
+                        <!--                            </div>-->
+                        <div class="media">
+<!--                            <i class="fab fa-google mr-3 fa-1x"></i>-->
+                            <div class="media-body">
+                                <p>Cameroon’s microfinance institutions are still largely concentrated in the cities, although 60% of the total population lives in the countryside. That imbalance led ACEP Cameroun in 2013 to start focusing on expanding its work into the countryside, setting up five rural agencies thanks to AFD support. Farm lending has been a big success with coffee and cocoa growers, and the plan is for it to become a growing share of ACEP Cameroun’s activity.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--Single footer widget footer menu end-->
+
+                <!--Single footer widget footer menu start-->
+                <div class="col-md-3">
+                    <div class="single-footer-widget">
+                        <h5>Get In Touch</h5>
+                        <ul class="footer-menu-touch">
+                            <li><i class="fas fa-map-marker mr-2"></i> LaChance bridge, Mankon</li>
+                            <li><i class="fas fa-envelope mr-2"></i> info@bitsvalley.com</li>
+                            <li><i class="fas fa-mobile mr-2"></i> +(012) 1234-5678</li>
+                            <li><i class="fas fa-globe-asia mr-2"></i> www.TBC-MFI.com</li>
+                            <!--<li><i class="fab fa-twitter mr-2"></i> www.socialmedia.com</li>-->
+                        </ul>
+                    </div>
+                </div>
+                <!--Single footer widget footer menu end-->
+            </div>
         </div>
     </div>
-    <li><a href="/logout">Logout</a></li>
-    <li><b>All currencies are in frs CFA</b></li>
+</footer>
+<!--Footer area end-->
+
+</td></tr></table>
+
+<!--jQuery-->
+<script src="assets/js/jquery-3.5.1.min.js"></script>
+<!--Bootstrap-->
+<script src="assets/js/bootstrap.min.js"></script>
+<!-- Waypoint js -->
+<script src="assets/js/jquery.waypoints.js"></script>
+<!-- Counter Up -->
+<script src="assets/js/jquery.counterup.min.js"></script>
+<!--Owl-Carousel-->
+<script src="assets/js/owl.carousel.min.js"></script>
+<!--Parallax-->
+<script src="assets/js/parallax.min.js"></script>
+<!-- Isotope JS -->
+<script src="assets/js/isotope.pkgd.min.js"></script>
+<!-- MMenu JS -->
+<script src="assets/js/jquery.slicknav.min.js"></script>
+<!-- magnific Js -->
+<script src="assets/js/jquery.magnific-popup.min.js"></script>
+<!-- Progress Bar -->
+<script src="assets/js/jquery.lineProgressbar.js"></script>
+<!-- Countdown Js -->
+<script src="assets/js/jquery.countdown.min.js"></script>
+<!--Custom Js-->
+<script src="assets/js/custom.js"></script>
+
 </div>
-</body>
 </html>

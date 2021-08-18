@@ -1,73 +1,116 @@
-
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-<div th:fragment="headerFragment" class="navbar">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TBC MFI PLC - MICRO FINANCE</title>
-    <!-- Favicon  -->
-    <link rel="icon" type="image/x-icon" href="assets/images/favicon/faviconn.ico">
+<div th:fragment="navbar" class="navbar">
 
-    <link rel="stylesheet" href="../css/main.css" th:href="@{css/main.css}" type="text/css"/>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>TBC MFI PLC - Micro Finance Software</title>
+        <!-- Favicon  -->
+        <link rel="icon" type="image/x-icon" href="assets/images/favicon/faviconn.ico">
+        <!--Bootstrap-->
+        <link rel="stylesheet" href="assets/css/bootstrap.min.css">
+        <!--Fontawesome-->
+        <link rel="stylesheet" href="assets/css/all.min.css">
+        <!--Owl-carousel-->
+        <link rel="stylesheet" href="assets/css/owl.carousel.min.css">
+        <!--Owl Carousel theme-->
+        <link rel="stylesheet" href="assets/css/owl.theme.default.min.css">
+        <!--Animate-->
+        <link rel="stylesheet" href="assets/css/animate.min.css">
+        <!-- magnific CSS -->
+        <link rel="stylesheet" href="assets/css/magnific-popup.css">
+        <!-- Mmenu CSS -->
+        <link rel="stylesheet" href="assets/css/slicknav.min.css">
+        <!--Style-->
+        <link rel="stylesheet" href="assets/css/style.css">
+        <!-- Responsive -->
+        <link rel="stylesheet" href="assets/css/responsive.css">
 
-    <!--Bootstrap-->
-    <link rel="stylesheet" href="../assets/css/bootstrap.min.css">
-    <!--Fontawesome-->
-    <link rel="stylesheet" href="../assets/css/all.min.css">
-    <!--Owl-carousel-->
-    <link rel="stylesheet" href="../assets/css/owl.carousel.min.css">
-    <!--Owl Carousel theme-->
-    <link rel="stylesheet" href="../assets/css/owl.theme.default.min.css">
-    <!--Animate-->
-    <link rel="stylesheet" href="../assets/css/animate.min.css">
-    <!-- magnific CSS -->
-    <link rel="stylesheet" href="../assets/css/magnific-popup.css">
-    <!-- Mmenu CSS -->
-    <link rel="stylesheet" href="../assets/css/slicknav.min.css">
-    <!--Style-->
-    <link rel="stylesheet" href="../assets/css/style.css">
-    <!-- Responsive -->
-    <link rel="stylesheet" href="../assets/css/responsive.css">
-</head>
+        <style>
+        table, th, td {
+<!--          border: 0px solid #BF360C;-->
+          align: center;
+        }
+        table.center {
+          margin-left: 50px;
+          margin-right: 50px;
+        }
+          tr:nth-child(even) {background-color: #cda893;}
 
-<header class="header-area-start">
+        .error {
+            color: red;
+        }
 
-    <!--Header navigation area start-->
-    <div class="navigation-area-start shadow">
-        <div class="container">
-            <div class="row">
-                <!--Logo area start-->
-                <div class="col-md-3 col-5 col-sm-5">
-                    <div class="logo-area">
-                        <a href="index.html"><img th:src="@{/getLogoImage}"/> </a>
+    </style>
+    </head>
+
+    <header class="header-area-start">
+        <!--Header navigation area start-->
+        <div class="navigation-area-start shadow">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-3 col-5 col-sm-5">
+                        <div class="logo-area">
+                            <br/>
+                            <!--                            &#45;&#45;<div th:text="${session.customerInUse.idFilePath}"/>&#45;&#45;-->
+                            <a href="index.html"><img th:src="@{/getLogoImage}"/> </a>
+<!--                                                        <a href="index.html"><img th:src="@{/assets/images/logo.jpeg}"/> </a>-->
+                        </div>
                     </div>
+                    <!--Logo area end-->
+                    <div class="col-md-9 col-7 col-sm-7">
+                        <nav class="main-menu-area">
+                            <ul class="main-menu" id="mobile-menu">
+                                <!--                                <li> Welcome-->
+                                <!--                                    <span sec:authentication="name"></span>,</li>-->
 
+                                <li><a th:href="@{/welcomeGlobal}"> Welcome
+                                    <span sec:authentication="name"></span>, <i class="fas fa-angle-down"></i></a>
+                                    <ul class="sub-menu">
+<!--                                        <li class="drop-list"><a th:href="@{/logout}" href="/Logout"><i-->
+<!--                                                class="fas fa-sign-out-alt"></i>Logout</a>-->
+<!--                                            <ul class="sub-menu">-->
+<!--                                                <li><a href="blog-2-column.html">Blog 2 Column</a></li>-->
+<!--                                                <li><a href="blog-3-column.html">Blog 3 Column</a></li>-->
+<!--                                            </ul>-->
+<!--                                        </li>-->
+                                        <li><a th:href="@{/logout}" href="/Logout"><i
+                                                class="fas fa-sign-out-alt"></i>Logout</a></li>
+<!--                                        <li><a href="right-sidebar.html">Sidebar Right</a></li>-->
+<!--                                        <li><a href="single.html">Single Page</a></li>-->
+<!--                                        <li><a href="blank.html">Blank Page</a></li>-->
+                                    </ul>
+                                </li>
+                                <li><a th:href="@{/welcomeGlobal}">Home</a></li>
+                                <li th:if="${#authorization.expression('hasAnyAuthority(''ROLE_AGENT'')')} OR ${#authorization.expression('hasAnyAuthority(''ROLE_MANAGER'')')}">
+                                    <form action="#" th:action="@{/findUserByUserName}" method="post">
+
+                                        <input type="text" name="userName" placeholder="Search" value=""/>
+                                        <input style="font-size:12pt;color:white;background-color:green;border:2px solid #336600;padding:3px"
+                                               type="submit" value="Submit">
+                                    </form>
+                                </li>
+<!--                                <li>-->
+<!--                                    <a th:href="@{/logout}" href="/Logout">Logout</a>-->
+<!--                                </li>-->
+<!--                                <li th:if="${#authorization.expression('hasAnyAuthority(''ROLE_AGENT'')')} OR ${#authorization.expression('hasAnyAuthority(''ROLE_MANAGER'')')}">-->
+<!--                                    <form action="#" th:action="@{/findUserByUserName}" method="post">-->
+
+<!--                                            <input type="text" name="userName" placeholder="Username" value=""/>-->
+<!--                                            <input style="font-size:12pt;color:white;background-color:green;border:2px solid #336600;padding:3px"-->
+<!--                                                   type="submit" value="Submit">-->
+<!--                                    </form>-->
+<!--                                </li>-->
+                            </ul>
+                        </nav>
+                    </div>
+                    <!--Menu area end-->
                 </div>
-                <!--Logo area end-->
-                <div class="col-md-9 col-7 col-sm-7">
-                    <nav class="main-menu-area">
-                        <ul class="main-menu" id="mobile-menu">
-
-                            <li>
-                                <div sec:authorize="isAnonymous()">
-                                    <a href="#" data-toggle="modal" data-target="#exampleModal"><i class="fas fa-sign-in-alt"></i>
-                                        login</a>
-                                </div>
-                            </li>
-
-                            <li><a href="about.html">About</a></li>
-                            <li><a href="service.html">services</a></li>
-                            <li><a href="contact.html">Contact</a>
-                            </li>
-                        </ul>
-                    </nav>
-                </div>
-                <!--Menu area end-->
             </div>
         </div>
-    </div>
-    <!--Header navigation area end-->
+        <!--Header navigation area end-->
+    </header>
 
-</header>
 </div>
+</html>
