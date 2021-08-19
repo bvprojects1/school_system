@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html xmlns:th="http:/>/www.thymeleaf.org">
-<head>
-</head>
+<div th:insert="/header::navbar">  </div>
+<br/>
+<br/>
 <div class="panel-heading">This page will show <b>All payments</b> made to this Saving Accounts<br/>
     Right now it shows just the last payment made</div>
 <table>
@@ -37,10 +38,5 @@
 <br/><br/><br/><br/><br/><br/>
 <div th:insert="/footer::navbar">  </div>
 
-<!--<p Saving amount th:text="${savingAccount.accountMinBalance}"> </p>-->
-<!--        <div class="panel-body">-->
-<!--&lt;!&ndash;            <form action="#" th:action="@{/registerUserForm}" method="post" th:object="${savingAccount}" >&ndash;&gt;-->
-<!--&lt;!&ndash;            </form>&ndash;&gt;-->
-<!--        </div>-->
 </html>
 

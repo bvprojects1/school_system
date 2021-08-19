@@ -9,6 +9,7 @@ import com.bitsvalley.micro.webdomain.SavingBilanzList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.time.Duration;
 import java.time.LocalDate;
@@ -147,9 +148,12 @@ public class SavingAccountService extends SuperService{
 
                 for (int k = 0; k < savingAccountTransactions.size(); k++) {
                     final SavingAccountTransaction savingAccountTransaction = savingAccountTransactions.get(k);
-                    if(savingAccountTransaction.getSavingAmount() <= 0)
-                        continue;
-                    SavingBilanz savingBilanz = calculateInterest(savingAccountTransaction, calculateInterest);
+                    SavingBilanz savingBilanz = new SavingBilanz();
+//                    if(savingAccountTransaction.getSavingAmount() <= 0){
+//                        //calculate negative saving interest
+//                    }else{
+                        savingBilanz = calculateInterest(savingAccountTransaction, calculateInterest);
+//                    }
                     currentSaved = currentSaved + savingAccountTransaction.getSavingAmount();
                     savingBilanz.setCurrentBalance(formatCurrency(currentSaved));
                     savingBilanzsList.getSavingBilanzList().add(savingBilanz);
@@ -157,10 +161,11 @@ public class SavingAccountService extends SuperService{
                     if(calculateInterest){
                         savingAccountTransactionInterest = savingAccountTransactionInterest +
                                 calculateInterestAccruedMonthCompounded(savingAccountTransaction);
+                        savingBilanzsList.setTotalSavingInterest(formatCurrency(savingAccountTransactionInterest));
                     }
                 }
         savingBilanzsList.setTotalSaving(formatCurrency(totalSaved));
-//        savingBilanzsList.setTotalSavingInterest(formatCurrency(savingAccountTransactionInterest));
+
         Collections.reverse(savingBilanzsList.getSavingBilanzList());
         return savingBilanzsList;
     }
@@ -226,6 +231,8 @@ public class SavingAccountService extends SuperService{
         Locale locale = new Locale("en", "CM");
         NumberFormat fmt = NumberFormat.getCurrencyInstance(locale);
         String total = fmt.format(totalSaved);
+//        NumberFormat plusMinusNF = new DecimalFormat("+#;-#");
+//        String total = plusMinusNF.format(totalSaved);
         return total.substring(3,total.length());
     }
 
