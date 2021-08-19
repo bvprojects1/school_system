@@ -9,6 +9,7 @@ import com.bitsvalley.micro.webdomain.SavingBilanzList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.time.Duration;
 import java.time.LocalDate;
@@ -230,6 +231,8 @@ public class SavingAccountService extends SuperService{
         Locale locale = new Locale("en", "CM");
         NumberFormat fmt = NumberFormat.getCurrencyInstance(locale);
         String total = fmt.format(totalSaved);
+//        NumberFormat plusMinusNF = new DecimalFormat("+#;-#");
+//        String total = plusMinusNF.format(totalSaved);
         return total.substring(3,total.length());
     }
 
