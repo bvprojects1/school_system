@@ -155,16 +155,16 @@ public class SavingAccountService extends SuperService{
                         savingBilanz = calculateInterest(savingAccountTransaction, calculateInterest);
 //                    }
                     currentSaved = currentSaved + savingAccountTransaction.getSavingAmount();
-                    savingBilanz.setCurrentBalance(formatCurrency(currentSaved));
+                    savingBilanz.setCurrentBalance(BVMicroUtils.formatCurrency(currentSaved));
                     savingBilanzsList.getSavingBilanzList().add(savingBilanz);
                     totalSaved = totalSaved + savingAccountTransaction.getSavingAmount();
                     if(calculateInterest){
                         savingAccountTransactionInterest = savingAccountTransactionInterest +
                                 calculateInterestAccruedMonthCompounded(savingAccountTransaction);
-                        savingBilanzsList.setTotalSavingInterest(formatCurrency(savingAccountTransactionInterest));
+                        savingBilanzsList.setTotalSavingInterest(BVMicroUtils.formatCurrency(savingAccountTransactionInterest));
                     }
                 }
-        savingBilanzsList.setTotalSaving(formatCurrency(totalSaved));
+        savingBilanzsList.setTotalSaving(BVMicroUtils.formatCurrency(totalSaved));
 
         Collections.reverse(savingBilanzsList.getSavingBilanzList());
         return savingBilanzsList;
@@ -193,7 +193,7 @@ public class SavingAccountService extends SuperService{
 //                    if (LocalDateTime.now().minusMonths(1).isAfter(createdDate)) {
                         SavingBilanz savingBilanz = calculateInterest(savingAccountTransaction, calculateInterest);
                         currentSaved = currentSaved + savingAccountTransaction.getSavingAmount();
-                        savingBilanz.setCurrentBalance(formatCurrency(currentSaved));
+                        savingBilanz.setCurrentBalance(BVMicroUtils.formatCurrency(currentSaved));
                         savingBilanzsList.getSavingBilanzList().add(savingBilanz);
                         totalSaved = totalSaved + savingAccountTransaction.getSavingAmount();
                         savingAccountTransactionInterest = savingAccountTransactionInterest +
@@ -205,8 +205,8 @@ public class SavingAccountService extends SuperService{
                 }
             }
         }
-        savingBilanzsList.setTotalSaving(formatCurrency(totalSaved));
-        savingBilanzsList.setTotalSavingInterest(formatCurrency(savingAccountTransactionInterest));
+        savingBilanzsList.setTotalSaving(BVMicroUtils.formatCurrency(totalSaved));
+        savingBilanzsList.setTotalSavingInterest(BVMicroUtils.formatCurrency(savingAccountTransactionInterest));
         Collections.reverse(savingBilanzsList.getSavingBilanzList());
         return savingBilanzsList;
     }
@@ -227,27 +227,20 @@ public class SavingAccountService extends SuperService{
     }
 
 
-    private String formatCurrency(double totalSaved) {
-        Locale locale = new Locale("en", "CM");
-        NumberFormat fmt = NumberFormat.getCurrencyInstance(locale);
-        String total = fmt.format(totalSaved);
-//        NumberFormat plusMinusNF = new DecimalFormat("+#;-#");
-//        String total = plusMinusNF.format(totalSaved);
-        return total.substring(3,total.length());
-    }
+
 
 
     private SavingBilanz calculateInterest(SavingAccountTransaction savingAccountTransaction, boolean calculateInterest) {
         SavingBilanz savingBilanz = new SavingBilanz();
         savingBilanz.setId(""+savingAccountTransaction.getId());
         savingBilanz.setAccountType(savingAccountTransaction.getSavingAccount().getAccountSavingType().getName());
-        savingBilanz.setAccountMinimumBalance(formatCurrency(savingAccountTransaction.getSavingAccount().getAccountMinBalance()));
-        savingBilanz.setMinimumBalance(formatCurrency(savingAccountTransaction.getSavingAccount().getAccountMinBalance()));
+        savingBilanz.setAccountMinimumBalance(BVMicroUtils.formatCurrency(savingAccountTransaction.getSavingAccount().getAccountMinBalance()));
+        savingBilanz.setMinimumBalance(BVMicroUtils.formatCurrency(savingAccountTransaction.getSavingAccount().getAccountMinBalance()));
         savingBilanz.setCreatedBy(savingAccountTransaction.getCreatedBy());
         savingBilanz.setReference(savingAccountTransaction.getReference());
         savingBilanz.setAgent(savingAccountTransaction.getCreatedBy());
         savingBilanz.setInterestRate(""+savingAccountTransaction.getSavingAccount().getInterestRate());
-        savingBilanz.setSavingAmount(formatCurrency(savingAccountTransaction.getSavingAmount()));
+        savingBilanz.setSavingAmount(BVMicroUtils.formatCurrency(savingAccountTransaction.getSavingAmount()));
         savingBilanz.setCreatedDate(BVMicroUtils.formatDateTime(savingAccountTransaction.getCreatedDate()));
         savingBilanz.setNotes(savingAccountTransaction.getNotes());
         savingBilanz.setAccountNumber(savingAccountTransaction.getSavingAccount().getAccountNumber());
@@ -257,7 +250,7 @@ public class SavingAccountService extends SuperService{
         savingBilanz.setBranch(savingAccountTransaction.getSavingAccount().getBranch());
 
         if(calculateInterest){
-            savingBilanz.setInterestAccrued(formatCurrency(calculateInterestAccruedMonthCompounded(savingAccountTransaction)));
+            savingBilanz.setInterestAccrued(BVMicroUtils.formatCurrency(calculateInterestAccruedMonthCompounded(savingAccountTransaction)));
         }
         return savingBilanz;
     }

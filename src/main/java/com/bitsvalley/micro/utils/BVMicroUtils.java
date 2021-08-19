@@ -58,22 +58,21 @@ public class BVMicroUtils {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern(DATE_FORMATTER);
             String formatDateTime = localDateTime.format(formatter);
             return formatDateTime;
-
         }
 
     public static String formatCurrency(double totalSaved) {
         Locale locale = new Locale("en", "CM");
         NumberFormat fmt = NumberFormat.getCurrencyInstance(locale);
         String total = fmt.format(totalSaved);
-        return total.substring(3,total.length());
+        total = total.substring(3,total.length());
+        total = total.replaceFirst("F","-");
+        return total;
     }
 
     public static String formatDate(Date date) {
         SimpleDateFormat formatter = new SimpleDateFormat("dd MMMM yyyy hh:mm");
         String format = formatter.format(date);
         return format;
-
     }
-
 
 }
