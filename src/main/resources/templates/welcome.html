@@ -26,7 +26,7 @@
                            <div th:if="${#authorization.expression('hasAnyAuthority(''ROLE_AGENT'')')}">
                                <a href="/registerCustomer"> <img width="10px" th:src="@{/assets/images/add.png}"/> </a>
                            </div>
-                            <a href="/findAllCustomers">Read More ...</a>
+                            <a href="/findAllCustomers">See More ...</a>
                         </div>
                     </div>
                     <!--Single service area end-->
@@ -36,7 +36,7 @@
                             <h4>SAVINGS</h4>
                             <p>Create multiple Saving accounts</p>
                             <a href="/registerUser"> <img width="10px" th:src="@{/assets/images/add.png}"/> </a>
-                            <a href="/findAllCustomers">Read More ...</a>
+                            <a href="/findAllCustomers">See More ...</a>
                             <span class="fas fa-piggy-bank"></span>
                         </div>
                     </div>
@@ -46,7 +46,7 @@
                             <i class="fas fa-hand-holding-usd"></i>
                             <h4>LOANS</h4>
                             <p>Get long term and short term loans.</p>
-                            <a href="#">read more</a>
+                            <a href="#">See more</a>
                             <span class="fas fa-hand-holding-usd"></span>
                         </div>
                     </div>
@@ -56,7 +56,7 @@
                             <i class="fas fa-landmark"></i>
                             <h4>WITHDRAWAL</h4>
                             <p>Do withdrawals from saving accounts and stay above minimum balance</p>
-                            <a href="#">read more</a>
+                            <a href="#">See more</a>
                             <span class="fas fa-landmark"></span>
                         </div>
                     </div>
@@ -76,7 +76,7 @@
                             <i class="fas fa-ethernet"></i>
                             <h4>LOCATION/ BRANCHES</h4>
                             <p>Promising development turmoil inclusive education transformative community.</p>
-                            <a href="#">read more</a>
+                            <a href="#">See more</a>
                             <span class="fas fa-ethernet"></span>
                         </div>
                     </div>
@@ -87,9 +87,6 @@
         <!--Service content area end-->
     </section>
     <!--Service area end-->
-
-
-
 
     <div th:insert="/blog::navbar"></div>
 

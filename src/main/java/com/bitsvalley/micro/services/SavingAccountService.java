@@ -147,9 +147,12 @@ public class SavingAccountService extends SuperService{
 
                 for (int k = 0; k < savingAccountTransactions.size(); k++) {
                     final SavingAccountTransaction savingAccountTransaction = savingAccountTransactions.get(k);
-                    if(savingAccountTransaction.getSavingAmount() <= 0)
-                        continue;
-                    SavingBilanz savingBilanz = calculateInterest(savingAccountTransaction, calculateInterest);
+                    SavingBilanz savingBilanz = new SavingBilanz();
+//                    if(savingAccountTransaction.getSavingAmount() <= 0){
+//                        //calculate negative saving interest
+//                    }else{
+                        savingBilanz = calculateInterest(savingAccountTransaction, calculateInterest);
+//                    }
                     currentSaved = currentSaved + savingAccountTransaction.getSavingAmount();
                     savingBilanz.setCurrentBalance(formatCurrency(currentSaved));
                     savingBilanzsList.getSavingBilanzList().add(savingBilanz);
@@ -157,10 +160,11 @@ public class SavingAccountService extends SuperService{
                     if(calculateInterest){
                         savingAccountTransactionInterest = savingAccountTransactionInterest +
                                 calculateInterestAccruedMonthCompounded(savingAccountTransaction);
+                        savingBilanzsList.setTotalSavingInterest(formatCurrency(savingAccountTransactionInterest));
                     }
                 }
         savingBilanzsList.setTotalSaving(formatCurrency(totalSaved));
-//        savingBilanzsList.setTotalSavingInterest(formatCurrency(savingAccountTransactionInterest));
+
         Collections.reverse(savingBilanzsList.getSavingBilanzList());
         return savingBilanzsList;
     }

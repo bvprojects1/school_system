@@ -230,10 +230,20 @@ public class SavingAccountController extends SuperController{
     }
 
 
-    @GetMapping(value = "/showSavingBilanz/{id}")
-    public String showSavingBilanz(@PathVariable("id") long id,ModelMap model, HttpServletRequest request) {
+    @GetMapping(value = "/showUserSavingBilanz/{id}")
+    public String showUserSavingBilanz(@PathVariable("id") long id,ModelMap model, HttpServletRequest request) {
         User user = (User)request.getSession().getAttribute(BVMicroUtils.CUSTOMER_IN_USE);
         SavingBilanzList savingBilanzByUserList = savingAccountService.getSavingBilanzByUser(user,true);
+        model.put("name", getLoggedInUserName());
+        model.put("savingBilanzList", savingBilanzByUserList);
+        return "savingBilanz";
+    }
+
+    @GetMapping(value = "/showSavingAccountBilanz/{accountId}")
+    public String showSavingAccountBilanz(@PathVariable("accountId") long accountId,ModelMap model, HttpServletRequest request) {
+        Optional<SavingAccount> byId = savingAccountService.findById(accountId);
+        List<SavingAccountTransaction> savingAccountTransaction = byId.get().getSavingAccountTransaction();
+        SavingBilanzList savingBilanzByUserList = savingAccountService.calculateAccountBilanz(savingAccountTransaction,true);
         model.put("name", getLoggedInUserName());
         model.put("savingBilanzList", savingBilanzByUserList);
         return "savingBilanz";
