@@ -47,6 +47,11 @@ public class SavingAccountTransactionService extends SuperService{
         return savingAccountTransaction;
     }
 
+    public Optional<SavingAccountTransaction> findByReference(String reference){
+        Optional<SavingAccountTransaction> savingAccountTransaction = savingAccountTransactionRepository.findByReference(reference);
+        return savingAccountTransaction;
+    }
+
 //    public void createSavingAccount(SavingAccount savingAccount, User user) {
 ////        User user = userService.findUserByUserName("admin");
 //        savingAccount.setAccountNumber(new String(""+new Random())); //Collision

@@ -4,6 +4,7 @@ package com.bitsvalley.micro.domain;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -46,8 +47,8 @@ public class User {
     private LocalDateTime accountBlockedDate;
     private boolean accountExpired;
 
-    private LocalDateTime lastUpdated;
-    private LocalDateTime created;
+    private Date lastUpdated;
+    private Date created;
     private String createdBy;
 
     public String getCreatedBy() {
@@ -178,19 +179,19 @@ public class User {
         this.accountLocked = accountLocked;
     }
 
-    public LocalDateTime getLastUpdated() {
+    public Date getLastUpdated() {
         return lastUpdated;
     }
 
-    public void setLastUpdated(LocalDateTime lastUpdated) {
+    public void setLastUpdated(Date lastUpdated) {
         this.lastUpdated = lastUpdated;
     }
 
-    public LocalDateTime getCreated() {
+    public Date getCreated() {
         return created;
     }
 
-    public void setCreated(LocalDateTime created) {
+    public void setCreated(Date created) {
         this.created = created;
     }
 

@@ -15,6 +15,7 @@ public class BVMicroUtils {
 
     public static final String CUSTOMER_IN_USE = "customerInUse";
     public static final String DATE_FORMATTER= "dd-MM-yyyy HH:mm";
+    public static final String SYSTEM = "SYSTEM";
 
     public static  String getSaltString() {
         String SALTCHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890"; //TODO: avoid collision

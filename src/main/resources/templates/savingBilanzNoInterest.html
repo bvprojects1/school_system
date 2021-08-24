@@ -104,7 +104,7 @@
     <td><font size="6"> <span style th:text="${session.customerInUse.userName}"/>'s </font>
         <button style="font-face: 'Comic Sans MS'; font-size: larger; color: teal; background-color: #FFFFC0; border: 3pt ridge lightgrey" type="submit" >
             <a href="#" th:href="@{/file/{userName}(userName=${session.customerInUse.userName})}">Upload I.D</a></button>
-        <a href="#" th:href="@{/reloadUser}"><img width="100px" th:src="@{/getImage}"/> </a>
+        <a href="#" th:href="@{/reloadUser}"><img width="40px" th:src="@{/getImage}"/> </a>
     </td>
     <td> <font size="1.5px">Saving</font> <br/> <font color="green" size="6px"> <div th:text="${savingBilanzList.totalSaving}"/></font></td>
     <td> <font size="1.5px">Current</font> <br/> <font size="6"> 0</font></td>
@@ -116,22 +116,26 @@
 
     <tr>
         <td>
-            <font size="1.5px"> Account Type:</font><font color="#2d363f" size="4px"> <div th:text="${savingAccountTransaction.savingAccount.savingAccountType.name}"/></font>
+            <font size="1.5px"> Account Type</font><font color="#2d363f" size="4px"> <div th:text="${savingAccountTransaction.savingAccount.savingAccountType.name}"/></font>
         </td>
         <td>
-            <font size="1.5px"> Account Number:</font><font color="#2d363f" size="4px"> <div th:text="${savingAccountTransaction.savingAccount.accountNumber}"/></font>
+            <font size="1.5px"> Account Number</font><font color="#2d363f" size="4px"> <div th:text="${savingAccountTransaction.savingAccount.accountNumber}"/></font>
         </td>
         <td>
-            <font size="1.5px"> Account Owner:</font><font color="#2d363f" size="4px">  <div th:text="${savingAccountTransaction.savingAccount.user.lastName}"/></font>
+            <font size="1.5px"> Account Owner</font><font color="#2d363f" size="4px">  <div th:text="${savingAccountTransaction.savingAccount.user.lastName}"/></font>
         </td>
         <td>
-            <font size="1.5px"> Notes:</font><font color="#2d363f" size="4px"><div th:text="${savingAccountTransaction.savingAccount.notes}"/></font>
+            <font size="1.5px"> Notes</font><font color="#2d363f" size="4px"><div th:text="${savingAccountTransaction.savingAccount.notes}"/></font>
         </td>
         <td>
-            <font size="1.5px"> Min. Balance:</font><font color="#2d363f" size="4px"> <div th:text="${#numbers.formatDecimal(savingAccountTransaction.savingAccount.accountMinBalance, 0, 'COMMA', 0, 'POINT')}"/></font>
+            <font size="1.5px"> Rate</font><font color="#2d363f" size="4px"><div th:text="${savingAccountTransaction.savingAccount.interestRate}"/></font>
         </td>
         <td>
-            <font size="1.5px"> Rate:</font><font color="#2d363f" size="4px"><div th:text="${savingAccountTransaction.savingAccount.interestRate}"/></font>
+            <font size="1.5px"> Min. Balance</font><font color="#2d363f" size="4px"> <div th:text="${#numbers.formatDecimal(savingAccountTransaction.savingAccount.accountMinBalance, 0, 'COMMA', 0, 'POINT')}"/></font>
+        </td>
+
+        <td>
+            <font size="1.5px"> Notes</font><font color="#2d363f" size="4px"><div th:text="${savingAccountTransaction.savingAccount.notes}"/></font>
         </td>
     </tr>
 </table>

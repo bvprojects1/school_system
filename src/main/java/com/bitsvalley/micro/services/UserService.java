@@ -40,11 +40,11 @@ public class UserService {
     }
 
     public User createUser(User user) {
-
-        user.setCreated(LocalDateTime.now());
+        Date now = new Date();
+        user.setCreated(now);
         user.setAccountExpiredDate(LocalDateTime.now().plusMonths(6));
         user.setAccountBlockedDate(LocalDateTime.now().plusMonths(6));
-        user.setLastUpdated(LocalDateTime.now());
+        user.setLastUpdated(now);
 
         user.setAccountExpired(false);
         user.setAccountLocked(false);

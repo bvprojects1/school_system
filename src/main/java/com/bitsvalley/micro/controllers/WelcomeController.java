@@ -13,8 +13,7 @@ import com.bitsvalley.micro.webdomain.SavingBilanzList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -24,6 +23,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 /**
  * @author Fru Chifen
@@ -52,6 +52,7 @@ public class WelcomeController extends SuperController{
         model.put("name", getLoggedInUserName());
         return "welcome";
     }
+
 
     @GetMapping(value = "/login")
     public String login(ModelMap model, HttpServletRequest request) {
@@ -124,6 +125,17 @@ public class WelcomeController extends SuperController{
         Path path = Paths.get(runtimeSetting.getLogo());
         byte[] data = Files.readAllBytes(path);
         return data;
+    }
+
+
+    @CrossOrigin()
+    @PostMapping("/landing")
+    public String logUserOut( @RequestBody User user) {
+        User byUserName = userRepository.findByUserName(user.getUserName());
+            if (byUserName.getPassword().equals(user.getPassword())) {
+                return "SUCCESS";
+            }
+        return "FAILURE";
     }
 
 }

@@ -144,6 +144,13 @@ public class SavingAccountController extends SuperController{
 
         if(request.getParameter("deposit_withdrawal").equals("WITHDRAWAL")){
             savingAccountTransaction.setSavingAmount(savingAccountTransaction.getSavingAmount()*-1);
+            String error = savingAccountService.withdrawalAllowed(savingAccountTransaction);
+            //Make sure min amount is not violated at withdrawal
+            if(!( error == null )){
+                model.put( "billSelectionError", error );
+                savingAccountTransaction.setNotes("");
+                return displaySavingBilanzNoInterest(new Long(savingAccountId),model,savingAccountTransaction);
+            }
         }
 
         String modeOfPayment = request.getParameter("modeOfPayment");

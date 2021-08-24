@@ -8,9 +8,8 @@ import com.bitsvalley.micro.webdomain.SavingBilanz;
 import com.bitsvalley.micro.webdomain.SavingBilanzList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.text.DecimalFormat;
-import java.text.NumberFormat;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -41,6 +40,9 @@ public class SavingAccountService extends SuperService{
 
     @Autowired
     private CallCenterRepository callCenterRepository;
+
+    @Autowired
+    private GeneralLedgerService generalLedgerService;
 
 
     private double minimumSaving;
@@ -96,12 +98,14 @@ public class SavingAccountService extends SuperService{
             return accountNumber;
     }
 
+    @Transactional
     public void createSavingAccountTransaction(SavingAccountTransaction savingAccountTransaction, User user) {
         //Get id of savingAccount transaction
         savingAccountTransaction.setReference(BVMicroUtils.getSaltString()); //Collision
         savingAccountTransaction.setCreatedBy(getLoggedInUserName());
         savingAccountTransaction.setCreatedDate(LocalDateTime.now());
         savingAccountTransactionRepository.save(savingAccountTransaction);
+        generalLedgerService.updateSavingAccountTransaction(savingAccountTransaction);
 //        savingAccount.getSavingAccount().add(savingAccount);
 //        savingAccountRepository.get(savingAccountTransaction);
     }
@@ -336,4 +340,26 @@ public class SavingAccountService extends SuperService{
         return ""+i;
     }
 
+    public String withdrawalAllowed(SavingAccountTransaction savingTransaction) {
+       String error = "";
+       error = minimumSavingRespected(savingTransaction);
+       return error;
+    }
+
+    private String minimumSavingRespected(SavingAccountTransaction savingTransaction) {
+        double futureBalance = getAccountBalance(savingTransaction.getSavingAccount()) + savingTransaction.getSavingAmount();
+        if(savingTransaction.getSavingAccount().getAccountMinBalance() > futureBalance ){
+            return "Account will fall below Minimum Savings amount";
+        }
+        return null;
+    }
+
+    public double getAccountBalance(SavingAccount savingAccount) {
+        double total = 0.0;
+        List<SavingAccountTransaction> savingAccountTransactions = savingAccount.getSavingAccountTransaction();
+        for (SavingAccountTransaction tran: savingAccountTransactions) {
+            total = tran.getSavingAmount() + total;
+        }
+        return total;
+    }
 }
