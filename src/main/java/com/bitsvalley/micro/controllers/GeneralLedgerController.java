@@ -58,6 +58,7 @@ public class GeneralLedgerController extends SuperController{
         ArrayList<GeneralLedger> glList = new ArrayList<>();
         iterator.forEachRemaining(glList::add);
 
+
         model.put("glList", glList);
         return "gl";
     }

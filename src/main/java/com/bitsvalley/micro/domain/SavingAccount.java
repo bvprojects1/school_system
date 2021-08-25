@@ -34,6 +34,8 @@ public class SavingAccount{
     private String productCode;
     private String accountNumber;
 
+    private double accountBalance;
+
     @ManyToOne
     private User user;
 
@@ -219,4 +221,11 @@ public class SavingAccount{
         this.accountNumber = accountNumber;
     }
 
+    public double getAccountBalance() {
+        return accountBalance;
+    }
+
+    public void setAccountBalance(double accountBalance) {
+        this.accountBalance = accountBalance;
+    }
 }

@@ -164,7 +164,8 @@
                 Description
             </td>
             <td>
-                Minimum Balance
+                Min. Balance
+                /Balance
             </td>
             <td>
                 %
@@ -183,6 +184,8 @@
         </tr>
 
         <tr th:each="savingAccount : ${session.customerInUse.savingAccount}">
+<!--        <tr th:each="savingAccount : ${savingBilanzList.savingBilanzList}">-->
+
             <td>
                 <p th:text="${savingAccount.savingAccountType.name}"/>
             </td>
@@ -195,9 +198,9 @@
                 <p th:text="${savingAccount.notes}"/>
             </td>
             <td>
-                <!-- <p th:text="${savingAccount.accountMinBalance}"/>-->
                 <p th:text="${#numbers.formatDecimal(savingAccount.accountMinBalance, 0, 'COMMA', 0, 'POINT')}">
-                    10.00 </p>
+                    0.00 </p>
+                <p th:text="${#numbers.formatDecimal(savingAccount.accountBalance, 0, 'COMMA', 0, 'POINT')}">
             </td>
             <td>
                 <p th:text="${savingAccount.interestRate}"/>
@@ -253,7 +256,7 @@
     <!--Choosen main area end-->
 </section>
 
-
+</body>
 <div th:insert="/blog::navbar"></div>
 <br/>
 

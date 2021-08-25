@@ -34,7 +34,7 @@
         table, th, td {
 <!--          border: 0px solid #BF360C;-->
           align: center;
-           padding: 15px;
+           padding: 1px;
         }
         table.center {
           margin-left: 50px;
@@ -163,16 +163,16 @@
                     <option value="RECEIPT">RECEIPT</option>
                     <option value="OTHER">OTHER</option>
                 </select>
-                Enter Amount:<input placeholder="Enter Amount" size="6" type="number" th:field="*{savingAmount}" value="${savingAccountTransaction.savingAmount}"/>
+                <b>Enter Amount:</b><input placeholder="Enter Amount" size="6" type="number" th:field="*{savingAmount}" value="${savingAccountTransaction.savingAmount}"/>
 
                 <label for="true">Account Owner:</label>
-                True<input th:field="*{accountOwner}"  type="radio" id="true" name="accountOwner" value="true">
+                True<input th:field="*{accountOwner}"  type="radio" id="true" name="accountOwner" value="true" checked>
 
                 False<input th:field="*{accountOwner}" type="radio" id="false" name="accountOwner" value="false">
 
                 <br/>
 
-                <font size="3" color="green"><strong> BS:</strong></font><br/>
+                <font size="3" color="green"> Bill Selection:</font><br/>
                 <input name="tenThousand" th:field="*{tenThousand}" type="number" min="0" max="999" maxlength="4" value="${savingAccountTransaction.tenThousand}" size="4"/>10 000 &nbsp;
                 <input name="fiveThousand" th:field="*{fiveThousand}" type="number" min="0" max="999" maxlength="4" size="4"/>5 000 &nbsp;
                 <input name="twoThousand" th:field="*{twoThousand}" type="number" min="0" max="999" maxlength="4" size="4"/>2 000 &nbsp;
@@ -208,9 +208,9 @@
         <th>MOP </th>
         <th>Reference </th>
         <th>Agent</th>
-        <th>Amount</th>
         <th>Owner</th>
         <th>Notes</th>
+        <th>Amount</th>
         <th><font color="green" size="6px"><div th:text="${savingBilanzList.totalSaving}"/></font></th>
         <th></th>
     </tr>
@@ -220,9 +220,9 @@
         <td th:text="${bilanz.modeOfPayment}"></td>
         <td th:text="${bilanz.reference}"></td>
         <td th:text="${bilanz.agent}"></td>
-        <td th:text="${bilanz.savingAmount}"></td>
         <td th:text="${bilanz.accountOwner}"></td>
         <td th:text="${bilanz.notes}"></td>
+        <td th:text="${bilanz.savingAmount}"></td>
         <td th:text="${bilanz.currentBalance}"></td>
         <td><a href="#" th:href="@{/createSavingAccountReceiptPdf/{id}(id=${bilanz.id})}"><img width="30px" th:src="@{/assets/images/pdfIcon.png}"/> </a></td>
     </tr>

@@ -46,7 +46,7 @@ public class SuperController {
     private UserRoleService userRoleService;
 
 
-    public String findUserByUserName(User user, ModelMap model, HttpServletRequest request) {
+    public String  findUserByUserName(User user, ModelMap model, HttpServletRequest request) {
         User aUser = userService.findUserByUserName(user.getUserName());
         if(aUser == null){
             SavingAccount savingAccount = savingAccountService.findByAccountNumber(user.getUserName());

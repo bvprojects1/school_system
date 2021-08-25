@@ -204,6 +204,7 @@ public class SavingAccountService extends SuperService{
                                 calculateInterestAccruedMonthCompounded(savingAccountTransaction);
 //                    }
                 }
+                savingAccount.setAccountBalance(totalSaved);
                 if(checkMinBalanceLogin(currentSaved, savingAccount)){
                     savingAccount.setDefaultedPayment(true);// Minimum balance check
                 }

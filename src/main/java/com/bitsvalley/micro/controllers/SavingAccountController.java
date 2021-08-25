@@ -217,7 +217,7 @@ public class SavingAccountController extends SuperController{
     }
 
     private String addBillSelection(SavingAccountTransaction sat) {
-        String billSelection =  " Bill Selection \n";
+        String billSelection =  " BS \n";
         billSelection = billSelection + concatBillSelection(" 10 000x", sat.getTenThousand()) + "\n";
         billSelection = billSelection + concatBillSelection(" 5 000x", sat.getFiveThousand()) + "\n";
         billSelection = billSelection +  concatBillSelection(" 2 000x", sat.getTwoThousand()) + "\n";
