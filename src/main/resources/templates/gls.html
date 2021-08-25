@@ -112,42 +112,53 @@
 
 <section class="contact-form-area-start space df-bg">
     <!--Project title area start-->
-<!--    <div class="project-title-area text-center">-->
-<!--        <div class="col-md-12">-->
-<!--            <div class="project-title-content">-->
-<!--                <font color="#BF360C;" size="4"><h4> General Ledger Transactions </h4></font> </div>-->
-<!--            <table border="0" width="80%" class="center">-->
-<!--                <tr><td>-->
-<!--                     <font size="1.5px"> Account Number</font> <br/>-->
-<!--                    <font color="#2d363f" size="4px"> <div th:text="${accountNumber}"></div>-->
-<!--                    </font> </td>-->
-<!--                <td>-->
-<!--                    <font color="#2d363f" size="1.5px">  Account Name </font> <br/>-->
-<!--                        <font color="#2d363f" size="4px"> <div th:text="${accountHolderName}"></div>-->
-<!--                    </font>-->
-<!--                </td></tr>-->
-<!--            </table>-->
-
-<!--        </div>-->
-<!--    </div>-->
+    <div class="project-title-area text-center">
+        <div class="col-md-12">
+            <div class="project-title-content">
+                <font color="#BF360C;" size="4"><h4> General Ledger Transactions </h4></font> </div>
+            <table border="0" width="80%" class="center">
+                <tr><td>
+                     <font size="1.5px"> DEBIT</font> <br/>
+                    <font color="#2d363f" size="4px">
+                        <div th:text="${#numbers.formatDecimal(generalLedgerBilanz.debitTotal, 0, 'COMMA', 0, 'POINT')}"></div>
+                    </font> </td>
+                <td>
+                    <font color="#2d363f" size="1.5px"> CREDIT </font> <br/>
+                        <font color="#2d363f" size="4px">
+                            <div th:text="${#numbers.formatDecimal(generalLedgerBilanz.creditTotal, 0, 'COMMA', 0, 'POINT')}"></div>
+                    </font>
+                </td>
+                    <td>
+                        <font color="#2d363f" size="1.5px"> TOTAL </font> <br/>
+                        <font color="#2d363f" size="4px">
+                            <div th:text="${#numbers.formatDecimal(generalLedgerBilanz.total, 0, 'COMMA', 0, 'POINT')}"></div>
+                        </font>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
     <!--Project title area end-->
-
                 <table border="0" width="90%" class="center">
                     <tr>
                         <th>Date</th>
                         <th>Reference</th>
+                        <th>Account</th>
                         <th>Type</th>
                         <th>Amount</th>
                     </tr>
-                    <tr th:each="gl : ${glList}">
+                    <tr th:each="gl : ${generalLedgerBilanz.generalLedger}">
                         <td><div th:text="${#dates.format(gl.date, 'dd-MMM-yyyy HH:mm')}"></div></td>
                         <td th:text="${gl.reference}"></td>
-                        <td th:text="${gl.type.name}"></td>
+                        <td th:text="${#numbers.formatDecimal(gl.accountNumber, 0, 'COMMA', 0, 'POINT')}"></td>
+                        <td>
+                            <a href="#" th:href="@{/findGlByType/{type}(type=${gl.type.name})}">
+                                <span th:text="${gl.type.name}"/>
+                            </a>
+                        </td>
                         <td th:text="${gl.amount}"></td>
                     </tr>
                 </table>
-
-
 </section>
 
 </body>

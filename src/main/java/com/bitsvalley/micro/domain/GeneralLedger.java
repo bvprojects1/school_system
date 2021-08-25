@@ -18,7 +18,7 @@ public class GeneralLedger {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
-    private GeneralLedgerType type;
+    private String type;
     private String reference;
     private String accountNumber;
     private String createdBy;
@@ -37,11 +37,11 @@ public class GeneralLedger {
         super();
     }
 
-    public GeneralLedgerType getType() {
+    public String getType() {
         return type;
     }
 
-    public void setType(GeneralLedgerType type) {
+    public void setType(String type) {
         this.type = type;
     }
 

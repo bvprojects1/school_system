@@ -7,6 +7,7 @@ import com.bitsvalley.micro.repositories.CallCenterRepository;
 import com.bitsvalley.micro.repositories.GeneralLedgerRepository;
 import com.bitsvalley.micro.services.CallCenterService;
 import com.bitsvalley.micro.services.GeneralLedgerService;
+import com.bitsvalley.micro.webdomain.GeneralLedgerBilanz;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -32,14 +33,14 @@ public class GeneralLedgerController extends SuperController{
     @Autowired
     GeneralLedgerRepository generalLedgerRepository;
 
-    @GetMapping(value = "/gl/{accountNumber}")
-    public String showCustomer(@PathVariable("accountNumber") String accountNumber, ModelMap model, HttpServletRequest request) {
-        List<GeneralLedger> glList = generalLedgerService.findByAccountNumber(accountNumber);
-        Collections.reverse(glList);
-        model.put("glList", glList);
-        model.put("accountNumber",accountNumber );
-        return "gl";
-    }
+//    @GetMapping(value = "/gl/{accountNumber}")
+//    public String showCustomer(@PathVariable("accountNumber") String accountNumber, ModelMap model, HttpServletRequest request) {
+//        List<GeneralLedger> glList = generalLedgerService.findByAccountNumber(accountNumber);
+//        Collections.reverse(glList);
+//        model.put("glList", glList);
+//        model.put("accountNumber",accountNumber );
+//        return "gl";
+//    }
 
     @GetMapping(value = "/gl/{reference}")
     public String showGlReference(@PathVariable("reference") String reference, ModelMap model, HttpServletRequest request) {
@@ -50,17 +51,18 @@ public class GeneralLedgerController extends SuperController{
         return "gl";
     }
 
+
     @GetMapping(value = "/gl")
     public String showAllGL( ModelMap model, HttpServletRequest request) {
-        Iterable<GeneralLedger> glIterable= generalLedgerRepository.findAll();
-
-        Iterator<GeneralLedger> iterator = glIterable.iterator();
-        ArrayList<GeneralLedger> glList = new ArrayList<>();
-        iterator.forEachRemaining(glList::add);
-
-
-        model.put("glList", glList);
-        return "gl";
+        GeneralLedgerBilanz generalLedgerBilanz = generalLedgerService.findAll();
+        model.put("generalLedgerBilanz",generalLedgerBilanz);
+        return "gls";
     }
 
+
+    @GetMapping(value = "/findGlByType/{type}")
+    public String findByGlType(@PathVariable("type") String type,ModelMap model) {
+        GeneralLedgerBilanz generalLedgerBilanz = generalLedgerService.findGLByType(type);
+        return "gls";
+    }
 }

@@ -9,6 +9,6 @@ import java.util.List;
 public interface GeneralLedgerRepository extends CrudRepository<GeneralLedger, Long> {
 
     List<GeneralLedger> findByAccountNumber(String accountNumber);
-
+    List<GeneralLedger> findGLByType(String type);
 
 }

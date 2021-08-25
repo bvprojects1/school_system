@@ -1,19 +1,21 @@
 package com.bitsvalley.micro.services;
 
-import com.bitsvalley.micro.domain.CallCenter;
-import com.bitsvalley.micro.domain.GeneralLedger;
-import com.bitsvalley.micro.domain.SavingAccountTransaction;
-import com.bitsvalley.micro.domain.SavingAccountType;
+import com.bitsvalley.micro.domain.*;
 import com.bitsvalley.micro.repositories.CallCenterRepository;
 import com.bitsvalley.micro.repositories.GeneralLedgerRepository;
 import com.bitsvalley.micro.repositories.SavingAccountTypeRepository;
 import com.bitsvalley.micro.repositories.UserRepository;
 import com.bitsvalley.micro.utils.BVMicroUtils;
 import com.bitsvalley.micro.utils.GeneralLedgerType;
+import com.bitsvalley.micro.webdomain.GeneralLedgerBilanz;
+import com.bitsvalley.micro.webdomain.RuntimeSetting;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -58,7 +60,41 @@ public class GeneralLedgerService {
         return gl;
     }
 
-    private GeneralLedgerType getGeneralLedgetType(int amount) {
-            return amount>0?GeneralLedgerType.DEBIT:GeneralLedgerType.CREDIT;
+    private String getGeneralLedgetType(int amount) {
+            return amount>0?GeneralLedgerType.DEBIT.name():GeneralLedgerType.CREDIT.name();
     }
+
+    public GeneralLedgerBilanz findAll() {
+            Iterable<GeneralLedger> glIterable = generalLedgerRepository.findAll();
+        List<GeneralLedger> result = new ArrayList<GeneralLedger>();
+        glIterable.forEach(result::add);
+        return getGeneralLedgerBilanz( result);
+    }
+
+    @NotNull
+    private GeneralLedgerBilanz getGeneralLedgerBilanz( List<GeneralLedger> generalLedgerList) {
+        int debitTotal = 0;
+        int creditTotal = 0;
+        GeneralLedgerBilanz bilanz = null;
+        for (GeneralLedger current: generalLedgerList ) {
+                bilanz = new GeneralLedgerBilanz();
+                if (GeneralLedgerType.CREDIT.equals(current.getType())) {
+                    creditTotal = creditTotal + current.getAmount();
+                } else if (GeneralLedgerType.DEBIT.equals(current.getType())) {
+                    debitTotal = debitTotal + current.getAmount();
+                }
+            }
+        bilanz.setTotal(debitTotal+creditTotal);
+        bilanz.setDebitTotal(debitTotal);
+        bilanz.setCreditTotal(creditTotal);
+        bilanz.setGeneralLedger(generalLedgerList);
+        return bilanz;
+    }
+
+    
+    public GeneralLedgerBilanz findGLByType(String type) {
+        List<GeneralLedger> glByType = generalLedgerRepository.findGLByType(type);
+        return getGeneralLedgerBilanz(glByType);
+    }
+
 }
