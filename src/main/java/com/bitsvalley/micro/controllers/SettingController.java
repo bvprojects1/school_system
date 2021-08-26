@@ -65,6 +65,14 @@ public class SettingController extends SuperController{
         business_name.setPropertyValue(runtimeSetting.getBusinessName());
         list.add(business_name);
 
+        RuntimeProperties address = runtimePropertiesRepository.findByPropertyName("address");
+        if(address == null){
+            address = new RuntimeProperties();
+            address.setPropertyName("address");
+        }
+        address.setPropertyValue(runtimeSetting.getAddress());
+        list.add(address);
+
         RuntimeProperties logo = runtimePropertiesRepository.findByPropertyName("logo");
         if(logo == null){
             logo = new RuntimeProperties();
@@ -73,18 +81,53 @@ public class SettingController extends SuperController{
         logo.setPropertyValue(runtimeSetting.getLogo());
         list.add(logo);
 
-//        RuntimeProperties business_name = runtimePropertiesRepository.findByName("Business Name");
-//        if(business_name == null){
-//            business_name = new RuntimeProperties();
-//            business_name.setPropertyName("Business Name");
-//        }
-//        business_name.setPropertyValue(runtimeSetting.getBusinessName());
-//        list.add(business_name);
+        RuntimeProperties telephone = runtimePropertiesRepository.findByPropertyName("telephone");
+        if(telephone == null){
+            telephone = new RuntimeProperties();
+            telephone.setPropertyName("telephone");
+        }
+        telephone.setPropertyValue(runtimeSetting.getTelephone());
+        list.add(telephone);
 
-//        RuntimeProperties logo = new RuntimeProperties();
-//        logo.setPropertyName("Logo");
-//        logo.setPropertyValue(runtimeSetting.getLogo());
-//        list.add(logo);
+        RuntimeProperties telephone2 = runtimePropertiesRepository.findByPropertyName("telephone2");
+        if(telephone2 == null){
+            telephone2 = new RuntimeProperties();
+            telephone2.setPropertyName("telephone2");
+        }
+        telephone2.setPropertyValue(runtimeSetting.getTelephone2());
+        list.add(telephone2);
+
+        RuntimeProperties email = runtimePropertiesRepository.findByPropertyName("email");
+        if(email == null){
+            email = new RuntimeProperties();
+            email.setPropertyName("email");
+        }
+        email.setPropertyValue(runtimeSetting.getEmail());
+        list.add(email);
+
+        RuntimeProperties branch = runtimePropertiesRepository.findByPropertyName("branch");
+        if(branch == null){
+            branch = new RuntimeProperties();
+            branch.setPropertyName("branch");
+        }
+        branch.setPropertyValue(runtimeSetting.getBranch());
+        list.add(branch);
+
+        RuntimeProperties fax = runtimePropertiesRepository.findByPropertyName("fax");
+        if(fax == null){
+            fax = new RuntimeProperties();
+            fax.setPropertyName("fax");
+        }
+        fax.setPropertyValue(runtimeSetting.getFax());
+        list.add(fax);
+
+        RuntimeProperties website = runtimePropertiesRepository.findByPropertyName("website");
+        if(website == null){
+            website = new RuntimeProperties();
+            website.setPropertyName("website");
+        }
+        website.setPropertyValue(runtimeSetting.getWebsite());
+        list.add(website);
 
 
         runtimePropertiesRepository.saveAll(list);

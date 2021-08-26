@@ -6,10 +6,15 @@ public class RuntimeSetting {
     private String telephone;
     private String telephone2;
     private String logo;
+    private String logoSize;
+    private String themeColor;
+    private String themeColor2;
     private String fax;
     private String email;
     private String website;
     private int noOfAccounts;
+    private String branch;
+    private String address;
 
 
     public String getFax() {
@@ -74,5 +79,45 @@ public class RuntimeSetting {
 
     public void setBusinessName(String businessName) {
         this.businessName = businessName;
+    }
+
+    public String getBranch() {
+        return branch;
+    }
+
+    public void setBranch(String branch) {
+        this.branch = branch;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getLogoSize() {
+        return logoSize;
+    }
+
+    public void setLogoSize(String logoSize) {
+        this.logoSize = logoSize;
+    }
+
+    public String getThemeColor() {
+        return themeColor;
+    }
+
+    public void setThemeColor(String themeColor) {
+        this.themeColor = themeColor;
+    }
+
+    public String getThemeColor2() {
+        return themeColor2;
+    }
+
+    public void setThemeColor2(String themeColor2) {
+        this.themeColor2 = themeColor2;
     }
 }

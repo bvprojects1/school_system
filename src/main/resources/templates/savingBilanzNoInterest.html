@@ -119,10 +119,20 @@
             <font size="1.5px"> Account Type</font><font color="#2d363f" size="4px"> <div th:text="${savingAccountTransaction.savingAccount.savingAccountType.name}"/></font>
         </td>
         <td>
-            <font size="1.5px"> Account Number</font><font color="#2d363f" size="4px"> <div th:text="${savingAccountTransaction.savingAccount.accountNumber}"/></font>
+            <font size="1.5px"> Account Number</font><br/>
+            <font color="#2d363f" size="4px">
+                <a href="#" th:href="@{/showCustomer/{userid}(userid=${savingAccountTransaction.savingAccount.user.id})}">
+                    <div th:text="${savingAccountTransaction.savingAccount.accountNumber}"/>
+                </a>
+            </font>
         </td>
         <td>
-            <font size="1.5px"> Account Owner</font><font color="#2d363f" size="4px">  <div th:text="${savingAccountTransaction.savingAccount.user.lastName}"/></font>
+            <font size="1.5px"> Account Owner</font><br/>
+            <font color="#2d363f" size="4px">
+                <a href="#" th:href="@{/showCustomer/{userid}(userid=${savingAccountTransaction.savingAccount.user.id})}">
+                    <div th:text="${savingAccountTransaction.savingAccount.user.lastName}"/>
+                </a>
+            </font>
         </td>
         <td>
             <font size="1.5px"> Notes</font><font color="#2d363f" size="4px"><div th:text="${savingAccountTransaction.savingAccount.notes}"/></font>
@@ -163,13 +173,14 @@
                     <option value="RECEIPT">RECEIPT</option>
                     <option value="OTHER">OTHER</option>
                 </select>
-                <b>Enter Amount:</b><input placeholder="Enter Amount" size="6" type="number" th:field="*{savingAmount}" value="${savingAccountTransaction.savingAmount}"/>
+                <b>Enter Amount:</b><input placeholder="Enter Amount" size="6" type="number" th:field="*{savingAmount}"
+                                           value="${savingAccountTransaction.savingAmount}"/>
 
-                <label for="true">Account Owner:</label>
-                True<input th:field="*{accountOwner}"  type="radio" id="true" name="accountOwner" value="true" checked>
+                <b>Minimum:</b><span th:text="${#numbers.formatDecimal(savingAccountTransaction.savingAccount.minimumPayment, 0, 'COMMA', 0, 'POINT')}"/>
+                <textarea placeholder="Enter Amount in letters ..."  id="savingAmountInLetters" rows="1" cols="90" th:field="*{savingAmountInLetters}" maxlength="255">
+                </textarea>
 
-                False<input th:field="*{accountOwner}" type="radio" id="false" name="accountOwner" value="false">
-
+                <br/>
                 <br/>
 
                 <font size="3" color="green"> Bill Selection:</font><br/>
@@ -184,10 +195,14 @@
 
                 <input type="hidden" th:value="${savingAccountTransaction.savingAccount.id}" th:attr="name='savingAccountId'"/>
                 <br/> <br/>
+                <textarea placeholder="Enter Notes ..."  id="notes" rows="2" cols="90" th:field="*{notes}" maxlength="255">
+                </textarea>
 
-                <textarea placeholder="Notes"  id="notes" rows="3" cols="30" th:field="*{notes}">
-                    </textarea>
-                <button type="submit" class="btn btn-success">Save </button><br/>
+                <br/> <br/>
+                <label for="true">Account Owner:</label>
+                True<input th:field="*{accountOwner}"  type="checkbox" id="true" name="accountOwner" value="true" checked>
+
+                <button type="submit" class="btn btn-success">Submit Payment</button><br/>
             </td>
         </tr>
 

@@ -63,6 +63,7 @@ public class GeneralLedgerController extends SuperController{
     @GetMapping(value = "/findGlByType/{type}")
     public String findByGlType(@PathVariable("type") String type,ModelMap model) {
         GeneralLedgerBilanz generalLedgerBilanz = generalLedgerService.findGLByType(type);
+        model.put("generalLedgerBilanz",generalLedgerBilanz);
         return "gls";
     }
 }

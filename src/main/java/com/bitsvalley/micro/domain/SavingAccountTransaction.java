@@ -29,6 +29,8 @@ public class SavingAccountTransaction {
     private int fifty;
     private int twentyFive;
     private String accountOwner;
+    private String branch;
+    private String savingAmountInLetters;
 
     @Column(unique = true)
     private String reference;
@@ -117,6 +119,14 @@ public class SavingAccountTransaction {
         return id;
     }
 
+    public String getBranch() {
+        return branch;
+    }
+
+    public void setBranch(String branch) {
+        this.branch = branch;
+    }
+
     @ManyToOne
     private SavingAccount savingAccount;
 
@@ -166,5 +176,14 @@ public class SavingAccountTransaction {
 
     public void setModeOfPayment(String modeOfPayment) {
         this.modeOfPayment = modeOfPayment;
+    }
+
+
+    public String getSavingAmountInLetters() {
+        return savingAmountInLetters;
+    }
+
+    public void setSavingAmountInLetters(String savingAmountInLetters) {
+        this.savingAmountInLetters = savingAmountInLetters;
     }
 }

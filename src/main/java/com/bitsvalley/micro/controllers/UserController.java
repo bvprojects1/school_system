@@ -52,6 +52,9 @@ public class UserController extends SuperController{
     @Autowired
     CallCenterRepository callCenterRepository;
 
+    @Autowired
+    InitSystemService initSystemService;
+
     @InitBinder
     public void initBinder(WebDataBinder binder) {
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
@@ -198,7 +201,7 @@ public class UserController extends SuperController{
             SavingAccountTransaction aSavingAccountTransaction = savingAccountTransaction.get();
 
 
-            String htmlInput = pdfService.generateTransactionReceiptPDF(aSavingAccountTransaction,"");
+            String htmlInput = pdfService.generateTransactionReceiptPDF(aSavingAccountTransaction,initSystemService.findAll());
 
             byteArrayOutputStream = pdfService.generatePDF(htmlInput, response);
             response.setHeader("Content-Length",String.valueOf(byteArrayOutputStream.size()));

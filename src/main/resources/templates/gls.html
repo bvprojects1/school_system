@@ -150,13 +150,14 @@
                     <tr th:each="gl : ${generalLedgerBilanz.generalLedger}">
                         <td><div th:text="${#dates.format(gl.date, 'dd-MMM-yyyy HH:mm')}"></div></td>
                         <td th:text="${gl.reference}"></td>
-                        <td th:text="${#numbers.formatDecimal(gl.accountNumber, 0, 'COMMA', 0, 'POINT')}"></td>
+                        <td th:text="${gl.accountNumber}"></td>
                         <td>
-                            <a href="#" th:href="@{/findGlByType/{type}(type=${gl.type.name})}">
-                                <span th:text="${gl.type.name}"/>
+                            <a href="#" th:href="@{/findGlByType/{type}(type=${gl.type})}">
+                                <span th:text="${gl.type}"/>
                             </a>
                         </td>
-                        <td th:text="${gl.amount}"></td>
+                        <td th:text="${#numbers.formatDecimal(gl.amount, 0, 'COMMA', 0, 'POINT')}"></td>
+
                     </tr>
                 </table>
 </section>

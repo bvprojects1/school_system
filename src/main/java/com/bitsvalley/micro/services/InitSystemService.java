@@ -32,17 +32,17 @@ public class InitSystemService {
             runtimePropertiesList.add(logo);
 
             RuntimeProperties address = new RuntimeProperties();
-            address.setPropertyName("Address");
+            address.setPropertyName("address");
             address.setPropertyValue("123 Main street");
             runtimePropertiesList.add(address);
 
             RuntimeProperties telephone1 = new RuntimeProperties();
-            telephone1.setPropertyName("Telephone1");
+            telephone1.setPropertyName("telephone1");
             telephone1.setPropertyValue("675 879 345");
             runtimePropertiesList.add(telephone1);
 
             RuntimeProperties telephone2 = new RuntimeProperties();
-            telephone2.setPropertyName("Telephone2");
+            telephone2.setPropertyName("telephone2");
             telephone2.setPropertyValue("665 879 345");
             runtimePropertiesList.add(telephone2);
 
@@ -68,6 +68,7 @@ public class InitSystemService {
     }
 
     public RuntimeSetting  findAll() {
+        List<RuntimeSetting> list = new ArrayList<RuntimeSetting>();
         Iterable<RuntimeProperties> all = runtimePropertiesRepository.findAll();
         Iterator<RuntimeProperties> iterator = all.iterator();
         RuntimeSetting runtime = new RuntimeSetting();
@@ -77,9 +78,30 @@ public class InitSystemService {
                 runtime.setBusinessName(rp.getPropertyValue());
             } else if (rp.getPropertyName().equals("logo")) {
                 runtime.setLogo(rp.getPropertyValue());
+            }else if (rp.getPropertyName().equals("address")) {
+                runtime.setAddress(rp.getPropertyValue());
+            }else if (rp.getPropertyName().equals("telephone")) {
+                runtime.setTelephone(rp.getPropertyValue());
+            }else if (rp.getPropertyName().equals("telephone2")) {
+                runtime.setTelephone2(rp.getPropertyValue());
+            }else if (rp.getPropertyName().equals("email")) {
+                runtime.setTelephone2(rp.getPropertyValue());
+            }else if (rp.getPropertyName().equals("fax")) {
+                runtime.setFax(rp.getPropertyValue());
+            }else if (rp.getPropertyName().equals("logoSize")) {
+                runtime.setLogoSize(rp.getPropertyValue());
+            }else if (rp.getPropertyName().equals("themeColor")) {
+                runtime.setThemeColor(rp.getPropertyValue());
+            }else if (rp.getPropertyName().equals("themeColor2")) {
+                runtime.setThemeColor2(rp.getPropertyValue());
+            }else if (rp.getPropertyName().equals("branch")) {
+                runtime.setBranch(rp.getPropertyValue());
             }
         }
         return runtime;
     }
 
+    public String findByPropertyName(String logo) {
+        return runtimePropertiesRepository.findByPropertyName(logo).getPropertyValue();
+    }
 }

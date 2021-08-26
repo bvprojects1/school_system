@@ -13,10 +13,7 @@ import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 /**
  * @author Fru Chifen
@@ -78,9 +75,9 @@ public class GeneralLedgerService {
         GeneralLedgerBilanz bilanz = bilanz = new GeneralLedgerBilanz();
         for (GeneralLedger current: generalLedgerList ) {
 
-                if (GeneralLedgerType.CREDIT.equals(current.getType())) {
+                if (GeneralLedgerType.CREDIT.name().equals(current.getType())) {
                     creditTotal = creditTotal + current.getAmount();
-                } else if (GeneralLedgerType.DEBIT.equals(current.getType())) {
+                } else if (GeneralLedgerType.DEBIT.name().equals(current.getType())) {
                     debitTotal = debitTotal + current.getAmount();
                 }
             }
@@ -94,6 +91,7 @@ public class GeneralLedgerService {
     
     public GeneralLedgerBilanz findGLByType(String type) {
         List<GeneralLedger> glByType = generalLedgerRepository.findGLByType(type);
+        Collections.reverse(glByType);
         return getGeneralLedgerBilanz(glByType);
     }
 
