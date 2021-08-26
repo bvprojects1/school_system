@@ -16,6 +16,8 @@ public class BVMicroUtils {
     public static final String CUSTOMER_IN_USE = "customerInUse";
     public static final String DATE_FORMATTER= "dd-MM-yyyy HH:mm";
     public static final String SYSTEM = "SYSTEM";
+    public static final String REGULAR_MONTHLY_PAYMENT_MISSING = "Regular Monthly payment not on schedule might be missing payment for some months. " +
+            "Please check the account statement";
 
     public static  String getSaltString() {
         String SALTCHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890"; //TODO: avoid collision

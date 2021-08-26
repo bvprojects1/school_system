@@ -312,9 +312,7 @@ public class SavingAccountService extends SuperService{
 
             if (monthsBetween >= savingAccountTransactionList.size()){
                 CallCenter callCenter = new CallCenter();
-//                callCenter.setUserName(savingAccount.getUser().getUserName());
-                callCenter.setNotes("Regular Monthly payment not on schedule might be missing payment for some months. " +
-                        "Please check the account statement");
+                callCenter.setNotes(BVMicroUtils.REGULAR_MONTHLY_PAYMENT_MISSING);
                 callCenter.setDate(new Date(System.currentTimeMillis()));
                 callCenter.setAccountHolderName(savingAccount.getUser().getFirstName() + " "+ savingAccount.getUser().getLastName());
                 callCenter.setAccountNumber(savingAccount.getAccountNumber());

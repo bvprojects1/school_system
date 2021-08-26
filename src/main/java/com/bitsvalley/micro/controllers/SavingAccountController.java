@@ -175,6 +175,7 @@ public class SavingAccountController extends SuperController{
 
         SavingBilanzList savingBilanzByUserList = savingAccountService.calculateAccountBilanz(savingAccount.get().getSavingAccountTransaction(),false);
         model.put("name", getLoggedInUserName());
+        model.put( "billSelectionError", "-- SAVED SUCCESSFULLY ----- " );
         model.put("savingBilanzList", savingBilanzByUserList);
         request.getSession().setAttribute("savingBilanzList",savingBilanzByUserList);
         Optional<User> byId = userRepository.findById(user.getId());

@@ -75,9 +75,9 @@ public class GeneralLedgerService {
     private GeneralLedgerBilanz getGeneralLedgerBilanz( List<GeneralLedger> generalLedgerList) {
         int debitTotal = 0;
         int creditTotal = 0;
-        GeneralLedgerBilanz bilanz = null;
+        GeneralLedgerBilanz bilanz = bilanz = new GeneralLedgerBilanz();
         for (GeneralLedger current: generalLedgerList ) {
-                bilanz = new GeneralLedgerBilanz();
+
                 if (GeneralLedgerType.CREDIT.equals(current.getType())) {
                     creditTotal = creditTotal + current.getAmount();
                 } else if (GeneralLedgerType.DEBIT.equals(current.getType())) {
