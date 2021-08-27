@@ -31,6 +31,11 @@ public class InitSystemService {
             logo.setPropertyValue("/images/logo.png");
             runtimePropertiesList.add(logo);
 
+            RuntimeProperties unionLogo = new RuntimeProperties();
+            unionLogo.setPropertyName("unionLogo");
+            unionLogo.setPropertyValue("/images/unionLogo.png");
+            runtimePropertiesList.add(unionLogo);
+
             RuntimeProperties address = new RuntimeProperties();
             address.setPropertyName("address");
             address.setPropertyValue("123 Main street");
@@ -78,6 +83,8 @@ public class InitSystemService {
                 runtime.setBusinessName(rp.getPropertyValue());
             } else if (rp.getPropertyName().equals("logo")) {
                 runtime.setLogo(rp.getPropertyValue());
+            }else if (rp.getPropertyName().equals("unionLogo")) {
+                    runtime.setUnionLogo(rp.getPropertyValue());
             }else if (rp.getPropertyName().equals("address")) {
                 runtime.setAddress(rp.getPropertyValue());
             }else if (rp.getPropertyName().equals("telephone")) {

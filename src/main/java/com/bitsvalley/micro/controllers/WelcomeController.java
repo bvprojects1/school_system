@@ -127,6 +127,15 @@ public class WelcomeController extends SuperController{
         return data;
     }
 
+    @GetMapping(value = "/getUnionLogoImage")
+    @ResponseBody
+    public byte[] getUnionLogoImage(HttpServletRequest request) throws IOException {
+        RuntimeSetting runtimeSetting = (RuntimeSetting)request.getSession().getAttribute("runtimeSettings");
+        Path path = Paths.get(runtimeSetting.getUnionLogo());
+        byte[] data = Files.readAllBytes(path);
+        return data;
+    }
+
 
     @CrossOrigin()
     @PostMapping("/landing")

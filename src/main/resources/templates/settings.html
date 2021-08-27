@@ -33,7 +33,14 @@
                         <div class="form-group">
                             <input type="file" name="file" class="form-control-file">
                         </div>
-                        <button type="submit" class="btn btn-primary">Upload File And Save To See Changes</button>
+                        <button type="submit" class="btn btn-primary">Upload logo And Save To See Changes</button>
+                    </form>
+                    <br/>
+                    <form action="#" method="post" th:action="@{/uploadUnionLogo}" enctype="multipart/form-data">
+                        <div class="form-group">
+                            <input type="file" name="file" class="form-control-file">
+                        </div>
+                        <button type="submit" class="btn btn-primary">Upload Union logo And Save To See Changes</button>
                     </form>
 
                     <form action="#" th:action="@{/saveSettingForm}" method="post" th:object="${runtimeSetting}">
@@ -41,15 +48,19 @@
 
 
                             Logo: <input type="text" name="logo" th:field="*{logo}" id="logo"
-                                         placeholder="Upload logo" class="form-control" required>
+                                         placeholder="Upload logo" class="form-control">
+                            <br/>
+
+                            Union logo: <input type="text" name="unionLogo" th:field="*{unionLogo}" id="unionLogo"
+                                         placeholder="Upload Union logo" class="form-control">
                             <br/>
 
                            Business Name:<input type="text" name="businessName" th:field="*{businessName}" id="businessName"
-                                   placeholder="Enter business name" class="form-control" required>
+                                   placeholder="Enter business name" class="form-control">
                             <br/>
 
                             Address:<input type="text" name="address" th:field="*{address}" id="address"
-                                                 placeholder="Enter address name" class="form-control" required>
+                                                 placeholder="Enter address name" class="form-control">
                             <br/>
 
                             Telephone:<input type="text" name="telephone" th:field="*{telephone}" id="telephone"
@@ -70,23 +81,23 @@
 
 
                             Website: <input type="text" name="website" th:field="*{website}" id="website"
-                                            class="form-control" required>
+                                            class="form-control">
                             <br/>
 
                             Fax: <input type="text" name="fax" th:field="*{fax}" id="fax"
-                                            class="form-control" required>
+                                            class="form-control">
                             <br/>
 
                             LogoSize: <input type="text" name="logoSize" th:field="*{logoSize}" id="logoSize"
-                                        class="form-control" required>
+                                        class="form-control">
                             <br/>
 
                             ThemeColor: <input type="text" name="themeColor" th:field="*{themeColor}" id="themeColor"
-                                        class="form-control" required>
+                                        class="form-control">
                             <br/>
 
                             ThemeColor2: <input type="text" name="themeColor2" th:field="*{themeColor2}" id="themeColor2"
-                                        class="form-control" required>
+                                        class="form-control">
                             <br/>
 
 
@@ -95,6 +106,7 @@
 
                             <img width="100px" th:src="@{/getLogoImage}"/>
                             <br/>
+                            <img width="100px" th:src="@{/getUnionLogoImage}"/>
 
                             <input type="submit" class="btn-block btn contact-btn" value="Save"/>
                         </div>

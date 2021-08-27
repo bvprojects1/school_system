@@ -81,6 +81,14 @@ public class SettingController extends SuperController{
         logo.setPropertyValue(runtimeSetting.getLogo());
         list.add(logo);
 
+        RuntimeProperties unionLogo = runtimePropertiesRepository.findByPropertyName("unionLogo");
+        if(unionLogo == null){
+            unionLogo = new RuntimeProperties();
+            unionLogo.setPropertyName("unionLogo");
+        }
+        unionLogo.setPropertyValue(runtimeSetting.getUnionLogo());
+        list.add(unionLogo);
+
         RuntimeProperties telephone = runtimePropertiesRepository.findByPropertyName("telephone");
         if(telephone == null){
             telephone = new RuntimeProperties();
