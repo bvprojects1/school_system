@@ -30,22 +30,20 @@ public class PdfService {
     public String generateTransactionReceiptPDF(SavingAccountTransaction savingAccountTransaction, RuntimeSetting rt) {
 
         String savingBilanzNoInterest = "<html><head>" +
-                "</head><body><br/><br/>" +
+                "</head><body><br/><br/><font color=\"green\" size=\"8px\"><b>RECEIPT FOR PAYMENT MADE</b></font>" +
                 "<table width=\"100%\">" +
-                "<tr> <font color=\"green\" size=\"8px\"><b>RECEIPT FOR PAYMENT MADE</b></font> <br/> <td>Form N. 120000029 </td>" +
-                "<td colspan=\"3\"><img width=\""+rt.getLogoSize()+"\" src=\""+ rt.getLogo()+"\"/><br/><b>"+ rt.getBusinessName() +"</b><br/> "+rt.getBranch()+" <br/>"+rt.getAddress()+" "+rt.getTelephone()+"</td>" +
+                "<tr> <td> Form N. 120000029    </td>" +
+                "<td colspan=\"3\"><img width=\""+rt.getLogoSize()+"\" src=\""+ rt.getLogo()+"\"/><br/><b>"+ rt.getBusinessName() +"</b><br/> BranchName <br/>"+rt.getAddress()+" "+rt.getTelephone()+"</td>" +
                 "<td>"+savingAccountTransaction.getModeOfPayment()+" from Account Owner: <br/>"+savingAccountTransaction.getAccountOwner()+"</td></tr>" +
                 "        <tr><td colspan=\"3\">" +
                 "Account Number: "+ savingAccountTransaction.getSavingAccount().getAccountNumber() +"<br/>Customer: <b>"+savingAccountTransaction.getSavingAccount().getUser().getLastName()+","+savingAccountTransaction.getSavingAccount().getUser().getFirstName()+"</b> </td>" +
                 "<td>Date:<br/><b>"+BVMicroUtils.formatDateTime(savingAccountTransaction.getCreatedDate())+"</b></td>" +
                 "<td>Amount <b>"+BVMicroUtils.formatCurrency(savingAccountTransaction.getSavingAmount())+"</b></td></tr>" +
-                "        <tr><td colspan=\"3\">" +
+                "        <tr><td colspan=\"4\">" +
                 "Representative: <b>"+ savingAccountTransaction.getCreatedBy() +"</b> </td>" +
-                "<td>Date:<br/><b>"+rt.getBranch()+"</b></td>" +
-                "<td>Amount <b>"+BVMicroUtils.formatDateTime(savingAccountTransaction.getCreatedDate())+"</b></td></tr>" +
+                "</tr>" +
                 "<tr><td></td>\n" +
-                "        <td colspan=\"3\">Amount in Letters: <font color=\"green\" size=\"8px\"> "+savingAccountTransaction.getSavingAmountInLetters()+"</font></td>\n" +
-                "        <td></td>\n" +
+                "        <td colspan=\"4\">Amount in Letters: <font color=\"green\" size=\"8px\"> "+savingAccountTransaction.getSavingAmountInLetters()+"</font></td>\n" +
                 "        </tr></table><br/><br/><br/>" +
                 "    <table  border=\"0\" width=\"100\" class=\"center\">\n" +
                 "            <tr>\n" +

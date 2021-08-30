@@ -14,7 +14,6 @@ public class RuntimeSetting {
     private String email;
     private String website;
     private int noOfAccounts;
-    private String branch;
     private String address;
 
 
@@ -80,14 +79,6 @@ public class RuntimeSetting {
 
     public void setBusinessName(String businessName) {
         this.businessName = businessName;
-    }
-
-    public String getBranch() {
-        return branch;
-    }
-
-    public void setBranch(String branch) {
-        this.branch = branch;
     }
 
     public String getAddress() {

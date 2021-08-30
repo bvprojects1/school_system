@@ -21,10 +21,10 @@
                             <h4> USERS</h4>
                             <p>Create & View existing Users</p>
                            <div th:if="${#authorization.expression('hasAnyAuthority(''ROLE_MANAGER'')')}OR ${#authorization.expression('hasAnyAuthority(''ROLE_ADMIN'')')}">
-                            <a href="/registerUser"> <img width="10px" th:src="@{/assets/images/add.png}"/> </a>
+                            <a href="/registerUser"> <img width="5px" th:src="@{/assets/images/add.png}"/> </a>
                            </div>
                            <div th:if="${#authorization.expression('hasAnyAuthority(''ROLE_AGENT'')')}">
-                               <a href="/registerCustomer"> <img width="10px" th:src="@{/assets/images/add.png}"/> </a>
+                               <a href="/registerCustomer"> <img width="5px" th:src="@{/assets/images/add.png}"/> </a>
                            </div>
                             <a href="/findAllCustomers">See More ...</a>
                         </div>
@@ -35,7 +35,7 @@
                             <i class="fas fa-piggy-bank"></i>
                             <h4>SAVINGS</h4>
                             <p>Create multiple Saving accounts</p>
-                            <a href="/registerUser"> <img width="10px" th:src="@{/assets/images/add.png}"/> </a>
+                            <a href="/registerUser"> <img width="5px" th:src="@{/assets/images/add.png}"/> </a>
                             <a href="/findAllCustomers">See More ...</a>
                             <span class="fas fa-piggy-bank"></span>
                         </div>
@@ -75,8 +75,9 @@
                         <div class="single-choosen-content text-center single-service-content box-pad">
                             <i class="fas fa-ethernet"></i>
                             <h4>LOCATION/ BRANCHES</h4>
-                            <p>Promising development turmoil inclusive education transformative community.</p>
-                            <a href="#">See more</a>
+                            <p>Create and View new branches</p>
+                            <a href="/registerBranch"> <img width="10px" th:src="@{/assets/images/add.png}"/> </a>
+                            <a href="#" th:href="@{/branches}"> See Branches </a>
                             <span class="fas fa-ethernet"></span>
                         </div>
                     </div>

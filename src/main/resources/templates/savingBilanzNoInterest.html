@@ -155,11 +155,12 @@
     <table border="0" width="90%" class="center">
         <tr>
             <th>
-                <font size="5" color="green"> MAKE A PAYMENT</font><div class="error" th:text="${billSelectionError}"/>
+                <div class="error" th:text="${billSelectionError}"/>
             </th>
         </tr>
         <tr>
             <td>
+                <font size="5" color="green"><b> MAKE A TRANSACTION</b></font>
                 <br/>
                 <select name="deposit_withdrawal">
                     <option value="DEPOSIT">DEPOSIT</option>
@@ -183,7 +184,7 @@
                 <br/>
                 <br/>
 
-                <font size="3" color="green"> Bill Selection:</font><br/>
+                <font size="3" color="green"> BILL SELECTION:</font><br/>
                 <input name="tenThousand" th:field="*{tenThousand}" type="number" min="0" max="999" maxlength="4" value="${savingAccountTransaction.tenThousand}" size="4"/>10 000 &nbsp;
                 <input name="fiveThousand" th:field="*{fiveThousand}" type="number" min="0" max="999" maxlength="4" size="4"/>5 000 &nbsp;
                 <input name="twoThousand" th:field="*{twoThousand}" type="number" min="0" max="999" maxlength="4" size="4"/>2 000 &nbsp;
@@ -202,7 +203,7 @@
                 <label for="true">Account Owner:</label>
                 True<input th:field="*{accountOwner}"  type="checkbox" id="true" name="accountOwner" value="true" checked>
 
-                <button type="submit" class="btn btn-success">Submit Payment</button><br/>
+                <button type="submit" class="btn btn-success">SUBMIT TRANSACTION</button><br/>
             </td>
         </tr>
 

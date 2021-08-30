@@ -34,6 +34,8 @@ public class User {
     private String dateOfBirth;
     private String idFilePath;
     private String identityCardNumber;
+    @ManyToOne(cascade = CascadeType.ALL)
+    private Branch branch;
 
     @ManyToMany(cascade = CascadeType.ALL)
     private List<UserRole> userRole;
@@ -238,6 +240,10 @@ public class User {
     public String getIdentityCardNumber() {
         return identityCardNumber;
     }
+
+    public Branch getBranch() { return branch; }
+
+    public void setBranch(Branch branch) { this.branch = branch; }
 
     public void setIdentityCardNumber(String identityCardNumber) {
         this.identityCardNumber = identityCardNumber;

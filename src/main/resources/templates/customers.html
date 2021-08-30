@@ -6,76 +6,50 @@
 <br/>
 
 <section class="contact-form-area-start space df-bg">
-
     <table width="80%" class="center" border="0px">
         <tr>
             <td align="center">
-                <font color="#BF360C;" size="4"><h4>All System users with a Saving, Current, Loan, Retirement
-                    Savings</h4></font>
+                <font color="#BF360C;" size="4"><h4>Assign Users to Branches</h4></font>
             </td>
         </tr>
     </table>
 
-                <table width="90%" class="center" border="0px">
+    <table width="90%" class="center" border="0px">
 
-                    <tr>
-                        <!--                            <th></th>-->
-                        <th>Username</th>
-                        <th>Name</th>
-                        <th>Role</th>
-                        <th>telephone</th>
-                        <th>Member Since</th>
-                        <div th:if="${#authorization.expression('hasAnyAuthority(''ROLE_MANAGER'')')}">
-                            <th>Locked</th>
-                        </div>
+        <tr>
+            <!--                            <th></th>-->
+            <th>Username</th>
+            <th>Name</th>
+            <th>Role</th>
+            <th>telephone</th>
+            <th>Member Since</th>
+            <th>Creator</th>
+            <th></th>
+        </tr>
+        <tr th:each="user : ${userList}">
+            <!--                            <td th:text="${userList[index]}"></td>-->
+            <td th:text="${user.userName}"></td>
+            <td>
+                <div th:text="${user.firstName}"></div>
+                <div th:text="${user.lastName}"></div>
+            </td>
+            <div th:if="${#authorization.expression('hasAnyAuthority(''ROLE_MANAGER'')')}">
+                <td>
+                    <div th:each="userRole : ${user.userRole}">
+                        <span th:text="${userRole.name}"></span>
+                    </div>
+                </td>
+            </div>
 
-                        <th>Creator</th>
-                        <th></th>
-                    </tr>
-                    <tr th:each="user : ${userList}">
-                        <!--                            <td th:text="${userList[index]}"></td>-->
-                        <td th:text="${user.userName}"></td>
-                        <td>
-                            <div th:text="${user.firstName}"></div>
-                            <div th:text="${user.lastName}"></div>
-                        </td>
-                        <div th:if="${#authorization.expression('hasAnyAuthority(''ROLE_MANAGER'')')}">
-                            <td>
-                                <div th:each="userRole : ${user.userRole}">
-                                    <span th:text="${userRole.name}"></span>
-                                </div>
-                            </td>
-                        </div>
-
-                        <td th:text="${user.telephone1}"></td>
-                        <td th:text="${#dates.format(user.created, 'dd-MMM-yyyy HH:mm')}"></td>
-                        <td>
-                            <a href="#" th:href="@{/lockAccount/{id}(id=${user.id})}">
-                                <span th:text="${user.accountLocked}"/>
-                            </a>
-                        </td>
-                        <td th:text="${user.createdBy}"></td>
-                        <!--                            <td th:text="${#dates.format(user.created, 'dd-MMM-yyyy')}"></td>-->
-                        <td>
-                            <a href="#" th:href="@{/showCustomer/{id}(id=${user.id})}">See more ...</a>
-                        </td>
-                    </tr>
-                </table>
-<!--            </div>-->
-<!--            <tr th:if="${userList.isEmpty()}">-->
-<!--                <td class="text-center" colspan="2">No customers. Add a customer!-->
-<!--                    <a href="/registerUser">-->
-<!--                        <img width="25px" th:src="@{/assets/images/add.png}"/>-->
-<!--                    </a></td>-->
-<!--                <td></td>-->
-<!--                <td></td>-->
-<!--                <td></td>-->
-<!--            </tr>-->
-<!--            </table>-->
-
-<!--        </div>-->
-<!--    </div>-->
-
+            <td th:text="${user.telephone1}"></td>
+            <td th:text="${#dates.format(user.created, 'dd-MMM-yyyy HH:mm')}"></td>
+            <td th:text="${user.createdBy}"></td>
+            <!--                            <td th:text="${#dates.format(user.created, 'dd-MMM-yyyy')}"></td>-->
+            <td>
+                <a href="#" th:href="@{/showCustomer/{id}(id=${user.id})}">See more ...</a>
+            </td>
+        </tr>
+    </table>
 
 </section>
 

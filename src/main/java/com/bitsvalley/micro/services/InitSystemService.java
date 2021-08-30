@@ -101,8 +101,6 @@ public class InitSystemService {
                 runtime.setThemeColor(rp.getPropertyValue());
             }else if (rp.getPropertyName().equals("themeColor2")) {
                 runtime.setThemeColor2(rp.getPropertyValue());
-            }else if (rp.getPropertyName().equals("branch")) {
-                runtime.setBranch(rp.getPropertyValue());
             }
         }
         return runtime;

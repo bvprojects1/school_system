@@ -113,14 +113,6 @@ public class SettingController extends SuperController{
         email.setPropertyValue(runtimeSetting.getEmail());
         list.add(email);
 
-        RuntimeProperties branch = runtimePropertiesRepository.findByPropertyName("branch");
-        if(branch == null){
-            branch = new RuntimeProperties();
-            branch.setPropertyName("branch");
-        }
-        branch.setPropertyValue(runtimeSetting.getBranch());
-        list.add(branch);
-
         RuntimeProperties fax = runtimePropertiesRepository.findByPropertyName("fax");
         if(fax == null){
             fax = new RuntimeProperties();
