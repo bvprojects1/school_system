@@ -69,7 +69,6 @@ public class SavingAccountService extends SuperService{
         com.bitsvalley.micro.domain.SavingAccountType savingAccountType = savingAccountTypeRepository.findByName("GENERAL SAVINGS");
         savingAccount.setSavingAccountType(savingAccountType);
 
-//        savingAccount.setSavingAccountType(insureAccountSavingTypeExists());
         savingAccount.setUser(user);
         savingAccountRepository.save(savingAccount);
 
@@ -99,15 +98,14 @@ public class SavingAccountService extends SuperService{
     }
 
     @Transactional
-    public void createSavingAccountTransaction(SavingAccountTransaction savingAccountTransaction, User user) {
+    public void createSavingAccountTransaction(SavingAccountTransaction savingAccountTransaction) {
         //Get id of savingAccount transaction
         savingAccountTransaction.setReference(BVMicroUtils.getSaltString()); //Collision
         savingAccountTransaction.setCreatedBy(getLoggedInUserName());
         savingAccountTransaction.setCreatedDate(LocalDateTime.now());
         savingAccountTransactionRepository.save(savingAccountTransaction);
         generalLedgerService.updateSavingAccountTransaction(savingAccountTransaction);
-//        savingAccount.getSavingAccount().add(savingAccount);
-//        savingAccountRepository.get(savingAccountTransaction);
+
     }
 
 
@@ -119,12 +117,6 @@ public class SavingAccountService extends SuperService{
     public void save(SavingAccount save){
         savingAccountRepository.save(save);
     }
-
-
-//    public SavingBilanzList getSavingBilanzByUserRole(ArrayList<UserRole> userRole) {
-//        ArrayList<User> users = userRepository.findAllByUserRoleIn(userRole);
-//        return calculateUsersInterest(users);
-//    }
 
 
     public SavingBilanzList getSavingBilanzByUser(User user, boolean calculateInterest) {

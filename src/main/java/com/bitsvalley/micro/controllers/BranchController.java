@@ -67,20 +67,25 @@ public class BranchController extends SuperController {
     }
 
     @GetMapping(value = "/branch/{id}")
-    public String showGranchCustomers(@PathVariable("id") Long id, ModelMap model) {
+    public String showBranchCustomers(@PathVariable("id") Long id, ModelMap model, HttpServletRequest request) {
         Optional<Branch> branch = branchRepository.findById(id);
         ArrayList<User> branchUserList = new ArrayList<User>();
         ArrayList<User> otherUserList = new ArrayList<User>();
+        ArrayList<User> noBranchUserList = new ArrayList<User>();
         ArrayList<User> allUsers = getAllUsers();
         for (User aUser: allUsers ) {
             if(aUser.getBranch() != null && aUser.getBranch().getId()==branch.get().getId()){
                 branchUserList.add(aUser);
-            }else{
+            }else if (null == aUser.getBranch()) {
+                noBranchUserList.add(aUser);
+            } else {
                 otherUserList.add(aUser);
             }
         }
         model.put("otherUserList",otherUserList);
         model.put("branchUserList",branchUserList);
+        model.put("noBranchUserList",noBranchUserList);
+
         model.put("branch", branch.get());
         return "branchEmployees";
     }
@@ -92,6 +97,16 @@ public class BranchController extends SuperController {
         User user = userRepository.findById(userId).get();
         user.setBranch(branchRepository.findById(branchId).get());
         userRepository.save(user);
-        return showGranchCustomers(branchId,model);
+        return showBranchCustomers(branchId,model, request);
+    }
+
+    @GetMapping(value = "/removeCustomerFromBranch/{userId}/{branchId}")
+    public String removeCustomer(@PathVariable("userId") Long userId, @PathVariable("branchId") Long branchId,
+                                 ModelMap model, HttpServletRequest request) {
+
+        User user = userRepository.findById(userId).get();
+        user.setBranch(null);
+        userRepository.save(user);
+        return showBranchCustomers(branchId,model, request);
     }
     }

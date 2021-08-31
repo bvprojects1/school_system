@@ -117,7 +117,12 @@ public class UploadController extends SuperController{
         String rpath = request.getRealPath("/");
         String completePath = rpath + UPLOAD_DIR +fileName;
         RuntimeProperties logo = runtimePropertiesRepository.findByPropertyName("logo");
+        if(logo == null){
+            logo = new RuntimeProperties();
+        }
+
         logo.setPropertyValue(completePath);
+        runtimePropertiesRepository.save(logo);
         Path path = null;
         try {
             path = Paths.get(completePath);
@@ -125,7 +130,7 @@ public class UploadController extends SuperController{
         } catch (IOException e) {
             e.printStackTrace();
         }
-        runtimePropertiesRepository.save(logo);
+
         model.put("runtimeSetting",initSystemService.findAll());
         attributes.addFlashAttribute("message", "You successfully uploaded " + fileName + '!');
         return "settings";

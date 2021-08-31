@@ -130,6 +130,33 @@ public class SettingController extends SuperController{
         list.add(website);
 
 
+        RuntimeProperties logoSize = runtimePropertiesRepository.findByPropertyName("logoSize");
+        if(logoSize == null){
+            logoSize = new RuntimeProperties();
+            logoSize.setPropertyName("logoSize");
+        }
+        logoSize.setPropertyValue(runtimeSetting.getLogoSize());
+        list.add(logoSize);
+
+
+        RuntimeProperties themeColor = runtimePropertiesRepository.findByPropertyName("themeColor");
+        if(themeColor == null){
+            themeColor = new RuntimeProperties();
+            themeColor.setPropertyName("themeColor");
+        }
+        logoSize.setPropertyValue(runtimeSetting.getThemeColor());
+        list.add(themeColor);
+
+        RuntimeProperties themeColor2 = runtimePropertiesRepository.findByPropertyName("themeColor2");
+        if(themeColor2 == null){
+            themeColor2 = new RuntimeProperties();
+            themeColor2.setPropertyName("themeColor2");
+        }
+        logoSize.setPropertyValue(runtimeSetting.getThemeColor2());
+        list.add(themeColor2);
+
+
+
         runtimePropertiesRepository.saveAll(list);
         request.getSession().setAttribute("runtimeSettings",initSystemService.findAll());
         model.put("notify", " SETTING SAVED ");

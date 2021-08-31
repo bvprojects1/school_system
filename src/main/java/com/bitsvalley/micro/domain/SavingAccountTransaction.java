@@ -29,7 +29,7 @@ public class SavingAccountTransaction {
     private int fifty;
     private int twentyFive;
     private String accountOwner;
-    private String branch;
+    private long branch;
     private String savingAmountInLetters;
 
     @Column(unique = true)
@@ -119,11 +119,11 @@ public class SavingAccountTransaction {
         return id;
     }
 
-    public String getBranch() {
+    public long getBranch() {
         return branch;
     }
 
-    public void setBranch(String branch) {
+    public void setBranch(long branch) {
         this.branch = branch;
     }
 

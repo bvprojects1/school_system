@@ -27,6 +27,7 @@ public class Branch {
     private String telephone;
     private String fax;
     private String notes;
+    private String activ;
 
     @OneToMany(cascade = CascadeType.ALL)
     private List<User> userList = new ArrayList<User>();
@@ -127,4 +128,11 @@ public class Branch {
         this.userList = userList;
     }
 
+    public String getActiv() {
+        return activ;
+    }
+
+    public void setActiv(String activ) {
+        this.activ = activ;
+    }
 }

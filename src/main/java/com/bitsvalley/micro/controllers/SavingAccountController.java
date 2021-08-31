@@ -66,6 +66,7 @@ public class SavingAccountController extends SuperController {
     public String registerSavingForm(@ModelAttribute("saving") SavingAccount savingAccount, ModelMap model, HttpServletRequest request) {
         User user = (User) request.getSession().getAttribute(BVMicroUtils.CUSTOMER_IN_USE);
         user = userRepository.findById(user.getId()).get();
+        savingAccount.setBranch(user.getBranch().getName());
         savingAccountService.createSavingAccount(savingAccount, user);
         return findUserByUserName(user, model, request);
     }
@@ -159,7 +160,8 @@ public class SavingAccountController extends SuperController {
         String modeOfPayment = request.getParameter("modeOfPayment");
         savingAccountTransaction.setModeOfPayment(modeOfPayment);
 
-        savingAccountService.createSavingAccountTransaction(savingAccountTransaction, user);
+        savingAccountTransaction.setBranch(user.getBranch().getId());
+        savingAccountService.createSavingAccountTransaction(savingAccountTransaction);
         if (savingAccount.get().getSavingAccountTransaction() != null) {
             savingAccount.get().getSavingAccountTransaction().add(savingAccountTransaction);
         } else {
