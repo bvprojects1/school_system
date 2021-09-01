@@ -34,7 +34,7 @@
         table, th, td {
 <!--          border: 0px solid #BF360C;-->
           align: center;
-           padding: 15px;
+           padding: 10px;
         }
         table.center {
           margin-left: 50px;
@@ -104,7 +104,7 @@
     <td><font size="6"> <span style th:text="${session.customerInUse.userName}"/>'s </font>
         <button style="font-face: 'Comic Sans MS'; font-size: larger; color: teal; background-color: #FFFFC0; border: 3pt ridge lightgrey" type="submit" >
             <a href="#" th:href="@{/file/{userName}(userName=${session.customerInUse.userName})}">Upload I.D</a></button>
-        <a href="#" th:href="@{/reloadUser}"><img width="100px" th:src="@{/getImage}"/> </a>
+        <a href="#" th:href="@{/reloadUser}"><img width="40px" th:src="@{/getImage}"/> </a>
     </td>
     <td> <font size="1.5px">Saving</font> <br/> <font color="green" size="6px"> <div th:text="${savingBilanzList.totalSaving}"/></font></td>
     <td> <font size="1.5px">Current</font> <br/> <font size="6"> 0</font></td>
@@ -116,22 +116,36 @@
 
     <tr>
         <td>
-            <font size="1.5px"> Account Type:</font><font color="#2d363f" size="4px"> <div th:text="${savingAccountTransaction.savingAccount.savingAccountType.name}"/></font>
+            <font size="1.5px"> Account Type</font><font color="#2d363f" size="4px"> <div th:text="${savingAccountTransaction.savingAccount.savingAccountType.name}"/></font>
         </td>
         <td>
-            <font size="1.5px"> Account Number:</font><font color="#2d363f" size="4px"> <div th:text="${savingAccountTransaction.savingAccount.accountNumber}"/></font>
+            <font size="1.5px"> Account Number</font><br/>
+            <font color="#2d363f" size="4px">
+                <a href="#" th:href="@{/showCustomer/{userid}(userid=${savingAccountTransaction.savingAccount.user.id})}">
+                    <div th:text="${savingAccountTransaction.savingAccount.accountNumber}"/>
+                </a>
+            </font>
         </td>
         <td>
-            <font size="1.5px"> Account Owner:</font><font color="#2d363f" size="4px">  <div th:text="${savingAccountTransaction.savingAccount.user.lastName}"/></font>
+            <font size="1.5px"> Account Owner</font><br/>
+            <font color="#2d363f" size="4px">
+                <a href="#" th:href="@{/showCustomer/{userid}(userid=${savingAccountTransaction.savingAccount.user.id})}">
+                    <div th:text="${savingAccountTransaction.savingAccount.user.lastName}"/>
+                </a>
+            </font>
         </td>
         <td>
-            <font size="1.5px"> Notes:</font><font color="#2d363f" size="4px"><div th:text="${savingAccountTransaction.savingAccount.notes}"/></font>
+            <font size="1.5px"> Notes</font><font color="#2d363f" size="4px"><div th:text="${savingAccountTransaction.savingAccount.notes}"/></font>
         </td>
         <td>
-            <font size="1.5px"> Min. Balance:</font><font color="#2d363f" size="4px"> <div th:text="${#numbers.formatDecimal(savingAccountTransaction.savingAccount.accountMinBalance, 0, 'COMMA', 0, 'POINT')}"/></font>
+            <font size="1.5px"> Rate</font><font color="#2d363f" size="4px"><div th:text="${savingAccountTransaction.savingAccount.interestRate}"/></font>
         </td>
         <td>
-            <font size="1.5px"> Rate:</font><font color="#2d363f" size="4px"><div th:text="${savingAccountTransaction.savingAccount.interestRate}"/></font>
+            <font size="1.5px"> Min. Balance</font><font color="#2d363f" size="4px"> <div th:text="${#numbers.formatDecimal(savingAccountTransaction.savingAccount.accountMinBalance, 0, 'COMMA', 0, 'POINT')}"/></font>
+        </td>
+
+        <td>
+            <font size="1.5px"> Notes</font><font color="#2d363f" size="4px"><div th:text="${savingAccountTransaction.savingAccount.notes}"/></font>
         </td>
     </tr>
 </table>
@@ -141,11 +155,12 @@
     <table border="0" width="90%" class="center">
         <tr>
             <th>
-                <font size="5" color="green"> MAKE A PAYMENT</font><div class="error" th:text="${billSelectionError}"/>
+                <div class="error" th:text="${billSelectionError}"/>
             </th>
         </tr>
         <tr>
             <td>
+                <font size="5" color="green"><b> MAKE A TRANSACTION</b></font>
                 <br/>
                 <select name="deposit_withdrawal">
                     <option value="DEPOSIT">DEPOSIT</option>
@@ -159,16 +174,17 @@
                     <option value="RECEIPT">RECEIPT</option>
                     <option value="OTHER">OTHER</option>
                 </select>
-                Enter Amount:<input placeholder="Enter Amount" size="6" type="number" th:field="*{savingAmount}" value="${savingAccountTransaction.savingAmount}"/>
+                <b>Enter Amount:</b><input placeholder="Enter Amount" size="6" type="number" th:field="*{savingAmount}"
+                                           value="${savingAccountTransaction.savingAmount}"/>
 
-                <label for="true">Account Owner:</label>
-                True<input th:field="*{accountOwner}"  type="radio" id="true" name="accountOwner" value="true">
-
-                False<input th:field="*{accountOwner}" type="radio" id="false" name="accountOwner" value="false">
+                <b>Minimum:</b><span th:text="${#numbers.formatDecimal(savingAccountTransaction.savingAccount.minimumPayment, 0, 'COMMA', 0, 'POINT')}"/>
+                <textarea placeholder="Enter Amount in letters ..."  id="savingAmountInLetters" rows="1" cols="90" th:field="*{savingAmountInLetters}" maxlength="255">
+                </textarea>
 
                 <br/>
+                <br/>
 
-                <font size="3" color="green"><strong> BS:</strong></font><br/>
+                <font size="3" color="green"> BILL SELECTION:</font><br/>
                 <input name="tenThousand" th:field="*{tenThousand}" type="number" min="0" max="999" maxlength="4" value="${savingAccountTransaction.tenThousand}" size="4"/>10 000 &nbsp;
                 <input name="fiveThousand" th:field="*{fiveThousand}" type="number" min="0" max="999" maxlength="4" size="4"/>5 000 &nbsp;
                 <input name="twoThousand" th:field="*{twoThousand}" type="number" min="0" max="999" maxlength="4" size="4"/>2 000 &nbsp;
@@ -180,10 +196,14 @@
 
                 <input type="hidden" th:value="${savingAccountTransaction.savingAccount.id}" th:attr="name='savingAccountId'"/>
                 <br/> <br/>
+                <textarea placeholder="Enter Notes ..."  id="notes" rows="2" cols="90" th:field="*{notes}" maxlength="255">
+                </textarea>
 
-                <textarea placeholder="Notes"  id="notes" rows="3" cols="30" th:field="*{notes}">
-                    </textarea>
-                <button type="submit" class="btn btn-success">Save </button>
+                <br/> <br/>
+                <label for="true">Account Owner:</label>
+                True<input th:field="*{accountOwner}"  type="checkbox" id="true" name="accountOwner" value="true" checked>
+
+                <button type="submit" class="btn btn-success">SUBMIT TRANSACTION</button><br/>
             </td>
         </tr>
 
@@ -204,9 +224,9 @@
         <th>MOP </th>
         <th>Reference </th>
         <th>Agent</th>
-        <th>Amount</th>
         <th>Owner</th>
         <th>Notes</th>
+        <th>Amount</th>
         <th><font color="green" size="6px"><div th:text="${savingBilanzList.totalSaving}"/></font></th>
         <th></th>
     </tr>
@@ -216,9 +236,9 @@
         <td th:text="${bilanz.modeOfPayment}"></td>
         <td th:text="${bilanz.reference}"></td>
         <td th:text="${bilanz.agent}"></td>
-        <td th:text="${bilanz.savingAmount}"></td>
         <td th:text="${bilanz.accountOwner}"></td>
         <td th:text="${bilanz.notes}"></td>
+        <td th:text="${bilanz.savingAmount}"></td>
         <td th:text="${bilanz.currentBalance}"></td>
         <td><a href="#" th:href="@{/createSavingAccountReceiptPdf/{id}(id=${bilanz.id})}"><img width="30px" th:src="@{/assets/images/pdfIcon.png}"/> </a></td>
     </tr>

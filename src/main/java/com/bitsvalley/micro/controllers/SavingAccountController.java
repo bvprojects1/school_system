@@ -31,7 +31,7 @@ import java.util.*;
  * 11.06.2021
  */
 @Controller
-public class SavingAccountController extends SuperController{
+public class SavingAccountController extends SuperController {
 
     @Autowired
     UserService userService;
@@ -53,8 +53,8 @@ public class SavingAccountController extends SuperController{
 
     @GetMapping(value = "/registerSavingAccount")
     public String registerSaving(ModelMap model, HttpServletRequest request) {
-        User user = (User)request.getSession().getAttribute(BVMicroUtils.CUSTOMER_IN_USE);
-        if(user == null){
+        User user = (User) request.getSession().getAttribute(BVMicroUtils.CUSTOMER_IN_USE);
+        if (user == null) {
             return "findCustomer";
         }
         SavingAccount savingAccount = new SavingAccount();
@@ -63,24 +63,25 @@ public class SavingAccountController extends SuperController{
     }
 
     @PostMapping(value = "/registerSavingAccountForm")
-    public String registerSavingForm( @ModelAttribute("saving") SavingAccount savingAccount, ModelMap model, HttpServletRequest request) {
-        User user = (User)request.getSession().getAttribute(BVMicroUtils.CUSTOMER_IN_USE);
+    public String registerSavingForm(@ModelAttribute("saving") SavingAccount savingAccount, ModelMap model, HttpServletRequest request) {
+        User user = (User) request.getSession().getAttribute(BVMicroUtils.CUSTOMER_IN_USE);
         user = userRepository.findById(user.getId()).get();
+        savingAccount.setBranch(user.getBranch().getName());
         savingAccountService.createSavingAccount(savingAccount, user);
         return findUserByUserName(user, model, request);
     }
 
     @GetMapping(value = "/registerSavingAccountTransaction/{id}")
-    public String registerSavingAccountTransaction(@PathVariable("id") long id,ModelMap model) {
+    public String registerSavingAccountTransaction(@PathVariable("id") long id, ModelMap model) {
         SavingAccountTransaction savingAccountTransaction = new SavingAccountTransaction();
-        return  displaySavingBilanzNoInterest(id, model, savingAccountTransaction);
+        return displaySavingBilanzNoInterest(id, model, savingAccountTransaction);
     }
 
     private String displaySavingBilanzNoInterest(long id, ModelMap model, SavingAccountTransaction savingAccountTransaction) {
         Optional<SavingAccount> savingAccount = savingAccountService.findById(id);
         SavingAccount aSavingAccount = savingAccount.get();
         List<SavingAccountTransaction> savingAccountTransactionList = aSavingAccount.getSavingAccountTransaction();
-        SavingBilanzList savingBilanzByUserList = savingAccountService.calculateAccountBilanz(savingAccountTransactionList,false);
+        SavingBilanzList savingBilanzByUserList = savingAccountService.calculateAccountBilanz(savingAccountTransactionList, false);
         model.put("name", getLoggedInUserName());
         model.put("savingBilanzList", savingBilanzByUserList);
 
@@ -92,17 +93,17 @@ public class SavingAccountController extends SuperController{
 
     @GetMapping(value = "/printSavingAccountDetails/{id}")
     public String printSavingAccountDetails(@PathVariable("id") long id, ModelMap model,
-                  @ModelAttribute("savingAccountTransaction") SavingAccountTransaction savingAccountTransaction,
-                  HttpServletRequest request, HttpServletResponse response) throws IOException {
+                                            @ModelAttribute("savingAccountTransaction") SavingAccountTransaction savingAccountTransaction,
+                                            HttpServletRequest request, HttpServletResponse response) throws IOException {
         String username = getLoggedInUserName();
         Optional<SavingAccount> savingAccount = savingAccountService.findById(new Long(id));
         SavingBilanzList savingBilanzByUserList = savingAccountService.
-                calculateAccountBilanz(savingAccount.get().getSavingAccountTransaction(),false);
-        String htmlInput =    null;
+                calculateAccountBilanz(savingAccount.get().getSavingAccountTransaction(), false);
+        String htmlInput = null;
 //                pdfService.generatePDFSavingBilanzList(savingBilanzByUserList, username);
 
         response.setContentType("application/pdf");
-        response.setHeader("Content-disposition","attachment;filename="+ "statementPDF.pdf");
+        response.setHeader("Content-disposition", "attachment;filename=" + "statementPDF.pdf");
         ByteArrayOutputStream byteArrayOutputStream = null;
         ByteArrayInputStream byteArrayInputStream = null;
         try {
@@ -125,34 +126,45 @@ public class SavingAccountController extends SuperController{
     }
 
 
-
-
     @PostMapping(value = "/registerSavingAccountTransactionForm")
     public String registerSavingAccountTransactionForm(ModelMap model, @ModelAttribute("savingAccountTransaction") SavingAccountTransaction savingAccountTransaction, HttpServletRequest request) {
         String savingAccountId = request.getParameter("savingAccountId");
         Optional<SavingAccount> savingAccount = savingAccountService.findById(new Long(savingAccountId));
         savingAccountTransaction.setSavingAccount(savingAccount.get());
-        User user = (User)request.getSession().getAttribute(BVMicroUtils.CUSTOMER_IN_USE);
+        User user = (User) request.getSession().getAttribute(BVMicroUtils.CUSTOMER_IN_USE);
 
-        if("CASH".equals(savingAccountTransaction.getModeOfPayment())){
-            if(!checkBillSelectionMatchesEnteredAmount(savingAccountTransaction)){
+        if(savingAccountTransaction.getSavingAmount()<savingAccountTransaction.getSavingAccount().getMinimumPayment()){
+            model.put("billSelectionError", "Please make minimum payment of "+ BVMicroUtils.formatCurrency(savingAccountTransaction.getSavingAccount().getMinimumPayment()));
+            savingAccountTransaction.setNotes(savingAccountTransaction.getNotes());
+            return displaySavingBilanzNoInterest(new Long(savingAccountId), model, savingAccountTransaction);
+        }
+
+        if ("CASH".equals(savingAccountTransaction.getModeOfPayment())) {
+            if (!checkBillSelectionMatchesEnteredAmount(savingAccountTransaction)) {
                 model.put("billSelectionError", "Bills Selection does not match entered amount");
-                savingAccountTransaction.setNotes("");
-                return displaySavingBilanzNoInterest(new Long(savingAccountId),model,savingAccountTransaction);
+                savingAccountTransaction.setNotes(savingAccountTransaction.getNotes());
+                return displaySavingBilanzNoInterest(new Long(savingAccountId), model, savingAccountTransaction);
             }
         }
 
-        if(request.getParameter("deposit_withdrawal").equals("WITHDRAWAL")){
-            savingAccountTransaction.setSavingAmount(savingAccountTransaction.getSavingAmount()*-1);
+        if (request.getParameter("deposit_withdrawal").equals("WITHDRAWAL")) {
+            savingAccountTransaction.setSavingAmount(savingAccountTransaction.getSavingAmount() * -1);
+            String error = savingAccountService.withdrawalAllowed(savingAccountTransaction);
+            //Make sure min amount is not violated at withdrawal
+            if (!(error == null)) {
+                model.put("billSelectionError", error);
+                savingAccountTransaction.setNotes(savingAccountTransaction.getNotes());
+                return displaySavingBilanzNoInterest(new Long(savingAccountId), model, savingAccountTransaction);
+            }
         }
-
         String modeOfPayment = request.getParameter("modeOfPayment");
         savingAccountTransaction.setModeOfPayment(modeOfPayment);
 
-        savingAccountService.createSavingAccountTransaction(savingAccountTransaction, user);
-        if(savingAccount.get().getSavingAccountTransaction() != null ){
+        savingAccountTransaction.setBranch(user.getBranch().getId());
+        savingAccountService.createSavingAccountTransaction(savingAccountTransaction);
+        if (savingAccount.get().getSavingAccountTransaction() != null) {
             savingAccount.get().getSavingAccountTransaction().add(savingAccountTransaction);
-        }else{
+        } else {
             savingAccount.get().setSavingAccountTransaction(new ArrayList<SavingAccountTransaction>());
             savingAccount.get().getSavingAccountTransaction().add(savingAccountTransaction);
         }
@@ -166,10 +178,11 @@ public class SavingAccountController extends SuperController{
 
         callCenterRepository.save(callCenter);
 
-        SavingBilanzList savingBilanzByUserList = savingAccountService.calculateAccountBilanz(savingAccount.get().getSavingAccountTransaction(),false);
+        SavingBilanzList savingBilanzByUserList = savingAccountService.calculateAccountBilanz(savingAccount.get().getSavingAccountTransaction(), false);
         model.put("name", getLoggedInUserName());
+        model.put("billSelectionError", BVMicroUtils.formatCurrency(savingAccountTransaction.getSavingAmount()) + " ---- PAYMENT HAS REGISTERED ----- ");
         model.put("savingBilanzList", savingBilanzByUserList);
-        request.getSession().setAttribute("savingBilanzList",savingBilanzByUserList);
+        request.getSession().setAttribute("savingBilanzList", savingBilanzByUserList);
         Optional<User> byId = userRepository.findById(user.getId());
         request.getSession().setAttribute(BVMicroUtils.CUSTOMER_IN_USE, byId.get());
         savingAccountTransaction.setSavingAccount(savingAccount.get());
@@ -180,6 +193,26 @@ public class SavingAccountController extends SuperController{
         return "savingBilanzNoInterest";
 
     }
+
+    @GetMapping(value = "/showUserSavingBilanz/{id}")
+    public String showUserSavingBilanz(@PathVariable("id") long id, ModelMap model, HttpServletRequest request) {
+        User user = (User) request.getSession().getAttribute(BVMicroUtils.CUSTOMER_IN_USE);
+        SavingBilanzList savingBilanzByUserList = savingAccountService.getSavingBilanzByUser(user, true);
+        model.put("name", getLoggedInUserName());
+        model.put("savingBilanzList", savingBilanzByUserList);
+        return "savingBilanz";
+    }
+
+    @GetMapping(value = "/showSavingAccountBilanz/{accountId}")
+    public String showSavingAccountBilanz(@PathVariable("accountId") long accountId, ModelMap model, HttpServletRequest request) {
+        Optional<SavingAccount> byId = savingAccountService.findById(accountId);
+        List<SavingAccountTransaction> savingAccountTransaction = byId.get().getSavingAccountTransaction();
+        SavingBilanzList savingBilanzByUserList = savingAccountService.calculateAccountBilanz(savingAccountTransaction, true);
+        model.put("name", getLoggedInUserName());
+        model.put("savingBilanzList", savingBilanzByUserList);
+        return "savingBilanz";
+    }
+
 
     private void resetSavingsAccountTransaction(SavingAccountTransaction sat) {
         sat.setSavingAmount(0);
@@ -194,35 +227,35 @@ public class SavingAccountController extends SuperController{
     }
 
     private boolean checkBillSelectionMatchesEnteredAmount(SavingAccountTransaction sat) {
-        boolean match = (sat.getSavingAmount() == (sat.getTenThousand()*10000) +
-                (sat.getFiveThousand()*5000) +
-                (sat.getTwoThousand()*2000) +
-                (sat.getOneThousand()*1000) +
-                (sat.getFiveHundred()*500) +
-                (sat.getOneHundred()*100) +
-                (sat.getFifty()*50) +
-                (sat.getTwentyFive()*25));
-        if(match){
-            sat.setNotes( sat.getNotes()
-                + addBillSelection(sat) );
+        boolean match = (sat.getSavingAmount() == (sat.getTenThousand() * 10000) +
+                (sat.getFiveThousand() * 5000) +
+                (sat.getTwoThousand() * 2000) +
+                (sat.getOneThousand() * 1000) +
+                (sat.getFiveHundred() * 500) +
+                (sat.getOneHundred() * 100) +
+                (sat.getFifty() * 50) +
+                (sat.getTwentyFive() * 25));
+        if (match) {
+            sat.setNotes(sat.getNotes()
+                    + addBillSelection(sat));
         }
         return match;
     }
 
     private String addBillSelection(SavingAccountTransaction sat) {
-        String billSelection =  " Bill Selection \n";
+        String billSelection = " BS \n";
         billSelection = billSelection + concatBillSelection(" 10 000x", sat.getTenThousand()) + "\n";
         billSelection = billSelection + concatBillSelection(" 5 000x", sat.getFiveThousand()) + "\n";
-        billSelection = billSelection +  concatBillSelection(" 2 000x", sat.getTwoThousand()) + "\n";
-        billSelection = billSelection +  concatBillSelection(" 1 000x", sat.getOneThousand())+ "\n";
-        billSelection = billSelection +  concatBillSelection(" 500x", sat.getFiveHundred()) + "\n";
-        billSelection = billSelection +  concatBillSelection(" 100x", sat.getOneHundred()) + "\n";
-        billSelection = billSelection +  concatBillSelection(" 50x", sat.getFifty());
+        billSelection = billSelection + concatBillSelection(" 2 000x", sat.getTwoThousand()) + "\n";
+        billSelection = billSelection + concatBillSelection(" 1 000x", sat.getOneThousand()) + "\n";
+        billSelection = billSelection + concatBillSelection(" 500x", sat.getFiveHundred()) + "\n";
+        billSelection = billSelection + concatBillSelection(" 100x", sat.getOneHundred()) + "\n";
+        billSelection = billSelection + concatBillSelection(" 50x", sat.getFifty());
         return billSelection;
     }
 
     private String concatBillSelection(String s, int qty) {
-        if(qty == 0){
+        if (qty == 0) {
             return "";
         }
         s = s + qty;
@@ -230,23 +263,5 @@ public class SavingAccountController extends SuperController{
     }
 
 
-    @GetMapping(value = "/showUserSavingBilanz/{id}")
-    public String showUserSavingBilanz(@PathVariable("id") long id,ModelMap model, HttpServletRequest request) {
-        User user = (User)request.getSession().getAttribute(BVMicroUtils.CUSTOMER_IN_USE);
-        SavingBilanzList savingBilanzByUserList = savingAccountService.getSavingBilanzByUser(user,true);
-        model.put("name", getLoggedInUserName());
-        model.put("savingBilanzList", savingBilanzByUserList);
-        return "savingBilanz";
-    }
-
-    @GetMapping(value = "/showSavingAccountBilanz/{accountId}")
-    public String showSavingAccountBilanz(@PathVariable("accountId") long accountId,ModelMap model, HttpServletRequest request) {
-        Optional<SavingAccount> byId = savingAccountService.findById(accountId);
-        List<SavingAccountTransaction> savingAccountTransaction = byId.get().getSavingAccountTransaction();
-        SavingBilanzList savingBilanzByUserList = savingAccountService.calculateAccountBilanz(savingAccountTransaction,true);
-        model.put("name", getLoggedInUserName());
-        model.put("savingBilanzList", savingBilanzByUserList);
-        return "savingBilanz";
-    }
 
 }

@@ -110,14 +110,19 @@ public class UploadController extends SuperController{
     public String uploadLogo(@RequestParam("file") MultipartFile file, RedirectAttributes attributes,HttpServletRequest request, ModelMap model) {
 
         if (file.isEmpty()) {
-            attributes.addFlashAttribute("message", "Please select a file to upload.");
+            attributes.addFlashAttribute("message", "Please select a logo to upload.");
             return "redirect:/";
         }
         String fileName = StringUtils.cleanPath(file.getOriginalFilename());
         String rpath = request.getRealPath("/");
         String completePath = rpath + UPLOAD_DIR +fileName;
         RuntimeProperties logo = runtimePropertiesRepository.findByPropertyName("logo");
+        if(logo == null){
+            logo = new RuntimeProperties();
+        }
+
         logo.setPropertyValue(completePath);
+        runtimePropertiesRepository.save(logo);
         Path path = null;
         try {
             path = Paths.get(completePath);
@@ -125,6 +130,33 @@ public class UploadController extends SuperController{
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        model.put("runtimeSetting",initSystemService.findAll());
+        attributes.addFlashAttribute("message", "You successfully uploaded " + fileName + '!');
+        return "settings";
+    }
+
+
+    @PostMapping("/uploadUnionLogo")
+    public String uploadUnionLogo(@RequestParam("file") MultipartFile file, RedirectAttributes attributes,HttpServletRequest request, ModelMap model) {
+
+        if (file.isEmpty()) {
+            attributes.addFlashAttribute("message", "Please select a union logo to upload.");
+            return "redirect:/";
+        }
+        String fileName = StringUtils.cleanPath(file.getOriginalFilename());
+        String rpath = request.getRealPath("/");
+        String completePath = rpath + UPLOAD_DIR +fileName;
+        RuntimeProperties unionLogo = runtimePropertiesRepository.findByPropertyName("unionLogo");
+        unionLogo.setPropertyValue(completePath);
+        Path path = null;
+        try {
+            path = Paths.get(completePath);
+            Files.copy(file.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        runtimePropertiesRepository.save(unionLogo);
         model.put("runtimeSetting",initSystemService.findAll());
         attributes.addFlashAttribute("message", "You successfully uploaded " + fileName + '!');
         return "settings";

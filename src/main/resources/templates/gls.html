@@ -34,7 +34,6 @@
         table, th, td {
 <!--          border: 0px solid #BF360C;-->
           align: center;
-          padding: 5px;
         }
         table.center {
           margin-left: 50px;
@@ -84,7 +83,19 @@
                             </li>
                             <!--                            <li><a th:href="@{/welcome}" href="/welcome"> Customer Home</a></li>-->
                             <li><a th:href="@{/welcomeGlobal}" href="/Logout">TBC MFI PLC Home</a></li>
-
+                            <!--                            <li><a href="#">Accounts <i class="fas fa-angle-down"></i></a>-->
+                            <!--                                <ul class="sub-menu">-->
+                            <!--                                    <li class="drop-list"><a href="#">BLog Page</a>-->
+                            <!--                                        <ul class="sub-menu">-->
+                            <!--                                            <li><a href="blog-2-column.html">Blog 2 Column</a></li>-->
+                            <!--                                            <li><a href="blog-3-column.html">Blog 3 Column</a></li>-->
+                            <!--                                        </ul>-->
+                            <!--                                    </li>-->
+                            <!--                                    <li><a href="left-sidebar.html">Loans</a></li>-->
+                            <!--                                    <li><a href="right-sidebar.html">Retirement Savings</a></li>-->
+                            <!--                                    <li><a href="single.html">Withdrawals</a></li>-->
+                            <!--                                </ul>-->
+                            <!--                            </li>-->
                             <li>
                                 <a th:href="@{/logout}" href="/Logout"><i class="fas fa-sign-out-alt"></i>Logout</a>
                             </li>
@@ -104,42 +115,51 @@
     <div class="project-title-area text-center">
         <div class="col-md-12">
             <div class="project-title-content">
-                <font color="#BF360C;" size="4"><h4>Notifications and Warning related to this account </h4></font> </div>
-            <table border="0" width="90%" class="center">
+                <font color="#BF360C;" size="4"><h4> General Ledger Transactions </h4></font> </div>
+            <table border="0" width="80%" class="center">
                 <tr><td>
-                     <font size="1.5px"> Account Number</font> <br/>
-                    <font color="#2d363f" size="4px"> <div th:text="${accountNumber}"></div>
+                     <font size="1.5px"> DEBIT</font> <br/>
+                    <font color="#2d363f" size="4px">
+                        <div th:text="${#numbers.formatDecimal(generalLedgerBilanz.debitTotal, 0, 'COMMA', 0, 'POINT')}"></div>
                     </font> </td>
                 <td>
-                    <font color="#2d363f" size="1.5px">  Account Name </font> <br/>
-                        <font color="#2d363f" size="4px"> <div th:text="${accountHolderName}"></div>
+                    <font color="#2d363f" size="1.5px"> CREDIT </font> <br/>
+                        <font color="#2d363f" size="4px">
+                            <div th:text="${#numbers.formatDecimal(generalLedgerBilanz.creditTotal, 0, 'COMMA', 0, 'POINT')}"></div>
                     </font>
-                </td></tr>
+                </td>
+                    <td>
+                        <font color="#2d363f" size="1.5px"> TOTAL </font> <br/>
+                        <font color="#2d363f" size="4px">
+                            <div th:text="${#numbers.formatDecimal(generalLedgerBilanz.total, 0, 'COMMA', 0, 'POINT')}"></div>
+                        </font>
+                    </td>
+                </tr>
             </table>
-
         </div>
     </div>
     <!--Project title area end-->
-    <div class="contact-from-area">
-        <div class="container">
-            <div class="row">
-
-                <table border="0" width="100%" class="center">
+                <table border="0" width="90%" class="center">
                     <tr>
                         <th>Date</th>
-                        <th>Agent</th>
-                        <th>Notes</th>
+                        <th>Reference</th>
+                        <th>Account</th>
+                        <th>Type</th>
+                        <th>Amount</th>
                     </tr>
-                    <tr th:each="callCenter : ${callCenterList}">
-                        <td><p th:text="${#dates.format(callCenter.date, 'dd-MMM-yyyy HH:mm')}"></p></td>
-                        <td> System Generated</td>
-                        <td th:text="${callCenter.notes}"></td>
+                    <tr th:each="gl : ${generalLedgerBilanz.generalLedger}">
+                        <td><div th:text="${#dates.format(gl.date, 'dd-MMM-yyyy HH:mm')}"></div></td>
+                        <td th:text="${gl.reference}"></td>
+                        <td th:text="${gl.accountNumber}"></td>
+                        <td>
+                            <a href="#" th:href="@{/findGlByType/{type}(type=${gl.type})}">
+                                <span th:text="${gl.type}"/>
+                            </a>
+                        </td>
+                        <td th:text="${#numbers.formatDecimal(gl.amount, 0, 'COMMA', 0, 'POINT')}"></td>
+
                     </tr>
                 </table>
-            </div>
-        </div>
-    </div>
-
 </section>
 
 </body>

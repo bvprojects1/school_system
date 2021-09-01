@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<div th:insert="/header::navbar"></div>
+<br/>
+<br/>
+
+<section class="contact-form-area-start space df-bg">
+<br/>
+    <table width="80%" class="center" border="0px">
+        <tr>
+            <td align="center">
+                <font color="#BF360C;" size="4"><h4>All Branches</h4></font>
+            </td>
+        </tr>
+    </table>
+    <table width="90%" class="center" border="0px">
+        <tr>
+            <th>Name</th>
+            <th>Street</th>
+            <th>City</th>
+            <th>telephone</th>
+            <th>fax</th>
+            <th>Contact</th>
+            <th></th>
+        </tr>
+        <tr th:each="branch : ${branchList}">
+            <td th:text="${branch.name}"></td>
+            <td>
+                <div th:text="${branch.street}"></div>
+            </td>
+            <td th:text="${branch.city}"></td>
+            <td th:text="${branch.telephone}"></td>
+            <td th:text="${branch.fax}"></td>
+            <td th:text="${branch.contact}"></td>
+            <td>
+                <a href="#" th:href="@{/branch/{id}(id=${branch.id})}">See more ...</a>
+            </td>
+        </tr>
+    </table>
+
+
+
+</section>
+
+<div th:insert="/footer::navbar"></div>
+</html>

@@ -4,6 +4,7 @@ package com.bitsvalley.micro.domain;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -33,6 +34,8 @@ public class User {
     private String dateOfBirth;
     private String idFilePath;
     private String identityCardNumber;
+    @ManyToOne(cascade = CascadeType.ALL)
+    private Branch branch;
 
     @ManyToMany(cascade = CascadeType.ALL)
     private List<UserRole> userRole;
@@ -46,8 +49,8 @@ public class User {
     private LocalDateTime accountBlockedDate;
     private boolean accountExpired;
 
-    private LocalDateTime lastUpdated;
-    private LocalDateTime created;
+    private Date lastUpdated;
+    private Date created;
     private String createdBy;
 
     public String getCreatedBy() {
@@ -178,19 +181,19 @@ public class User {
         this.accountLocked = accountLocked;
     }
 
-    public LocalDateTime getLastUpdated() {
+    public Date getLastUpdated() {
         return lastUpdated;
     }
 
-    public void setLastUpdated(LocalDateTime lastUpdated) {
+    public void setLastUpdated(Date lastUpdated) {
         this.lastUpdated = lastUpdated;
     }
 
-    public LocalDateTime getCreated() {
+    public Date getCreated() {
         return created;
     }
 
-    public void setCreated(LocalDateTime created) {
+    public void setCreated(Date created) {
         this.created = created;
     }
 
@@ -237,6 +240,10 @@ public class User {
     public String getIdentityCardNumber() {
         return identityCardNumber;
     }
+
+    public Branch getBranch() { return branch; }
+
+    public void setBranch(Branch branch) { this.branch = branch; }
 
     public void setIdentityCardNumber(String identityCardNumber) {
         this.identityCardNumber = identityCardNumber;

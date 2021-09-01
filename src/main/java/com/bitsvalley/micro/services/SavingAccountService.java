@@ -8,9 +8,8 @@ import com.bitsvalley.micro.webdomain.SavingBilanz;
 import com.bitsvalley.micro.webdomain.SavingBilanzList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.text.DecimalFormat;
-import java.text.NumberFormat;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -42,6 +41,9 @@ public class SavingAccountService extends SuperService{
     @Autowired
     private CallCenterRepository callCenterRepository;
 
+    @Autowired
+    private GeneralLedgerService generalLedgerService;
+
 
     private double minimumSaving;
 
@@ -67,7 +69,6 @@ public class SavingAccountService extends SuperService{
         com.bitsvalley.micro.domain.SavingAccountType savingAccountType = savingAccountTypeRepository.findByName("GENERAL SAVINGS");
         savingAccount.setSavingAccountType(savingAccountType);
 
-//        savingAccount.setSavingAccountType(insureAccountSavingTypeExists());
         savingAccount.setUser(user);
         savingAccountRepository.save(savingAccount);
 
@@ -96,14 +97,15 @@ public class SavingAccountService extends SuperService{
             return accountNumber;
     }
 
-    public void createSavingAccountTransaction(SavingAccountTransaction savingAccountTransaction, User user) {
+    @Transactional
+    public void createSavingAccountTransaction(SavingAccountTransaction savingAccountTransaction) {
         //Get id of savingAccount transaction
         savingAccountTransaction.setReference(BVMicroUtils.getSaltString()); //Collision
         savingAccountTransaction.setCreatedBy(getLoggedInUserName());
         savingAccountTransaction.setCreatedDate(LocalDateTime.now());
         savingAccountTransactionRepository.save(savingAccountTransaction);
-//        savingAccount.getSavingAccount().add(savingAccount);
-//        savingAccountRepository.get(savingAccountTransaction);
+        generalLedgerService.updateSavingAccountTransaction(savingAccountTransaction);
+
     }
 
 
@@ -115,12 +117,6 @@ public class SavingAccountService extends SuperService{
     public void save(SavingAccount save){
         savingAccountRepository.save(save);
     }
-
-
-//    public SavingBilanzList getSavingBilanzByUserRole(ArrayList<UserRole> userRole) {
-//        ArrayList<User> users = userRepository.findAllByUserRoleIn(userRole);
-//        return calculateUsersInterest(users);
-//    }
 
 
     public SavingBilanzList getSavingBilanzByUser(User user, boolean calculateInterest) {
@@ -200,6 +196,7 @@ public class SavingAccountService extends SuperService{
                                 calculateInterestAccruedMonthCompounded(savingAccountTransaction);
 //                    }
                 }
+                savingAccount.setAccountBalance(totalSaved);
                 if(checkMinBalanceLogin(currentSaved, savingAccount)){
                     savingAccount.setDefaultedPayment(true);// Minimum balance check
                 }
@@ -307,9 +304,7 @@ public class SavingAccountService extends SuperService{
 
             if (monthsBetween >= savingAccountTransactionList.size()){
                 CallCenter callCenter = new CallCenter();
-//                callCenter.setUserName(savingAccount.getUser().getUserName());
-                callCenter.setNotes("Regular Monthly payment not on schedule might be missing payment for some months. " +
-                        "Please check the account statement");
+                callCenter.setNotes(BVMicroUtils.REGULAR_MONTHLY_PAYMENT_MISSING);
                 callCenter.setDate(new Date(System.currentTimeMillis()));
                 callCenter.setAccountHolderName(savingAccount.getUser().getFirstName() + " "+ savingAccount.getUser().getLastName());
                 callCenter.setAccountNumber(savingAccount.getAccountNumber());
@@ -336,4 +331,26 @@ public class SavingAccountService extends SuperService{
         return ""+i;
     }
 
+    public String withdrawalAllowed(SavingAccountTransaction savingTransaction) {
+       String error = "";
+       error = minimumSavingRespected(savingTransaction);
+       return error;
+    }
+
+    private String minimumSavingRespected(SavingAccountTransaction savingTransaction) {
+        double futureBalance = getAccountBalance(savingTransaction.getSavingAccount()) + savingTransaction.getSavingAmount();
+        if(savingTransaction.getSavingAccount().getAccountMinBalance() > futureBalance ){
+            return "Account will fall below Minimum Savings amount";
+        }
+        return null;
+    }
+
+    public double getAccountBalance(SavingAccount savingAccount) {
+        double total = 0.0;
+        List<SavingAccountTransaction> savingAccountTransactions = savingAccount.getSavingAccountTransaction();
+        for (SavingAccountTransaction tran: savingAccountTransactions) {
+            total = tran.getSavingAmount() + total;
+        }
+        return total;
+    }
 }

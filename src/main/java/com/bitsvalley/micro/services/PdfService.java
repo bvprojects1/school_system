@@ -1,9 +1,11 @@
 package com.bitsvalley.micro.services;
 
 
+import com.bitsvalley.micro.domain.RuntimeProperties;
 import com.bitsvalley.micro.domain.SavingAccount;
 import com.bitsvalley.micro.domain.SavingAccountTransaction;
 import com.bitsvalley.micro.utils.BVMicroUtils;
+import com.bitsvalley.micro.webdomain.RuntimeSetting;
 import com.bitsvalley.micro.webdomain.SavingBilanz;
 import com.bitsvalley.micro.webdomain.SavingBilanzList;
 import com.lowagie.text.pdf.PdfDocument;
@@ -25,92 +27,70 @@ public class PdfService {
     private SavingAccountService savingAccountService;
 
 
-    public String generateTransactionReceiptPDF(SavingAccountTransaction savingAccountTransaction, String logoFilePath) {
-        ClassPathResource classPathResource = new ClassPathResource("assets/image/logo.jpeg");
+    public String generateTransactionReceiptPDF(SavingAccountTransaction savingAccountTransaction, RuntimeSetting rt) {
 
         String savingBilanzNoInterest = "<html><head>" +
-                "</head><body><br/><br/>" +
-                "    <table width=\"100%\">" +
+                "</head><body><br/><br/><font color=\"green\" size=\"8px\"><b>RECEIPT FOR PAYMENT MADE</b></font>" +
+                "<table width=\"100%\">" +
+                "<tr> <td> Form N. 120000029    </td>" +
+                "<td colspan=\"3\"><img width=\""+rt.getLogoSize()+"\" src=\""+ rt.getLogo()+"\"/><br/><b>"+ rt.getBusinessName() +"</b><br/> BranchName <br/>"+rt.getAddress()+" "+rt.getTelephone()+"</td>" +
+                "<td>"+savingAccountTransaction.getModeOfPayment()+" from Account Owner: <br/>"+savingAccountTransaction.getAccountOwner()+"</td></tr>" +
                 "        <tr><td colspan=\"3\">" +
-                "<img width=\"50px\" src=\"/Users/frusamachifen/bv_micro_workspace/bv_micro/src/main/webapp/assets/images/logo.jpeg\"/> </td>" +
-                "<td>Customer Name:<b>"+savingAccountTransaction.getSavingAccount().getUser().getFirstName() +" "+savingAccountTransaction.getSavingAccount().getUser().getLastName() +"</b></td><td>Account No. <b>"+savingAccountTransaction.getSavingAccount().getAccountNumber()+"</b></td></tr>" +
+                "Account Number: "+ savingAccountTransaction.getSavingAccount().getAccountNumber() +"<br/>Customer: <b>"+savingAccountTransaction.getSavingAccount().getUser().getLastName()+","+savingAccountTransaction.getSavingAccount().getUser().getFirstName()+"</b> </td>" +
+                "<td>Date:<br/><b>"+BVMicroUtils.formatDateTime(savingAccountTransaction.getCreatedDate())+"</b></td>" +
+                "<td>Amount <b>"+BVMicroUtils.formatCurrency(savingAccountTransaction.getSavingAmount())+"</b></td></tr>" +
+                "        <tr><td colspan=\"4\">" +
+                "Representative: <b>"+ savingAccountTransaction.getCreatedBy() +"</b> </td>" +
+                "</tr>" +
                 "<tr><td></td>\n" +
-                "        <td> <font color=\"green\" size=\"8px\"><b>RECEIPT FOR PAYMENT MADE</b></font></td>\n" +
-                "        <td>Total: <font color=\"green\" size=\"8px\"><b>"+BVMicroUtils.formatCurrency(savingAccountTransaction.getSavingAmount())+"</b>frs</font></td>\n" +
-                "        <td></td>\n" +
-                "        <td></td>\n" +
+                "        <td colspan=\"4\">Amount in Letters: <font color=\"green\" size=\"8px\"> "+savingAccountTransaction.getSavingAmountInLetters()+"</font></td>\n" +
                 "        </tr></table><br/><br/><br/>" +
-                "    <table  border=\"0\" width=\"100%\" class=\"center\">\n" +
+                "    <table  border=\"0\" width=\"100\" class=\"center\">\n" +
                 "            <tr>\n" +
-                "                <th>Date</th>\n" +
-                "                <th>Mode </th>\n" +
-                "                <th>Agent</th>\n" +
-                "                <th>Amount</th>\n" +
-                "                <th>Notes</th>\n" +
+                "                <th colspan=\"2\">Description</th>\n" +
+                "                <th>Amount </th>\n" +
+                "                <th>Charge</th>\n" +
+                "                <th>Balance</th>\n" +
                 "                <th></th>\n" +
                 "            </tr>\n" +
                 "            <tr>\n" +
-                "                <td>"+BVMicroUtils.formatDateTime(savingAccountTransaction.getCreatedDate())+"</td>\n" +
-                "                <td>"+savingAccountTransaction.getModeOfPayment()+"</td>\n" +
-                "                <td>"+savingAccountTransaction.getCreatedBy()+"</td>\n" +
+                "                <td colspan=\"2\">"+savingAccountTransaction.getSavingAccount().getAccountSavingType()+"</td>\n" +
                 "                <td>"+BVMicroUtils.formatCurrency(savingAccountTransaction.getSavingAmount())+"</td>\n" +
-                "                <td>"+savingAccountTransaction.getNotes()+"</td>\n" +
+                "                <td>0</td>\n" +
+                "                <td>1000</td>\n" +
                 "                <td></td>\n" +
                 "            </tr>" +
-                "            <tr>" +
-                "                <td></td>" +
-                "                <td></td>" +
-                "                <td></td>" +
-                "               <td></td>" +
-                "                <td></td>" +
-                "                <td></td></tr>" +
                 "        </table>" +
-                "<br/><br/><br/><br/><br/>" +
-                "       <table><tr><td></td>" +
-                "       <td>Agent Signature: --------------------------------<br/>Bamenda Branch, N W Region</td>" +
-                "       <td></td>" +
-                "       <td></td>" +
-                "       <td></td>" +
-                "       <td>"+ BVMicroUtils.formatDate(new Date(System.currentTimeMillis())) +"</td></tr>" +
-                "       </table><br/><br/><br/><br/><br/><br/>" +
+                "<br/><br/><br/>" +
                 "       <table width=\"100%\">" +
                 "        <tr><td colspan=\"3\">" +
-                "<img width=\"50px\" src=\"/Users/frusamachifen/bv_micro_workspace/bv_micro/src/main/webapp/assets/images/logo.jpeg\"/> </td>" +
+                "<img width=\"50px\" src=\"" +rt.getUnionLogo()+"\"/> </td>" +
                 "<td>Customer Name:<b>"+savingAccountTransaction.getSavingAccount().getUser().getFirstName() +" "+savingAccountTransaction.getSavingAccount().getUser().getLastName() +"</b></td><td>Account No. <b>"+savingAccountTransaction.getSavingAccount().getAccountNumber()+"</b></td></tr>" +
                 "<tr><td></td>\n" +
                 "        <td> <font color=\"green\" size=\"8px\"><b>RECEIPT FOR PAYMENT MADE</b></font></td>\n" +
                 "        <td>Total: <font color=\"green\" size=\"8px\"><b>"+BVMicroUtils.formatCurrency(savingAccountTransaction.getSavingAmount())+"</b>frs cfa</font></td>\n" +
                 "        <td></td>\n" +
                 "        <td></td>\n" +
-                "        </tr></table><br/><br/><br/>" +
+                "        </tr></table><br/><br/><br/>Cash Breakdown" +
                 "    <table  border=\"0\" width=\"100%\" class=\"center\">\n" +
                 "            <tr>\n" +
-                "                <th>Date</th>\n" +
-                "                <th>Mode </th>\n" +
-                "                <th>Agent</th>\n" +
+                "                <th>Value</th>\n" +
+                "                <th>Number</th>\n" +
                 "                <th>Amount</th>\n" +
-                "                <th>Notes</th>\n" +
-                "                <th></th>\n" +
                 "            </tr>\n" +
                 "            <tr>\n" +
-                "                <td>"+BVMicroUtils.formatDateTime(savingAccountTransaction.getCreatedDate())+"</td>\n" +
-                "                <td>"+savingAccountTransaction.getModeOfPayment()+"</td>\n" +
-                "                <td>"+savingAccountTransaction.getCreatedBy()+"</td>\n" +
-                "                <td>"+BVMicroUtils.formatCurrency(savingAccountTransaction.getSavingAmount())+"frs cfa</td>\n" +
-                "                <td>"+savingAccountTransaction.getNotes()+"</td>\n" +
-                "                <td></td>\n" +
+                "                <td>1000</td>\n" +
+                "                <td>5</td>\n" +
+                "                <td>5 000</td>\n" +
                 "            </tr>" +
                 "            <tr>" +
                 "                <td></td>" +
-                "                <td></td>" +
-                "                <td></td>" +
-                "               <td></td>" +
                 "                <td></td>" +
                 "                <td></td></tr>" +
                 "        </table>" +
                 "<br/><br/><br/><br/><br/>" +
                 "       <table><tr><td></td>" +
-                "       <td>Agent Signature: --------------------------------<br/>Bamenda Branch, N W Region</td>" +
+                "       <td>Agent Signature: --------------------------------<br/>Bamenda Branch, N W Region, Date</td>" +
                 "       <td></td>" +
                 "       <td></td>" +
                 "       <td></td>" +

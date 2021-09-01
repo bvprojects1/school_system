@@ -1,8 +1,10 @@
 package com.bitsvalley.micro.controllers;
 
 import com.bitsvalley.micro.domain.SavingAccount;
+import com.bitsvalley.micro.domain.SavingAccountTransaction;
 import com.bitsvalley.micro.domain.User;
 import com.bitsvalley.micro.domain.UserRole;
+import com.bitsvalley.micro.repositories.SavingAccountTransactionRepository;
 import com.bitsvalley.micro.repositories.UserRepository;
 import com.bitsvalley.micro.services.SavingAccountService;
 import com.bitsvalley.micro.services.UserRoleService;
@@ -35,25 +37,34 @@ public class SuperController {
     private UserRepository userRepository;
 
     @Autowired
+    private SavingAccountTransactionRepository savingAccountTransactionRepository;
+
+    @Autowired
     private SavingAccountService savingAccountService;
 
     @Autowired
     private UserRoleService userRoleService;
 
 
-    public String findUserByUserName(User user, ModelMap model, HttpServletRequest request) {
+    public String  findUserByUserName(User user, ModelMap model, HttpServletRequest request) {
         User aUser = userService.findUserByUserName(user.getUserName());
         if(aUser == null){
-            aUser = savingAccountService.findByAccountNumber(user.getUserName()).getUser();
-        }
-        if(null != aUser && null != aUser.getSavingAccount() && 0 < aUser.getSavingAccount().size()){
-        }else {
             SavingAccount savingAccount = savingAccountService.findByAccountNumber(user.getUserName());
-            if(null != savingAccount){
+            if( null != savingAccount ){
                 aUser = savingAccount.getUser();
             }
+            if(aUser==null){
+                Optional<SavingAccountTransaction> byReference
+                        = savingAccountTransactionRepository.findByReference(user.getUserName());
+
+                if(byReference.isPresent()){
+                    aUser = byReference.get().getSavingAccount().getUser();
+                }
+
+            }
         }
-                if("ROLE_CUSTOMER".equals(aUser.getUserRole().get(0).getName())){
+
+        if("ROLE_CUSTOMER".equals(aUser.getUserRole().get(0).getName())){
             model.put("createSavingAccountEligible", true);
         }else{
             model.put("createSavingAccountEligible", false);

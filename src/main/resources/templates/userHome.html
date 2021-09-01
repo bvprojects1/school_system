@@ -122,12 +122,12 @@
 
     <table style="border:1px" class="center" width="90%">
         <tr>
-            <td><font size="3">Account Owner</font><br/><font size="4"> <span style
-                                                                              th:text="${session.customerInUse.userName}"/>
+            <td><font size="3">Account Owner</font><br/><font size="4"><a href="#" th:href="@{/showCustomer/{id}(id=${session.customerInUse.id})}"> <span style
+                                                                                                                                                          th:text="${session.customerInUse.userName}"/></a>
             </font>
                 <button type="submit"><a href="#"
                                          th:href="@{/file/{userName}(userName=${session.customerInUse.userName})}">Upload
-                    I.D</a></button>
+                    I.D</a></button> <a href="#" th:href="@{/reloadUser}"><img width="40px" th:src="@{/getImage}"/> </a>
                 <br/>
             <td><font color="#BF360C;" size="4"><h4>VIEW ACCOUNTS</h4></font></td>
             <td> Saving <br/> <font color="gray" size="4px">
@@ -164,7 +164,8 @@
                 Description
             </td>
             <td>
-                Minimum Balance
+                Min. Balance
+                /Balance
             </td>
             <td>
                 %
@@ -183,6 +184,8 @@
         </tr>
 
         <tr th:each="savingAccount : ${session.customerInUse.savingAccount}">
+<!--        <tr th:each="savingAccount : ${savingBilanzList.savingBilanzList}">-->
+
             <td>
                 <p th:text="${savingAccount.savingAccountType.name}"/>
             </td>
@@ -195,9 +198,9 @@
                 <p th:text="${savingAccount.notes}"/>
             </td>
             <td>
-                <!-- <p th:text="${savingAccount.accountMinBalance}"/>-->
                 <p th:text="${#numbers.formatDecimal(savingAccount.accountMinBalance, 0, 'COMMA', 0, 'POINT')}">
-                    10.00 </p>
+                    0.00 </p>
+                <p th:text="${#numbers.formatDecimal(savingAccount.accountBalance, 0, 'COMMA', 0, 'POINT')}">
             </td>
             <td>
                 <p th:text="${savingAccount.interestRate}"/>
@@ -253,7 +256,7 @@
     <!--Choosen main area end-->
 </section>
 
-
+</body>
 <div th:insert="/blog::navbar"></div>
 <br/>
 
