@@ -2,7 +2,6 @@ package com.bitsvalley.micro.domain;
 import com.bitsvalley.micro.utils.AccountStatus;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -25,13 +24,17 @@ public class SavingAccount{
     private boolean accountMinBalanceLocked;
     private boolean defaultedPayment;
 
+    private String branchCode;
+
     private AccountStatus accountStatus;
     private int minimumPayment;
     private String intervalOfSaving;
     private int interestRate;
     private String country;
-    private String branch;
+    private long branch;
     private String productCode;
+
+    @Column(unique = true)
     private String accountNumber;
 
     private double accountBalance;
@@ -197,11 +200,11 @@ public class SavingAccount{
         this.country = country;
     }
 
-    public String getBranch() {
+    public long getBranch() {
         return branch;
     }
 
-    public void setBranch(String branch) {
+    public void setBranch(long branch) {
         this.branch = branch;
     }
 
@@ -228,4 +231,13 @@ public class SavingAccount{
     public void setAccountBalance(double accountBalance) {
         this.accountBalance = accountBalance;
     }
+
+    public String getBranchCode() {
+        return branchCode;
+    }
+
+    public void setBranchCode(String branchCode) {
+        this.branchCode = branchCode;
+    }
+
 }

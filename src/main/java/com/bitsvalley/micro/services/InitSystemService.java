@@ -18,8 +18,7 @@ public class InitSystemService {
 
     public List<RuntimeProperties> initSystem() {
         List<RuntimeProperties> runtimePropertiesList = new ArrayList<RuntimeProperties>();
-        if (runtimePropertiesRepository.findAll() == null
-                || !runtimePropertiesRepository.findAll().iterator().hasNext()) {
+        if ( !runtimePropertiesRepository.findAll().iterator().hasNext() ) {
 
             RuntimeProperties businessName = new RuntimeProperties();
             businessName.setPropertyName("Business Name");
@@ -66,6 +65,21 @@ public class InitSystemService {
             fax.setPropertyValue("665 879 345");
             runtimePropertiesList.add(fax);
 
+            RuntimeProperties logoSize = new RuntimeProperties();
+            logoSize.setPropertyName("logoSize");
+            logoSize.setPropertyValue("50");
+            runtimePropertiesList.add(logoSize);
+
+            RuntimeProperties themeColor = new RuntimeProperties();
+            themeColor.setPropertyName("themeColor");
+            themeColor.setPropertyValue("green");
+            runtimePropertiesList.add(themeColor);
+
+            RuntimeProperties themeColor2 = new RuntimeProperties();
+            themeColor2.setPropertyName("themeColor2");
+            themeColor2.setPropertyValue("gray");
+            runtimePropertiesList.add(themeColor2);
+
             Iterable<RuntimeProperties> savingAccountTypeListIterable = runtimePropertiesList;
             runtimePropertiesRepository.saveAll(savingAccountTypeListIterable);
         }
@@ -92,7 +106,7 @@ public class InitSystemService {
             }else if (rp.getPropertyName().equals("telephone2")) {
                 runtime.setTelephone2(rp.getPropertyValue());
             }else if (rp.getPropertyName().equals("email")) {
-                runtime.setTelephone2(rp.getPropertyValue());
+                runtime.setEmail(rp.getPropertyValue());
             }else if (rp.getPropertyName().equals("fax")) {
                 runtime.setFax(rp.getPropertyValue());
             }else if (rp.getPropertyName().equals("logoSize")) {

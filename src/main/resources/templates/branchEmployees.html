@@ -9,25 +9,39 @@
 <br/>
 <br/>
 <body>
-
 <br/>
 
 <table width="90%" class="center" border="0px">
     <tr>
         <td>
-            <font size="5" color="green">
+            <font size="3" color="green">
                 <span th:text="${branch.name}"></span>
-            </font><br/>
-            <font size="3"><span th:text="${branch.street}"/></font> <br/>
-            <font size="3"><span th:text="${branch.city}"/></font>
+            </font>
         </td>
+        <td>
+            <font size="2"><span th:text="${branch.code}"/></font>
+        </td>
+        <td>
+            <font size="2"><span th:text="${branch.street}"/></font>
+        </td>
+        <td>
+            <font size="2"><span th:text="${branch.city}"/></font>
+        </td>
+        <td>
+            <font size="2"><span th:text="${branch.telephone}"/></font>
+        </td>
+        <td>
+            <font size="2"><span th:text="${branch.email}"/></font>
         </td>
     </tr>
 </table>
+
+
+
 <br/>
 <table width="90%" class="center" border="0px">
     <tr>
-        <th>BRANCH USERS</th>
+        <th><font color="green">BRANCH USERS</font></th>
     </tr>
 </table>
 <table width="90%" class="center" border="0px">
@@ -65,7 +79,7 @@
 
 <table width="90%" class="center" border="0px">
     <tr>
-        <th>OTHER BRANCH USERS</th>
+        <th><font color="green">OTHER BRANCH USERS</font></th>
     </tr>
 </table>
 
@@ -76,6 +90,7 @@
         <th>Role</th>
         <th>telephone</th>
         <th>Member Since</th>
+        <th>Branch</th>
         <th>Creator</th>
         <th></th>
     </tr>
@@ -92,6 +107,7 @@
         </td>
         <td th:text="${user.telephone1}"></td>
         <td th:text="${#dates.format(user.created, 'dd-MMM-yyyy HH:mm')}"></td>
+        <td th:text="${user.branch.name}"></td>
         <td th:text="${user.createdBy}"></td>
         <td>
             <a th:href="${'/addCustomerToBranch/' + {user.id} + '/' + {branch.id}}">Add</a>

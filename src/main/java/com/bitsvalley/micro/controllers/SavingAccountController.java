@@ -63,13 +63,18 @@ public class SavingAccountController extends SuperController {
     }
 
     @PostMapping(value = "/registerSavingAccountForm")
-    public String registerSavingForm(@ModelAttribute("saving") SavingAccount savingAccount, ModelMap model, HttpServletRequest request) {
+    public String registerSavingAccount(@ModelAttribute("saving") SavingAccount savingAccount, ModelMap model, HttpServletRequest request) {
         User user = (User) request.getSession().getAttribute(BVMicroUtils.CUSTOMER_IN_USE);
         user = userRepository.findById(user.getId()).get();
-        savingAccount.setBranch(user.getBranch().getName());
+        Branch branchInfo = getBranchInfo(getLoggedInUserName());
+        savingAccount.setBranch(branchInfo.getId());
+        savingAccount.setBranchCode(branchInfo.getCode()); //TODO: BRANCH CODE
+        savingAccount.setCountry(branchInfo.getCountry());
         savingAccountService.createSavingAccount(savingAccount, user);
         return findUserByUserName(user, model, request);
     }
+
+
 
     @GetMapping(value = "/registerSavingAccountTransaction/{id}")
     public String registerSavingAccountTransaction(@PathVariable("id") long id, ModelMap model) {
@@ -159,8 +164,12 @@ public class SavingAccountController extends SuperController {
         }
         String modeOfPayment = request.getParameter("modeOfPayment");
         savingAccountTransaction.setModeOfPayment(modeOfPayment);
+        Branch branchInfo = getBranchInfo(getLoggedInUserName());
 
-        savingAccountTransaction.setBranch(user.getBranch().getId());
+        savingAccountTransaction.setBranch(branchInfo.getId());
+        savingAccountTransaction.setBranchCode(branchInfo.getCode());
+        savingAccountTransaction.setBranchCountry(branchInfo.getCountry());
+
         savingAccountService.createSavingAccountTransaction(savingAccountTransaction);
         if (savingAccount.get().getSavingAccountTransaction() != null) {
             savingAccount.get().getSavingAccountTransaction().add(savingAccountTransaction);

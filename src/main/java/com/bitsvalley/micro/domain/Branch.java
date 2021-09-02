@@ -18,6 +18,9 @@ public class Branch {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
     private String country;
+
+    @Column(unique = true)
+    private String code;
     private String name;
     private String street;
     private String city;
@@ -134,5 +137,13 @@ public class Branch {
 
     public void setActiv(String activ) {
         this.activ = activ;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
     }
 }

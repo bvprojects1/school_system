@@ -64,7 +64,7 @@ public class PdfService {
                 "<br/><br/><br/>" +
                 "       <table width=\"100%\">" +
                 "        <tr><td colspan=\"3\">" +
-                "<img width=\"50px\" src=\"" +rt.getUnionLogo()+"\"/> </td>" +
+                "<img width=\"100px\" src=\"" +rt.getUnionLogo()+"\"/> </td>" +
                 "<td>Customer Name:<b>"+savingAccountTransaction.getSavingAccount().getUser().getFirstName() +" "+savingAccountTransaction.getSavingAccount().getUser().getLastName() +"</b></td><td>Account No. <b>"+savingAccountTransaction.getSavingAccount().getAccountNumber()+"</b></td></tr>" +
                 "<tr><td></td>\n" +
                 "        <td> <font color=\"green\" size=\"8px\"><b>RECEIPT FOR PAYMENT MADE</b></font></td>\n" +

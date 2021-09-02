@@ -1,9 +1,6 @@
 package com.bitsvalley.micro.controllers;
 
-import com.bitsvalley.micro.domain.SavingAccount;
-import com.bitsvalley.micro.domain.SavingAccountTransaction;
-import com.bitsvalley.micro.domain.User;
-import com.bitsvalley.micro.domain.UserRole;
+import com.bitsvalley.micro.domain.*;
 import com.bitsvalley.micro.repositories.SavingAccountTransactionRepository;
 import com.bitsvalley.micro.repositories.UserRepository;
 import com.bitsvalley.micro.services.SavingAccountService;
@@ -18,10 +15,7 @@ import org.springframework.ui.ModelMap;
 
 import javax.servlet.http.HttpServletRequest;
 import java.lang.reflect.Array;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 /**
  * @author Fru Chifen
@@ -78,7 +72,7 @@ public class SuperController {
             return "userHome";
         }
             model.put("name", getLoggedInUserName());
-            request.getSession().setAttribute("savingBilanzList",savingBilanzByUserList);
+            request.getSession().setAttribute("savingBilanzList", savingBilanzByUserList);
             request.getSession().setAttribute(BVMicroUtils.CUSTOMER_IN_USE, aUser);
             return "userHomeNoAccount";
     }
@@ -118,4 +112,11 @@ public class SuperController {
         }
         return principal.toString();
     }
+
+    protected Branch getBranchInfo(String userName){
+        User loggedInUser = userRepository.findByUserName(getLoggedInUserName());
+        final Branch branch = loggedInUser.getBranch();
+        return branch;
+    }
+
 }
