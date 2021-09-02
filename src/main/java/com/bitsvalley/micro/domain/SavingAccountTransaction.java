@@ -30,6 +30,8 @@ public class SavingAccountTransaction {
     private int twentyFive;
     private String accountOwner;
     private long branch;
+    private String branchCode;
+    private String branchCountry;
     private String savingAmountInLetters;
 
     @Column(unique = true)
@@ -185,5 +187,21 @@ public class SavingAccountTransaction {
 
     public void setSavingAmountInLetters(String savingAmountInLetters) {
         this.savingAmountInLetters = savingAmountInLetters;
+    }
+
+    public String getBranchCode() {
+        return branchCode;
+    }
+
+    public void setBranchCode(String branchCode) {
+        this.branchCode = branchCode;
+    }
+
+    public String getBranchCountry() {
+        return branchCountry;
+    }
+
+    public void setBranchCountry(String branchCountry) {
+        this.branchCountry = branchCountry;
     }
 }

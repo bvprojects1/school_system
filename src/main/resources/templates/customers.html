@@ -9,8 +9,7 @@
     <table width="80%" class="center" border="0px">
         <tr>
             <td align="center">
-                <font color="#BF360C;" size="4"><h4>All System users with a Saving, Current, Loan, Retirement
-                    Savings</h4></font>
+                <font th:attr="color=${session.runtimeSettings.themeColor}" size="4"><h4>All System Users </h4></font>
             </td>
         </tr>
     </table>
@@ -38,21 +37,23 @@
                 <div th:text="${user.firstName}"></div>
                 <div th:text="${user.lastName}"></div>
             </td>
-            <div th:if="${#authorization.expression('hasAnyAuthority(''ROLE_MANAGER'')')}">
+<!--            <div th:if="${#authorization.expression('hasAnyAuthority(''ROLE_MANAGER'')')}">-->
                 <td>
                     <div th:each="userRole : ${user.userRole}">
                         <span th:text="${userRole.name}"></span>
                     </div>
                 </td>
-            </div>
+<!--            </div>-->
 
             <td th:text="${user.telephone1}"></td>
             <td th:text="${#dates.format(user.created, 'dd-MMM-yyyy HH:mm')}"></td>
-            <td>
-                <a href="#" th:href="@{/lockAccount/{id}(id=${user.id})}">
-                    <span th:text="${user.accountLocked}"/>
-                </a>
-            </td>
+            <div th:if="${#authorization.expression('hasAnyAuthority(''ROLE_MANAGER'')')}">
+                <td>
+                    <a href="#" th:href="@{/lockAccount/{id}(id=${user.id})}">
+                        <span th:text="${user.accountLocked}"/>
+                    </a>
+                </td>
+            </div>
             <td th:text="${user.createdBy}"></td>
             <!--                            <td th:text="${#dates.format(user.created, 'dd-MMM-yyyy')}"></td>-->
             <td>

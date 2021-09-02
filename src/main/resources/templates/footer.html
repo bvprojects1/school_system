@@ -16,9 +16,11 @@
                 <div class="col-md-3 mb-sm-5 mb-md-0">
                     <div class="single-footer-widget">
                         <div class="logo-area">
-                            <a href="#"><span>TBC MFI</span>PLC</a>
+                            <a href="#"><span th:text="${session.runtimeSettings.businessName}"></span>
+<!--                                LLC -->
+                            </a>
                         </div>
-                        <p>The bank on your side. We will consult with you one on one basis?</p>
+                        <p>The bank on your side. We will consult with you on a one on one basis?</p>
                         <div class="team-member-social-icon">
                             <a href="#"><i class="fab fa-facebook-f"></i></a>
                             <a href="#"><i class="fab fa-dribbble"></i></a>
@@ -28,7 +30,6 @@
                     </div>
                 </div>
                 <!--Single footer widget end-->
-
 
                 <!--Single footer widget footer menu start-->
                 <div class="col-md-2 mb-sm-5 mb-md-0">
@@ -49,16 +50,9 @@
                 <div class="col-md-4 mb-sm-5 mb-md-0">
                     <div class="single-footer-widget">
                         <h5>Recent News</h5>
-                        <!--                            <div class="media">-->
-                        <!--                                <i class="fab fa-google mr-3 fa-1x"></i>-->
-                        <!--                                <div class="media-body">-->
-                        <!--                                    <p>Proparco has just signed a financing agreement with Agence de Crédit pour l’Entreprise Privée au Cameroun S.A. (ACEP Cameroun, or Cameroon Private Enterprise Credit Agency), a member of the pan-African microfinance network ACEP International. The local currency loan of 2bn CFA francs (equal to €3m) will go to support the expansion of ACEP Cameroun’s work in Cameroon, with SMEs in the countryside as primary targets.</p>-->
-                        <!--                                </div>-->
-                        <!--                            </div>-->
                         <div class="media">
-<!--                            <i class="fab fa-google mr-3 fa-1x"></i>-->
                             <div class="media-body">
-                                <p>Cameroon’s microfinance institutions are still largely concentrated in the cities, although 60% of the total population lives in the countryside. That imbalance led ACEP Cameroun in 2013 to start focusing on expanding its work into the countryside, setting up five rural agencies thanks to AFD support. Farm lending has been a big success with coffee and cocoa growers, and the plan is for it to become a growing share of ACEP Cameroun’s activity.</p>
+                                <p>Cameroon’s microfinance institutions are still largely concentrated in the cities, although 60% of the total populatio a growing share of ACEP Cameroun’s activity.</p>
                             </div>
                         </div>
                     </div>
@@ -68,12 +62,24 @@
                 <!--Single footer widget footer menu start-->
                 <div class="col-md-3">
                     <div class="single-footer-widget">
-                        <h5>Get In Touch</h5>
+                        <h5 th:text="${session.runtimeSettings.businessName}"/></h5>
                         <ul class="footer-menu-touch">
-                            <li><i class="fas fa-map-marker mr-2"></i> LaChance bridge, Mankon</li>
-                            <li><i class="fas fa-envelope mr-2"></i> info@bitsvalley.com</li>
-                            <li><i class="fas fa-mobile mr-2"></i> +(012) 1234-5678</li>
-                            <li><i class="fas fa-globe-asia mr-2"></i> www.TBC-MFI.com</li>
+                            <li>
+                                <!--<i class="fas fa-map-marker mr-2"></i> &ndash;&gt;-->
+                                <div th:text="${session.runtimeSettings.address}"/>
+                            </li>
+                            <li>
+<!--                            <i class="fas fa-envelope mr-2"></i> -->
+                                <div th:text="${session.runtimeSettings.email}"/>
+                            </li>
+                            <li>
+<!--                            <i class="fas fa-mobile mr-2"></i> -->
+                                <div th:text="${session.runtimeSettings.telephone}"/>
+                            </li>
+                            <li>
+<!--                            <i class="fas fa-globe-asia mr-2"></i> -->
+                                <div th:text="${session.runtimeSettings.website}"/>
+                            </li>
                             <!--<li><i class="fab fa-twitter mr-2"></i> www.socialmedia.com</li>-->
                         </ul>
                     </div>

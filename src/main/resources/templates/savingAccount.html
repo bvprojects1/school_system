@@ -27,19 +27,6 @@
         <table class="center" width="100%">
             <tr>
                 <td width="33%"></td>
-                <td><label>Country/Branch:</label></td>
-                <td><select name="country" id="country" th:field="*{country}">
-                    <option value="01">Cameroon (01)</option>
-                    <option value="02">Gabon (02)</option>
-                </select>
-                    <select name="branch" id="branch" th:field="*{branch}">
-                        <option value="01">Nkwen, Bamenda (01)</option>
-                        <option value="02">LaChance, Bamenda (02)</option>
-                    </select>
-                </td>
-            </tr>
-            <tr>
-                <td width="33%"></td>
                 <td><label> Savings Type:</label></td>
                 <td><select name="savingType" id="savingType" th:field="*{productCode}">
                     <option value="11">GENERAL SAVINGS - 11</option>
@@ -57,12 +44,12 @@
             <tr>
                 <td width="33%"></td>
                 <td width="10%"><label> Minimum balance:</label></td>
-                <td><label> <input type="number" th:field="*{accountMinBalance}"/></label></td>
+                <td><label> <input placeholder="0" type="number" th:field="*{accountMinBalance}"/></label></td>
             </tr>
             <tr>
                 <td width="33%"></td>
                 <td width="10%"><label> Interest Rate:</label></td>
-                <td><label> <input type="number" th:field="*{interestRate}"/></label></td>
+                <td><label> <input type="number" th:field="*{interestRate}" max="100" maxlength="2"/></label></td>
             </tr>
 
             <tr>

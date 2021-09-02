@@ -57,8 +57,7 @@ public class SavingAccountService extends SuperService{
 
     public void createSavingAccount(SavingAccount savingAccount, User user) {
 
-//      savingAccount.setAccountNumber(BVMicroUtils.getSaltString()); //Collision
-        savingAccount.setAccountNumber(getCobacSavingsAccountNumber(savingAccount)); //Collision
+        savingAccount.setAccountNumber(getCobacSavingsAccountNumber(savingAccount)); //TODO: Collision
         savingAccount.setAccountStatus(AccountStatus.ACTIVE);
         savingAccount.setCreatedBy(getLoggedInUserName());
         savingAccount.setCreatedDate(new Date(System.currentTimeMillis()));
@@ -73,7 +72,7 @@ public class SavingAccountService extends SuperService{
         savingAccountRepository.save(savingAccount);
 
 
-        user = userRepository.findById(user.getId()).get();//TODO handle optional
+        user = userRepository.findById(user.getId()).get();
         user.getSavingAccount().add(savingAccount);
         userService.saveUser(user);
 
@@ -244,7 +243,7 @@ public class SavingAccountService extends SuperService{
         savingBilanz.setNoOfDays(calculateNoOfDays(savingAccountTransaction.getCreatedDate()));
         savingBilanz.setModeOfPayment(savingAccountTransaction.getModeOfPayment());
         savingBilanz.setAccountOwner(savingAccountTransaction.getAccountOwner());
-        savingBilanz.setBranch(savingAccountTransaction.getSavingAccount().getBranch());
+        savingBilanz.setBranch(savingAccountTransaction.getSavingAccount().getBranchCode());
 
         if(calculateInterest){
             savingBilanz.setInterestAccrued(BVMicroUtils.formatCurrency(calculateInterestAccruedMonthCompounded(savingAccountTransaction)));

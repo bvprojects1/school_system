@@ -17,6 +17,7 @@
     <table width="90%" class="center" border="0px">
         <tr>
             <th>Name</th>
+            <th>Code</th>
             <th>Street</th>
             <th>City</th>
             <th>telephone</th>
@@ -26,6 +27,7 @@
         </tr>
         <tr th:each="branch : ${branchList}">
             <td th:text="${branch.name}"></td>
+            <td th:text="${branch.code}"></td>
             <td>
                 <div th:text="${branch.street}"></div>
             </td>
