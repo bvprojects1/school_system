@@ -7,8 +7,8 @@ import javax.persistence.*;
  * 11.06.2021
  */
 @Entity
-@Table(name = "savingAccountType")
-public class SavingAccountType {
+@Table(name = "accountType")
+public class AccountType {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

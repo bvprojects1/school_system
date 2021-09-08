@@ -90,10 +90,10 @@ public class SettingController extends SuperController{
         list.add(unionLogo);
 
         RuntimeProperties telephone = runtimePropertiesRepository.findByPropertyName("telephone");
-//        if(telephone == null){
-//            telephone = new RuntimeProperties();
-//            telephone.setPropertyName("telephone");
-//        }
+        if(telephone == null){
+            telephone = new RuntimeProperties();
+            telephone.setPropertyName("telephone");
+        }
         telephone.setPropertyValue(runtimeSetting.getTelephone());
         list.add(telephone);
 

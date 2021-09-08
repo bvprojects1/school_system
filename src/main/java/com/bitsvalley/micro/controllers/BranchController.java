@@ -2,14 +2,7 @@ package com.bitsvalley.micro.controllers;
 
 import com.bitsvalley.micro.domain.*;
 import com.bitsvalley.micro.repositories.BranchRepository;
-import com.bitsvalley.micro.repositories.CallCenterRepository;
 import com.bitsvalley.micro.repositories.UserRepository;
-import com.bitsvalley.micro.services.PdfService;
-import com.bitsvalley.micro.services.SavingAccountService;
-import com.bitsvalley.micro.services.SavingAccountTypeService;
-import com.bitsvalley.micro.services.UserService;
-import com.bitsvalley.micro.utils.BVMicroUtils;
-import com.bitsvalley.micro.webdomain.SavingBilanzList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -19,11 +12,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
 import java.util.*;
 
 /**

@@ -1,7 +1,5 @@
 package com.bitsvalley.micro.impl;
 
-import com.bitsvalley.micro.domain.RuntimeProperties;
-import com.bitsvalley.micro.domain.SavingAccountType;
 import com.bitsvalley.micro.domain.User;
 import com.bitsvalley.micro.domain.UserRole;
 import com.bitsvalley.micro.repositories.RuntimePropertiesRepository;

@@ -142,7 +142,7 @@ public class PdfService {
                 "       <td align=\"right\"><font size=\"4\">"+ savingAccount.getProductCode() +"</font></td></tr>" +
                 "        <tr><td> </td><td> </td>" +
                 "       <td align=\"right\"><font size=\"6\" color=\"green\">Branch Code:</font></td>" +
-                "       <td align=\"right\"><font size=\"4\">"+ savingAccount.getBranch() +"</font></td></tr>" +
+                "       <td align=\"right\"><font size=\"4\">"+ savingAccount.getBranchCode() +"</font></td></tr>" +
                 "        <tr><td> </td><td> </td>" +
                 "       <td align=\"right\"><font size=\"6\" color=\"green\">Branch Name:</font></td>" +
                 "       <td align=\"right\"><font size=\"4\"> Bamenda Branch </font></td></tr>" +

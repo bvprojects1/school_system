@@ -78,4 +78,14 @@ public class BVMicroUtils {
         return format;
     }
 
+
+    public static String getCobacSavingsAccountNumber(String country, String productCode, String branch, long count) {
+        count = count + 1000000001;
+        String accountNumber = count + "";
+        accountNumber = accountNumber.replaceFirst("1", "");
+        accountNumber = country + productCode + accountNumber + branch;
+        return accountNumber;
+    }
+
+
 }

@@ -1,14 +1,12 @@
 package com.bitsvalley.micro.services;
 
 import com.bitsvalley.micro.domain.*;
-import com.bitsvalley.micro.repositories.CallCenterRepository;
 import com.bitsvalley.micro.repositories.GeneralLedgerRepository;
-import com.bitsvalley.micro.repositories.SavingAccountTypeRepository;
+import com.bitsvalley.micro.repositories.AccountTypeRepository;
 import com.bitsvalley.micro.repositories.UserRepository;
 import com.bitsvalley.micro.utils.BVMicroUtils;
 import com.bitsvalley.micro.utils.GeneralLedgerType;
 import com.bitsvalley.micro.webdomain.GeneralLedgerBilanz;
-import com.bitsvalley.micro.webdomain.RuntimeSetting;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -32,7 +30,7 @@ public class GeneralLedgerService {
     private GeneralLedgerRepository generalLedgerRepository;
 
     @Autowired
-    private SavingAccountTypeRepository savingAccountTypeRepository;
+    private AccountTypeRepository accountTypeRepository;
 
     public List<GeneralLedger> findByAccountNumber(String accountNumber) {
         return generalLedgerRepository.findByAccountNumber(accountNumber);

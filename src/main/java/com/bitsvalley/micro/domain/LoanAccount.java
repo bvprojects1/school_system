@@ -1,6 +1,5 @@
 package com.bitsvalley.micro.domain;
 import com.bitsvalley.micro.utils.AccountStatus;
-
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Date;
@@ -11,8 +10,8 @@ import java.util.List;
  * 11.06.2021
  */
 @Entity
-@Table(name = "savingaccount")
-public class SavingAccount {
+@Table(name = "loanaccount")
+public class LoanAccount {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -21,31 +20,31 @@ public class SavingAccount {
     private String lastUpdatedBy;
     private Date createdDate;
     private Date lastUpdatedDate;
-    private boolean accountMinBalanceLocked;
     private boolean defaultedPayment;
-
     private String branchCode;
-
     private AccountStatus accountStatus;
     private int minimumPayment;
-    private String intervalOfSaving;
+    private String intervalOfLoanPayment;
     private int interestRate;
     private String country;
     private String productCode;
 
     @Column(unique = true)
     private String accountNumber;
+    private double currentLoanAmount;
+    private double loanAmount;
 
-    private double accountBalance;
+    @OneToMany(cascade = CascadeType.ALL)
+    private List<ShorteeAccount> shorteeAccounts = new ArrayList<ShorteeAccount>();
+
+    @OneToOne(cascade = CascadeType.ALL)
+    private AccountType accountType;
 
     @ManyToOne
     private User user;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    private AccountType accountType; //Leave
-
     @OneToMany(cascade = CascadeType.ALL)
-    private List<SavingAccountTransaction> savingAccountTransaction = new ArrayList<SavingAccountTransaction>();
+    private List<LoanAccountTransaction> loanAccountTransaction = new ArrayList<LoanAccountTransaction>();
 
     private String notes;
     private double accountMinBalance;
@@ -66,14 +65,6 @@ public class SavingAccount {
         this.id = id;
     }
 
-    public List<SavingAccountTransaction> getSavingAccountTransaction() {
-        return savingAccountTransaction;
-    }
-
-    public void setSavingAccountTransaction(List<SavingAccountTransaction> savingAccountTransaction) {
-        this.savingAccountTransaction = savingAccountTransaction;
-    }
-
     public AccountStatus getAccountStatus() {
         return accountStatus;
     }
@@ -90,32 +81,12 @@ public class SavingAccount {
         this.minimumPayment = minimumPayment;
     }
 
-    public String getIntervalOfSaving() {
-        return intervalOfSaving;
-    }
-
-    public void setIntervalOfSaving(String intervalOfSaving) {
-        this.intervalOfSaving = intervalOfSaving;
-    }
-
-    public AccountType getAccountSavingType() {
-        return accountType;
-    }
-
     public double getAccountMinBalance() {
         return accountMinBalance;
     }
 
     public void setAccountMinBalance(double accountMinBalance) {
         this.accountMinBalance = accountMinBalance;
-    }
-
-    public boolean isAccountMinBalanceLocked() {
-        return accountMinBalanceLocked;
-    }
-
-    public void setAccountMinBalanceLocked(boolean accountMinBalanceLocked) {
-        this.accountMinBalanceLocked = accountMinBalanceLocked;
     }
 
     public String getCreatedBy() {
@@ -158,21 +129,12 @@ public class SavingAccount {
         this.lastUpdatedDate = lastUpdatedDate;
     }
 
-
     public void setLastUpdatedBy(String lastUpdatedBy) {
         this.lastUpdatedBy = lastUpdatedBy;
     }
 
     public String getLastUpdatedBy() {
         return lastUpdatedBy;
-    }
-
-    public void setAccountLocked(boolean accountLocked) {
-        this.accountMinBalanceLocked = accountLocked;
-    }
-
-    public boolean getAccountLocked() {
-        return accountMinBalanceLocked;
     }
 
     public User getUser() {
@@ -183,14 +145,6 @@ public class SavingAccount {
         this.user = user;
     }
 
-    public AccountType getAccountType() {
-        return accountType;
-    }
-
-    public void setAccountType(AccountType accountType) {
-        this.accountType = accountType;
-    }
-
     public String getCountry() {
         return country;
     }
@@ -198,14 +152,6 @@ public class SavingAccount {
     public void setCountry(String country) {
         this.country = country;
     }
-
-//    public long getBranch() {
-//        return branch;
-//    }
-//
-//    public void setBranch(long branch) {
-//        this.branch = branch;
-//    }
 
     public String getProductCode() {
         return productCode;
@@ -223,12 +169,12 @@ public class SavingAccount {
         this.accountNumber = accountNumber;
     }
 
-    public double getAccountBalance() {
-        return accountBalance;
+    public double getCurrentLoanAmount() {
+        return currentLoanAmount;
     }
 
-    public void setAccountBalance(double accountBalance) {
-        this.accountBalance = accountBalance;
+    public void setCurrentLoanAmount(double currentLoanAmount) {
+        this.currentLoanAmount = currentLoanAmount;
     }
 
     public String getBranchCode() {
@@ -237,6 +183,47 @@ public class SavingAccount {
 
     public void setBranchCode(String branchCode) {
         this.branchCode = branchCode;
+    }
+
+    public String getIntervalOfLoanPayment() {
+        return intervalOfLoanPayment;
+    }
+
+    public void setIntervalOfLoanPayment(String intervalOfLoanPayment) {
+        this.intervalOfLoanPayment = intervalOfLoanPayment;
+    }
+
+    public List<LoanAccountTransaction> getLoanAccountTransaction() {
+        return loanAccountTransaction;
+    }
+
+    public void setLoanAccountTransaction(List<LoanAccountTransaction> loanAccountTransaction) {
+        this.loanAccountTransaction = loanAccountTransaction;
+    }
+
+
+    public List<ShorteeAccount> getShorteeAccounts() {
+        return shorteeAccounts;
+    }
+
+    public void setShorteeAccounts(List<ShorteeAccount> shorteeAccounts) {
+        this.shorteeAccounts = shorteeAccounts;
+    }
+
+    public double getLoanAmount() {
+        return loanAmount;
+    }
+
+    public void setLoanAmount(double loanAmount) {
+        this.loanAmount = loanAmount;
+    }
+
+    public AccountType getAccountType() {
+        return accountType;
+    }
+
+    public void setAccountType(AccountType accountType) {
+        this.accountType = accountType;
     }
 
 }

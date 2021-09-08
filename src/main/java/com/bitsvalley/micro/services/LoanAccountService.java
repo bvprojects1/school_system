@@ -18,10 +18,14 @@ import java.time.temporal.ChronoUnit;
 import java.util.*;
 
 @Service
-public class SavingAccountService extends SuperService{
+public class LoanAccountService extends SuperService{
 
     @Autowired
     private SavingAccountRepository savingAccountRepository;
+
+    @Autowired
+    private LoanAccountRepository loanAccountRepository;
+
 
     @Autowired
     private AccountTypeRepository accountTypeRepository;
@@ -55,40 +59,38 @@ public class SavingAccountService extends SuperService{
         return savingAccountRepository.findAllCount();
     }
 
-    public void createSavingAccount(SavingAccount savingAccount, User user) {
+    public void createLoanAccount(LoanAccount loanAccount, User user) {
+        int allCount = loanAccountRepository.findAllCount();
+        loanAccount.setAccountNumber(BVMicroUtils.getCobacSavingsAccountNumber(loanAccount.getCountry(),
+                loanAccount.getProductCode(),loanAccount.getBranchCode(), allCount )); //TODO: Collision
+        loanAccount.setAccountStatus(AccountStatus.ACTIVE);
+        loanAccount.setCreatedBy(getLoggedInUserName());
+        loanAccount.setCreatedDate(new Date(System.currentTimeMillis()));
+        loanAccount.setLastUpdatedBy(getLoggedInUserName());
+//        loanAccount.setAccountLocked(false);
+        loanAccount.setLastUpdatedDate(new Date(System.currentTimeMillis()));
 
-        long count = savingAccountRepository.count();
+        AccountType accountType = accountTypeRepository.findByName("GENERAL SAVINGS");
+        loanAccount.setAccountType(accountType);
 
-        savingAccount.setAccountNumber(BVMicroUtils.getCobacSavingsAccountNumber(savingAccount.getCountry(),
-                savingAccount.getProductCode(), savingAccount.getBranchCode(), count )); //TODO: Collision
-        savingAccount.setAccountStatus(AccountStatus.ACTIVE);
-        savingAccount.setCreatedBy(getLoggedInUserName());
-        savingAccount.setCreatedDate(new Date(System.currentTimeMillis()));
-        savingAccount.setLastUpdatedBy(getLoggedInUserName());
-        savingAccount.setAccountLocked(false);
-        savingAccount.setLastUpdatedDate(new Date(System.currentTimeMillis()));
-
-        AccountType savingAccountType = accountTypeRepository.findByName("GENERAL SAVINGS");
-        savingAccount.setAccountType(savingAccountType);
-
-        savingAccount.setUser(user);
-        savingAccountRepository.save(savingAccount);
-
+        loanAccount.setUser(user);
+        loanAccountRepository.save(loanAccount);
 
         user = userRepository.findById(user.getId()).get();
-        user.getSavingAccount().add(savingAccount);
+        user.getLoanAccount().add(loanAccount);
         userService.saveUser(user);
 
         //TODO: Move to callCenter service
         CallCenter callCenter = new CallCenter();
-        callCenter.setAccountHolderName(savingAccount.getUser().getFirstName()+ " "+savingAccount.getUser().getFirstName());
-        callCenter.setAccountNumber(savingAccount.getAccountNumber());
+        callCenter.setAccountHolderName(loanAccount.getUser().getFirstName()+ " "+loanAccount.getUser().getFirstName());
+        callCenter.setAccountNumber(loanAccount.getAccountNumber());
         callCenter.setDate(new Date(System.currentTimeMillis()));
-        callCenter.setNotes("Savings Account Created: "+ savingAccount.getAccountNumber() + " Savings Type: "+ savingAccount.getAccountSavingType().getName());
-        callCenter.setUserName(savingAccount.getUser().getUserName());
+        callCenter.setNotes("Savings Account Created: "+ loanAccount.getAccountNumber() + " Savings Type: "+ loanAccount.getAccountType().getName());
+        callCenter.setUserName(loanAccount.getUser().getUserName());
         callCenterRepository.save(callCenter);
 
     }
+
 
     @Transactional
     public void createSavingAccountTransaction(SavingAccountTransaction savingAccountTransaction) {

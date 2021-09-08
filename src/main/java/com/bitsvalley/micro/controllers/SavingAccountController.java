@@ -5,10 +5,9 @@ import com.bitsvalley.micro.repositories.CallCenterRepository;
 import com.bitsvalley.micro.repositories.UserRepository;
 import com.bitsvalley.micro.services.PdfService;
 import com.bitsvalley.micro.services.SavingAccountService;
-import com.bitsvalley.micro.services.SavingAccountTypeService;
+import com.bitsvalley.micro.services.AccountTypeService;
 import com.bitsvalley.micro.services.UserService;
 import com.bitsvalley.micro.utils.BVMicroUtils;
-import com.bitsvalley.micro.webdomain.SavingBilanz;
 import com.bitsvalley.micro.webdomain.SavingBilanzList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -43,7 +42,7 @@ public class SavingAccountController extends SuperController {
     SavingAccountService savingAccountService;
 
     @Autowired
-    SavingAccountTypeService savingAccountTypeService;
+    AccountTypeService accountTypeService;
 
     @Autowired
     UserRepository userRepository;
@@ -62,12 +61,13 @@ public class SavingAccountController extends SuperController {
         return "savingAccount";
     }
 
+
     @PostMapping(value = "/registerSavingAccountForm")
     public String registerSavingAccount(@ModelAttribute("saving") SavingAccount savingAccount, ModelMap model, HttpServletRequest request) {
         User user = (User) request.getSession().getAttribute(BVMicroUtils.CUSTOMER_IN_USE);
         user = userRepository.findById(user.getId()).get();
         Branch branchInfo = getBranchInfo(getLoggedInUserName());
-        savingAccount.setBranch(branchInfo.getId());
+        savingAccount.setBranchCode(branchInfo.getId()+"");
         savingAccount.setBranchCode(branchInfo.getCode()); //TODO: BRANCH CODE
         savingAccount.setCountry(branchInfo.getCountry());
         savingAccountService.createSavingAccount(savingAccount, user);

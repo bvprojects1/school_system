@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-<div th:insert="/header::navbar">  </div>
+<div th:insert="header::navbar">  </div>
 <br/>
 <br/>
 
@@ -33,8 +33,8 @@
                             <div class="col-md-12">
 
                                 <label for="aUserRole">Choose a User Role:</label>
-                                <div th:if="${#authorization.expression('hasAnyAuthority(''ROLE_MANAGER'')')} OR ${#authorization.expression('hasAnyAuthority(''ROLE_ADMIN'')')}">
-                                    <select  name="aUserRole" id="aUserRole">
+                                <span th:if="${#authorization.expression('hasAnyAuthority(''ROLE_MANAGER'')')} OR ${#authorization.expression('hasAnyAuthority(''ROLE_ADMIN'')')}">
+                                    <select class="select" name="aUserRole" id="aUserRole">
 
                                         <option value="ROLE_ACCOUNTANT">ACCOUNTANT</option>
                                         <option value="ROLE_AUDITOR">AUDITOR</option>
@@ -52,14 +52,15 @@
 
                                     </select>
 
-                                </div>
+                                </span>
+                                <br/>
                                 <div th:if="${#authorization.expression('hasAnyAuthority(''ROLE_AGENT'')')}">
                                     <select  name="aUserRole">
                                         <option value="ROLE_CUSTOMER">CUSTOMER</option>
                                     </select>
                                 </div>
                                 <br/>
-                                <input type="text" name="userName" th:field="*{userName}" id="userName"
+                                Username: <input type="text" name="userName" th:field="*{userName}" id="userName"
                                        placeholder="Username" class="form-control" required>
                                 <br/>
                                 <label>
@@ -142,5 +143,5 @@
     </div>
 </section>
 
-<div th:insert="/footer::navbar">  </div>
+<div th:insert="footer::navbar">  </div>
 </html>
