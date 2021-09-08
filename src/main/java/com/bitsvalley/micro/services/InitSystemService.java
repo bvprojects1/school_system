@@ -80,8 +80,8 @@ public class InitSystemService {
             themeColor2.setPropertyValue("gray");
             runtimePropertiesList.add(themeColor2);
 
-            Iterable<RuntimeProperties> savingAccountTypeListIterable = runtimePropertiesList;
-            runtimePropertiesRepository.saveAll(savingAccountTypeListIterable);
+            Iterable<RuntimeProperties> runtimePropertiesListIterable = runtimePropertiesList;
+            runtimePropertiesRepository.saveAll(runtimePropertiesListIterable);
         }
         return runtimePropertiesList;
     }

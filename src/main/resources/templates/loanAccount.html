@@ -14,7 +14,7 @@
             <div class="row">
                 <div class="col-md-12">
                     <div class="project-title-content">
-                        <h3>CREATE A SAVING ACCOUNT</h3>
+                        <h3>CREATE A LOAN ACCOUNT</h3>
                         <span><i class="fas fa-crosshairs"></i></span>
                         <!--                            <p>Cross-agency coordination clean water rural, promising development turmoil inclusive education transformative community.</p>-->
                     </div>
@@ -23,29 +23,28 @@
         </div>
     </div>
 
-    <form action="#" th:action="@{/registerSavingAccountForm}" method="post" th:object="${savingAccount}">
+    <form action="#" th:action="@{/registerLoanAccountForm}" method="post" th:object="${loanAccount}">
         <table class="center" width="100%">
             <tr>
                 <td width="33%"></td>
-                <td><label> Saving Type:</label></td>
-                <td><select name="savingType" id="savingType" th:field="*{productCode}">
-                    <option value="11">GENERAL SAVINGS - 11</option>
-                    <option value="12">RETIREMENT SAVINGS - 12 </option>
-                    <option value="13">DAILY SAVINGS - 13</option>
-                    <option value="14">MEDICAL SAVINGS - 14</option>
-                    <option value="15">SOCIAL SAVINGS - 15</option>
-                    <option value="16">BUSINESS SAVINGS - 16</option>
-                    <option value="17">CHILDREN SAVINGS - 17</option>
-                    <option value="18">REAL ESTATE SAVINGS - 18</option>
-                    <option value="19">EDUCATION SAVINGS - 19</option>
+                <td><label> Loan Type:</label></td>
+                <td><select name="loanType" id="loanType" th:field="*{productCode}">
+                    <option value="41">SHORT TERM LOAN</option>
+                    <option value="42">CONSUMPTION LOAN </option>
+                    <option value="43">AGRICULTURE LOAN</option>
+                    <option value="44">BUSINESS INVESTMENT LOAN</option>
+                    <option value="45">SCHOOL FEES LOAN</option>
+                    <option value="46">REAL ESTATE LOAN</option>
+                    <option value="47">OVERDRAFT LOAN</option>
+                    <option value="48">NJANGI FINANCING</option>
                 </select>
                 </td>
             </tr>
-            <tr>
-                <td width="33%"></td>
-                <td width="10%"><label> Minimum balance:</label></td>
-                <td><label> <input placeholder="0" type="number" th:field="*{accountMinBalance}"/></label></td>
-            </tr>
+<!--            <tr>-->
+<!--                <td width="33%"></td>-->
+<!--                <td width="10%"><label> Minimum balance:</label></td>-->
+<!--                <td><label> <input placeholder="0" type="number" th:field="*{accountMinBalance}"/></label></td>-->
+<!--            </tr>-->
             <tr>
                 <td width="33%"></td>
                 <td width="10%"><label> Interest Rate:</label></td>

@@ -2,17 +2,13 @@ package com.bitsvalley.micro.services;
 
 import com.bitsvalley.micro.domain.SavingAccount;
 import com.bitsvalley.micro.domain.SavingAccountTransaction;
-import com.bitsvalley.micro.domain.User;
 import com.bitsvalley.micro.repositories.SavingAccountRepository;
 import com.bitsvalley.micro.repositories.SavingAccountTransactionRepository;
-import com.bitsvalley.micro.repositories.SavingAccountTypeRepository;
+import com.bitsvalley.micro.repositories.AccountTypeRepository;
 import com.bitsvalley.micro.repositories.UserRepository;
-import com.bitsvalley.micro.utils.BVMicroUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.servlet.http.HttpServletRequest;
-import java.time.LocalDateTime;
 import java.util.Optional;
 
 @Service
@@ -25,7 +21,7 @@ public class SavingAccountTransactionService extends SuperService{
     private SavingAccountTransactionRepository savingAccountTransactionRepository;
 
     @Autowired
-    private SavingAccountTypeRepository savingAccountTypeRepository;
+    private AccountTypeRepository accountTypeRepository;
 
     @Autowired
     private UserRoleService userRoleService;

@@ -2,7 +2,7 @@ package com.bitsvalley.micro.services;
 
 import com.bitsvalley.micro.domain.CallCenter;
 import com.bitsvalley.micro.repositories.CallCenterRepository;
-import com.bitsvalley.micro.repositories.SavingAccountTypeRepository;
+import com.bitsvalley.micro.repositories.AccountTypeRepository;
 import com.bitsvalley.micro.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -26,7 +26,7 @@ public class BranchService {
     private CallCenterRepository callCenterRepository;
 
     @Autowired
-    private SavingAccountTypeRepository savingAccountTypeRepository;
+    private AccountTypeRepository accountTypeRepository;
 
     public List<CallCenter> findByAccountNumber(String accountNumber) {
         return callCenterRepository.findByAccountNumber(accountNumber);

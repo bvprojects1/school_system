@@ -2,9 +2,9 @@ package com.bitsvalley.micro.services;
 
 import com.bitsvalley.micro.domain.*;
 import com.bitsvalley.micro.repositories.CallCenterRepository;
-import com.bitsvalley.micro.repositories.SavingAccountTypeRepository;
+import com.bitsvalley.micro.repositories.AccountTypeRepository;
 import com.bitsvalley.micro.repositories.UserRepository;
-import com.bitsvalley.micro.domain.SavingAccountType;
+import com.bitsvalley.micro.domain.AccountType;
 import com.bitsvalley.micro.domain.User;
 import com.bitsvalley.micro.domain.UserRole;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +30,7 @@ public class UserService {
     private CallCenterRepository callCenterRepository;
 
     @Autowired
-    private SavingAccountTypeRepository savingAccountTypeRepository;
+    private AccountTypeRepository accountTypeRepository;
 
     public Optional<User> getUserById(long id) {
         return userRepository.findById(id);
@@ -48,7 +48,7 @@ public class UserService {
 
         user.setAccountExpired(false);
         user.setAccountLocked(false);
-        insureSavingAccountExists();
+        insureAccountExists();
         User save = userRepository.save(user);
 
         // - Update callcenter
@@ -66,10 +66,10 @@ public class UserService {
         userRepository.save(user);
     }
 
-    private void insureSavingAccountExists(){
-        SavingAccountType genral_saving = savingAccountTypeRepository.findByName("GENERAL SAVINGS");
+    private void insureAccountExists(){ // init system
+        AccountType general_saving = accountTypeRepository.findByName("GENERAL SAVINGS");
 //        Iterable<UserRole> all = userRoleService.findAll();
-        if (genral_saving == null) {
+        if (general_saving == null) {
 //
 ////            role = new UserRole();
 ////            role.setName(name);
@@ -101,54 +101,96 @@ public class UserService {
 //            userRoleService.saveAllRole(iterable);
 // ----------------------------------------------------------------------------------------------
 
-            List<SavingAccountType> savingAccountTypeList = new ArrayList<SavingAccountType>();
-            SavingAccountType schoolSavingAccountType = new SavingAccountType();
+            List<AccountType> savingAccountTypeList = new ArrayList<AccountType>();
+            AccountType schoolSavingAccountType = new AccountType();
             schoolSavingAccountType.setNumber("11");
             schoolSavingAccountType.setName("GENERAL SAVINGS");
             savingAccountTypeList.add(schoolSavingAccountType);
 
-            SavingAccountType autoSavingAccountType = new SavingAccountType();
+            AccountType autoSavingAccountType = new AccountType();
             autoSavingAccountType.setName("RETIREMENT SAVINGS");
             autoSavingAccountType.setNumber("12");
             savingAccountTypeList.add(autoSavingAccountType);
 
-            SavingAccountType vacationSavingAccountType = new SavingAccountType();
+            AccountType vacationSavingAccountType = new AccountType();
             vacationSavingAccountType.setName("DAILY SAVINGS");
             vacationSavingAccountType.setNumber("13");
             savingAccountTypeList.add(vacationSavingAccountType);
 
-            SavingAccountType constructionSavingAccountType = new SavingAccountType();
+            AccountType constructionSavingAccountType = new AccountType();
             constructionSavingAccountType.setName("MEDICAL SAVINGS");
             constructionSavingAccountType.setNumber("14");
             savingAccountTypeList.add(constructionSavingAccountType);
 
-            SavingAccountType familySavingAccountType = new SavingAccountType();
+            AccountType familySavingAccountType = new AccountType();
             familySavingAccountType.setName("SOCIAL SAVINGS");
             familySavingAccountType.setNumber("15");
             savingAccountTypeList.add(familySavingAccountType);
 
-            SavingAccountType otherSavingAccountType = new SavingAccountType();
+            AccountType otherSavingAccountType = new AccountType();
             otherSavingAccountType.setName("BUSINESS SAVINGS");
             otherSavingAccountType.setNumber("16");
             savingAccountTypeList.add(otherSavingAccountType);
 
-            SavingAccountType yearlySavingAccountType = new SavingAccountType();
+            AccountType yearlySavingAccountType = new AccountType();
             yearlySavingAccountType.setName("CHILDREN SAVINGS");
             yearlySavingAccountType.setNumber("17");
             savingAccountTypeList.add(yearlySavingAccountType);
 
-            SavingAccountType monthlSavingAccountType = new SavingAccountType();
+            AccountType monthlSavingAccountType = new AccountType();
             monthlSavingAccountType.setName("REAL ESTATE SAVINGS");
             monthlSavingAccountType.setNumber("18");
             savingAccountTypeList.add(monthlSavingAccountType);
 
-            SavingAccountType dailySavingAccountType = new SavingAccountType();
+            AccountType dailySavingAccountType = new AccountType();
             dailySavingAccountType.setName("EDUCATION SAVINGS");
             dailySavingAccountType.setNumber("19");
             savingAccountTypeList.add(dailySavingAccountType);
 
-            Iterable<SavingAccountType> savingAccountTypeListIterable = savingAccountTypeList;
-            savingAccountTypeRepository.saveAll(savingAccountTypeListIterable);
+
+
+            AccountType shortTermLoanType = new AccountType();
+            shortTermLoanType.setName("SHORT TERM LOAN");
+            shortTermLoanType.setNumber("41");
+            savingAccountTypeList.add(shortTermLoanType);
+
+            AccountType consumptionType = new AccountType();
+            consumptionType.setName("CONSUMPTION LOAN");
+            consumptionType.setNumber("42");
+            savingAccountTypeList.add(consumptionType);
+
+            AccountType agricultureLoanType = new AccountType();
+            agricultureLoanType.setName("AGRICULTURE LOAN");
+            agricultureLoanType.setNumber("43");
+            savingAccountTypeList.add(agricultureLoanType);
+
+            AccountType businessLoanType = new AccountType();
+            businessLoanType.setName("BUSINESS INVESTMENT LOAN");
+            businessLoanType.setNumber("44");
+            savingAccountTypeList.add(businessLoanType);
+
+            AccountType schoolFeesType = new AccountType();
+            schoolFeesType.setName("SCHOOL FEES LOAN");
+            schoolFeesType.setNumber("45");
+            savingAccountTypeList.add(schoolFeesType);
+
+            AccountType realEstateType = new AccountType();
+            realEstateType.setName("REAL INVESTMENT LOAN");
+            realEstateType.setNumber("46");
+            savingAccountTypeList.add(realEstateType);
+
+            AccountType overdraftType = new AccountType();
+            overdraftType.setName("OVER DRAFT LOAN");
+            overdraftType.setNumber("47");
+            savingAccountTypeList.add(overdraftType);
+
+            AccountType njangiType = new AccountType();
+            njangiType.setName("NJANGI FINANCING LOAN");
+            njangiType.setNumber("48");
+            savingAccountTypeList.add(njangiType);
+
+            Iterable<AccountType> savingAccountTypeListIterable = savingAccountTypeList;
+            accountTypeRepository.saveAll(savingAccountTypeListIterable);
         }
     }
 

@@ -1,6 +1,5 @@
 package com.bitsvalley.micro.domain;
 
-
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -43,6 +42,9 @@ public class User {
 
     @OneToMany(cascade = CascadeType.ALL)
     private List<SavingAccount> savingAccount = new ArrayList<SavingAccount>();
+
+    @OneToMany(cascade = CascadeType.ALL)
+    private List<LoanAccount> loanAccount = new ArrayList<LoanAccount>();
 
     private LocalDateTime accountExpiredDate;
     private boolean accountLocked;
@@ -242,11 +244,23 @@ public class User {
         return identityCardNumber;
     }
 
-    public Branch getBranch() { return branch; }
+    public List<LoanAccount> getLoanAccount() {
+        return loanAccount;
+    }
 
-    public void setBranch(Branch branch) { this.branch = branch; }
+    public void setLoanAccount(List<LoanAccount> loanAccount) {
+        this.loanAccount = loanAccount;
+    }
 
     public void setIdentityCardNumber(String identityCardNumber) {
         this.identityCardNumber = identityCardNumber;
+    }
+
+    public Branch getBranch() {
+        return branch;
+    }
+
+    public void setBranch(Branch branch) {
+        this.branch = branch;
     }
 }

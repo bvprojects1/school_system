@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
-<div th:insert="/header::navbar">  </div>
+<div th:insert="header::navbar">  </div>
 <br/>
 <br/>
 
@@ -77,7 +77,7 @@
 <!--        <tr th:each="savingAccount : ${savingBilanzList.savingBilanzList}">-->
 
             <td>
-                <p th:text="${savingAccount.savingAccountType.name}"/>
+                <p th:text="${savingAccount.accountType.name}"/>
             </td>
             <td>
                 <a th:href="@{/callcenter/{id}(id=${savingAccount.accountNumber})}" href="/callcenter"><span
@@ -146,8 +146,8 @@
 </section>
 
 </body>
-<div th:insert="/blog::navbar"></div>
+<div th:insert="blog::navbar"></div>
 <br/>
 
-<div th:insert="/footer::navbar">  </div>
+<div th:insert="footer::navbar">  </div>
 </html>
