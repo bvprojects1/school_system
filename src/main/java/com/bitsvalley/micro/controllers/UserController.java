@@ -5,6 +5,7 @@ import com.bitsvalley.micro.repositories.CallCenterRepository;
 import com.bitsvalley.micro.repositories.UserRepository;
 import com.bitsvalley.micro.services.*;
 import com.bitsvalley.micro.utils.BVMicroUtils;
+import com.bitsvalley.micro.webdomain.RuntimeSetting;
 import com.bitsvalley.micro.webdomain.SavingBilanz;
 import com.bitsvalley.micro.webdomain.SavingBilanzList;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,8 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -232,7 +235,9 @@ public class UserController extends SuperController{
             Optional<SavingAccount> savingAccount = savingAccountService.findById(new Long(id));
             SavingBilanzList savingBilanzByUserList = savingAccountService.
                     calculateAccountBilanz(savingAccount.get().getSavingAccountTransaction(),false);
-            String htmlInput = pdfService.generatePDFSavingBilanzList(savingBilanzByUserList, savingAccount.get(),"");
+            RuntimeSetting runtimeSetting = (RuntimeSetting)request.getSession().getAttribute("runtimeSettings");
+
+            String htmlInput = pdfService.generatePDFSavingBilanzList(savingBilanzByUserList, savingAccount.get(),runtimeSetting.getLogo());
             byteArrayOutputStream = pdfService.generatePDF(htmlInput, response);
             response.setHeader("Content-Length",String.valueOf(byteArrayOutputStream.size()));
             byteArrayInputStream = new ByteArrayInputStream(byteArrayOutputStream.toByteArray());

@@ -13,11 +13,13 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
 import org.xhtmlrenderer.pdf.ITextRenderer;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Path;
 import java.util.Date;
 import java.util.List;
 
@@ -33,7 +35,7 @@ public class PdfService {
                 "</head><body><br/><br/><font color=\"green\" size=\"8px\"><b>RECEIPT FOR PAYMENT MADE</b></font>" +
                 "<table width=\"100%\">" +
                 "<tr> <td> Form N. 120000029    </td>" +
-                "<td colspan=\"3\"><img width=\""+rt.getLogoSize()+"\" src=\""+ rt.getLogo()+"\"/><br/><b>"+ rt.getBusinessName() +"</b><br/> BranchName <br/>"+rt.getAddress()+" "+rt.getTelephone()+"</td>" +
+                "<td colspan=\"3\"><img width=\"125\" src=\""+ rt.getLogo()+"\"/><br/><b>"+ rt.getBusinessName() +"</b><br/> BranchName <br/>"+rt.getAddress()+" "+rt.getTelephone()+"</td>" +
                 "<td>"+savingAccountTransaction.getModeOfPayment()+" from Account Owner: <br/>"+savingAccountTransaction.getAccountOwner()+"</td></tr>" +
                 "        <tr><td colspan=\"3\">" +
                 "Account Number: "+ savingAccountTransaction.getSavingAccount().getAccountNumber() +"<br/>Customer: <b>"+savingAccountTransaction.getSavingAccount().getUser().getLastName()+","+savingAccountTransaction.getSavingAccount().getUser().getFirstName()+"</b> </td>" +
@@ -54,7 +56,7 @@ public class PdfService {
                 "                <th></th>\n" +
                 "            </tr>\n" +
                 "            <tr>\n" +
-                "                <td colspan=\"2\">"+savingAccountTransaction.getSavingAccount().getAccountSavingType()+"</td>\n" +
+                "                <td colspan=\"2\">"+savingAccountTransaction.getSavingAccount().getAccountSavingType().getName()+"</td>\n" +
                 "                <td>"+BVMicroUtils.formatCurrency(savingAccountTransaction.getSavingAmount())+"</td>\n" +
                 "                <td>0</td>\n" +
                 "                <td>1000</td>\n" +
@@ -99,7 +101,7 @@ public class PdfService {
         return savingBilanzNoInterest;
     }
 
-    public String generatePDFSavingBilanzList(SavingBilanzList savingBilanzList, SavingAccount savingAccount, String logoFilePath) {
+    public String generatePDFSavingBilanzList(SavingBilanzList savingBilanzList, SavingAccount savingAccount, String logoPath) throws IOException {
         String savingBilanzNoInterest = "<html><head><style>\n" +
                 "#transactions {\n" +
                 "  border-collapse: collapse;\n" +
@@ -125,7 +127,7 @@ public class PdfService {
                 "</style>" +
                 "</head><body><br/><br/>" +
                 "    <table border=\"0\" width=\"100%\">" +
-                "        <tr><td align=\"center\"> <img width=\"50px\" src=\"/Users/frusamachifen/bv_micro_workspace/bv_micro/src/main/webapp/assets/images/logo.jpeg\"/><br/>TBC MFI PLC <br/> Together each achieves more</td>" +
+                "        <tr><td align=\"center\"> <img width=\"125px\" src=\""+ logoPath+"\"/><br/>TBC MFI PLC <br/> Together each achieves more</td>" +
                 "       <td colspan=\"2\"><b><font size=\"4\" color=\"green\">ACCOUNT STATEMENT</font></b></td>" +
                 "       <td align=\"right\"><font size=\"4\">"+ BVMicroUtils.formatDate(new Date(System.currentTimeMillis())) +"</font></td></tr>" +
                 "        <tr><td> </td><td> </td>" +

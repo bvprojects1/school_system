@@ -23,11 +23,12 @@ public class LoanAccount {
     private boolean defaultedPayment;
     private String branchCode;
     private AccountStatus accountStatus;
-    private int minimumPayment;
     private String intervalOfLoanPayment;
     private int interestRate;
     private String country;
     private String productCode;
+    private int termOfLoan;
+
 
     @Column(unique = true)
     private String accountNumber;
@@ -47,7 +48,6 @@ public class LoanAccount {
     private List<LoanAccountTransaction> loanAccountTransaction = new ArrayList<LoanAccountTransaction>();
 
     private String notes;
-    private double accountMinBalance;
 
     public boolean isDefaultedPayment() {
         return defaultedPayment;
@@ -71,22 +71,6 @@ public class LoanAccount {
 
     public void setAccountStatus(AccountStatus accountStatus) {
         this.accountStatus = accountStatus;
-    }
-
-    public int getMinimumPayment() {
-        return minimumPayment;
-    }
-
-    public void setMinimumPayment(int minimumPayment) {
-        this.minimumPayment = minimumPayment;
-    }
-
-    public double getAccountMinBalance() {
-        return accountMinBalance;
-    }
-
-    public void setAccountMinBalance(double accountMinBalance) {
-        this.accountMinBalance = accountMinBalance;
     }
 
     public String getCreatedBy() {
@@ -226,4 +210,11 @@ public class LoanAccount {
         this.accountType = accountType;
     }
 
+    public int getTermOfLoan() {
+        return termOfLoan;
+    }
+
+    public void setTermOfLoan(int termOfLoan) {
+        this.termOfLoan = termOfLoan;
+    }
 }

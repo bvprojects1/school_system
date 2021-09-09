@@ -1,6 +1,15 @@
 package com.bitsvalley.micro.utils;
 
+import com.bitsvalley.micro.webdomain.RuntimeSetting;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
 import java.nio.charset.Charset;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
@@ -88,4 +97,12 @@ public class BVMicroUtils {
     }
 
 
+
+//    @ResponseBody
+//    public static byte[] getLogoImage(Path path) throws IOException {
+////        RuntimeSetting runtimeSetting = (RuntimeSetting)request.getSession().getAttribute("runtimeSettings");
+////        Path path = Paths.get(logoPath);
+//        byte[] data = Files.readAllBytes(path);
+//        return data;
+//    }
 }

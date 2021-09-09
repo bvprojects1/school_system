@@ -16,7 +16,6 @@
                     <div class="project-title-content">
                         <h3>CREATE A LOAN ACCOUNT</h3>
                         <span><i class="fas fa-crosshairs"></i></span>
-                        <!--                            <p>Cross-agency coordination clean water rural, promising development turmoil inclusive education transformative community.</p>-->
                     </div>
                 </div>
             </div>
@@ -40,11 +39,6 @@
                 </select>
                 </td>
             </tr>
-<!--            <tr>-->
-<!--                <td width="33%"></td>-->
-<!--                <td width="10%"><label> Minimum balance:</label></td>-->
-<!--                <td><label> <input placeholder="0" type="number" th:field="*{accountMinBalance}"/></label></td>-->
-<!--            </tr>-->
             <tr>
                 <td width="33%"></td>
                 <td width="10%"><label> Interest Rate:</label></td>
@@ -53,14 +47,14 @@
 
             <tr>
                 <td width="33%"></td>
-                <td width="10%"><label> Minimum Payment:</label></td>
-                <td><input type="number" th:field="*{minimumPayment}"/></td>
+                <td width="10%"><label> Term of Loan:</label></td>
+                <td><input type="number" th:field="*{termOfLoan}"/></td>
             </tr>
 
             <tr>
                 <td width="33%"></td>
-                <td width="10%"><label for="intervalOfSaving">Saving Interval:</label></td>
-                <td><select name="intervalOfSaving" id="intervalOfSaving">
+                <td width="10%"><label for="intervalOfPayment">Payment Interval:</label></td>
+                <td><select name="intervalOfPayment" id="intervalOfPayment">
                     <option value="01 DAY">01 DAY</option>
                     <option value="15 DAY">15 DAY</option>
                     <option value="OTHER">OTHER</option>
@@ -78,15 +72,11 @@
                 <td width="33%"></td>
                 <td width="10%"></td>
                 <td>
-                    <button type="submit" class="btn btn-success">Create Account</button>
+                    <button type="submit" class="btn btn-success">Create Loan Account</button>
                 </td>
             </tr>
         </table>
     </form>
-    <!--                </div>-->
-    <!--            </div>-->
-    <!--        </div>-->
-    <!--    </div>-->
 </section>
 
 <div th:insert="footer::navbar">  </div>
