@@ -2,10 +2,13 @@ package com.bitsvalley.micro.controllers;
 
 import com.bitsvalley.micro.domain.*;
 import com.bitsvalley.micro.repositories.CallCenterRepository;
+import com.bitsvalley.micro.repositories.ShorteeAccountRepository;
 import com.bitsvalley.micro.repositories.UserRepository;
 import com.bitsvalley.micro.services.*;
 import com.bitsvalley.micro.utils.BVMicroUtils;
 import com.bitsvalley.micro.webdomain.SavingBilanzList;
+import org.apache.commons.lang3.StringUtils;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -17,6 +20,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Optional;
 
 /**
@@ -42,6 +46,18 @@ public class LoanAccountController extends SuperController {
     UserRepository userRepository;
 
     @Autowired
+    InterestService interestService;
+
+    @Autowired
+    SavingAccountService savingAccountService;
+
+    @Autowired
+    ShorteeService shorteeService;
+
+    @Autowired
+    GeneralLedgerService generalLedgerService;
+
+    @Autowired
     PdfService pdfService;
 
     @GetMapping(value = "/registerLoanAccount")
@@ -51,22 +67,45 @@ public class LoanAccountController extends SuperController {
             return "findCustomer";
         }
         LoanAccount loanAccount = new LoanAccount();
+
         model.put("loanAccount", loanAccount);
         return "loanAccount";
     }
 
     @PostMapping(value = "/registerLoanAccountForm")
-    public String registerSavingAccount(@ModelAttribute("saving") LoanAccount loanAccount, ModelMap model, HttpServletRequest request) {
+    public String registerLoanAccountForm(@ModelAttribute("loanAccount") LoanAccount loanAccount, ModelMap model, HttpServletRequest request) {
         User user = (User) request.getSession().getAttribute(BVMicroUtils.CUSTOMER_IN_USE);
         user = userRepository.findById(user.getId()).get();
+
         Branch branchInfo = getBranchInfo(getLoggedInUserName());
         loanAccount.setBranchCode(new Long(branchInfo.getId()).toString());
-        loanAccount.setBranchCode(branchInfo.getCode()); //TODO: BRANCH CODE
+        loanAccount.setBranchCode(branchInfo.getCode());
         loanAccount.setCountry(branchInfo.getCountry());
-        loanAccountService.createLoanAccount(loanAccount, user);
-        return findUserByUserName(user, model, request);
-    }
 
+        loanAccount.setTotalInterestOnLoan(
+                interestService.calculateInterestAccruedMonthCompounded(
+                        loanAccount.getInterestRate(),loanAccount.getTermOfLoan(),loanAccount.getLoanAmount()));
+        AccountType accountType = accountTypeService.getAccountTypeByProductCode(loanAccount.getProductCode());
+        if(!StringUtils.isEmpty(loanAccount.getGuarantorAccountNumber1())){
+            SavingAccount byAccountNumber1 = savingAccountService.findByAccountNumber(loanAccount.getGuarantorAccountNumber1());
+            request.getSession().setAttribute("guarantor1",byAccountNumber1);
+        }
+        if(!StringUtils.isEmpty(loanAccount.getGuarantorAccountNumber2())){
+            SavingAccount byAccountNumber2 = savingAccountService.findByAccountNumber(loanAccount.getGuarantorAccountNumber2());
+//            model.put("guarantor2(",byAccountNumber2);
+            request.getSession().setAttribute("guarantor2",byAccountNumber2);
+        }
+        if(!StringUtils.isEmpty(loanAccount.getGuarantorAccountNumber3())){
+            SavingAccount byAccountNumber3 = savingAccountService.findByAccountNumber(loanAccount.getGuarantorAccountNumber3());
+//            model.put("guarantor3",byAccountNumber3);
+            request.getSession().setAttribute("guarantor3",byAccountNumber3);
+        }
+        loanAccount.setAccountType(accountType);
+        request.getSession().setAttribute("loanAccount",loanAccount);
+        model.put("loanAccount", loanAccount);
+//        loanAccountService.createLoanAccount(loanAccount, user);
+        return "loanShorteeAccounts";
+    }
 
 
     @GetMapping(value = "/registerLoanAccountTransaction/{id}")
@@ -75,6 +114,58 @@ public class LoanAccountController extends SuperController {
         return displayLoanBilanzNoInterest(id, model, loanAccountTransaction);
     }
 
+    @PostMapping(value = "/loanShorteeAccountsForm")
+    public String loanGuarantorForm(@ModelAttribute("loanAccount") LoanAccount loanAccount,
+                                    ModelMap model,
+                                    HttpServletRequest request) {
+
+        LoanAccount loanAccountSession = (LoanAccount)request.getSession().getAttribute("loanAccount");
+        loanAccountSession.setGuarantor1Amount1(loanAccount.getGuarantor1Amount1());
+        loanAccountSession.setGuarantorAccountNumber1(loanAccount.getGuarantorAccountNumber1());
+        String loanShorteeMessage = getLoanShorteeMessage(loanAccountSession);
+
+        request.getSession().setAttribute("loanAccount", loanAccountSession);
+        model.put("loanAccount", loanAccountSession);
+
+        if(!StringUtils.isEmpty(loanShorteeMessage)){
+            model.put("errorShorteeAmount",loanShorteeMessage);
+            return "loanShorteeAccounts";
+        }
+        return "loanShorteeReview";
+    }
+
+    @NotNull
+    private String getLoanShorteeMessage(LoanAccount loanAccount) {
+        if(loanAccount.getLoanAmount() > loanAccount.getGuarantor1Amount1() +
+                                            loanAccount.getGuarantor1Amount2() +
+                                                loanAccount.getGuarantor1Amount3()){
+            return "Shortee amount is LESS than loan Amount";
+        }else if (loanAccount.getLoanAmount() < loanAccount.getGuarantor1Amount1() +
+                    loanAccount.getGuarantor1Amount2() +
+                        loanAccount.getGuarantor1Amount3()){
+            return "Shortee amount is MORE than loan Amount";
+        }
+        return "";
+    }
+
+    @PostMapping(value = "/createLoanAccountForm")
+    public String createLoanAccount(@ModelAttribute("loanAccount") LoanAccount loanAccount,
+                                    ModelMap model,
+                                    HttpServletRequest request) {
+
+        LoanAccount loanAccountSession = (LoanAccount)request.getSession().getAttribute("loanAccount");
+        SavingAccount savingAccountGuarantor1Session = (SavingAccount)request.getSession().getAttribute("guarantor1");
+
+//        TODO:  create shortee, update minimum acc. balance on guarantor, call center log, GL entry
+        User user = (User) request.getSession().getAttribute(BVMicroUtils.CUSTOMER_IN_USE);
+        LoanAccount loanAccountReturn = shorteeService.createLoanAccount(user,
+                loanAccountSession, savingAccountGuarantor1Session);
+        generalLedgerService.updateLoanAccountCreation(loanAccountReturn);
+        return "loanCreated";
+    }
+
+
+
     private String displayLoanBilanzNoInterest(long id, ModelMap model, LoanAccountTransaction loanAccountTransaction) {
         Optional<SavingAccount> savingAccount = loanAccountService.findById(id);
         SavingAccount aSavingAccount = savingAccount.get();
@@ -82,7 +173,6 @@ public class LoanAccountController extends SuperController {
 //        LoanBilanzList savingBilanzByUserList = savingAccountService.calculateAccountBilanz(savingAccountTransactionList, false);
 //        model.put("name", getLoggedInUserName());
 //        model.put("savingBilanzList", savingBilanzByUserList);
-//
 //        savingAccountTransaction.setSavingAccount(aSavingAccount);
 //        model.put("savingAccountTransaction", savingAccountTransaction);
         return "savingBilanzNoInterest";
@@ -196,14 +286,14 @@ public class LoanAccountController extends SuperController {
 
     }
 
-    @GetMapping(value = "/showUserLoanBilanz/{id}")
-    public String showUserSavingBilanz(@PathVariable("id") long id, ModelMap model, HttpServletRequest request) {
-        User user = (User) request.getSession().getAttribute(BVMicroUtils.CUSTOMER_IN_USE);
-        SavingBilanzList savingBilanzByUserList = loanAccountService.getSavingBilanzByUser(user, true);
-        model.put("name", getLoggedInUserName());
-        model.put("savingBilanzList", savingBilanzByUserList);
-        return "savingBilanz";
-    }
+//    @GetMapping(value = "/showUserLoanBilanz/{id}")
+//    public String showUserSavingBilanz(@PathVariable("id") long id, ModelMap model, HttpServletRequest request) {
+//        User user = (User) request.getSession().getAttribute(BVMicroUtils.CUSTOMER_IN_USE);
+//        SavingBilanzList savingBilanzByUserList = loanAccountService.getSavingBilanzByUser(user, true);
+//        model.put("name", getLoggedInUserName());
+//        model.put("savingBilanzList", savingBilanzByUserList);
+//        return "savingBilanz";
+//    }
 
 //    @GetMapping(value = "/showSavingAccountBilanz/{accountId}")
 //    public String showSavingAccountBilanz(@PathVariable("accountId") long accountId, ModelMap model, HttpServletRequest request) {

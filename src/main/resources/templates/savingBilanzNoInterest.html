@@ -97,16 +97,14 @@
         </div>
     </div>
 </div>
-
 <br/><br/><br/><br/><br/><br/><br/>
-
 <table class="center" width="80%" border="0"><tr>
-    <td><font size="6"> <span style th:text="${session.customerInUse.userName}"/>'s </font>
-        <button style="font-face: 'Comic Sans MS'; font-size: larger; color: teal; background-color: #FFFFC0; border: 3pt ridge lightgrey" type="submit" >
+    <td><font size="1.5px">Username</font> <br/> <font size="6"> <span style th:text="${session.customerInUse.userName}"/> </font>
+        <button style="font-face: 'Comic Sans MS'; font-size: larger; color: teal; background-color: #FFFFC0; border: 3pt ridge lightgrey" type="submit">
             <a href="#" th:href="@{/file/{userName}(userName=${session.customerInUse.userName})}">Upload I.D</a></button>
         <a href="#" th:href="@{/reloadUser}"><img width="40px" th:src="@{/getImage}"/> </a>
     </td>
-    <td> <font size="1.5px">Saving</font> <br/> <font color="green" size="6px"> <div th:text="${savingBilanzList.totalSaving}"/></font></td>
+    <td> <font size="1.5px">Saving</font> <br/> <font color="#77adbf" size="6px"> <div th:text="${savingBilanzList.totalSaving}"/></font></td>
     <td> <font size="1.5px">Current</font> <br/> <font size="6"> 0</font></td>
     <td> <font size="1.5px">Loan</font> <br/> <font size="6"> 0</font></td>
     <td><font size="1.5px"> Retirement saving </font> <br/> <font size="6" color="#A57C00">0 </font> </td>

@@ -18,7 +18,7 @@ import java.util.*;
  * 11.06.2021
  */
 @Service
-public class GeneralLedgerService {
+public class GeneralLedgerService extends SuperService{
 
     @Autowired
     private UserRepository userRepository;
@@ -41,21 +41,46 @@ public class GeneralLedgerService {
         generalLedgerRepository.save(generalLedger);
     }
 
+    public void updateLoanAccountCreation(LoanAccount loanAccount) {
+        GeneralLedger generalLedger = loanAccountGLMapper(loanAccount);
+        generalLedgerRepository.save(generalLedger);
+    }
+
+    private GeneralLedger loanAccountGLMapper(LoanAccount loanAccount) {
+        GeneralLedger gl = new GeneralLedger();
+        Date aDate = new Date();
+        String loggedInUserName = getLoggedInUserName();
+        gl.setAccountNumber(loanAccount.getAccountNumber());
+        gl.setAmount(loanAccount.getLoanAmount());
+        gl.setDate(aDate);
+        gl.setLastUpdatedDate(aDate);
+        gl.setNotes(loanAccount.getNotes());
+//        gl.setReference(loanAccount.getReference());
+        gl.setLastUpdatedBy(loggedInUserName);
+        gl.setCreatedBy(loggedInUserName);
+
+        gl.setGlClass(4); //TODO Saving which class in GL ?
+        gl.setType(GeneralLedgerType.CREDIT.name());
+        return gl;
+    }
+
+
     private GeneralLedger savingAccountGLMapper(SavingAccountTransaction savingAccountTransaction) {
         GeneralLedger gl = new GeneralLedger();
         gl.setAccountNumber(savingAccountTransaction.getSavingAccount().getAccountNumber());
         gl.setAmount(savingAccountTransaction.getSavingAmount());
-        gl.setDate(new Date(System.currentTimeMillis()));
+        gl.setDate(new Date());
         gl.setLastUpdatedDate(new Date(System.currentTimeMillis()));
         gl.setNotes(savingAccountTransaction.getNotes());
         gl.setReference(savingAccountTransaction.getReference());
         gl.setLastUpdatedBy(BVMicroUtils.SYSTEM);
         gl.setCreatedBy(BVMicroUtils.SYSTEM);
-        gl.setType(getGeneralLedgetType(savingAccountTransaction.getSavingAmount()));
+        gl.setGlClass(4); //TODO Saving which class in GL ?
+        gl.setType(getGeneralLedgerType(savingAccountTransaction.getSavingAmount()));
         return gl;
     }
 
-    private String getGeneralLedgetType(int amount) {
+    private String getGeneralLedgerType(int amount) {
             return amount>0?GeneralLedgerType.DEBIT.name():GeneralLedgerType.CREDIT.name();
     }
 

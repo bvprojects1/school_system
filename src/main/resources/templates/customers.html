@@ -19,24 +19,22 @@
         <tr>
             <!--                            <th></th>-->
             <th>Username</th>
-            <th>Name</th>
+            <th>Firstname</th>
+            <th>Lastname</th>
             <th>Role</th>
             <th>telephone</th>
             <th>Member Since</th>
             <div th:if="${#authorization.expression('hasAnyAuthority(''ROLE_MANAGER'')')}">
                 <th>Locked</th>
             </div>
-
             <th>Creator</th>
             <th></th>
         </tr>
         <tr th:each="user : ${userList}">
-            <!--                            <td th:text="${userList[index]}"></td>-->
+            <!-- <td th:text="${userList[index]}"></td>-->
             <td th:text="${user.userName}"></td>
-            <td>
-                <div th:text="${user.firstName}"></div>
-                <div th:text="${user.lastName}"></div>
-            </td>
+            <td th:text="${user.firstName}"></td>
+            <td th:text="${user.lastName}"></td>
 <!--            <div th:if="${#authorization.expression('hasAnyAuthority(''ROLE_MANAGER'')')}">-->
                 <td>
                     <div th:each="userRole : ${user.userRole}">
@@ -44,7 +42,6 @@
                     </div>
                 </td>
 <!--            </div>-->
-
             <td th:text="${user.telephone1}"></td>
             <td th:text="${#dates.format(user.created, 'dd-MMM-yyyy HH:mm')}"></td>
             <div th:if="${#authorization.expression('hasAnyAuthority(''ROLE_MANAGER'')')}">
@@ -55,7 +52,7 @@
                 </td>
             </div>
             <td th:text="${user.createdBy}"></td>
-            <!--                            <td th:text="${#dates.format(user.created, 'dd-MMM-yyyy')}"></td>-->
+            <!-- <td th:text="${#dates.format(user.created, 'dd-MMM-yyyy')}"></td>-->
             <td>
                 <a href="#" th:href="@{/showCustomer/{id}(id=${user.id})}">See more ...</a>
             </td>

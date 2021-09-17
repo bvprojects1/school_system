@@ -28,6 +28,7 @@ public class GeneralLedger {
     private int amount;
     private Date date;
     private String notes;
+    private int glClass;
 
     public GeneralLedger() {
         super();
@@ -123,5 +124,13 @@ public class GeneralLedger {
 
     public void setDate(Date date) {
         this.date = date;
+    }
+
+    public int getGlClass() {
+        return glClass;
+    }
+
+    public void setGlClass(int glClass) {
+        this.glClass = glClass;
     }
 }

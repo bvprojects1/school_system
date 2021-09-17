@@ -16,38 +16,54 @@ public class LoanAccount {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
+
     private String createdBy;
-    private String lastUpdatedBy;
     private Date createdDate;
-    private Date lastUpdatedDate;
     private boolean defaultedPayment;
     private String branchCode;
     private AccountStatus accountStatus;
+    private int glClass;
     private String intervalOfLoanPayment;
     private int interestRate;
-    private String country;
+
+    private String lastUpdatedBy;
+    private Date lastUpdatedDate;
     private String productCode;
     private int termOfLoan;
 
+    private String guarantorAccountNumber1;
+    private String guarantorAccountNumber2;
+    private String guarantorAccountNumber3;
 
-    @Column(unique = true)
-    private String accountNumber;
-    private double currentLoanAmount;
-    private double loanAmount;
-
-    @OneToMany(cascade = CascadeType.ALL)
-    private List<ShorteeAccount> shorteeAccounts = new ArrayList<ShorteeAccount>();
+    private int guarantor1Amount1;
+    private int guarantor1Amount2;
+    private int guarantor1Amount3;
 
     @OneToOne(cascade = CascadeType.ALL)
     private AccountType accountType;
 
-    @ManyToOne
-    private User user;
+    @Column(unique = true)
+    private String accountNumber;
+    private double currentLoanAmount;
+    private String country;
+
+    private double totalInterestOnLoan;
 
     @OneToMany(cascade = CascadeType.ALL)
     private List<LoanAccountTransaction> loanAccountTransaction = new ArrayList<LoanAccountTransaction>();
 
+    private int loanAmount;
+
+    @OneToMany(cascade = CascadeType.ALL)
+    private List<ShorteeAccount> shorteeAccounts = new ArrayList<ShorteeAccount>();
+
+    @OneToMany(cascade = CascadeType.ALL)
+    private List<ShorteeAsset> shorteeAssets = new ArrayList<ShorteeAsset>();
+
     private String notes;
+
+    @ManyToOne
+    private User user;
 
     public boolean isDefaultedPayment() {
         return defaultedPayment;
@@ -194,11 +210,11 @@ public class LoanAccount {
         this.shorteeAccounts = shorteeAccounts;
     }
 
-    public double getLoanAmount() {
+    public int getLoanAmount() {
         return loanAmount;
     }
 
-    public void setLoanAmount(double loanAmount) {
+    public void setLoanAmount(int loanAmount) {
         this.loanAmount = loanAmount;
     }
 
@@ -216,5 +232,77 @@ public class LoanAccount {
 
     public void setTermOfLoan(int termOfLoan) {
         this.termOfLoan = termOfLoan;
+    }
+
+    public int getGlClass() {
+        return glClass;
+    }
+
+    public void setGlClass(int glClass) {
+        this.glClass = glClass;
+    }
+
+    public String getGuarantorAccountNumber1() {
+        return guarantorAccountNumber1;
+    }
+
+    public void setGuarantorAccountNumber1(String guarantorAccountNumber1) {
+        this.guarantorAccountNumber1 = guarantorAccountNumber1;
+    }
+
+    public String getGuarantorAccountNumber2() {
+        return guarantorAccountNumber2;
+    }
+
+    public void setGuarantorAccountNumber2(String guarantorAccountNumber2) {
+        this.guarantorAccountNumber2 = guarantorAccountNumber2;
+    }
+
+    public String getGuarantorAccountNumber3() {
+        return guarantorAccountNumber3;
+    }
+
+    public void setGuarantorAccountNumber3(String guarantorAccountNumber3) {
+        this.guarantorAccountNumber3 = guarantorAccountNumber3;
+    }
+
+    public List<ShorteeAsset> getShorteeAssets() {
+        return shorteeAssets;
+    }
+
+    public void setShorteeAssets(List<ShorteeAsset> shorteeAssets) {
+        this.shorteeAssets = shorteeAssets;
+    }
+
+    public double getTotalInterestOnLoan() {
+        return totalInterestOnLoan;
+    }
+
+    public void setTotalInterestOnLoan(double totalInterestOnLoan) {
+        this.totalInterestOnLoan = totalInterestOnLoan;
+    }
+
+    public int getGuarantor1Amount1() {
+        return guarantor1Amount1;
+    }
+
+    public void setGuarantor1Amount1(int guarantor1Amount1) {
+        this.guarantor1Amount1 = guarantor1Amount1;
+    }
+
+    public int getGuarantor1Amount2() {
+        return guarantor1Amount2;
+    }
+
+    public void setGuarantor1Amount2(int guarantor1Amount2) {
+        this.guarantor1Amount2 = guarantor1Amount2;
+    }
+
+    public int getGuarantor1Amount3() {
+        return guarantor1Amount3;
+    }
+
+    public void setGuarantor1Amount3(int guarantor1Amount3) {
+        this.guarantor1Amount3 = guarantor1Amount3;
     }
 }

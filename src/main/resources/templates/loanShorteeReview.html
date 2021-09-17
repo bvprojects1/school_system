@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<div th:insert="header::navbar"></div>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<body>
+<br/>
+<table width="90%" class="center" border="0px">
+    <tr>
+        <td>
+            <font size="2px" color="gray">Loan Type</font><br/>
+                <span th:text="${session.loanAccount.accountType.name}"></span>
+        </td>
+        <td>
+            <font size="2px" color="gray">Interval Of Payment</font><br/>
+            <font size="3"><span th:text="${session.loanAccount.intervalOfLoanPayment}"/></font>
+        </td>
+        <td>
+            <font size="2px" color="gray">Term Of Loan</font><br/>
+            <font size="3"><span th:text="${session.loanAccount.termOfLoan}"/></font>
+        </td>
+        <td>
+            <font size="2px" color="gray">Interest Rate</font><br/>
+            <font size="3"><span th:text="${session.loanAccount.interestRate}"/></font>
+        </td>
+        <td>
+            <font size="2px" color="gray">Loan Amount</font><br/>
+            <font size="3"><strong><span th:text="${session.loanAccount.loanAmount}"/></strong></font>
+        </td>
+        <td>
+            <font size="2px" color="gray">Interest On Loan</font><br/>
+            <font size="3"><span th:text="${session.loanAccount.totalInterestOnLoan}"/></font>
+        </td>
+
+    </tr>
+</table>
+
+<br/>
+<table width="90%" class="center" border="0px">
+    <tr>
+        <th>SHORTEE ACCOUNTS </th>
+    </tr>
+</table>
+<form action="#" th:action="@{/createLoanAccountForm}" method="post" th:object="${loanAccount}">
+    <table width="90%" class="center" border="0px">
+        <tr>
+            <th>
+                <font size="2px" color="gray">Account #</font>
+            </th>
+            <th colspan="2">
+                <font size="2px" color="gray">Name</font>
+            </th>
+            <th>
+                <font size="2px" color="gray">Default</font>
+            </th>
+            <th>
+                <font size="2px" color="gray">Product code</font>
+            </th>
+            <th>
+                <font size="2px" color="gray">Balance</font>
+            </th>
+            <th>
+                <font size="2px" color="gray">Min. Balance</font>
+            </th>
+            <th>
+                <div class="error" th:text="${errorShorteeAmount}"/>
+            </th>
+            <th>
+            </th>
+        </tr>
+        <tr>
+            <td th:text="${session.guarantor1.accountNumber}"></td>
+            <td th:text="${session.guarantor1.user.firstName}"></td>
+            <td th:text="${session.guarantor1.user.lastName}"></td>
+            <td th:text="${session.guarantor1.defaultedPayment}"></td>
+            <td th:text="${session.guarantor1.productCode}"></td>
+            <td th:text="${session.guarantor1.accountBalance}"></td>
+            <td th:text="${session.guarantor1.accountMinBalance}"></td>
+            <td>
+                Enter Amount: <input type="number" disabled name="guarantor1Amount1" th:field="*{guarantor1Amount1}">
+            </td>
+            <td>
+                <button type="submit" class="btn btn-success">
+                    Create Loan
+                </button>
+            </td>
+        </tr>
+    </table>
+</form>
+<br/>
+<br/>
+
+<br/><br/>
+<br/>
+</body>
+<div th:insert="footer::navbar"></div>
+</html>

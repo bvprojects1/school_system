@@ -14,9 +14,7 @@
 <table width="90%" class="center" border="0px">
     <tr>
         <td>
-            <font size="3" color="green">
-                <span th:text="${branch.name}"></span>
-            </font>
+            <span th:text="${branch.name}"></span>
         </td>
         <td>
             <font size="2"><span th:text="${branch.code}"/></font>
@@ -47,7 +45,8 @@
 <table width="90%" class="center" border="0px">
     <tr>
         <th>Username</th>
-        <th>Name</th>
+        <th>Firstname</th>
+        <th>Lastname</th>
         <th>Role</th>
         <th>Telephone</th>
         <th>Member Since</th>
@@ -56,10 +55,8 @@
     </tr>
     <tr th:each="user : ${branchUserList}">
         <td th:text="${user.userName}"></td>
-        <td>
-            <div th:text="${user.firstName}"></div>
-            <div th:text="${user.lastName}"></div>
-        </td>
+        <td th:text="${user.firstName}"></td>
+        <td th:text="${user.lastName}"></td>
         <td>
             <div th:each="userRole : ${user.userRole}">
                 <span th:text="${userRole.name}"></span>
