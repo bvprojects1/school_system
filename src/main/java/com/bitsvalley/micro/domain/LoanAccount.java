@@ -25,7 +25,7 @@ public class LoanAccount {
     private int glClass;
     private String intervalOfLoanPayment;
     private int interestRate;
-
+    private int minimumPayment;
     private String lastUpdatedBy;
     private Date lastUpdatedDate;
     private String productCode;
@@ -64,6 +64,14 @@ public class LoanAccount {
 
     @ManyToOne
     private User user;
+
+    public int getMinimumPayment() {
+        return minimumPayment;
+    }
+
+    public void setMinimumPayment(int minimumPayment) {
+        this.minimumPayment = minimumPayment;
+    }
 
     public boolean isDefaultedPayment() {
         return defaultedPayment;

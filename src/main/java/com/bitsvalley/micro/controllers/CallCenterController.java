@@ -1,17 +1,9 @@
 package com.bitsvalley.micro.controllers;
 
 import com.bitsvalley.micro.domain.CallCenter;
-import com.bitsvalley.micro.domain.User;
-import com.bitsvalley.micro.domain.UserRole;
 import com.bitsvalley.micro.repositories.CallCenterRepository;
-import com.bitsvalley.micro.repositories.UserRepository;
-import com.bitsvalley.micro.repositories.UserRoleRepository;
 import com.bitsvalley.micro.services.CallCenterService;
 import com.bitsvalley.micro.services.SavingAccountService;
-import com.bitsvalley.micro.services.UserService;
-import com.bitsvalley.micro.utils.BVMicroUtils;
-import com.bitsvalley.micro.webdomain.SavingBilanz;
-import com.bitsvalley.micro.webdomain.SavingBilanzList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -19,10 +11,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 
 /**
  * @author Fru Chifen

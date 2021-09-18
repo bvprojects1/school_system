@@ -18,7 +18,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.*;
 
 @Service
-public class SavingAccountService extends SuperService {
+public class LoanAccountService extends SuperService {
 
     @Autowired
     private SavingAccountRepository savingAccountRepository;

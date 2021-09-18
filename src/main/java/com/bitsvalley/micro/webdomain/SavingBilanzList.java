@@ -6,7 +6,7 @@ import java.util.List;
 public class SavingBilanzList {
 
     List<SavingBilanz> savingBilanzList = new ArrayList<SavingBilanz>();
-    String totalSavingInterest;
+    String totalSavingInterest = "0";
     String totalSaving = "0";
     String numberOfLoanAccounts = "0";
     String numberOfRetirementSavings = "0";

@@ -43,7 +43,7 @@ public class CallCenterService extends SuperService{
     public CallCenter saveCallCenterLog(String firstName, String lastName, String accountNumber, String accountType, String userName) {
         CallCenter callCenter = new CallCenter();
         callCenter.setAccountHolderName(firstName + " " + lastName);
-        callCenter.setAccountNumber("********" + accountNumber.substring(2, 6));
+        callCenter.setAccountNumber(" Tester tester ------ tester ");
         callCenter.setDate(new Date(System.currentTimeMillis()));
         callCenter.setNotes("Savings Account Created: " + accountNumber + " Savings Type: " + accountType);
         callCenter.setUserName(userName);
@@ -61,6 +61,8 @@ public class CallCenterService extends SuperService{
     }
 
     public void callCenterShorteeUpdate(SavingAccount savingAccount, int guarantorAmount) {
+
+//        TODO Add comment in statement for minbalance available raised with 0 transaction amount
 
         CallCenter callCenter = new CallCenter();
         callCenter.setAccountHolderName(savingAccount.getUser().getFirstName() + " " +

@@ -5,7 +5,6 @@ import com.bitsvalley.micro.repositories.CallCenterRepository;
 import com.bitsvalley.micro.repositories.ShorteeAccountRepository;
 import com.bitsvalley.micro.repositories.UserRepository;
 import com.bitsvalley.micro.utils.AccountStatus;
-import com.bitsvalley.micro.utils.BVMicroUtils;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

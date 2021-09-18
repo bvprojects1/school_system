@@ -7,6 +7,7 @@ import com.bitsvalley.micro.services.SavingAccountService;
 import com.bitsvalley.micro.services.UserRoleService;
 import com.bitsvalley.micro.services.UserService;
 import com.bitsvalley.micro.utils.BVMicroUtils;
+import com.bitsvalley.micro.webdomain.LoanBilanzList;
 import com.bitsvalley.micro.webdomain.SavingBilanzList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -14,7 +15,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.ui.ModelMap;
 
 import javax.servlet.http.HttpServletRequest;
-import java.lang.reflect.Array;
 import java.util.*;
 
 /**
@@ -37,6 +37,9 @@ public class SuperController {
     private SavingAccountService savingAccountService;
 
     @Autowired
+    private LoanAccountService loanAccountService;
+
+    @Autowired
     private UserRoleService userRoleService;
 
 
@@ -57,25 +60,35 @@ public class SuperController {
 
             }
         }
-
         if("ROLE_CUSTOMER".equals(aUser.getUserRole().get(0).getName())){
             model.put("createSavingAccountEligible", true);
+            model.put("createLoanAccountEligible", true);
         }else{
             model.put("createSavingAccountEligible", false);
+            model.put("createLoanAccountEligible", false);
+        }
+        if(null != aUser){
+            model.put("user", aUser); //TODO: stay consitent session or model
+            request.getSession().setAttribute(BVMicroUtils.CUSTOMER_IN_USE, aUser);
         }
         SavingBilanzList savingBilanzByUserList = savingAccountService.getSavingBilanzByUser(aUser, false);
-        if(null != aUser && null != aUser.getSavingAccount() && 0 < aUser.getSavingAccount().size()){
-            model.put("user", aUser);
-
+        LoanBilanzList loanBilanzByUserList = loanAccountService.getLoanBilanzByUser(aUser, false);
+//        if(null != aUser.getSavingAccount() && 0 < aUser.getSavingAccount().size()){
             request.getSession().setAttribute("savingBilanzList",savingBilanzByUserList);
-            request.getSession().setAttribute(BVMicroUtils.CUSTOMER_IN_USE, aUser);
-            return "userHome";
-        }
+//        }
+//        if(null != aUser.getLoanAccount() && 0 < aUser.getLoanAccount().size()){
+            request.getSession().setAttribute("loanBilanzList",loanBilanzByUserList);
+//        }
+
+        if(aUser.getSavingAccount().size() == 0 && aUser.getLoanAccount().size() == 0){
             model.put("name", getLoggedInUserName());
             request.getSession().setAttribute("savingBilanzList", savingBilanzByUserList);
             request.getSession().setAttribute(BVMicroUtils.CUSTOMER_IN_USE, aUser);
             return "userHomeNoAccount";
     }
+        return "userHome";
+    }
+
 
 
 

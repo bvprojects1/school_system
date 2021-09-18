@@ -1,7 +1,6 @@
 package com.bitsvalley.micro.services;
 
 
-import com.bitsvalley.micro.domain.RuntimeProperties;
 import com.bitsvalley.micro.domain.SavingAccount;
 import com.bitsvalley.micro.domain.SavingAccountTransaction;
 import com.bitsvalley.micro.utils.BVMicroUtils;
@@ -9,19 +8,15 @@ import com.bitsvalley.micro.webdomain.RuntimeSetting;
 import com.bitsvalley.micro.webdomain.SavingBilanz;
 import com.bitsvalley.micro.webdomain.SavingBilanzList;
 import com.lowagie.text.pdf.PdfDocument;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
 import org.xhtmlrenderer.pdf.ITextRenderer;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.Path;
 import java.util.Date;
-import java.util.List;
 
 @Service
 public class PdfService {

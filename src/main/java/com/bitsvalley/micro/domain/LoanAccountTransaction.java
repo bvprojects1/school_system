@@ -37,12 +37,51 @@ public class LoanAccountTransaction {
     @Column(unique = true)
     private String reference;
 
-    public String getAccountOwner() {
-        return accountOwner;
+    @ManyToOne
+    private LoanAccount loanAccount;
+
+    public long getId() {
+        return id;
     }
 
-    public void setAccountOwner(String accountOwner) {
-        this.accountOwner = accountOwner;
+    public String getCreatedBy() {
+        return createdBy;
+    }
+
+    public void setCreatedBy(String createdBy) {
+        this.createdBy = createdBy;
+    }
+
+    public LocalDateTime getCreatedDate() {
+        return createdDate;
+    }
+
+    public void setCreatedDate(LocalDateTime createdDate) {
+        this.createdDate = createdDate;
+    }
+
+    public int getSavingAmount() {
+        return savingAmount;
+    }
+
+    public void setSavingAmount(int savingAmount) {
+        this.savingAmount = savingAmount;
+    }
+
+    public String getNotes() {
+        return notes;
+    }
+
+    public void setNotes(String notes) {
+        this.notes = notes;
+    }
+
+    public String getModeOfPayment() {
+        return modeOfPayment;
+    }
+
+    public void setModeOfPayment(String modeOfPayment) {
+        this.modeOfPayment = modeOfPayment;
     }
 
     public int getTenThousand() {
@@ -109,16 +148,12 @@ public class LoanAccountTransaction {
         this.twentyFive = twentyFive;
     }
 
-    public String getReference() {
-        return reference;
+    public String getAccountOwner() {
+        return accountOwner;
     }
 
-    public void setReference(String reference) {
-        this.reference = reference;
-    }
-
-    public long getId() {
-        return id;
+    public void setAccountOwner(String accountOwner) {
+        this.accountOwner = accountOwner;
     }
 
     public long getBranch() {
@@ -127,66 +162,6 @@ public class LoanAccountTransaction {
 
     public void setBranch(long branch) {
         this.branch = branch;
-    }
-
-    @ManyToOne
-    private SavingAccount savingAccount;
-
-    public SavingAccount getSavingAccount() {
-        return savingAccount;
-    }
-
-    public void setSavingAccount(SavingAccount savingAccount) {
-        this.savingAccount = savingAccount;
-    }
-
-    public String getCreatedBy() {
-        return createdBy;
-    }
-
-    public void setCreatedBy(String createdBy) {
-        this.createdBy = createdBy;
-    }
-
-    public String getNotes() {
-        return notes;
-    }
-
-    public void setNotes(String notes) {
-        this.notes = notes;
-    }
-
-    public LocalDateTime getCreatedDate() {
-        return createdDate;
-    }
-
-    public void setCreatedDate(LocalDateTime createdDate) {
-        this.createdDate = createdDate;
-    }
-
-    public int getSavingAmount() {
-        return savingAmount;
-    }
-
-    public void setSavingAmount(int savingAmount) {
-        this.savingAmount = savingAmount;
-    }
-
-    public String getModeOfPayment() {
-        return modeOfPayment;
-    }
-
-    public void setModeOfPayment(String modeOfPayment) {
-        this.modeOfPayment = modeOfPayment;
-    }
-
-
-    public String getSavingAmountInLetters() {
-        return savingAmountInLetters;
-    }
-
-    public void setSavingAmountInLetters(String savingAmountInLetters) {
-        this.savingAmountInLetters = savingAmountInLetters;
     }
 
     public String getBranchCode() {
@@ -203,5 +178,29 @@ public class LoanAccountTransaction {
 
     public void setBranchCountry(String branchCountry) {
         this.branchCountry = branchCountry;
+    }
+
+    public String getSavingAmountInLetters() {
+        return savingAmountInLetters;
+    }
+
+    public void setSavingAmountInLetters(String savingAmountInLetters) {
+        this.savingAmountInLetters = savingAmountInLetters;
+    }
+
+    public String getReference() {
+        return reference;
+    }
+
+    public void setReference(String reference) {
+        this.reference = reference;
+    }
+
+    public LoanAccount getLoanAccount() {
+        return loanAccount;
+    }
+
+    public void setLoanAccount(LoanAccount loanAccount) {
+        this.loanAccount = loanAccount;
     }
 }

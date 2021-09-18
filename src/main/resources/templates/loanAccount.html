@@ -50,19 +50,26 @@
             <tr>
                 <td width="10%"></td>
                 <td colspan="2">
+
+                    <br/>
                     Interest Rate:<input type="number" th:field="*{interestRate}" max="100" maxlength="2"/>
-                    Term of Loan:<input type="number" th:field="*{termOfLoan}"/></td>
+                    Term of Loan:<input type="number" th:field="*{termOfLoan}"/>
+                    <br/>
+
+                </td>
                 <td width="5"></td>
             </tr>
             <tr>
                 <td width="10%"></td>
                 <td colspan="2">
-                    Guarantor 1 - Acc #:<input type="text" th:field="*{guarantorAccountNumber1}"
+                    <br/>
+                    Guarantor 1 - Acc #:<input required type="text" th:field="*{guarantorAccountNumber1}"
                                                maxlength="15"/>
-                    Guarantor 2 - Acc #:<input type="text" th:field="*{guarantorAccountNumber2}"
-                                               maxlength="15"/>
-                    Guarantor 3 - Acc: #:<input type="text" th:field="*{guarantorAccountNumber3}"
-                                                maxlength="15"/>
+                    <br/>
+<!--                    Guarantor 2 - Acc #:<input type="text" th:field="*{guarantorAccountNumber2}"-->
+<!--                                               maxlength="15"/>-->
+<!--                    Guarantor 3 - Acc: #:<input type="text" th:field="*{guarantorAccountNumber3}"-->
+<!--                                                maxlength="15"/>-->
                 </td>
                 <td width="5"></td>
             </tr>
