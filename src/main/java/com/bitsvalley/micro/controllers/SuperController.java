@@ -3,6 +3,7 @@ package com.bitsvalley.micro.controllers;
 import com.bitsvalley.micro.domain.*;
 import com.bitsvalley.micro.repositories.SavingAccountTransactionRepository;
 import com.bitsvalley.micro.repositories.UserRepository;
+import com.bitsvalley.micro.services.LoanAccountService;
 import com.bitsvalley.micro.services.SavingAccountService;
 import com.bitsvalley.micro.services.UserRoleService;
 import com.bitsvalley.micro.services.UserService;
@@ -22,7 +23,6 @@ import java.util.*;
  * 11.06.2021
  */
 public class SuperController {
-
 
     @Autowired
     private UserService userService;
@@ -57,7 +57,6 @@ public class SuperController {
                 if(byReference.isPresent()){
                     aUser = byReference.get().getSavingAccount().getUser();
                 }
-
             }
         }
         if("ROLE_CUSTOMER".equals(aUser.getUserRole().get(0).getName())){

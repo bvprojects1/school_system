@@ -156,11 +156,14 @@
                 Acc No.
             </td>
             <td>
-                Description
+                Loan Amount
+            </td>
+            <td>
+                %
             </td>
 
             <td>
-                %
+                Description
             </td>
 
             <td>
@@ -191,13 +194,16 @@
                 </a>
             </td>
             <td>
-                <p th:text="${loanAccount.notes}"/>
+                <p th:text="${loanAccount.loanAmount}"/>
+            </td>
+            <td>
+                <p th:text="${loanAccount.interestRate}"/>
             </td>
             <!--            <td>-->
             <!--                <p th:text="${#numbers.formatDecimal(loanAccount.accountBalance, 0, 'COMMA', 0, 'POINT')}"/>-->
             <!--            </td>-->
             <td>
-                <p th:text="${loanAccount.interestRate}"/>
+                <p th:text="${loanAccount.notes}"/>
             </td>
             <td>
                 <p th:text="${#dates.format(loanAccount.createdDate, 'dd-MMM-yyyy HH:mm')}">
@@ -215,7 +221,7 @@
                 <br/>
                 <a href="#" th:href="@{/showLoanAccountBilanz/{accountId}(accountId=${loanAccount.id})}">
                     <font size="3">
-                        Show Savings interest
+                        Show Loan interest
                     </font>
                 </a>
                 </font>

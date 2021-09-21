@@ -9,14 +9,12 @@ public class LoanBilanz {
     String agent;
     String modeOfPayment;
     String noOfDays;
-    String savingAmount;
+    String loanAmount;
     String currentBalance;
     String reference;
     String accountType;
     String accountNumber;
-    String accountMinimumBalance;
     String interestRate;
-    String minimumBalance;
     String locked;
     String createdBy;
     String id;
@@ -78,28 +76,12 @@ public class LoanBilanz {
         this.accountNumber = accountNumber;
     }
 
-    public String getAccountMinimumBalance() {
-        return accountMinimumBalance;
-    }
-
-    public void setAccountMinimumBalance(String accountMinimumBalance) {
-        this.accountMinimumBalance = accountMinimumBalance;
-    }
-
     public String getInterestRate() {
         return interestRate;
     }
 
     public void setInterestRate(String interestRate) {
         this.interestRate = interestRate;
-    }
-
-    public String getMinimumBalance() {
-        return minimumBalance;
-    }
-
-    public void setMinimumBalance(String minimumBalance) {
-        this.minimumBalance = minimumBalance;
     }
 
     public String getLocked() {
@@ -158,12 +140,12 @@ public class LoanBilanz {
         this.noOfDays = noOfDays;
     }
 
-    public String getSavingAmount() {
-        return savingAmount;
+    public String getLoanAmount() {
+        return loanAmount;
     }
 
-    public void setSavingAmount(String savingAmount) {
-        this.savingAmount = savingAmount;
+    public void setLoanAmount(String loanAmount) {
+        this.loanAmount = loanAmount;
     }
 
     public String getReference() {

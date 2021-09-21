@@ -18,7 +18,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.*;
 
 @Service
-public class LoanAccountService extends SuperService {
+public class SavingAccountService extends SuperService {
 
     @Autowired
     private SavingAccountRepository savingAccountRepository;
@@ -84,9 +84,9 @@ public class LoanAccountService extends SuperService {
         user = userRepository.findById(user.getId()).get();
         user.getSavingAccount().add(savingAccount);
         userService.saveUser(user);
-
-        //TODO: Move to callCenter service
-        callCenterService.callCenterUpdate(savingAccount);
+//
+//        //TODO: Move to callCenter service
+//        callCenterService.callCenterUpdate(savingAccount);
 
     }
 

@@ -61,10 +61,10 @@ public class ShorteeService extends SuperService{
 
         callCenterService.callCenterShorteeUpdate(shorteeSavingAccount, loanAccount.getGuarantor1Amount1());
 
-        callCenterService.saveCallCenterLog(
-                user.getFirstName(),user.getLastName(),loanAccount.getAccountNumber(),
-                loanAccount.getAccountType().getName(),""
-                );
+//        callCenterService.saveCallCenterLog(
+//                user.getFirstName(),user.getLastName(),loanAccount.getAccountNumber(),
+//                loanAccount.getAccountType().getName(),loanAccount.getLoanAmount()+""
+//                );
 
         shorteeAccount.setAmountShortee(loanAccount.getGuarantor1Amount1());
         shorteeAccount.setCreatedDate(createdDate);

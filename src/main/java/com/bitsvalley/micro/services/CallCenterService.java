@@ -40,25 +40,26 @@ public class CallCenterService extends SuperService{
         return callCenterRepository.findByAccountHolderName(firstLastName);
     }
 
-    public CallCenter saveCallCenterLog(String firstName, String lastName, String accountNumber, String accountType, String userName) {
+    public CallCenter saveCallCenterLog(String firstName, String lastName, String accountNumber, String accountType, String amount) {
         CallCenter callCenter = new CallCenter();
         callCenter.setAccountHolderName(firstName + " " + lastName);
-        callCenter.setAccountNumber(" Tester tester ------ tester ");
+        callCenter.setAccountNumber(accountNumber);
         callCenter.setDate(new Date(System.currentTimeMillis()));
-        callCenter.setNotes("Savings Account Created: " + accountNumber + " Savings Type: " + accountType);
-        callCenter.setUserName(userName);
+        callCenter.setNotes("Loan Account Created: " + accountNumber + " Account Type: " + accountType +" Amount: " + amount);
+        callCenter.setUserName(" ");
+        callCenterRepository.save(callCenter);
         return callCenter;
     }
 
-    public void callCenterUpdate(SavingAccount savingAccount) {
-        CallCenter callCenter = new CallCenter();
-        callCenter.setAccountHolderName(savingAccount.getUser().getFirstName() + " " + savingAccount.getUser().getFirstName());
-        callCenter.setAccountNumber(savingAccount.getAccountNumber());
-        callCenter.setDate(new Date(System.currentTimeMillis()));
-        callCenter.setNotes("Savings Account Created: " + savingAccount.getAccountNumber() + " Savings Type: " + savingAccount.getAccountSavingType().getName());
-        callCenter.setUserName(savingAccount.getUser().getUserName());
-        callCenterRepository.save(callCenter);
-    }
+//    public void callCenterUpdate(SavingAccount savingAccount) {
+//        CallCenter callCenter = new CallCenter();
+//        callCenter.setAccountHolderName(savingAccount.getUser().getFirstName() + " " + savingAccount.getUser().getFirstName());
+//        callCenter.setAccountNumber(savingAccount.getAccountNumber());
+//        callCenter.setDate(new Date(System.currentTimeMillis()));
+//        callCenter.setNotes("Savings Account Created: " + savingAccount.getAccountNumber() + " Savings Type: " + savingAccount.getAccountSavingType().getName());
+//        callCenter.setUserName(savingAccount.getUser().getUserName());
+//        callCenterRepository.save(callCenter);
+//    }
 
     public void callCenterShorteeUpdate(SavingAccount savingAccount, int guarantorAmount) {
 
@@ -69,6 +70,7 @@ public class CallCenterService extends SuperService{
                 savingAccount.getUser().getFirstName());
         callCenter.setDate(new Date(System.currentTimeMillis()));
         callCenter.setNotes("Savings minimum balance added by: " + guarantorAmount);
+        callCenter.setAccountNumber(savingAccount.getAccountNumber());
         callCenter.setUserName(getLoggedInUserName());
         callCenterRepository.save(callCenter);
 

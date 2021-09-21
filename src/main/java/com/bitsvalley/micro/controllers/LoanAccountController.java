@@ -10,6 +10,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -19,6 +20,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -37,6 +41,9 @@ public class LoanAccountController extends SuperController {
 
     @Autowired
     LoanAccountService loanAccountService;
+
+    @Autowired
+    SavingAccountService savingAccountService;
 
     @Autowired
     AccountTypeService accountTypeService;
@@ -83,16 +90,16 @@ public class LoanAccountController extends SuperController {
                         loanAccount.getInterestRate(),loanAccount.getTermOfLoan(),loanAccount.getLoanAmount()));
         AccountType accountType = accountTypeService.getAccountTypeByProductCode(loanAccount.getProductCode());
         if(!StringUtils.isEmpty(loanAccount.getGuarantorAccountNumber1())){
-            SavingAccount byAccountNumber1 = loanAccountService.findByAccountNumber(loanAccount.getGuarantorAccountNumber1());
+            SavingAccount byAccountNumber1 = savingAccountService.findByAccountNumber(loanAccount.getGuarantorAccountNumber1());
             request.getSession().setAttribute("guarantor1",byAccountNumber1);
         }
         if(!StringUtils.isEmpty(loanAccount.getGuarantorAccountNumber2())){
-            SavingAccount byAccountNumber2 = loanAccountService.findByAccountNumber(loanAccount.getGuarantorAccountNumber2());
+            SavingAccount byAccountNumber2 = savingAccountService.findByAccountNumber(loanAccount.getGuarantorAccountNumber2());
 //            model.put("guarantor2(",byAccountNumber2);
             request.getSession().setAttribute("guarantor2",byAccountNumber2);
         }
         if(!StringUtils.isEmpty(loanAccount.getGuarantorAccountNumber3())){
-            SavingAccount byAccountNumber3 = loanAccountService.findByAccountNumber(loanAccount.getGuarantorAccountNumber3());
+            SavingAccount byAccountNumber3 = savingAccountService.findByAccountNumber(loanAccount.getGuarantorAccountNumber3());
 //            model.put("guarantor3",byAccountNumber3);
             request.getSession().setAttribute("guarantor3",byAccountNumber3);
         }
@@ -156,7 +163,7 @@ public class LoanAccountController extends SuperController {
         User user = (User) request.getSession().getAttribute(BVMicroUtils.CUSTOMER_IN_USE);
         LoanAccount loanAccountReturn = shorteeService.createLoanAccount(user,
                 loanAccountSession, savingAccountGuarantor1Session);
-        generalLedgerService.updateLoanAccountCreation(loanAccountReturn);
+
         return "loanCreated";
     }
 
@@ -166,12 +173,12 @@ public class LoanAccountController extends SuperController {
         Optional<LoanAccount> loanAccount = loanAccountService.findById(id);
         LoanAccount aLoanAccount = loanAccount.get();
         List<LoanAccountTransaction> loanAccountTransactionList = aLoanAccount.getLoanAccountTransaction();
-        LoanBilanzList savingBilanzByUserList = loanAccountService.calculateAccountBilanz(loanAccountTransactionList, false);
+        LoanBilanzList loanBilanzByUserList = loanAccountService.calculateAccountBilanz(loanAccountTransactionList, false);
         model.put("name", getLoggedInUserName());
-        model.put("savingBilanzList", savingBilanzByUserList);
+        model.put("loanBilanzList", loanBilanzByUserList);
         loanAccountTransaction.setLoanAccount(aLoanAccount);
-        model.put("savingAccountTransaction", loanAccountTransaction);
-        return "savingBilanzNoInterest";
+        model.put("loanAccountTransaction", loanAccountTransaction);
+        return "loanBilanzNoInterest";
     }
 
 
@@ -211,16 +218,23 @@ public class LoanAccountController extends SuperController {
 
 
     @PostMapping(value = "/registerLoanAccountTransactionForm")
-    public String registerLoanSccountTransactionForm(ModelMap model, @ModelAttribute("savingAccountTransaction") LoanAccountTransaction loanAccountTransaction, HttpServletRequest request) {
-        String savingAccountId = request.getParameter("savingAccountId");
-        Optional<LoanAccount> loanAccount = loanAccountService.findById(new Long(savingAccountId));
+    public String registerLoanAccountTransactionForm(ModelMap model, @ModelAttribute("loanAccountTransaction") LoanAccountTransaction loanAccountTransaction, HttpServletRequest request) {
+        String loanAccountId = request.getParameter("loanAccountId");
+
+
+        Optional<LoanAccount> loanAccount = loanAccountService.findById(new Long(loanAccountId));
         loanAccountTransaction.setLoanAccount( loanAccount.get() );
+        loanAccountTransaction.setCreatedDate(LocalDateTime.now());
+        loanAccountTransaction.setCreatedBy(getLoggedInUserName());
+        loanAccountTransaction.setAccountOwner(loanAccount.get().getUser().getLastName() +", "+
+                loanAccount.get().getUser().getLastName());
+        loanAccountTransaction.setReference(BVMicroUtils.getSaltString());
         User user = (User) request.getSession().getAttribute(BVMicroUtils.CUSTOMER_IN_USE);
 
-        if(loanAccountTransaction.getSavingAmount()<loanAccountTransaction.getLoanAccount().getMinimumPayment()){
+        if(loanAccountTransaction.getLoanAmount()<loanAccountTransaction.getLoanAccount().getMinimumPayment()){
             model.put("billSelectionError", "Please make minimum payment of "+ BVMicroUtils.formatCurrency(loanAccountTransaction.getLoanAccount().getMinimumPayment()));
             loanAccountTransaction.setNotes(loanAccountTransaction.getNotes());
-            return displayLoanBilanzNoInterest(new Long(savingAccountId), model, loanAccountTransaction);
+            return displayLoanBilanzNoInterest(new Long(loanAccountId), model, loanAccountTransaction);
         }
 
         if ("CASH".equals(loanAccountTransaction.getModeOfPayment())) {
@@ -231,79 +245,49 @@ public class LoanAccountController extends SuperController {
 //            }
         }
 
-//        if (request.getParameter("deposit_withdrawal").equals("WITHDRAWAL")) {
-//            loanAccountTransaction.setSavingAmount(loanAccountTransaction.getSavingAmount() * -1);
-//            String error = savingAccountService.withdrawalAllowed(loanAccountTransaction);
-//            //Make sure min amount is not violated at withdrawal
-//            if (!(error == null)) {
-//                model.put("billSelectionError", error);
-//                savingAccountTransaction.setNotes(savingAccountTransaction.getNotes());
-//                return displayLoanBilanzNoInterest(new Long(savingAccountId), model, savingAccountTransaction);
-//            }
-//        }
-//        String modeOfPayment = request.getParameter("modeOfPayment");
-//        savingAccountTransaction.setModeOfPayment(modeOfPayment);
-//        Branch branchInfo = getBranchInfo(getLoggedInUserName());
-//
-//        savingAccountTransaction.setBranch(branchInfo.getId());
-//        savingAccountTransaction.setBranchCode(branchInfo.getCode());
-//        savingAccountTransaction.setBranchCountry(branchInfo.getCountry());
-//
-//        savingAccountService.createSavingAccountTransaction(savingAccountTransaction);
-//        if (savingAccount.get().getSavingAccountTransaction() != null) {
-//            savingAccount.get().getSavingAccountTransaction().add(savingAccountTransaction);
-//        } else {
-//            savingAccount.get().setSavingAccountTransaction(new ArrayList<SavingAccountTransaction>());
-//            savingAccount.get().getSavingAccountTransaction().add(savingAccountTransaction);
-//        }
-//        savingAccountService.save(savingAccount.get());
-//
-//        CallCenter callCenter = new CallCenter();
-//        callCenter.setUserName(savingAccount.get().getUser().getUserName());
-//        callCenter.setAccountNumber(savingAccount.get().getAccountNumber());
-//        callCenter.setDate(new Date(System.currentTimeMillis()));
-//        callCenter.setNotes(savingAccountTransaction.getModeOfPayment() + " Payment/ Deposit made into account amount: " + savingAccountTransaction.getSavingAmount());
-//
-//        callCenterRepository.save(callCenter);
-//
-//        SavingBilanzList savingBilanzByUserList = savingAccountService.calculateAccountBilanz(savingAccount.get().getSavingAccountTransaction(), false);
-//        model.put("name", getLoggedInUserName());
-//        model.put("billSelectionError", BVMicroUtils.formatCurrency(savingAccountTransaction.getSavingAmount()) + " ---- PAYMENT HAS REGISTERED ----- ");
-//        model.put("savingBilanzList", savingBilanzByUserList);
-//        request.getSession().setAttribute("savingBilanzList", savingBilanzByUserList);
-//        Optional<User> byId = userRepository.findById(user.getId());
-//        request.getSession().setAttribute(BVMicroUtils.CUSTOMER_IN_USE, byId.get());
-//        savingAccountTransaction.setSavingAccount(savingAccount.get());
-//        resetSavingsAccountTransaction(savingAccountTransaction); //reset BillSelection and amount
-//        savingAccountTransaction.setNotes("");
-//        model.put("savingAccountTransaction", savingAccountTransaction);
+        String modeOfPayment = request.getParameter("modeOfPayment");
+        loanAccountTransaction.setModeOfPayment(modeOfPayment);
+        Branch branchInfo = getBranchInfo(getLoggedInUserName());
 
-        return "savingBilanzNoInterest";
+        loanAccountTransaction.setBranch(branchInfo.getId());
+        loanAccountTransaction.setBranchCode(branchInfo.getCode());
+        loanAccountTransaction.setBranchCountry(branchInfo.getCountry());
 
+        loanAccountTransaction.setLoanAccount(loanAccount.get());
+        if (loanAccount.get().getLoanAccountTransaction() != null) {
+            loanAccount.get().getLoanAccountTransaction().add(loanAccountTransaction);
+        } else {
+            loanAccount.get().setLoanAccountTransaction(new ArrayList<LoanAccountTransaction>());
+            loanAccount.get().getLoanAccountTransaction().add(loanAccountTransaction);
+        }
+        loanAccountService.save(loanAccount.get());
+
+        CallCenter callCenter = new CallCenter();
+        callCenter.setUserName(loanAccount.get().getUser().getUserName());
+        callCenter.setAccountNumber(loanAccount.get().getAccountNumber());
+        callCenter.setDate(new Date(System.currentTimeMillis()));
+        callCenter.setNotes(loanAccountTransaction.getModeOfPayment() + " Payment/ Deposit made into account amount: " + loanAccountTransaction.getLoanAmount());
+
+        callCenterRepository.save(callCenter);
+
+        LoanBilanzList loanBilanzByUserList = loanAccountService.calculateAccountBilanz(loanAccount.get().getLoanAccountTransaction(), false);
+        model.put("name", getLoggedInUserName());
+        model.put("billSelectionError", BVMicroUtils.formatCurrency(loanAccountTransaction.getLoanAmount()) + " ---- PAYMENT HAS REGISTERED ----- ");
+        model.put("loanBilanzList", loanBilanzByUserList);
+        request.getSession().setAttribute("loanBilanzList", loanBilanzByUserList);
+        Optional<User> byId = userRepository.findById(user.getId());
+        request.getSession().setAttribute(BVMicroUtils.CUSTOMER_IN_USE, byId.get());
+        loanAccountTransaction.setLoanAccount(loanAccount.get());
+        resetLoansAccountTransaction(loanAccountTransaction); //reset BillSelection and amount
+        loanAccountTransaction.setNotes("");
+
+        request.getSession().setAttribute("loanAccountTransaction", loanAccountTransaction);
+        model.put("loanAccountTransaction", loanAccountTransaction);
+        return "loanBilanzNoInterest";
     }
 
-//    @GetMapping(value = "/showUserLoanBilanz/{id}")
-//    public String showUserSavingBilanz(@PathVariable("id") long id, ModelMap model, HttpServletRequest request) {
-//        User user = (User) request.getSession().getAttribute(BVMicroUtils.CUSTOMER_IN_USE);
-//        SavingBilanzList savingBilanzByUserList = loanAccountService.getSavingBilanzByUser(user, true);
-//        model.put("name", getLoggedInUserName());
-//        model.put("savingBilanzList", savingBilanzByUserList);
-//        return "savingBilanz";
-//    }
-
-//    @GetMapping(value = "/showSavingAccountBilanz/{accountId}")
-//    public String showSavingAccountBilanz(@PathVariable("accountId") long accountId, ModelMap model, HttpServletRequest request) {
-//        Optional<SavingAccount> byId = savingAccountService.findById(accountId);
-//        List<SavingAccountTransaction> savingAccountTransaction = byId.get().getSavingAccountTransaction();
-//        SavingBilanzList savingBilanzByUserList = savingAccountService.calculateAccountBilanz(savingAccountTransaction, true);
-//        model.put("name", getLoggedInUserName());
-//        model.put("savingBilanzList", savingBilanzByUserList);
-//        return "savingBilanz";
-//    }
-
-
-    private void resetSavingsAccountTransaction(SavingAccountTransaction sat) {
-        sat.setSavingAmount(0);
+    private void resetLoansAccountTransaction(LoanAccountTransaction sat) {
+        sat.setLoanAmount(0);
         sat.setFifty(0);
         sat.setFiveHundred(0);
         sat.setFiveThousand(0);

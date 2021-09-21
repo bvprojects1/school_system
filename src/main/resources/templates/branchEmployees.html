@@ -14,7 +14,7 @@
 <table width="90%" class="center" border="0px">
     <tr>
         <td>
-            <span th:text="${branch.name}"></span>
+            <strong><span th:text="${branch.name}"></span></strong>
         </td>
         <td>
             <font size="2"><span th:text="${branch.code}"/></font>
@@ -66,11 +66,12 @@
         <td th:text="${#dates.format(user.created, 'dd-MMM-yyyy HH:mm')}"></td>
         <td th:text="${user.createdBy}"></td>
         <td>
-            <a th:href="${'/removeCustomerFromBranch/' + {user.id} + '/' + {branch.id}}">Remove</a>
+            <a th:href="${'/removeCustomerFromBranch/' + {user.id} + '/' + {branch.id}}"><img width="25px" th:src="@{/assets/images/redArrowDown.png}"/>
+                Move from <span th:text="${branch.name}"></span>
+            </a>
         </td>
     </tr>
 </table>
-
 <br/>
 <br/>
 
@@ -107,7 +108,9 @@
         <td th:text="${user.branch.name}"></td>
         <td th:text="${user.createdBy}"></td>
         <td>
-            <a th:href="${'/addCustomerToBranch/' + {user.id} + '/' + {branch.id}}">Add</a>
+            <a th:href="${'/addCustomerToBranch/' + {user.id} + '/' + {branch.id}}"> <img width="25px" th:src="@{/assets/images/greenArrowUp.png}"/>
+                Move to <span th:text="${branch.name}"></span>
+            </a>
         </td>
     </tr>
 </table>
@@ -145,7 +148,10 @@
         <td th:text="${#dates.format(user.created, 'dd-MMM-yyyy HH:mm')}"></td>
         <td th:text="${user.createdBy}"></td>
         <td>
-            <a th:href="${'/addCustomerToBranch/' + {user.id} + '/' + {branch.id}}">Add</a>
+            <a th:href="${'/addCustomerToBranch/' + {user.id} + '/' + {branch.id}}">
+                <img width="25px" th:src="@{/assets/images/greenArrowUp.png}"/>
+                Move to <span th:text="${branch.name}"></span>
+            </a>
         </td>
     </tr>
 </table>

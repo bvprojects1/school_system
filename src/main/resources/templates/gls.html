@@ -10,7 +10,7 @@
     <div class="project-title-area text-center">
         <div class="col-md-12">
             <div class="project-title-content">
-                <font color="green;" size="4"><h4> General Ledger Transactions </h4></font> </div>
+                <font color="gray;" size="4"><h4> General Ledger Transactions </h4></font> </div>
             <table border="0" width="80%" class="center">
                 <tr><td>
                      <font size="1.5px"> DEBIT</font> <br/>
@@ -39,6 +39,7 @@
                         <th>Date</th>
                         <th>Reference</th>
                         <th>Account</th>
+                        <th>Notes</th>
                         <th>Type</th>
                         <th>Amount</th>
                     </tr>
@@ -46,6 +47,7 @@
                         <td><div th:text="${#dates.format(gl.date, 'dd-MMM-yyyy HH:mm')}"></div></td>
                         <td th:text="${gl.reference}"></td>
                         <td th:text="${gl.accountNumber}"></td>
+                        <td th:text="${gl.notes}"></td>
                         <td>
                             <a href="#" th:href="@{/findGlByType/{type}(type=${gl.type})}">
                                 <span th:text="${gl.type}"/>

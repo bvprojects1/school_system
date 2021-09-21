@@ -17,7 +17,7 @@ public class LoanAccountTransaction {
 
     private String createdBy;
     private LocalDateTime createdDate;
-    private int savingAmount;
+    private int loanAmount;
     private String notes;
     private String modeOfPayment;
     private int tenThousand;
@@ -32,7 +32,7 @@ public class LoanAccountTransaction {
     private long branch;
     private String branchCode;
     private String branchCountry;
-    private String savingAmountInLetters;
+    private String loanAmountInLetters;
 
     @Column(unique = true)
     private String reference;
@@ -58,14 +58,6 @@ public class LoanAccountTransaction {
 
     public void setCreatedDate(LocalDateTime createdDate) {
         this.createdDate = createdDate;
-    }
-
-    public int getSavingAmount() {
-        return savingAmount;
-    }
-
-    public void setSavingAmount(int savingAmount) {
-        this.savingAmount = savingAmount;
     }
 
     public String getNotes() {
@@ -180,14 +172,6 @@ public class LoanAccountTransaction {
         this.branchCountry = branchCountry;
     }
 
-    public String getSavingAmountInLetters() {
-        return savingAmountInLetters;
-    }
-
-    public void setSavingAmountInLetters(String savingAmountInLetters) {
-        this.savingAmountInLetters = savingAmountInLetters;
-    }
-
     public String getReference() {
         return reference;
     }
@@ -202,5 +186,21 @@ public class LoanAccountTransaction {
 
     public void setLoanAccount(LoanAccount loanAccount) {
         this.loanAccount = loanAccount;
+    }
+
+    public int getLoanAmount() {
+        return loanAmount;
+    }
+
+    public void setLoanAmount(int loanAmount) {
+        this.loanAmount = loanAmount;
+    }
+
+    public String getLoanAmountInLetters() {
+        return loanAmountInLetters;
+    }
+
+    public void setLoanAmountInLetters(String loanAmountInLetters) {
+        this.loanAmountInLetters = loanAmountInLetters;
     }
 }

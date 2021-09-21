@@ -41,6 +41,11 @@ public class GeneralLedgerService extends SuperService{
         generalLedgerRepository.save(generalLedger);
     }
 
+    public void updateLoanAccountTransaction(LoanAccountTransaction loanAccountTransaction) {
+        GeneralLedger generalLedger = loanAccountGLMapper(loanAccountTransaction);
+        generalLedgerRepository.save(generalLedger);
+    }
+
     public void updateLoanAccountCreation(LoanAccount loanAccount) {
         GeneralLedger generalLedger = loanAccountGLMapper(loanAccount);
         generalLedgerRepository.save(generalLedger);
@@ -64,6 +69,20 @@ public class GeneralLedgerService extends SuperService{
         return gl;
     }
 
+    private GeneralLedger loanAccountGLMapper(LoanAccountTransaction loanAccountTransaction) {
+        GeneralLedger gl = new GeneralLedger();
+        gl.setAccountNumber(loanAccountTransaction.getLoanAccount().getAccountNumber());
+        gl.setAmount(loanAccountTransaction.getLoanAmount());
+        gl.setDate(new Date());
+        gl.setLastUpdatedDate(new Date(System.currentTimeMillis()));
+        gl.setNotes(loanAccountTransaction.getNotes());
+        gl.setReference(loanAccountTransaction.getReference());
+        gl.setLastUpdatedBy(BVMicroUtils.SYSTEM);
+        gl.setCreatedBy(BVMicroUtils.SYSTEM);
+        gl.setGlClass(4); //TODO Saving which class in GL ?
+        gl.setType(getGeneralLedgerType(loanAccountTransaction.getLoanAmount()));
+        return gl;
+    }
 
     private GeneralLedger savingAccountGLMapper(SavingAccountTransaction savingAccountTransaction) {
         GeneralLedger gl = new GeneralLedger();
@@ -104,9 +123,10 @@ public class GeneralLedgerService extends SuperService{
                     debitTotal = debitTotal + current.getAmount();
                 }
             }
-        bilanz.setTotal(debitTotal+creditTotal);
+        bilanz.setTotal(debitTotal-creditTotal);
         bilanz.setDebitTotal(debitTotal);
         bilanz.setCreditTotal(creditTotal);
+        Collections.reverse(generalLedgerList);
         bilanz.setGeneralLedger(generalLedgerList);
         return bilanz;
     }
