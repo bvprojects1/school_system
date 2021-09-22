@@ -6,6 +6,7 @@ import com.bitsvalley.micro.repositories.UserRepository;
 import com.bitsvalley.micro.services.*;
 import com.bitsvalley.micro.utils.BVMicroUtils;
 import com.bitsvalley.micro.webdomain.LoanBilanzList;
+import com.bitsvalley.micro.webdomain.SavingBilanzList;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -334,6 +335,14 @@ public class LoanAccountController extends SuperController {
         return s;
     }
 
-
+    @GetMapping(value = "/showLoanAccountBilanz/{accountId}")
+    public String showLoanAccountBilanz(@PathVariable("accountId") long accountId, ModelMap model, HttpServletRequest request) {
+        Optional<LoanAccount> byId = loanAccountService.findById(accountId);
+        List<LoanAccountTransaction> loanAccountTransaction = byId.get().getLoanAccountTransaction();
+        LoanBilanzList loanBilanzByUserList = loanAccountService.calculateAccountBilanz(loanAccountTransaction, true);
+        model.put("name", getLoggedInUserName());
+        model.put("loanBilanzList", loanBilanzByUserList);
+        return "loanBilanz";
+    }
 
 }

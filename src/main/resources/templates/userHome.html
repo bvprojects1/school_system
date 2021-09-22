@@ -62,7 +62,10 @@
                 Description
             </td>
             <td>
-                Min /Balance
+                Min
+            </td>
+            <td>
+                Balance
             </td>
             <td>
                 %
@@ -81,11 +84,9 @@
         </tr>
 
         <tr th:each="savingAccount : ${session.customerInUse.savingAccount}">
-            <!--        <tr th:each="savingAccount : ${savingBilanzList.savingBilanzList}">-->
 
-            <td>
-                <p th:text="${savingAccount.accountType.name}"/>
-            </td>
+            <td th:text="${savingAccount.accountType.name}"/>
+
             <td>
                 <a th:href="@{/callcenter/{id}(id=${savingAccount.accountNumber})}" href="/callcenter">
                     <span th:if="${savingAccount.defaultedPayment}">
@@ -98,35 +99,26 @@
                     <div th:text="${savingAccount.accountNumber}"/>
                 </a>
             </td>
-            <td>
-                <p th:text="${savingAccount.notes}"/>
-            </td>
-            <td>
-                <p th:text="${#numbers.formatDecimal(savingAccount.accountMinBalance, 0, 'COMMA', 0, 'POINT')}">
-                    0.00
-                </p>
-                <p th:text="${#numbers.formatDecimal(savingAccount.accountBalance, 0, 'COMMA', 0, 'POINT')}"/>
-            </td>
-            <td>
-                <p th:text="${savingAccount.interestRate}"/>
-            </td>
-            <td>
-                <p th:text="${savingAccount.accountMinBalanceLocked}"/>
-            </td>
-            <td>
-                <p th:text="${#dates.format(savingAccount.createdDate, 'dd-MMM-yyyy HH:mm')}">
-            </td>
-            <td>
-                <p th:text="${savingAccount.createdBy}"/>
-            </td>
+            <td th:text="${savingAccount.notes}"/>
+
+            <td th:text="${#numbers.formatDecimal(savingAccount.accountMinBalance, 0, 'COMMA', 0, 'POINT')}"/>
+
+            <td th:text="${#numbers.formatDecimal(savingAccount.accountBalance, 0, 'COMMA', 0, 'POINT')}"/>
+
+            <td th:text="${savingAccount.interestRate}"/>
+
+            <td th:text="${savingAccount.accountMinBalanceLocked}"/>
+
+            <td th:text="${#dates.format(savingAccount.createdDate, 'dd-MMM-yyyy HH:mm')}"/>
+
+            <td th:text="${savingAccount.createdBy}"/>
             <td>
                 <a href="#" th:href="@{/registerSavingAccountTransaction/{id}(id=${savingAccount.id})}">
-                    <font size="3"> Payment/
-                        withdrawal</font> <img width="25px" th:src="@{/assets/images/add.png}"/> </a><br/>
+                     <img width="30px" th:src="@{/assets/images/depositIcon.png}"/>
+                </a>
+
                 <a href="#" th:href="@{/showSavingAccountBilanz/{accountId}(accountId=${savingAccount.id})}">
-                    <font size="3">
-                        Show Savings interest
-                    </font>
+                    <img width="30px" th:src="@{/assets/images/interestIcon.png}"/>
                 </a>
                 </font>
             </td>
@@ -183,46 +175,26 @@
             </td>
             <td>
                 <a th:href="@{/callcenter/{id}(id=${loanAccount.accountNumber})}" href="/callcenter">
-                    <!--                    <span th:if="${savingAccount.defaultedPayment}">-->
-                    <!--                        <b>-->
-                    <!--                            <font size="6" color="red">-->
-                    <!--                                **-->
-                    <!--                            </font>-->
-                    <!--                        </b>-->
-                    <!--                    </span>-->
+
                     <div th:text="${loanAccount.accountNumber}"/>
                 </a>
             </td>
-            <td>
-                <p th:text="${loanAccount.loanAmount}"/>
-            </td>
-            <td>
-                <p th:text="${loanAccount.interestRate}"/>
-            </td>
-            <!--            <td>-->
-            <!--                <p th:text="${#numbers.formatDecimal(loanAccount.accountBalance, 0, 'COMMA', 0, 'POINT')}"/>-->
-            <!--            </td>-->
-            <td>
-                <p th:text="${loanAccount.notes}"/>
-            </td>
-            <td>
-                <p th:text="${#dates.format(loanAccount.createdDate, 'dd-MMM-yyyy HH:mm')}">
-            </td>
-            <td>
-                <p th:text="${loanAccount.createdBy}"/>
-            </td>
+            <td th:text="${#numbers.formatDecimal(loanAccount.loanAmount, 0, 'COMMA', 0, 'POINT')}"/>
+
+            <td th:text="${loanAccount.interestRate}"/>
+
+            <td th:text="${loanAccount.notes}"/>
+
+            <td th:text="${#dates.format(loanAccount.createdDate, 'dd-MMM-yyyy HH:mm')}"/>
+
+            <td th:text="${loanAccount.createdBy}"/>
+
             <td>
                 <a href="#" th:href="@{/registerLoanAccountTransaction/{id}(id=${loanAccount.id})}">
-                    <font size="3">
-                        Payment
-                    </font>
-                    <img width="25px" th:src="@{/assets/images/add.png}"/>
+                    <img width="30px" th:src="@{/assets/images/depositIcon.png}"/>
                 </a>
-                <br/>
                 <a href="#" th:href="@{/showLoanAccountBilanz/{accountId}(accountId=${loanAccount.id})}">
-                    <font size="3">
-                        Show Loan interest
-                    </font>
+                    <img width="30px" th:src="@{/assets/images/interestIcon.png}"/>
                 </a>
                 </font>
             </td>
@@ -243,7 +215,6 @@
     </table>
     <br/>
 
-    <!--Choosen main area end-->
 </section>
 
 </body>

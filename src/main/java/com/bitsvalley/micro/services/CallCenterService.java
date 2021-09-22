@@ -1,12 +1,10 @@
 package com.bitsvalley.micro.services;
 
 import com.bitsvalley.micro.domain.CallCenter;
-import com.bitsvalley.micro.domain.LoanAccount;
 import com.bitsvalley.micro.domain.SavingAccount;
-import com.bitsvalley.micro.repositories.CallCenterRepository;
 import com.bitsvalley.micro.repositories.AccountTypeRepository;
+import com.bitsvalley.micro.repositories.CallCenterRepository;
 import com.bitsvalley.micro.repositories.UserRepository;
-import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

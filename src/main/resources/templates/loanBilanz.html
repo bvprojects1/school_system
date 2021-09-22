@@ -16,7 +16,7 @@
         </td>
         <td><font size="2"> Saving</font> <br/>
             <font size="4px" color="green">
-                <div th:text="${session.savingBilanzList.totalSaving}"/>
+                <div th:text="${session.loanBilanzList.totalLoan}"/>
             </font>
         </td>
         <td><font size="2"> Current</font><br/> <font size="4"> 0</font></td>
@@ -24,29 +24,30 @@
         <td><font size="2">Retirement saving </font><br/> <font size="4" color="#A57C00">0 </font> </b></td>
     </tr>
 </table>
-
+<br/><br/>
 <table width="90%" class="center">
     <tr>
-        <th><font color="green" size="4px">SAVING INTEREST</font><br/>DOP</th>
+        <th><font color="green" size="4px">LOAN INTEREST</font><br/>DOP</th>
         <th>MOP</th>
         <th>Agent</th>
-        <th>Interest</th>
+        <th>%</th>
         <th>Notes</th>
         <th>Days</th>
-        <th>Total Interest
+        <th>
+            Interest
             <div th:if="${#authorization.expression('hasAnyAuthority(''ROLE_MANAGER'')')}">
                 <font color="green" size="4px">
-                    <div th:text="${savingBilanzList.totalSavingInterest}"/>
+                    <div th:text="${loanBilanzList.totalLoanInterest}"/>
                 </font>
             </div>
         </th>
         <th>Amount</th>
         <th><font color="green" size="6px">
-            <div th:text="${savingBilanzList.totalSaving}"/>
+            <div th:text="${loanBilanzList.totalLoan}"/>
         </font></th>
     </tr>
 
-    <tr th:each="bilanz : ${savingBilanzList.savingBilanzList}">
+    <tr th:each="bilanz : ${loanBilanzList.loanBilanzList}">
         <td th:text="${bilanz.createdDate}"></td>
         <td th:text="${bilanz.modeOfPayment}"></td>
         <td th:text="${bilanz.agent}"></td>
@@ -56,7 +57,7 @@
         <td th:text="${bilanz.notes}"></td>
         <td th:text="${bilanz.noOfDays}"></td>
         <td th:text="${bilanz.interestAccrued}"></td>
-        <td th:text="${bilanz.savingAmount}"></td>
+        <td th:text="${bilanz.loanAmount}"></td>
         <td th:text="${bilanz.currentBalance}"></td>
     </tr>
 

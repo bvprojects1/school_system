@@ -1,18 +1,14 @@
 package com.bitsvalley.micro.services;
 
-import com.bitsvalley.micro.domain.Branch;
 import com.bitsvalley.micro.domain.LoanAccount;
 import com.bitsvalley.micro.domain.LoanAccountTransaction;
-import com.bitsvalley.micro.domain.User;
 import com.bitsvalley.micro.repositories.LoanAccountRepository;
 import com.bitsvalley.micro.repositories.LoanAccountTransactionRepository;
 import com.bitsvalley.micro.utils.BVMicroUtils;
-import net.bytebuddy.implementation.bind.annotation.Super;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.lang.reflect.Array;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Optional;
@@ -46,7 +42,7 @@ public class LoanAccountTransactionService extends SuperService {
         LoanAccountTransaction loanAccountTransaction = new LoanAccountTransaction();
         loanAccountTransaction.setAccountOwner(loanAccount.getUser().getLastName()
                 + ", " + loanAccount.getUser().getFirstName());
-        loanAccountTransaction.setLoanAmount(loanAccount.getLoanAmount()*-1);
+        loanAccountTransaction.setLoanAmount(loanAccount.getLoanAmount() * -1);
         Optional<LoanAccount> byId = loanAccountRepository.findById(loanAccount.getId());
         loanAccount = byId.get();
         loanAccountTransaction.setLoanAccount(loanAccount);
