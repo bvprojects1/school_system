@@ -92,11 +92,10 @@
                     <span th:if="${savingAccount.defaultedPayment}">
                         <b>
                             <font size="6" color="red">
-                                **
+                                **<span th:text="${savingAccount.accountNumber}"/>
                             </font>
                         </b>
                     </span>
-                    <div th:text="${savingAccount.accountNumber}"/>
                 </a>
             </td>
             <td th:text="${savingAccount.notes}"/>

@@ -5,10 +5,14 @@ import com.bitsvalley.micro.repositories.CallCenterRepository;
 import com.bitsvalley.micro.repositories.ShorteeAccountRepository;
 import com.bitsvalley.micro.repositories.UserRepository;
 import com.bitsvalley.micro.utils.AccountStatus;
+import com.bitsvalley.micro.utils.Amortization;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
+import java.math.MathContext;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -40,6 +44,9 @@ public class ShorteeService extends SuperService{
     @Autowired
     private ShorteeAccountRepository shorteeAccountRepository;
 
+    @Autowired
+    private InterestService interestService;
+
 
     @NotNull
     public LoanAccount createLoanAccount(User user, LoanAccount loanAccount,
@@ -61,11 +68,6 @@ public class ShorteeService extends SuperService{
 
         callCenterService.callCenterShorteeUpdate(shorteeSavingAccount, loanAccount.getGuarantor1Amount1());
 
-//        callCenterService.saveCallCenterLog(
-//                user.getFirstName(),user.getLastName(),loanAccount.getAccountNumber(),
-//                loanAccount.getAccountType().getName(),loanAccount.getLoanAmount()+""
-//                );
-
         shorteeAccount.setAmountShortee(loanAccount.getGuarantor1Amount1());
         shorteeAccount.setCreatedDate(createdDate);
         shorteeAccount.setLastUpdatedDate(createdDate);
@@ -77,9 +79,28 @@ public class ShorteeService extends SuperService{
         ArrayList<ShorteeAccount> listShorteeAccount = new ArrayList<ShorteeAccount>();
         listShorteeAccount.add(shorteeAccount);
         loanAccount.setShorteeAccounts(listShorteeAccount);
+        double payment = interestService.monthlyPaymentAmortisedPrincipal( loanAccount.getInterestRate(),
+                loanAccount.getTermOfLoan(), loanAccount.getLoanAmount());
+        loanAccount.setMonthlyPayment(0);
+
+        Amortization amortization = new Amortization(loanAccount.getLoanAmount(),
+                loanAccount.getInterestRate()*.01,
+                loanAccount.getTermOfLoan()/12);
+        String report = amortization.getReport(payment);
+
         loanAccountService.createLoanAccount(loanAccount,user );
 
         return loanAccount;
     }
+
+
+//    private int calculateMonthlyPayment(LoanAccount loanAccount) {
+//        BigDecimal finalLoanAmount = new BigDecimal(
+//                loanAccount.getTotalInterestOnLoan() +
+//                loanAccount.getLoanAmount() + loanAccount.getInitiationFee());
+//        BigDecimal monthlyRate = finalLoanAmount.divide(new BigDecimal(loanAccount.getTermOfLoan()));
+//        BigDecimal rounded = monthlyRate.round(new MathContext(2, RoundingMode.HALF_EVEN));
+//        return rounded.intValue();
+//    }
 
 }

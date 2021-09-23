@@ -4,6 +4,7 @@ import com.bitsvalley.micro.domain.*;
 import com.bitsvalley.micro.repositories.CallCenterRepository;
 import com.bitsvalley.micro.repositories.UserRepository;
 import com.bitsvalley.micro.services.*;
+import com.bitsvalley.micro.utils.Amortization;
 import com.bitsvalley.micro.utils.BVMicroUtils;
 import com.bitsvalley.micro.webdomain.LoanBilanzList;
 import com.bitsvalley.micro.webdomain.SavingBilanzList;
@@ -86,28 +87,39 @@ public class LoanAccountController extends SuperController {
         loanAccount.setBranchCode(branchInfo.getCode());
         loanAccount.setCountry(branchInfo.getCountry());
 
-        loanAccount.setTotalInterestOnLoan(
-                interestService.calculateInterestAccruedMonthCompounded(
-                        loanAccount.getInterestRate(),loanAccount.getTermOfLoan(),loanAccount.getLoanAmount()));
+        loanAccount.setTotalInterestOnLoan(0);
+        double monthlyPayment = interestService.monthlyPaymentAmortisedPrincipal(loanAccount.getInterestRate(),
+        loanAccount.getTermOfLoan(),loanAccount.getLoanAmount());
+
+        Amortization amortization = new Amortization(loanAccount.getLoanAmount(),
+                loanAccount.getInterestRate()*.01,
+                loanAccount.getTermOfLoan()/12);
+        String report = amortization.getReport(monthlyPayment);
+
+        loanAccount.setMonthlyPayment(new Double(monthlyPayment).intValue());
+
+//         interestService.calculateInterestAccruedMonthCompounded(
+//              loanAccount.getInterestRate(),loanAccount.getTermOfLoan(),loanAccount.getLoanAmount()));
+
         AccountType accountType = accountTypeService.getAccountTypeByProductCode(loanAccount.getProductCode());
+        loanAccount.setAccountType(accountType);
+
         if(!StringUtils.isEmpty(loanAccount.getGuarantorAccountNumber1())){
             SavingAccount byAccountNumber1 = savingAccountService.findByAccountNumber(loanAccount.getGuarantorAccountNumber1());
             request.getSession().setAttribute("guarantor1",byAccountNumber1);
         }
         if(!StringUtils.isEmpty(loanAccount.getGuarantorAccountNumber2())){
             SavingAccount byAccountNumber2 = savingAccountService.findByAccountNumber(loanAccount.getGuarantorAccountNumber2());
-//            model.put("guarantor2(",byAccountNumber2);
             request.getSession().setAttribute("guarantor2",byAccountNumber2);
         }
         if(!StringUtils.isEmpty(loanAccount.getGuarantorAccountNumber3())){
             SavingAccount byAccountNumber3 = savingAccountService.findByAccountNumber(loanAccount.getGuarantorAccountNumber3());
-//            model.put("guarantor3",byAccountNumber3);
             request.getSession().setAttribute("guarantor3",byAccountNumber3);
         }
-        loanAccount.setAccountType(accountType);
+
         request.getSession().setAttribute("loanAccount",loanAccount);
         model.put("loanAccount", loanAccount);
-//        loanAccountService.createLoanAccount(loanAccount, user);
+
         return "loanShorteeAccounts";
     }
 
@@ -219,7 +231,8 @@ public class LoanAccountController extends SuperController {
 
 
     @PostMapping(value = "/registerLoanAccountTransactionForm")
-    public String registerLoanAccountTransactionForm(ModelMap model, @ModelAttribute("loanAccountTransaction") LoanAccountTransaction loanAccountTransaction, HttpServletRequest request) {
+    public String registerLoanAccountTransactionForm(ModelMap model, @ModelAttribute("loanAccountTransaction")
+            LoanAccountTransaction loanAccountTransaction, HttpServletRequest request) {
         String loanAccountId = request.getParameter("loanAccountId");
 
 
@@ -267,8 +280,8 @@ public class LoanAccountController extends SuperController {
         callCenter.setUserName(loanAccount.get().getUser().getUserName());
         callCenter.setAccountNumber(loanAccount.get().getAccountNumber());
         callCenter.setDate(new Date(System.currentTimeMillis()));
-        callCenter.setNotes(loanAccountTransaction.getModeOfPayment() + " Payment/ Deposit made into account amount: " + loanAccountTransaction.getLoanAmount());
-
+        callCenter.setNotes(loanAccountTransaction.getModeOfPayment() +
+                " Payment/ Deposit made into account amount: " + loanAccountTransaction.getLoanAmount());
         callCenterRepository.save(callCenter);
 
         LoanBilanzList loanBilanzByUserList = loanAccountService.calculateAccountBilanz(loanAccount.get().getLoanAccountTransaction(), false);

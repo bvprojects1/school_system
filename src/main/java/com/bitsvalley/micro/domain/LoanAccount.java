@@ -31,6 +31,10 @@ public class LoanAccount {
     private String productCode;
     private int termOfLoan;
 
+    private int initiationFee;
+    private Date LastPaymentDate;
+    private int monthlyPayment;
+
     private String guarantorAccountNumber1;
     private String guarantorAccountNumber2;
     private String guarantorAccountNumber3;
@@ -313,4 +317,29 @@ public class LoanAccount {
     public void setGuarantor1Amount3(int guarantor1Amount3) {
         this.guarantor1Amount3 = guarantor1Amount3;
     }
+
+    public int getInitiationFee() {
+        return initiationFee;
+    }
+
+    public void setInitiationFee(int initiationFee) {
+        this.initiationFee = initiationFee;
+    }
+
+    public Date getLastPaymentDate() {
+        return LastPaymentDate;
+    }
+
+    public void setLastPaymentDate(Date lastPaymentDate) {
+        LastPaymentDate = lastPaymentDate;
+    }
+
+    public int getMonthlyPayment() {
+        return monthlyPayment;
+    }
+
+    public void setMonthlyPayment(int monthlyPayment) {
+        this.monthlyPayment = monthlyPayment;
+    }
+
 }

@@ -10,19 +10,20 @@
 
 <br/><br/><br/><br/><br/><br/><br/>
 <table class="center" width="80%" border="0"><tr>
-    <td><font size="1.5px">Username</font> <br/> <font size="6"> <span style th:text="${session.customerInUse.userName}"/> </font>
-        <button style="font-face: 'Comic Sans MS'; font-size: larger; color: teal; background-color: #FFFFC0; border: 3pt ridge lightgrey" type="submit">
-            <a href="#" th:href="@{/file/{userName}(userName=${session.customerInUse.userName})}">Upload I.D</a></button>
-        <a href="#" th:href="@{/reloadUser}"><img width="40px" th:src="@{/getImage}"/> </a>
+    <td><font color="#77adbf" size="1.5px">Username</font> <br/> <font color="#77adbf" size="6"> <span style th:text="${session.customerInUse.userName}"/> </font>
+<!--        <button style="font-face: 'Comic Sans MS'; font-size: larger; color: teal; background-color: #FFFFC0; border: 3pt ridge lightgrey" type="submit">-->
+<!--            <a href="#" th:href="@{/file/{userName}(userName=${session.customerInUse.userName})}">Upload I.D</a></button>-->
+<!--        <a href="#" th:href="@{/reloadUser}"><img width="40px" th:src="@{/getImage}"/> </a>-->
     </td>
-    <td> <font size="1.5px">Saving</font> <br/> <font color="#77adbf" size="6px"> 0 </font></td>
-    <td> <font size="1.5px">Current</font> <br/> <font size="6px"> 0</font></td>
-    <td> <font size="1.5px">Loan</font> <br/> <font size="6px"> <div th:text="${loanBilanzList.totalLoan}"/></font></td>
-    <td><font size="1.5px"> Retirement saving </font> <br/> <font size="6" color="#A57C00">0 </font> </td>
+    <td> <font size="1.5px">Monthly Payment</font> <br/> <font color="#77adbf" size="6px">
+        <span th:text="${#numbers.formatDecimal(loanAccountTransaction.loanAccount.monthlyPayment, 0, 'COMMA', 0, 'POINT')}"/>
+    </font></td>
+    <td> <font size="1.5px">Loan Term</font> <br/> <font color="#77adbf" size="6px"> <span th:text="${loanBilanzList.loanBilanzList[0].monthYearOfLastPayment}"/></font></td>
+    <td> <font size="1.5px">Initial Loan Amount</font> <br/> <font color="#77adbf" size="6px"> <span th:text="${loanBilanzList.loanBilanzList[0].loanAmount}"/></font></td>
+    <td><font size="1.5px"> Principal Balance </font> <br/> <font size="6" color="#A57C00">0 </font> </td>
 </tr></table>
 
 <table border="0" width="90%" class="center">
-
     <tr>
         <td>
             <font size="1.5px"> Account Type</font><font color="#2d363f" size="4px"> <div th:text="${loanAccountTransaction.loanAccount.accountType.name}"/></font>
@@ -47,7 +48,7 @@
 <!--            <font size="1.5px"> Notes</font><font color="#2d363f" size="4px"><div th:text="${loanAccountTransaction.loanAccount.notes}"/></font>-->
 <!--        </td>-->
         <td>
-            <font size="1.5px"> Rate</font><font color="#2d363f" size="4px"><div th:text="${loanAccountTransaction.loanAccount.interestRate}"/></font>
+            <font size="1.5px"> Rate</font><font color="#2d363f" size="4px"><span th:text="${loanAccountTransaction.loanAccount.interestRate}"/>%</font>
         </td>
 
         <td>
@@ -55,7 +56,7 @@
         </td>
     </tr>
 </table>
-
+<br/>
 <form action="#" th:action="@{/registerLoanAccountTransactionForm}" method="post" th:object="${loanAccountTransaction}" >
 
     <table border="0" width="90%" class="center">

@@ -9,7 +9,11 @@ public class LoanBilanz {
     String agent;
     String modeOfPayment;
     String noOfDays;
+    String monthYearOfLastPayment;
     String loanAmount;
+    String monthlyPayment;
+    String initiationFee;
+    String initialLoanAmount;
     String currentBalance;
     String reference;
     String accountType;
@@ -19,6 +23,7 @@ public class LoanBilanz {
     String createdBy;
     String id;
     String accountOwner;
+    String setAmortizationSchedule;
 
     public String getBranch() {
         return branch;
@@ -154,5 +159,45 @@ public class LoanBilanz {
 
     public void setReference(String reference) {
         this.reference = reference;
+    }
+
+    public String getMonthlyPayment() {
+        return monthlyPayment;
+    }
+
+    public void setMonthlyPayment(String monthlyPayment) {
+        this.monthlyPayment = monthlyPayment;
+    }
+
+    public String getInitiationFee() {
+        return initiationFee;
+    }
+
+    public void setInitiationFee(String initiationFee) {
+        this.initiationFee = initiationFee;
+    }
+
+    public String getInitialLoanAmount() {
+        return initialLoanAmount;
+    }
+
+    public void setInitialLoanAmount(String initialLoanAmount) {
+        this.initialLoanAmount = initialLoanAmount;
+    }
+
+    public String getMonthYearOfLastPayment() {
+        return monthYearOfLastPayment;
+    }
+
+    public void setMonthYearOfLastPayment(String monthYearOfLastPayment) {
+        this.monthYearOfLastPayment = monthYearOfLastPayment;
+    }
+
+    public String getSetAmortizationSchedule() {
+        return setAmortizationSchedule;
+    }
+
+    public void setSetAmortizationSchedule(String setAmortizationSchedule) {
+        this.setAmortizationSchedule = setAmortizationSchedule;
     }
 }
