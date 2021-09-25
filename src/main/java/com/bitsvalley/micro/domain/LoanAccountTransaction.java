@@ -17,7 +17,7 @@ public class LoanAccountTransaction {
 
     private String createdBy;
     private LocalDateTime createdDate;
-    private int loanAmount;
+    private double loanAmount;
     private String notes;
     private String modeOfPayment;
     private int tenThousand;
@@ -188,11 +188,15 @@ public class LoanAccountTransaction {
         this.loanAccount = loanAccount;
     }
 
-    public int getLoanAmount() {
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public double getLoanAmount() {
         return loanAmount;
     }
 
-    public void setLoanAmount(int loanAmount) {
+    public void setLoanAmount(double loanAmount) {
         this.loanAmount = loanAmount;
     }
 

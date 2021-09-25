@@ -236,15 +236,12 @@ public class LoanAccountService extends SuperService {
         loanBilanz.setMonthlyPayment(loanAccount.getMonthlyPayment()+"");
         Amortization amortization = new Amortization(loanAccount.getLoanAmount(),
                 loanAccount.getInterestRate()*.01,
-                loanAccount.getTermOfLoan()/12);
-        String report = amortization.getReport(monthlyPayment);
+                loanAccount.getTermOfLoan(),monthlyPayment);
 
-        loanBilanz.setSetAmortizationSchedule(report);
+//        loanBilanz.setSetAmortizationSchedule(amortization.getAmortizationReport());
         if (calculateInterest) {
                 double monthlyPayments = monthlyPayment;
-
         }
-
         return loanBilanz;
     }
 

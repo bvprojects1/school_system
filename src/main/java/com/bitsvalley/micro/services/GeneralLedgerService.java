@@ -1,8 +1,11 @@
 package com.bitsvalley.micro.services;
 
-import com.bitsvalley.micro.domain.*;
-import com.bitsvalley.micro.repositories.GeneralLedgerRepository;
+import com.bitsvalley.micro.domain.GeneralLedger;
+import com.bitsvalley.micro.domain.LoanAccount;
+import com.bitsvalley.micro.domain.LoanAccountTransaction;
+import com.bitsvalley.micro.domain.SavingAccountTransaction;
 import com.bitsvalley.micro.repositories.AccountTypeRepository;
+import com.bitsvalley.micro.repositories.GeneralLedgerRepository;
 import com.bitsvalley.micro.repositories.UserRepository;
 import com.bitsvalley.micro.utils.BVMicroUtils;
 import com.bitsvalley.micro.utils.GeneralLedgerType;
@@ -11,7 +14,10 @@ import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
+import java.util.List;
 
 /**
  * @author Fru Chifen
@@ -99,7 +105,7 @@ public class GeneralLedgerService extends SuperService{
         return gl;
     }
 
-    private String getGeneralLedgerType(int amount) {
+    private String getGeneralLedgerType(double amount) {
             return amount>0?GeneralLedgerType.DEBIT.name():GeneralLedgerType.CREDIT.name();
     }
 
@@ -112,8 +118,8 @@ public class GeneralLedgerService extends SuperService{
 
     @NotNull
     private GeneralLedgerBilanz getGeneralLedgerBilanz( List<GeneralLedger> generalLedgerList) {
-        int debitTotal = 0;
-        int creditTotal = 0;
+        double debitTotal = 0.0;
+        double creditTotal = 0.0;
         GeneralLedgerBilanz bilanz = bilanz = new GeneralLedgerBilanz();
         for (GeneralLedger current: generalLedgerList ) {
 

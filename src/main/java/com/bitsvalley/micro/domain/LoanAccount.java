@@ -24,16 +24,16 @@ public class LoanAccount {
     private AccountStatus accountStatus;
     private int glClass;
     private String intervalOfLoanPayment;
-    private int interestRate;
-    private int minimumPayment;
+    private double interestRate;
+    private double minimumPayment;
     private String lastUpdatedBy;
     private Date lastUpdatedDate;
     private String productCode;
     private int termOfLoan;
 
-    private int initiationFee;
+    private double initiationFee;
     private Date LastPaymentDate;
-    private int monthlyPayment;
+    private double monthlyPayment;
 
     private String guarantorAccountNumber1;
     private String guarantorAccountNumber2;
@@ -56,7 +56,7 @@ public class LoanAccount {
     @OneToMany(cascade = CascadeType.ALL)
     private List<LoanAccountTransaction> loanAccountTransaction = new ArrayList<LoanAccountTransaction>();
 
-    private int loanAmount;
+    private double loanAmount;
 
     @OneToMany(cascade = CascadeType.ALL)
     private List<ShorteeAccount> shorteeAccounts = new ArrayList<ShorteeAccount>();
@@ -68,10 +68,6 @@ public class LoanAccount {
 
     @ManyToOne
     private User user;
-
-    public int getMinimumPayment() {
-        return minimumPayment;
-    }
 
     public void setMinimumPayment(int minimumPayment) {
         this.minimumPayment = minimumPayment;
@@ -107,10 +103,6 @@ public class LoanAccount {
 
     public void setCreatedBy(String createdBy) {
         this.createdBy = createdBy;
-    }
-    
-    public int getInterestRate() {
-        return interestRate;
     }
 
     public void setInterestRate(int interestRate) {
@@ -222,10 +214,6 @@ public class LoanAccount {
         this.shorteeAccounts = shorteeAccounts;
     }
 
-    public int getLoanAmount() {
-        return loanAmount;
-    }
-
     public void setLoanAmount(int loanAmount) {
         this.loanAmount = loanAmount;
     }
@@ -318,10 +306,6 @@ public class LoanAccount {
         this.guarantor1Amount3 = guarantor1Amount3;
     }
 
-    public int getInitiationFee() {
-        return initiationFee;
-    }
-
     public void setInitiationFee(int initiationFee) {
         this.initiationFee = initiationFee;
     }
@@ -334,12 +318,43 @@ public class LoanAccount {
         LastPaymentDate = lastPaymentDate;
     }
 
-    public int getMonthlyPayment() {
+    public double getInterestRate() {
+        return interestRate;
+    }
+
+    public void setInterestRate(double interestRate) {
+        this.interestRate = interestRate;
+    }
+
+    public double getMinimumPayment() {
+        return minimumPayment;
+    }
+
+    public void setMinimumPayment(double minimumPayment) {
+        this.minimumPayment = minimumPayment;
+    }
+
+    public double getInitiationFee() {
+        return initiationFee;
+    }
+
+    public void setInitiationFee(double initiationFee) {
+        this.initiationFee = initiationFee;
+    }
+
+    public double getMonthlyPayment() {
         return monthlyPayment;
     }
 
-    public void setMonthlyPayment(int monthlyPayment) {
+    public void setMonthlyPayment(double monthlyPayment) {
         this.monthlyPayment = monthlyPayment;
     }
 
+    public double getLoanAmount() {
+        return loanAmount;
+    }
+
+    public void setLoanAmount(double loanAmount) {
+        this.loanAmount = loanAmount;
+    }
 }

@@ -193,11 +193,11 @@ public class LoanBilanz {
         this.monthYearOfLastPayment = monthYearOfLastPayment;
     }
 
-    public String getSetAmortizationSchedule() {
-        return setAmortizationSchedule;
-    }
-
-    public void setSetAmortizationSchedule(String setAmortizationSchedule) {
-        this.setAmortizationSchedule = setAmortizationSchedule;
-    }
+//    public String getSetAmortizationSchedule() {
+//        return setAmortizationSchedule;
+//    }
+//
+//    public void setSetAmortizationSchedule(String setAmortizationSchedule) {
+//        this.setAmortizationSchedule = setAmortizationSchedule;
+//    }
 }

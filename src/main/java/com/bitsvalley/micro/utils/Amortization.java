@@ -1,6 +1,9 @@
 package com.bitsvalley.micro.utils;
 
 import java.text.DecimalFormat;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  This class stores loan information and creates a
@@ -12,10 +15,14 @@ public class Amortization
     private double loanAmount;   // Loan Amount
     private double interestRate; // Annual Interest Rate
     private double loanBalance;  // Monthly Balance
-//    private double term;         // Payment Term
-//    private double payment;      // Monthly Payment
-    private int loanYears;       // Years of Loan
-    private String monthlyRow = "";
+    private int loanMonths;       // Years of Loan
+    private String startDate;
+    private String monthlyPayment;
+    private double totalInterest;
+    private String totalInterestLoanAmount;
+    private String amortizationReport;
+    private String interestRateString;
+    private List<AmortizationRowEntry> amortizationRowEntryList = new ArrayList<AmortizationRowEntry>();
 
     /**
      The constructor accepts the loan amount, the annual
@@ -24,15 +31,19 @@ public class Amortization
      called.
      @param loan The loan amount.
      @param rate The annual interest rate.
-     @param years The number of years of the loan.
+     @param months The number of years of the loan.
      */
 
-    public Amortization(double loan, double rate, int years)
+    public Amortization(double loan, double rate, int months, double payment)
     {
         loanAmount = loan;
         loanBalance = loan;
-        interestRate = rate;
-        loanYears = years;
+        interestRate = rate*0.01;
+        loanMonths = months;
+        monthlyPayment = BVMicroUtils.formatCurrency(payment);
+        startDate = BVMicroUtils.formatDateOnly(LocalDate.now().plusMonths(1));
+        interestRateString = rate+"%";
+        getAmortizationReport(payment);
     }
 
     /**
@@ -40,15 +51,6 @@ public class Amortization
      amount. The result is stored in the payment field.
      */
 
-//    private void calcPayment()
-//    {
-        // Calculate value of Term
-//        term =
-//                Math.pow((1+interestRate/12.0), 12.0 * loanYears);
-        // Calculate monthly payment
-//        payment =
-//                (loanAmount * interestRate/12.0 * term) / (term - 1);
-//    }
 
     /**
      The getNumberOfPayments method returns the total number of
@@ -58,31 +60,28 @@ public class Amortization
 
     public int getNumberOfPayments()
     {
-        return 12 * loanYears;
+        return loanMonths;
     }
 
-
-    public String getReport(double payment)
+    public void getAmortizationReport(double payment )
     {
+//        monthlyPayment = BVMicroUtils.formatCurrency(payment);
         double monthlyInterest;  // The monthly interest rate
-        double principal;        // The amount of principal
-        DecimalFormat dollar = new DecimalFormat("#,##0.00");
-
-        // Print the report header.
-        monthlyRow = "<tr><th>Monthly Interest</th><th>Principal</th><th>Balance</th>";
+        double principal = loanAmount;        // The amount of principal
+//        DecimalFormat dollar = new DecimalFormat("#");
+        LocalDate localDate = LocalDate.now();
+        AmortizationRowEntry amortizationRowEntry = null;
 
         // Display the amortization table.
-        for (int month = 1; month <= getNumberOfPayments(); month++)
-        {
+        for (int month = 1; month <= getNumberOfPayments(); month++) {
+            amortizationRowEntry = new AmortizationRowEntry();
             // Calculate monthly interest.
             monthlyInterest = interestRate / 12.0 * loanBalance;
-
-            if (month != getNumberOfPayments())
-            {
+            totalInterest = totalInterest + monthlyInterest;
+            if (month != getNumberOfPayments()) {
                 // Calculate payment applied to principal
                 principal = payment - monthlyInterest;
-            }
-            else    // This is the last month.
+            } else    // This is the last month.
             {
                 principal = loanBalance;
                 payment = loanBalance + monthlyInterest;
@@ -91,15 +90,17 @@ public class Amortization
             // Calculate the new loan balance.
             loanBalance -= principal;
 
-            // Display a line of data.
-            monthlyRow = monthlyRow + "<tr><td>"+month+"</td><td>" +
-                    dollar.format(monthlyInterest) +
-                    "</td><td>" +
-                    dollar.format(principal) +
-                    "</td><td>" +
-                    dollar.format(loanBalance) + "</td></tr>";
+            amortizationRowEntry.setDate(BVMicroUtils.formatDateOnly(localDate.plusMonths(month)));
+            amortizationRowEntry.setLoanBalance(BVMicroUtils.formatCurrency(loanBalance));
+            amortizationRowEntry.setMonthlyInterest( BVMicroUtils.formatCurrency(monthlyInterest));
+            amortizationRowEntry.setPrincipal(BVMicroUtils.formatCurrency(principal));
+            amortizationRowEntry.setPayment(BVMicroUtils.formatCurrency(payment));
+            amortizationRowEntry.setMonthNumber(month);
+            amortizationRowEntryList.add(amortizationRowEntry);
         }
-        return monthlyRow;
+
+        totalInterestLoanAmount = BVMicroUtils.formatCurrency(totalInterest+loanAmount);
+
     }
 
     /**
@@ -122,13 +123,84 @@ public class Amortization
         return interestRate;
     }
 
-    /**
-     The getLoanYears method returns the years of the loan.
-     @return The value in the loanYears field.
-     */
+    public void setLoanAmount(double loanAmount) {
+        this.loanAmount = loanAmount;
+    }
 
-    public int getLoanYears()
-    {
-        return loanYears;
+    public void setInterestRate(double interestRate) {
+        this.interestRate = interestRate;
+    }
+
+    public double getLoanBalance() {
+        return loanBalance;
+    }
+
+    public void setLoanBalance(double loanBalance) {
+        this.loanBalance = loanBalance;
+    }
+
+    public int getLoanMonths() {
+        return loanMonths;
+    }
+
+    public void setLoanMonths(int loanMonths) {
+        this.loanMonths = loanMonths;
+    }
+
+
+    public double getTotalInterest() {
+        return totalInterest;
+    }
+
+    public void setTotalInterest(double totalInterest) {
+        this.totalInterest = totalInterest;
+    }
+
+    public String getAmortizationReport() {
+        return amortizationReport;
+    }
+
+    public void setAmortizationReport(String amortizationReport) {
+        this.amortizationReport = amortizationReport;
+    }
+
+    public List<AmortizationRowEntry> getAmortizationRowEntryList() {
+        return amortizationRowEntryList;
+    }
+
+    public void setAmortizationRowEntryList(List<AmortizationRowEntry> amortizationRowEntryList) {
+        this.amortizationRowEntryList = amortizationRowEntryList;
+    }
+
+    public String getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(String startDate) {
+        this.startDate = startDate;
+    }
+
+    public String getTotalInterestLoanAmount() {
+        return totalInterestLoanAmount;
+    }
+
+    public void setTotalInterestLoanAmount(String totalInterestLoanAmount) {
+        this.totalInterestLoanAmount = totalInterestLoanAmount;
+    }
+
+    public String getMonthlyPayment() {
+        return monthlyPayment;
+    }
+
+    public void setMonthlyPayment(String monthlyPayment) {
+        this.monthlyPayment = monthlyPayment;
+    }
+
+    public String getInterestRateString() {
+        return interestRateString;
+    }
+
+    public void setInterestRateString(String interestRateString) {
+        this.interestRateString = interestRateString;
     }
 }

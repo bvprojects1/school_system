@@ -7,12 +7,10 @@ import com.bitsvalley.micro.services.*;
 import com.bitsvalley.micro.utils.Amortization;
 import com.bitsvalley.micro.utils.BVMicroUtils;
 import com.bitsvalley.micro.webdomain.LoanBilanzList;
-import com.bitsvalley.micro.webdomain.SavingBilanzList;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -77,7 +75,19 @@ public class LoanAccountController extends SuperController {
         return "loanAccount";
     }
 
-    @PostMapping(value = "/registerLoanAccountForm")
+
+    @PostMapping(value = "/generatePaymentSchedule")
+    public String generatePaymentSchedule(@ModelAttribute("loanAccount") LoanAccount loanAccount,
+                                          ModelMap model, HttpServletRequest request) {
+        double payment = interestService.monthlyPaymentAmortisedPrincipal(loanAccount.getInterestRate(), loanAccount.getTermOfLoan(), loanAccount.getLoanAmount());
+        String report = "";
+        Amortization amortization = new Amortization(loanAccount.getLoanAmount(),loanAccount.getInterestRate(),loanAccount.getTermOfLoan(),payment);
+        model.put("amortization",amortization );
+        return "amortizationReport";
+    }
+
+
+        @PostMapping(value = "/registerLoanAccountForm")
     public String registerLoanAccountForm(@ModelAttribute("loanAccount") LoanAccount loanAccount, ModelMap model, HttpServletRequest request) {
         User user = (User) request.getSession().getAttribute(BVMicroUtils.CUSTOMER_IN_USE);
         user = userRepository.findById(user.getId()).get();
@@ -93,8 +103,7 @@ public class LoanAccountController extends SuperController {
 
         Amortization amortization = new Amortization(loanAccount.getLoanAmount(),
                 loanAccount.getInterestRate()*.01,
-                loanAccount.getTermOfLoan()/12);
-        String report = amortization.getReport(monthlyPayment);
+                loanAccount.getTermOfLoan(),monthlyPayment);
 
         loanAccount.setMonthlyPayment(new Double(monthlyPayment).intValue());
 

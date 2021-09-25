@@ -10,9 +10,9 @@ import java.time.LocalDateTime;
 public class InterestService {
 
 
-    public double calculateInterestAccruedMonthCompounded(int interestRate,
+    public double calculateInterestAccruedMonthCompounded(double interestRate,
                                                           LocalDateTime createdDate,
-                                                          int principalAmount) {
+                                                          double principalAmount) {
         double interestPlusOne = (
                 interestRate * .01 * .0833333) + 1;
         double temp = Math.pow(interestPlusOne, getNumberOfMonths(createdDate));
@@ -27,10 +27,9 @@ public class InterestService {
         r = your monthly interest rate. Lenders provide you an annual rate so you’ll need to divide that figure by 12 (the number of months in a year) to get the monthly rate. If your interest rate is 5 percent, your monthly rate would be 0.004167 (0.05/12=0.004167).
         n = number of payments over the loan’s lifetime. Multiply the number of years in your loan term by 12 (the number of months in a year) to get the number of payments for your loan. For example, a 30-year fixed mortgage would have 360 payments (30x12=360).
      */
-    public double monthlyPaymentAmortisedPrincipal(int interestRate,
-                                          int noOfMonths,
-                                          int principalAmount) {
-
+    public double monthlyPaymentAmortisedPrincipal(double interestRate,
+                                                   int noOfMonths,
+                                                   double principalAmount) {
         double rate = (interestRate * .01) / 12;
         double ratePlusOne = rate + 1;
         double temp = Math.pow(ratePlusOne, noOfMonths);

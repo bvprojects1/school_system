@@ -12,6 +12,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Month;
 import java.time.format.DateTimeFormatter;
@@ -24,6 +25,7 @@ public class BVMicroUtils {
 
     public static final String CUSTOMER_IN_USE = "customerInUse";
     public static final String DATE_FORMATTER= "dd-MM-yyyy HH:mm";
+    public static final String DATE_ONLY_FORMATTER= "dd-MM-yyyy";
     public static final String SYSTEM = "SYSTEM";
     public static final String REGULAR_MONTHLY_PAYMENT_MISSING = "Regular Monthly payment not on schedule might be missing payment for some months. " +
             "Please check the account statement";
@@ -71,6 +73,12 @@ public class BVMicroUtils {
             String formatDateTime = localDateTime.format(formatter);
             return formatDateTime;
         }
+
+    public  static String formatDateOnly(LocalDate localDate) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(DATE_ONLY_FORMATTER);
+        String formatDateTime = localDate.format(formatter);
+        return formatDateTime;
+    }
 
     public static String formatCurrency(double totalSaved) {
         Locale locale = new Locale("en", "CM");

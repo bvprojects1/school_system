@@ -10,9 +10,6 @@ import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.math.BigDecimal;
-import java.math.MathContext;
-import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -81,15 +78,13 @@ public class ShorteeService extends SuperService{
         loanAccount.setShorteeAccounts(listShorteeAccount);
         double payment = interestService.monthlyPaymentAmortisedPrincipal( loanAccount.getInterestRate(),
                 loanAccount.getTermOfLoan(), loanAccount.getLoanAmount());
-        loanAccount.setMonthlyPayment(0);
+        loanAccount.setMonthlyPayment( payment );
 
-        Amortization amortization = new Amortization(loanAccount.getLoanAmount(),
-                loanAccount.getInterestRate()*.01,
-                loanAccount.getTermOfLoan()/12);
-        String report = amortization.getReport(payment);
+//        Amortization amortization = new Amortization(loanAccount.getLoanAmount(),
+//                loanAccount.getInterestRate()*.01,
+//                loanAccount.getTermOfLoan());
 
         loanAccountService.createLoanAccount(loanAccount,user );
-
         return loanAccount;
     }
 

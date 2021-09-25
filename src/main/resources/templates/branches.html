@@ -15,17 +15,10 @@
         </tr>
     </table>
     <table width="90%" class="center" border="0px">
-        <tr>
-            <th>Name</th>
-            <th>Code</th>
-            <th>Street</th>
-            <th>City</th>
-            <th>telephone</th>
-            <th>fax</th>
-            <th>Contact</th>
-            <th></th>
-        </tr>
-        <tr th:each="branch : ${branchList}">
+        <table width="80%" border="1"><tr><td colspan=6> <b>Loan Amortization Schedule</b></td></tr>
+            <tr><td colspan=2>Start Date:<b> 2021-10-24</b></td><td colspan=2>Annual Interest Rate: <b> 200.0%</b></td><td colspan=2>No Of Payments: <b> 12</b></td></tr>
+
+            <tr th:each="branch : ${branchList}">
             <td th:text="${branch.name}"></td>
             <td th:text="${branch.code}"></td>
             <td>
