@@ -45,48 +45,7 @@ public class ShorteeService extends SuperService{
     private InterestService interestService;
 
 
-    @NotNull
-    public LoanAccount createLoanAccount(User user, LoanAccount loanAccount,
-                                                    SavingAccount savingAccountGuarantor) {
-        Date createdDate = new Date();
-        String loggedInUserName = getLoggedInUserName();
-        ShorteeAccount shorteeAccount = new ShorteeAccount();
-        SavingAccount shorteeSavingAccount = savingAccountService.findByAccountNumber(
-                savingAccountGuarantor.getAccountNumber());
-        shorteeAccount.setSavingAccount( shorteeSavingAccount );
 
-        shorteeSavingAccount.setAccountMinBalance(
-                shorteeSavingAccount.getAccountMinBalance() + loanAccount.getGuarantor1Amount1());
-        shorteeSavingAccount.setLastUpdatedDate(createdDate);
-        shorteeSavingAccount.setLastUpdatedBy(loggedInUserName);
-        shorteeSavingAccount.setAccountStatus(AccountStatus.ACTIVE);
-        shorteeSavingAccount.setAccountLocked(true);
-        savingAccountService.save(shorteeSavingAccount);
-
-        callCenterService.callCenterShorteeUpdate(shorteeSavingAccount, loanAccount.getGuarantor1Amount1());
-
-        shorteeAccount.setAmountShortee(loanAccount.getGuarantor1Amount1());
-        shorteeAccount.setCreatedDate(createdDate);
-        shorteeAccount.setLastUpdatedDate(createdDate);
-
-        shorteeAccount.setCreatedBy(loggedInUserName);
-        shorteeAccount.setLastUpdatedBy(loggedInUserName);
-        shorteeAccountRepository.save(shorteeAccount);
-
-        ArrayList<ShorteeAccount> listShorteeAccount = new ArrayList<ShorteeAccount>();
-        listShorteeAccount.add(shorteeAccount);
-        loanAccount.setShorteeAccounts(listShorteeAccount);
-        double payment = interestService.monthlyPaymentAmortisedPrincipal( loanAccount.getInterestRate(),
-                loanAccount.getTermOfLoan(), loanAccount.getLoanAmount());
-        loanAccount.setMonthlyPayment( payment );
-
-//        Amortization amortization = new Amortization(loanAccount.getLoanAmount(),
-//                loanAccount.getInterestRate()*.01,
-//                loanAccount.getTermOfLoan());
-
-        loanAccountService.createLoanAccount(loanAccount,user );
-        return loanAccount;
-    }
 
 
 //    private int calculateMonthlyPayment(LoanAccount loanAccount) {

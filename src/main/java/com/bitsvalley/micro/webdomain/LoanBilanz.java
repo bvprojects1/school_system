@@ -23,7 +23,7 @@ public class LoanBilanz {
     String createdBy;
     String id;
     String accountOwner;
-    String setAmortizationSchedule;
+    String amountReceived;
 
     public String getBranch() {
         return branch;
@@ -193,7 +193,15 @@ public class LoanBilanz {
         this.monthYearOfLastPayment = monthYearOfLastPayment;
     }
 
-//    public String getSetAmortizationSchedule() {
+    public String getAmountReceived() {
+        return amountReceived;
+    }
+
+    public void setAmountReceived(String amountReceived) {
+        this.amountReceived = amountReceived;
+    }
+
+    //    public String getSetAmortizationSchedule() {
 //        return setAmortizationSchedule;
 //    }
 //

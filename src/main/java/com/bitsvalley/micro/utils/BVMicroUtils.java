@@ -22,6 +22,8 @@ import java.util.Random;
 
 public class BVMicroUtils {
 
+    public static final String SAVINGS_MINIMUM_BALANCE_ADDED_BY = "Savings minimum balance added by: ";
+    public static final String SAVING_ACCOUNT_CREATED = "Saving account created ";
 
     public static final String CUSTOMER_IN_USE = "customerInUse";
     public static final String DATE_FORMATTER= "dd-MM-yyyy HH:mm";

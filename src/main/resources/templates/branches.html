@@ -7,16 +7,21 @@
 
 <section class="contact-form-area-start space df-bg">
 <br/>
-    <table width="80%" class="center" border="0px">
+    <table width="90%" class="center" border="0px">
         <tr>
             <td align="center">
-                <font color="#BF360C;" size="4"><h4>All Branches</h4></font>
+                <font color="#BF360C;" size="4">
+                    <h4>ALL BRANCHES
+                        <a href="/registerBranch">
+                            <img width="30px" th:src="@{/assets/images/add.png}"/>
+                        </a>
+                    </h4>
+                </font>
             </td>
         </tr>
     </table>
     <table width="90%" class="center" border="0px">
-        <table width="80%" border="1"><tr><td colspan=6> <b>Loan Amortization Schedule</b></td></tr>
-            <tr><td colspan=2>Start Date:<b> 2021-10-24</b></td><td colspan=2>Annual Interest Rate: <b> 200.0%</b></td><td colspan=2>No Of Payments: <b> 12</b></td></tr>
+        <table class="center" width="90%" border="1">
 
             <tr th:each="branch : ${branchList}">
             <td th:text="${branch.name}"></td>

@@ -116,13 +116,13 @@
                 <br/><br/><br/>
                 <h2>Upload Customer Identity Card info </h2>
 <!--                User: <div th:text="${userName}"/>-->
-                Name:<div style th:text="${session.customerInUse.lastName}"/>
+                Name:<span style th:text="${session.customerInUse.lastName}"/>
                 <p th:text="${message}" th:if="${message ne null}" class="alert alert-primary"></p>
                 <form action="#" method="post" th:action="@{/upload}" enctype="multipart/form-data">
                     <div class="form-group">
-                        <input type="file" name="file" class="form-control-file">
+                        <input type="file" name="file" class="form-control-file"/>
 <!--                        <input type="hidden" th:value="${userName}" th:attr="userName='userName'"/>-->
-                    </div><br/><br/>
+                    </div><br/>
                     <button type="submit" class="btn btn-primary">Upload File</button>
                 </form>
             </div>

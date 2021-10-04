@@ -3,11 +3,9 @@ package com.bitsvalley.micro.controllers;
 import com.bitsvalley.micro.domain.*;
 import com.bitsvalley.micro.repositories.CallCenterRepository;
 import com.bitsvalley.micro.repositories.UserRepository;
-import com.bitsvalley.micro.services.PdfService;
-import com.bitsvalley.micro.services.SavingAccountService;
-import com.bitsvalley.micro.services.AccountTypeService;
-import com.bitsvalley.micro.services.UserService;
+import com.bitsvalley.micro.services.*;
 import com.bitsvalley.micro.utils.BVMicroUtils;
+import com.bitsvalley.micro.webdomain.RuntimeSetting;
 import com.bitsvalley.micro.webdomain.SavingBilanzList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -36,7 +34,7 @@ public class SavingAccountController extends SuperController {
     UserService userService;
 
     @Autowired
-    CallCenterRepository callCenterRepository;
+    CallCenterService callCenterService;
 
     @Autowired
     SavingAccountService savingAccountService;
@@ -66,9 +64,8 @@ public class SavingAccountController extends SuperController {
     public String registerSavingAccount(@ModelAttribute("saving") SavingAccount savingAccount, ModelMap model, HttpServletRequest request) {
         User user = (User) request.getSession().getAttribute(BVMicroUtils.CUSTOMER_IN_USE);
         user = userRepository.findById(user.getId()).get();
-        Branch branchInfo = getBranchInfo(getLoggedInUserName());
-        savingAccount.setBranchCode(branchInfo.getId()+"");
-        savingAccount.setBranchCode(branchInfo.getCode()); //TODO: BRANCH CODE
+        Branch branchInfo = getBranchInfo(getLoggedInUserName());//TODO Create branch repo
+        savingAccount.setBranchCode(branchInfo.getCode());
         savingAccount.setCountry(branchInfo.getCountry());
         savingAccountService.createSavingAccount(savingAccount, user);
         return findUserByUserName(user, model, request);
@@ -95,40 +92,52 @@ public class SavingAccountController extends SuperController {
         return "savingBilanzNoInterest";
     }
 
+    @GetMapping(value = "/statementPDF/{id}")
+    public void generateStatementPDF(@PathVariable("id") long id, ModelMap model, HttpServletRequest request, HttpServletResponse response) throws IOException {
 
-    @GetMapping(value = "/printSavingAccountDetails/{id}")
-    public String printSavingAccountDetails(@PathVariable("id") long id, ModelMap model,
-                                            @ModelAttribute("savingAccountTransaction") SavingAccountTransaction savingAccountTransaction,
-                                            HttpServletRequest request, HttpServletResponse response) throws IOException {
-        String username = getLoggedInUserName();
-        Optional<SavingAccount> savingAccount = savingAccountService.findById(new Long(id));
-        SavingBilanzList savingBilanzByUserList = savingAccountService.
-                calculateAccountBilanz(savingAccount.get().getSavingAccountTransaction(), false);
-        String htmlInput = null;
-//                pdfService.generatePDFSavingBilanzList(savingBilanzByUserList, username);
-
-        response.setContentType("application/pdf");
-        response.setHeader("Content-disposition", "attachment;filename=" + "statementPDF.pdf");
-        ByteArrayOutputStream byteArrayOutputStream = null;
-        ByteArrayInputStream byteArrayInputStream = null;
-        try {
+        response.setHeader("Content-disposition","attachment;filename="+ "statementSavingPDF.pdf");
             OutputStream responseOutputStream = response.getOutputStream();
-            byteArrayOutputStream = pdfService.generatePDF(htmlInput, response);
-            byteArrayInputStream = new ByteArrayInputStream(byteArrayOutputStream.toByteArray());
-            int bytes;
-            while ((bytes = byteArrayInputStream.read()) != -1) {
-                responseOutputStream.write(bytes);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            byteArrayInputStream.close();
-            byteArrayOutputStream.flush();
-            byteArrayOutputStream.close();
-        }
-        response.setHeader("X-Frame-Options", "SAMEORIGIN");
-        return "userHome";
+            Optional<SavingAccount> savingAccount = savingAccountService.findById(new Long(id));
+            SavingBilanzList savingBilanzByUserList = savingAccountService.
+                    calculateAccountBilanz(savingAccount.get().getSavingAccountTransaction(),false);
+            RuntimeSetting runtimeSetting = (RuntimeSetting)request.getSession().getAttribute("runtimeSettings");
+            String htmlInput = pdfService.generatePDFSavingBilanzList(savingBilanzByUserList, savingAccount.get(),runtimeSetting.getLogo());
+            generateByteOutputStream(response, htmlInput);
     }
+
+//    @GetMapping(value = "/printSavingAccountDetails/{id}")
+//    public String printSavingAccountDetails(@PathVariable("id") long id, ModelMap model,
+//                                            @ModelAttribute("savingAccountTransaction") SavingAccountTransaction savingAccountTransaction,
+//                                            HttpServletRequest request, HttpServletResponse response) throws IOException {
+//        String username = getLoggedInUserName();
+//        Optional<SavingAccount> savingAccount = savingAccountService.findById(new Long(id));
+//        SavingBilanzList savingBilanzByUserList = savingAccountService.
+//                calculateAccountBilanz(savingAccount.get().getSavingAccountTransaction(), false);
+//        String htmlInput = null;
+////                pdfService.generatePDFSavingBilanzList(savingBilanzByUserList, username);
+//
+//        response.setContentType("application/pdf");
+//        response.setHeader("Content-disposition", "attachment;filename=" + "statementPDF.pdf");
+//        ByteArrayOutputStream byteArrayOutputStream = null;
+//        ByteArrayInputStream byteArrayInputStream = null;
+//        try {
+//            OutputStream responseOutputStream = response.getOutputStream();
+//            byteArrayOutputStream = pdfService.generatePDF(htmlInput, response);
+//            byteArrayInputStream = new ByteArrayInputStream(byteArrayOutputStream.toByteArray());
+//            int bytes;
+//            while ((bytes = byteArrayInputStream.read()) != -1) {
+//                responseOutputStream.write(bytes);
+//            }
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        } finally {
+//            byteArrayInputStream.close();
+//            byteArrayOutputStream.flush();
+//            byteArrayOutputStream.close();
+//        }
+//        response.setHeader("X-Frame-Options", "SAMEORIGIN");
+//        return "userHome";
+//    }
 
 
     @PostMapping(value = "/registerSavingAccountTransactionForm")
@@ -179,16 +188,14 @@ public class SavingAccountController extends SuperController {
         }
         savingAccountService.save(savingAccount.get());
 
-        CallCenter callCenter = new CallCenter();
-        callCenter.setUserName(savingAccount.get().getUser().getUserName());
-        callCenter.setAccountNumber(savingAccount.get().getAccountNumber());
-        callCenter.setDate(new Date(System.currentTimeMillis()));
-        callCenter.setNotes(savingAccountTransaction.getModeOfPayment() + " Payment/ Deposit made into account amount: " + savingAccountTransaction.getSavingAmount());
+        String username = getLoggedInUserName();
 
-        callCenterRepository.save(callCenter);
+        callCenterService.saveCallCenterLog(savingAccountTransaction.getReference(),
+                username, savingAccount.get().getAccountNumber(),
+                "Saving account transaction made "+ BVMicroUtils.formatCurrency(savingAccountTransaction.getSavingAmount()));
 
         SavingBilanzList savingBilanzByUserList = savingAccountService.calculateAccountBilanz(savingAccount.get().getSavingAccountTransaction(), false);
-        model.put("name", getLoggedInUserName());
+        model.put("name", username );
         model.put("billSelectionError", BVMicroUtils.formatCurrency(savingAccountTransaction.getSavingAmount()) + " ---- PAYMENT HAS REGISTERED ----- ");
         model.put("savingBilanzList", savingBilanzByUserList);
         request.getSession().setAttribute("savingBilanzList", savingBilanzByUserList);

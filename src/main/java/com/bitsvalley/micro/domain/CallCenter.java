@@ -23,7 +23,7 @@ public class CallCenter {
 
     private String userName;
 
-    private String accountHolderName;
+    private String reference;
 
     private String accountNumber;
 
@@ -56,12 +56,12 @@ public class CallCenter {
         this.userName = userName;
     }
 
-    public String getAccountHolderName() {
-        return accountHolderName;
+    public String getReference() {
+        return reference;
     }
 
-    public void setAccountHolderName(String accountHolderName) {
-        this.accountHolderName = accountHolderName;
+    public void setReference(String reference) {
+        this.reference = reference;
     }
 
     public String getAccountNumber() {

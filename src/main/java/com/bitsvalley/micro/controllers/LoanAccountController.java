@@ -1,28 +1,28 @@
 package com.bitsvalley.micro.controllers;
 
 import com.bitsvalley.micro.domain.*;
-import com.bitsvalley.micro.repositories.CallCenterRepository;
 import com.bitsvalley.micro.repositories.UserRepository;
 import com.bitsvalley.micro.services.*;
 import com.bitsvalley.micro.utils.Amortization;
 import com.bitsvalley.micro.utils.BVMicroUtils;
 import com.bitsvalley.micro.webdomain.LoanBilanzList;
+import com.bitsvalley.micro.webdomain.RuntimeSetting;
+import com.bitsvalley.micro.webdomain.SavingBilanzList;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -37,10 +37,10 @@ public class LoanAccountController extends SuperController {
     UserService userService;
 
     @Autowired
-    CallCenterRepository callCenterRepository;
+    LoanAccountService loanAccountService;
 
     @Autowired
-    LoanAccountService loanAccountService;
+    LoanAccountTransactionService loanAccountTransactionService;
 
     @Autowired
     SavingAccountService savingAccountService;
@@ -58,7 +58,13 @@ public class LoanAccountController extends SuperController {
     ShorteeService shorteeService;
 
     @Autowired
+    CallCenterService callCenterService;
+
+    @Autowired
     GeneralLedgerService generalLedgerService;
+
+    @Autowired
+    InitSystemService initSystemService;
 
     @Autowired
     PdfService pdfService;
@@ -83,11 +89,21 @@ public class LoanAccountController extends SuperController {
         String report = "";
         Amortization amortization = new Amortization(loanAccount.getLoanAmount(),loanAccount.getInterestRate(),loanAccount.getTermOfLoan(),payment);
         model.put("amortization",amortization );
+        request.getSession().setAttribute("amortization",amortization);
         return "amortizationReport";
     }
 
+    @GetMapping(value = "/amortizationPDF")
+    public void generatePaymentSchedule(@SessionAttribute("amortization") Amortization amortization,
+                                          HttpServletRequest request, HttpServletResponse response) throws IOException {
+        RuntimeSetting runtimeSetting = (RuntimeSetting)request.getSession().getAttribute("runtimeSettings");
+        String htmlInput = pdfService.generateAmortizationPDF(amortization, runtimeSetting, getLoggedInUserName());
+        response.setHeader("Content-disposition", "attachment;filename=" + "amortizationPDF.pdf");
+        generateByteOutputStream(response, htmlInput);
+    }
 
-        @PostMapping(value = "/registerLoanAccountForm")
+
+    @PostMapping(value = "/registerLoanAccountForm")
     public String registerLoanAccountForm(@ModelAttribute("loanAccount") LoanAccount loanAccount, ModelMap model, HttpServletRequest request) {
         User user = (User) request.getSession().getAttribute(BVMicroUtils.CUSTOMER_IN_USE);
         user = userRepository.findById(user.getId()).get();
@@ -97,13 +113,14 @@ public class LoanAccountController extends SuperController {
         loanAccount.setBranchCode(branchInfo.getCode());
         loanAccount.setCountry(branchInfo.getCountry());
 
-        loanAccount.setTotalInterestOnLoan(0);
+//        loanAccount.setTotalInterestOnLoan( );
+
         double monthlyPayment = interestService.monthlyPaymentAmortisedPrincipal(loanAccount.getInterestRate(),
         loanAccount.getTermOfLoan(),loanAccount.getLoanAmount());
 
-        Amortization amortization = new Amortization(loanAccount.getLoanAmount(),
-                loanAccount.getInterestRate()*.01,
-                loanAccount.getTermOfLoan(),monthlyPayment);
+//        Amortization amortization = new Amortization(loanAccount.getLoanAmount(),
+//                loanAccount.getInterestRate()*.01,
+//                loanAccount.getTermOfLoan(),monthlyPayment);
 
         loanAccount.setMonthlyPayment(new Double(monthlyPayment).intValue());
 
@@ -183,7 +200,7 @@ public class LoanAccountController extends SuperController {
 
 //        TODO:  create shortee, update minimum acc. balance on guarantor, call center log, GL entry
         User user = (User) request.getSession().getAttribute(BVMicroUtils.CUSTOMER_IN_USE);
-        LoanAccount loanAccountReturn = shorteeService.createLoanAccount(user,
+        LoanAccount loanAccountReturn = loanAccountService.createLoanAccount(user,
                 loanAccountSession, savingAccountGuarantor1Session);
 
         return "loanCreated";
@@ -204,38 +221,34 @@ public class LoanAccountController extends SuperController {
     }
 
 
-    @GetMapping(value = "/printLoanAccountDetails/{id}")
-    public String printLoanAccountDetails(@PathVariable("id") long id, ModelMap model,
-                                            @ModelAttribute("savingAccountTransaction") SavingAccountTransaction savingAccountTransaction,
-                                            HttpServletRequest request, HttpServletResponse response) throws IOException {
-//        String username = getLoggedInUserName();
-//        Optional<SavingAccount> savingAccount = savingAccountService.findById(new Long(id));
-//        SavingBilanzList savingBilanzByUserList = savingAccountService.
-//                calculateAccountBilanz(savingAccount.get().getSavingAccountTransaction(), false);
-//        String htmlInput = null;
-////                pdfService.generatePDFSavingBilanzList(savingBilanzByUserList, username);
-//
-//        response.setContentType("application/pdf");
-//        response.setHeader("Content-disposition", "attachment;filename=" + "statementPDF.pdf");
-//        ByteArrayOutputStream byteArrayOutputStream = null;
-//        ByteArrayInputStream byteArrayInputStream = null;
-//        try {
-//            OutputStream responseOutputStream = response.getOutputStream();
-//            byteArrayOutputStream = pdfService.generatePDF(htmlInput, response);
-//            byteArrayInputStream = new ByteArrayInputStream(byteArrayOutputStream.toByteArray());
-//            int bytes;
-//            while ((bytes = byteArrayInputStream.read()) != -1) {
-//                responseOutputStream.write(bytes);
-//            }
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        } finally {
-//            byteArrayInputStream.close();
-//            byteArrayOutputStream.flush();
-//            byteArrayOutputStream.close();
-//        }
-//        response.setHeader("X-Frame-Options", "SAMEORIGIN");
-        return "userHome";
+    @GetMapping(value = "/createLoanAccountReceiptPdf/{id}")
+    public void loanReceiptPDF(@PathVariable("id") long id, ModelMap model, HttpServletRequest request, HttpServletResponse response)
+            throws IOException {
+
+        Optional<LoanAccountTransaction> aLoanAccountTransaction = loanAccountTransactionService.findById(new Long(id));
+        LoanAccountTransaction LoanAccountTransaction = aLoanAccountTransaction.get();
+        response.setHeader("Content-disposition", "attachment;filename=" + "ReceiptLoan_"+LoanAccountTransaction.getReference()+".pdf");
+        String htmlInput = pdfService.generateLoanTransactionReceiptPDF( LoanAccountTransaction, initSystemService.findAll() );
+        generateByteOutputStream(response, htmlInput);
+
+    }
+
+
+    @GetMapping(value = "/statementLoanPDF/{id}")
+    public void generateStatementLoanPDF(@PathVariable("id") long id, ModelMap model,
+                                         HttpServletRequest request,
+                                         HttpServletResponse response) throws IOException {
+        Optional<LoanAccount> loanAccount = loanAccountService.findById(new Long(id));
+        LoanAccount loanAccount1 = loanAccount.get();
+        response.setHeader("Content-disposition","attachment;filename="+ "Loan_("+loanAccount1.getAccountNumber()+").pdf");
+
+
+        LoanBilanzList loanBilanzByUserList = loanAccountService.
+                calculateAccountBilanz(loanAccount1.getLoanAccountTransaction(),false);
+        RuntimeSetting runtimeSetting = (RuntimeSetting)request.getSession().getAttribute("runtimeSettings");
+        String htmlInput = pdfService.generatePDFLoanBilanzList(loanBilanzByUserList, loanAccount1,
+                runtimeSetting.getLogo());
+        generateByteOutputStream(response, htmlInput);
     }
 
 
@@ -244,13 +257,13 @@ public class LoanAccountController extends SuperController {
             LoanAccountTransaction loanAccountTransaction, HttpServletRequest request) {
         String loanAccountId = request.getParameter("loanAccountId");
 
-
         Optional<LoanAccount> loanAccount = loanAccountService.findById(new Long(loanAccountId));
-        loanAccountTransaction.setLoanAccount( loanAccount.get() );
+        LoanAccount aLoanAccount = loanAccount.get();
+        loanAccountTransaction.setLoanAccount(aLoanAccount);
         loanAccountTransaction.setCreatedDate(LocalDateTime.now());
         loanAccountTransaction.setCreatedBy(getLoggedInUserName());
-        loanAccountTransaction.setAccountOwner(loanAccount.get().getUser().getLastName() +", "+
-                loanAccount.get().getUser().getLastName());
+        loanAccountTransaction.setAccountOwner(aLoanAccount.getUser().getLastName() +", "+
+                aLoanAccount.getUser().getLastName());
         loanAccountTransaction.setReference(BVMicroUtils.getSaltString());
         User user = (User) request.getSession().getAttribute(BVMicroUtils.CUSTOMER_IN_USE);
 
@@ -276,31 +289,30 @@ public class LoanAccountController extends SuperController {
         loanAccountTransaction.setBranchCode(branchInfo.getCode());
         loanAccountTransaction.setBranchCountry(branchInfo.getCountry());
 
-        loanAccountTransaction.setLoanAccount(loanAccount.get());
-        if (loanAccount.get().getLoanAccountTransaction() != null) {
-            loanAccount.get().getLoanAccountTransaction().add(loanAccountTransaction);
+        loanAccountTransaction.setLoanAccount(aLoanAccount);
+        if (aLoanAccount.getLoanAccountTransaction() != null) {
+            aLoanAccount.getLoanAccountTransaction().add(loanAccountTransaction);
         } else {
-            loanAccount.get().setLoanAccountTransaction(new ArrayList<LoanAccountTransaction>());
-            loanAccount.get().getLoanAccountTransaction().add(loanAccountTransaction);
+            aLoanAccount.setLoanAccountTransaction(new ArrayList<LoanAccountTransaction>());
+            aLoanAccount.getLoanAccountTransaction().add(loanAccountTransaction);
         }
-        loanAccountService.save(loanAccount.get());
+        loanAccountService.updateInterestOwedPayment(aLoanAccount, loanAccountTransaction);
 
-        CallCenter callCenter = new CallCenter();
-        callCenter.setUserName(loanAccount.get().getUser().getUserName());
-        callCenter.setAccountNumber(loanAccount.get().getAccountNumber());
-        callCenter.setDate(new Date(System.currentTimeMillis()));
-        callCenter.setNotes(loanAccountTransaction.getModeOfPayment() +
-                " Payment/ Deposit made into account amount: " + loanAccountTransaction.getLoanAmount());
-        callCenterRepository.save(callCenter);
+        loanAccountService.save(aLoanAccount);
 
-        LoanBilanzList loanBilanzByUserList = loanAccountService.calculateAccountBilanz(loanAccount.get().getLoanAccountTransaction(), false);
+        callCenterService.saveCallCenterLog(loanAccountTransaction.getReference(), aLoanAccount.getUser().getUserName(),aLoanAccount.getAccountNumber(),
+                "Loan account Payment received Amount: "+loanAccountTransaction.getAmountReceived());
+
+        generalLedgerService.updateLoanAccountTransaction(loanAccountTransaction);
+
+        LoanBilanzList loanBilanzByUserList = loanAccountService.calculateAccountBilanz(aLoanAccount.getLoanAccountTransaction(), false);
         model.put("name", getLoggedInUserName());
         model.put("billSelectionError", BVMicroUtils.formatCurrency(loanAccountTransaction.getLoanAmount()) + " ---- PAYMENT HAS REGISTERED ----- ");
         model.put("loanBilanzList", loanBilanzByUserList);
         request.getSession().setAttribute("loanBilanzList", loanBilanzByUserList);
         Optional<User> byId = userRepository.findById(user.getId());
         request.getSession().setAttribute(BVMicroUtils.CUSTOMER_IN_USE, byId.get());
-        loanAccountTransaction.setLoanAccount(loanAccount.get());
+        loanAccountTransaction.setLoanAccount(aLoanAccount);
         resetLoansAccountTransaction(loanAccountTransaction); //reset BillSelection and amount
         loanAccountTransaction.setNotes("");
 
@@ -319,22 +331,6 @@ public class LoanAccountController extends SuperController {
         sat.setTenThousand(0);
         sat.setTwentyFive(0);
         sat.setTwoThousand(0);
-    }
-
-    private boolean checkBillSelectionMatchesEnteredAmount(SavingAccountTransaction sat) {
-        boolean match = (sat.getSavingAmount() == (sat.getTenThousand() * 10000) +
-                (sat.getFiveThousand() * 5000) +
-                (sat.getTwoThousand() * 2000) +
-                (sat.getOneThousand() * 1000) +
-                (sat.getFiveHundred() * 500) +
-                (sat.getOneHundred() * 100) +
-                (sat.getFifty() * 50) +
-                (sat.getTwentyFive() * 25));
-        if (match) {
-            sat.setNotes(sat.getNotes()
-                    + addBillSelection(sat));
-        }
-        return match;
     }
 
     private String addBillSelection(SavingAccountTransaction sat) {

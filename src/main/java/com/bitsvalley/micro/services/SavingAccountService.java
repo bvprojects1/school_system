@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.YearMonth;
@@ -179,17 +178,17 @@ public class SavingAccountService extends SuperService {
                 boolean defaultedPayments = checkDefaultLogic(savingAccount);
                 savingAccount.setDefaultedPayment(defaultedPayments); //TODO:defaultLogic
                 savingAccountTransactions = savingAccount.getSavingAccountTransaction();
+                double accountTotalSaved = 0.0;
                 for (int k = 0; k < savingAccountTransactions.size(); k++) {
                     final SavingAccountTransaction savingAccountTransaction = savingAccountTransactions.get(k);
                     if (savingAccountTransaction.getSavingAmount() <= 0)
                         continue;
-//                    LocalDateTime createdDate = savingAccountTransaction.getCreatedDate();
-//                    if (LocalDateTime.now().minusMonths(1).isAfter(createdDate)) {
                     SavingBilanz savingBilanz = calculateInterest(savingAccountTransaction, calculateInterest);
                     currentSaved = currentSaved + savingAccountTransaction.getSavingAmount();
                     savingBilanz.setCurrentBalance(BVMicroUtils.formatCurrency(currentSaved));
                     savingBilanzsList.getSavingBilanzList().add(savingBilanz);
                     totalSaved = totalSaved + savingAccountTransaction.getSavingAmount();
+                    accountTotalSaved = accountTotalSaved + savingAccountTransaction.getSavingAmount();
                     savingAccountTransactionInterest = savingAccountTransactionInterest +
                             interestService.calculateInterestAccruedMonthCompounded(
                                     savingAccountTransaction.getSavingAccount().getInterestRate(),
@@ -197,11 +196,10 @@ public class SavingAccountService extends SuperService {
                                     savingAccountTransaction.getSavingAmount());
 //                    }
                 }
-                savingAccount.setAccountBalance(totalSaved);
-                if (checkMinBalanceLogin(currentSaved, savingAccount)) {
-                    savingAccount.setDefaultedPayment(true);// Minimum balance check
-                }else{
-                    savingAccount.setDefaultedPayment(false);// Minimum balance check
+                savingAccount.setAccountBalance(accountTotalSaved);
+                if(!defaultedPayments){
+                    boolean minBalance = checkMinBalanceLogin(savingAccount)?true:false;
+                        savingAccount.setDefaultedPayment(minBalance);// Minimum balance check
                 }
                 savingAccountRepository.save(savingAccount);
             }
@@ -213,15 +211,10 @@ public class SavingAccountService extends SuperService {
         return savingBilanzsList;
     }
 
-    private boolean checkMinBalanceLogin(double currentSaved, SavingAccount savingAccount) {
+    private boolean checkMinBalanceLogin( SavingAccount savingAccount) {
 
-        if (savingAccount.getAccountMinBalance() > currentSaved) {
-            CallCenter callCenter = new CallCenter();
-            callCenter.setDate(new Date(System.currentTimeMillis()));
-            callCenter.setNotes("Minimum Balance not met for this account");
-            callCenter.setAccountHolderName(savingAccount.getUser().getFirstName() + " " + savingAccount.getUser().getLastName());
-            callCenter.setAccountNumber(savingAccount.getAccountNumber());
-            callCenterRepository.save(callCenter);
+        if (savingAccount.getAccountMinBalance() > savingAccount.getAccountBalance()) {
+            callCenterService.saveCallCenterLog("",savingAccount.getUser().getUserName(),savingAccount.getAccountNumber(),"Minimum Balance not met for this account");
             return true;
         }
 
@@ -297,9 +290,9 @@ public class SavingAccountService extends SuperService {
             CallCenter callCenter = new CallCenter();
             callCenter.setNotes(BVMicroUtils.REGULAR_MONTHLY_PAYMENT_MISSING);
             callCenter.setDate(new Date(System.currentTimeMillis()));
-            callCenter.setAccountHolderName(savingAccount.getUser().getFirstName() + " " + savingAccount.getUser().getLastName());
+            callCenter.setReference(savingAccount.getUser().getFirstName() + " " + savingAccount.getUser().getLastName());
             callCenter.setAccountNumber(savingAccount.getAccountNumber());
-            callCenterRepository.save(callCenter);
+            callCenterService.callCenterSavingAccount(savingAccount);
             return true;
         }
 

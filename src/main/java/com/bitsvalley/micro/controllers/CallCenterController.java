@@ -34,7 +34,7 @@ public class CallCenterController extends SuperController{
         model.put("callCenterList", callCenterList);
 
         String aAccountNumber = callCenterList.get(0).getAccountNumber();
-        String accountHolderName = callCenterList.get(0).getAccountHolderName();
+        String accountHolderName = callCenterList.get(0).getUserName();
         model.put("accountNumber",aAccountNumber );
         model.put("accountHolderName",accountHolderName );
         return "callCenter";

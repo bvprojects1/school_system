@@ -2,9 +2,11 @@ package com.bitsvalley.micro.services;
 
 import com.bitsvalley.micro.domain.CallCenter;
 import com.bitsvalley.micro.domain.SavingAccount;
+import com.bitsvalley.micro.domain.User;
 import com.bitsvalley.micro.repositories.AccountTypeRepository;
 import com.bitsvalley.micro.repositories.CallCenterRepository;
 import com.bitsvalley.micro.repositories.UserRepository;
+import com.bitsvalley.micro.utils.BVMicroUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +19,7 @@ import java.util.List;
  */
 @Service
 public class CallCenterService extends SuperService{
+
 
     @Autowired
     private UserRepository userRepository;
@@ -34,17 +37,13 @@ public class CallCenterService extends SuperService{
         return callCenterRepository.findByAccountNumber(accountNumber);
     }
 
-    public List<CallCenter> findUserByFirstLastname(String firstLastName) {
-        return callCenterRepository.findByAccountHolderName(firstLastName);
-    }
-
-    public CallCenter saveCallCenterLog(String firstName, String lastName, String accountNumber, String accountType, String amount) {
+    public CallCenter saveCallCenterLog(String reference, String username, String accountNumber, String notes) {
         CallCenter callCenter = new CallCenter();
-        callCenter.setAccountHolderName(firstName + " " + lastName);
+        callCenter.setReference(reference);
         callCenter.setAccountNumber(accountNumber);
         callCenter.setDate(new Date(System.currentTimeMillis()));
-        callCenter.setNotes("Loan Account Created: " + accountNumber + " Account Type: " + accountType +" Amount: " + amount);
-        callCenter.setUserName(" ");
+        callCenter.setNotes(notes);
+        callCenter.setUserName(username);
         callCenterRepository.save(callCenter);
         return callCenter;
     }
@@ -64,13 +63,27 @@ public class CallCenterService extends SuperService{
 //        TODO Add comment in statement for minbalance available raised with 0 transaction amount
 
         CallCenter callCenter = new CallCenter();
-        callCenter.setAccountHolderName(savingAccount.getUser().getFirstName() + " " +
-                savingAccount.getUser().getFirstName());
+        callCenter.setReference("");
         callCenter.setDate(new Date(System.currentTimeMillis()));
-        callCenter.setNotes("Savings minimum balance added by: " + guarantorAmount);
+        callCenter.setNotes(BVMicroUtils.SAVINGS_MINIMUM_BALANCE_ADDED_BY + BVMicroUtils.formatCurrency(guarantorAmount));
         callCenter.setAccountNumber(savingAccount.getAccountNumber());
         callCenter.setUserName(getLoggedInUserName());
         callCenterRepository.save(callCenter);
 
     }
+
+    public void callCenterSavingAccount(SavingAccount savingAccount) {
+        saveCallCenterLog("", savingAccount.getUser().getUserName(),
+                savingAccount.getAccountNumber(), BVMicroUtils.SAVING_ACCOUNT_CREATED);
+    }
+
+    public void callCenterUserAccount(User user, String notes) {
+        CallCenter callCenter = new CallCenter();
+        callCenter.setReference("");
+        callCenter.setNotes(notes);
+        callCenter.setUserName(user.getUserName());
+        callCenter.setDate(new Date());
+        callCenterRepository.save(callCenter);
+    }
+
 }

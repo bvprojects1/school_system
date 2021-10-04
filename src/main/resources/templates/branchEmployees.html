@@ -44,14 +44,14 @@
 </table>
 <table width="90%" class="center" border="0px">
     <tr>
-        <th>Username</th>
-        <th>Firstname</th>
-        <th>Lastname</th>
-        <th>Role</th>
-        <th>Telephone</th>
-        <th>Member Since</th>
-        <th>Creator</th>
-        <th></th>
+        <td>Username</td>
+        <td>Firstname</td>
+        <td>Lastname</td>
+        <td>Role</td>
+        <td>Telephone</td>
+        <td>Member Since</td>
+        <td>Creator</td>
+        <td></td>
     </tr>
     <tr th:each="user : ${branchUserList}">
         <td th:text="${user.userName}"></td>
@@ -83,14 +83,14 @@
 
 <table width="90%" class="center" border="0px">
     <tr>
-        <th>Username</th>
-        <th>Name</th>
-        <th>Role</th>
-        <th>telephone</th>
-        <th>Member Since</th>
-        <th>Branch</th>
-        <th>Creator</th>
-        <th></th>
+        <td>Username</td>
+        <td>Name</td>
+        <td>Role</td>
+        <td>telephone</td>
+        <td>Member Since</td>
+        <td>Branch</td>
+        <td>Creator</td>
+        <td></td>
     </tr>
     <tr th:each="user : ${otherUserList}">
         <td th:text="${user.userName}"></td>

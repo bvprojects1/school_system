@@ -50,7 +50,7 @@ public class UserController extends SuperController{
     private PdfService pdfService;
 
     @Autowired
-    CallCenterRepository callCenterRepository;
+    CallCenterService callCenterService;
 
     @Autowired
     InitSystemService initSystemService;
@@ -86,13 +86,16 @@ public class UserController extends SuperController{
     public String registerUserPreviewForm(@ModelAttribute("user") User user, ModelMap model, HttpServletRequest request) {
         String aUserRole = (String) request.getParameter("userRoleTemp");
         user = getUserRoleFromRequest(user,aUserRole);
-        user.setCreatedBy(getLoggedInUserName());
+        String loggedInUserName = getLoggedInUserName();
+        user.setCreatedBy(loggedInUserName);
         if(user.getId()>0){ //TODO: hmmm operations movin' accounts
             Optional<User> byId = userRepository.findById(user.getId());
             List<SavingAccount> savingAccount = byId.get().getSavingAccount();
             user.setSavingAccount(savingAccount);
             userService.saveUser(user);
         }else{
+            Branch branch = getBranchInfo(loggedInUserName);
+            user.setBranch(branch);
             userService.createUser(user);
         }
         return findUserByUsername(user,model,request);
@@ -161,7 +164,7 @@ public class UserController extends SuperController{
     public String showCustomer(@PathVariable("id") long id,ModelMap model, HttpServletRequest request) {
         Optional<User> userById = userRepository.findById(id);
         User user = userById.get();
-        return findUserByUsername(user,model,request);
+        return findUserByUserName(user,model,request);
     }
 
     @GetMapping(value = "/lockAccount/{id}")
@@ -174,14 +177,9 @@ public class UserController extends SuperController{
             user.setAccountLocked(!user.isAccountLocked());
             userService.saveUser(user);
             String blocked = user.isAccountLocked()?"Blocked":"UnBlocked";
-            CallCenter callCenter = new CallCenter();
-            callCenter.setNotes(blocked);
-            callCenter.setAccountHolderName(user.getFirstName() + " " +user.getLastName());
-            callCenter.setUserName(user.getUserName());
 
-            callCenter.setDate(new Date(System.currentTimeMillis()));
-            callCenter.setNotes("Account has been switched "+ "Account is now "+ blocked +"by " + getLoggedInUserName());
-            callCenterRepository.save(callCenter);
+            callCenterService.callCenterUserAccount(user, "Account has been switched "+ "Account is now "+ blocked +"by " + getLoggedInUserName());
+
         };
         model.put("userList", getAllUsers() );
         model.put("name", getLoggedInUserName());
@@ -189,66 +187,39 @@ public class UserController extends SuperController{
     }
 
 
-        @GetMapping(value = "/createSavingAccountReceiptPdf/{id}")
+    @GetMapping(value = "/createSavingAccountReceiptPdf/{id}")
     public void savingReceiptPDF(@PathVariable("id") long id, ModelMap model, HttpServletRequest request, HttpServletResponse response) throws IOException {
-        response.setContentType("application/pdf");
+//        response.setContentType("application/pdf");
         response.setHeader("Content-disposition","attachment;filename="+ "statementPDF.pdf");
+
         ByteArrayOutputStream byteArrayOutputStream = null;
         ByteArrayInputStream byteArrayInputStream = null;
-        try {
+//        try {
             OutputStream responseOutputStream = response.getOutputStream();
             Optional<SavingAccountTransaction> savingAccountTransaction = savingAccountTransactionService.findById(new Long(id));
             SavingAccountTransaction aSavingAccountTransaction = savingAccountTransaction.get();
 
-
             String htmlInput = pdfService.generateTransactionReceiptPDF(aSavingAccountTransaction,initSystemService.findAll());
 
-            byteArrayOutputStream = pdfService.generatePDF(htmlInput, response);
-            response.setHeader("Content-Length",String.valueOf(byteArrayOutputStream.size()));
-            byteArrayInputStream = new ByteArrayInputStream(byteArrayOutputStream.toByteArray());
-            int bytes;
-            while ((bytes = byteArrayInputStream.read()) != -1) {
-                responseOutputStream.write(bytes);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            byteArrayInputStream.close();
-            byteArrayOutputStream.flush();
-            byteArrayOutputStream.close();
-        }
-        response.setHeader("X-Frame-Options", "SAMEORIGIN");
+            generateByteOutputStream(response,htmlInput);
+//
+//            byteArrayOutputStream = pdfService.generatePDF(htmlInput, response);
+//            response.setHeader("Content-Length",String.valueOf(byteArrayOutputStream.size()));
+//            byteArrayInputStream = new ByteArrayInputStream(byteArrayOutputStream.toByteArray());
+//            int bytes;
+//            while ((bytes = byteArrayInputStream.read()) != -1) {
+//                responseOutputStream.write(bytes);
+//            }
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        } finally {
+//            byteArrayInputStream.close();
+//            byteArrayOutputStream.flush();
+//            byteArrayOutputStream.close();
+//        }
+//        response.setHeader("X-Frame-Options", "SAMEORIGIN");
     }
 
 
-    @GetMapping(value = "/statementPDF/{id}")
-    public void generateStatementPDF(@PathVariable("id") long id, ModelMap model, HttpServletRequest request, HttpServletResponse response) throws IOException {
-        response.setContentType("application/pdf");
-        response.setHeader("Content-disposition","attachment;filename="+ "statementPDF.pdf");
-        ByteArrayOutputStream byteArrayOutputStream = null;
-        ByteArrayInputStream byteArrayInputStream = null;
-        try {
-            OutputStream responseOutputStream = response.getOutputStream();
-            Optional<SavingAccount> savingAccount = savingAccountService.findById(new Long(id));
-            SavingBilanzList savingBilanzByUserList = savingAccountService.
-                    calculateAccountBilanz(savingAccount.get().getSavingAccountTransaction(),false);
-            RuntimeSetting runtimeSetting = (RuntimeSetting)request.getSession().getAttribute("runtimeSettings");
 
-            String htmlInput = pdfService.generatePDFSavingBilanzList(savingBilanzByUserList, savingAccount.get(),runtimeSetting.getLogo());
-            byteArrayOutputStream = pdfService.generatePDF(htmlInput, response);
-            response.setHeader("Content-Length",String.valueOf(byteArrayOutputStream.size()));
-            byteArrayInputStream = new ByteArrayInputStream(byteArrayOutputStream.toByteArray());
-            int bytes;
-            while ((bytes = byteArrayInputStream.read()) != -1) {
-                responseOutputStream.write(bytes);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            byteArrayInputStream.close();
-            byteArrayOutputStream.flush();
-            byteArrayOutputStream.close();
-        }
-        response.setHeader("X-Frame-Options", "SAMEORIGIN");
-    }
 }

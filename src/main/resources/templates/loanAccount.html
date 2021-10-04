@@ -6,129 +6,127 @@
 <br/>
 <br/>
 
-<!-- Contact form area start -->
-<section class="contact-form-area-start space df-bg">
-    <!--Project title area start-->
-    <div class="project-title-area text-center">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="project-title-content">
-                        <h3>LOAN CENTER</h3>
-                        <span><i class="fas fa-crosshairs"></i></span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+<div class="container">
 
-    <form action="#" th:action="@{/registerLoanAccountForm}" method="post" th:object="${loanAccount}">
-        <table class="center" width="100%">
-            <tr>
-                <td width="10%"></td>
-                <td colspan="2"><label> Loan Type:</label><select name="productCode" id="productCode"
-                                                                  th:field="*{productCode}">
-                    <option value="41">SHORT TERM LOAN - 41</option>
-                    <option value="42">CONSUMPTION LOAN - 42</option>
-                    <option value="43">AGRICULTURE LOAN - 43</option>
-                    <option value="44">BUSINESS INVESTMENT LOAN - 44</option>
-                    <option value="45">SCHOOL FEES LOAN - 45</option>
-                    <option value="46">REAL ESTATE LOAN - 46</option>
-                    <option value="47">OVERDRAFT LOAN - 47</option>
-                    <option value="48">NJANGI FINANCING - 48</option>
-                </select>
-                    Loan Amount:<input type="number" th:field="*{loanAmount}" max="9000000" maxlength="10"/>
-                    Payment Interval:
-                    <select name="intervalOfLoanPayment" th:field="*{intervalOfLoanPayment}" id="intervalOfLoanPayment">
-                        <option value="01 DAY">01 DAY</option>
-                        <option value="15 DAY">15 DAY</option>
-                        <option value="OTHER">OTHER</option>
+    <!-- Contact form area start -->
+    <section class="contact-form-area-start space df-bg">
+
+        <form action="#" th:action="@{/registerLoanAccountForm}" method="post" th:object="${loanAccount}">
+            <table class="center" width="100%" border="1">
+                <tr>
+                    <td align="center">
+
+                            <h3>LOAN CENTER</h3>
+                            <span><i class="fas fa-crosshairs"></i></span>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td align="center" colspan="2">
+                        <br/>
+                        <br/>
+                        <label> Loan Type:</label>
+                        <select name="productCode" id="productCode" th:field="*{productCode}">
+                            <option value="41">SHORT TERM LOAN - 41</option>
+                            <option value="42">CONSUMPTION LOAN - 42</option>
+                            <option value="43">AGRICULTURE LOAN - 43</option>
+                            <option value="44">BUSINESS INVESTMENT LOAN - 44</option>
+                            <option value="45">SCHOOL FEES LOAN - 45</option>
+                            <option value="46">REAL ESTATE LOAN - 46</option>
+                            <option value="47">OVERDRAFT LOAN - 47</option>
+                            <option value="48">NJANGI FINANCING - 48</option>
+                        </select>
+                        Loan Amount:<input type="number" th:field="*{loanAmount}" max="9000000" maxlength="10"/>
+
+                        Interest Rate:<input type="number" th:field="*{interestRate}" max="100" maxlength="2"/>
+                        <br/>
+                        <br/>
+
+
+                        Term of Loan:<input type="number" th:field="*{termOfLoan}"/>
+
+                        Payment Interval:
+                        <select name="intervalOfLoanPayment" th:field="*{intervalOfLoanPayment}"
+                                id="intervalOfLoanPayment">
+                            <option value="01 DAY">01 DAY</option>
+                            <option value="15 DAY">15 DAY</option>
+                            <option value="OTHER">OTHER</option>
+                        </select>
+
+
+                        Loan Guarantor 1 - Account No:<input required type="text" th:field="*{guarantorAccountNumber1}"
+                                                   maxlength="15"/>
+                        <br/>
+                        <br/>
+                        <!--                    Guarantor 2 - Acc #:<input type="text" th:field="*{guarantorAccountNumber2}"-->
+                        <!--                                               maxlength="15"/>-->
+                        <!--                    Guarantor 3 - Acc: #:<input type="text" th:field="*{guarantorAccountNumber3}"-->
+                        <!--                                                maxlength="15"/>-->
+
+
+                        Notes:
+                        <textarea id="notes" rows="3" cols="30" th:field="*{notes}">
+                        </textarea>
+
+                        <br/>
+                        <br/>
+                        <button type="submit" class="btn btn-success">
+                           Next - Show Loan Guarantor Details
+                        </button>
+                        <br/>
+                        <br/>
+                    </td>
+                </tr>
+            </table>
+        </form>
+        <br/><br/>
+
+        <br/><br/><br/>
+
+        <form action="#" th:action="@{/generatePaymentSchedule}" method="post" th:object="${loanAccount}">
+            <table class="center" width="100%" border="1">
+                <tr>
+                    <td align="center">
+                        <h3> LOAN AMORTIZATION SCHEDULE </h3>
+                    </td>
+                </tr>
+                <tr>
+                    <td align="center" colspan="2">
+                        <br/>
+                        <br/>
+                        Loan Type:<select name="productCode" th:field="*{productCode}">
+                        <option value="41">SHORT TERM LOAN - 41</option>
+                        <option value="42">CONSUMPTION LOAN - 42</option>
+                        <option value="43">AGRICULTURE LOAN - 43</option>
+                        <option value="44">BUSINESS INVESTMENT LOAN - 44</option>
+                        <option value="45">SCHOOL FEES LOAN - 45</option>
+                        <option value="46">REAL ESTATE LOAN - 46</option>
+                        <option value="47">OVERDRAFT LOAN - 47</option>
+                        <option value="48">NJANGI FINANCING - 48</option>
                     </select>
-                </td>
-                <td width="5"></td>
-            </tr>
-            <tr>
-                <td width="10%"></td>
-                <td colspan="2">
+                        Loan Amount:<input type="number" th:field="*{loanAmount}" max="9000000" maxlength="10"/>
 
-                    <br/>
-                    Interest Rate:<input type="number" th:field="*{interestRate}" max="100" maxlength="2"/>
-                    Term of Loan:<input type="number" th:field="*{termOfLoan}"/>
-                    <br/>
-
-                </td>
-                <td width="5"></td>
-            </tr>
-            <tr>
-                <td width="10%"></td>
-                <td colspan="2">
-                    <br/>
-                    Guarantor 1 - Acc #:<input required type="text" th:field="*{guarantorAccountNumber1}"
-                                               maxlength="15"/>
-                    <br/>
-                    <!--                    Guarantor 2 - Acc #:<input type="text" th:field="*{guarantorAccountNumber2}"-->
-                    <!--                                               maxlength="15"/>-->
-                    <!--                    Guarantor 3 - Acc: #:<input type="text" th:field="*{guarantorAccountNumber3}"-->
-                    <!--                                                maxlength="15"/>-->
-                </td>
-                <td width="5"></td>
-            </tr>
-
-            <tr>
-                <td width="10%"></td>
-                <td>
-                    Notes:
-                    <br/>
-                    <textarea id="notes" rows="3" cols="30" th:field="*{notes}">
-                    </textarea>
-
-                    <button type="submit" class="btn btn-success">
-                        Add Loan Guarantees
-                    </button>
-                    <br/>
-                </td>
-
-                <td width="5"></td>
-            </tr>
-        </table>
-    </form>
-    <br/><br/>
-    <h3> LOAN AMORTIZATION SCHEDULE </h3>
-
-    <form action="#" th:action="@{/generatePaymentSchedule}" method="post" th:object="${loanAccount}">
-        <table class="center" width="100%">
-            <tr>
-                <td colspan="2"><select name="productCode" th:field="*{productCode}">
-                    <option value="41">SHORT TERM LOAN - 41</option>
-                    <option value="42">CONSUMPTION LOAN - 42</option>
-                    <option value="43">AGRICULTURE LOAN - 43</option>
-                    <option value="44">BUSINESS INVESTMENT LOAN - 44</option>
-                    <option value="45">SCHOOL FEES LOAN - 45</option>
-                    <option value="46">REAL ESTATE LOAN - 46</option>
-                    <option value="47">OVERDRAFT LOAN - 47</option>
-                    <option value="48">NJANGI FINANCING - 48</option>
-                </select>
-                    Loan Amount:<input type="number" th:field="*{loanAmount}" max="9000000" maxlength="10"/>
-                    Payment Interval:
-                    <select name="intervalOfLoanPayment" th:field="*{intervalOfLoanPayment}">
-                        <option value="01 DAY">01 DAY</option>
-                        <option value="15 DAY">15 DAY</option>
-                        <option value="OTHER">OTHER</option>
-                    </select>
-                    <br/>
-                    <br/>
-                    Interest Rate:<input type="number" th:field="*{interestRate}" max="100" maxlength="2"/>
-                    Term of Loan:<input type="number" th:field="*{termOfLoan}"/>
-
-                    <br/>
-                    <br/>
-                    <button type="submit" class="btn btn-success">
-                        See Payment Schedule
-                    </button>
-                </td>
-            </tr>
-        </table>
-    </form>
-</section>
+                        <select hidden name="intervalOfLoanPayment" th:field="*{intervalOfLoanPayment}">
+                            <option value="01 DAY">01 DAY</option>
+                            <option value="15 DAY">15 DAY</option>
+                            <option value="OTHER">OTHER</option>
+                        </select>
+                        <br/>
+                        <br/>
+                        Interest Rate:<input type="number" th:field="*{interestRate}" max="100" maxlength="2"/>
+                        Term of Loan:<input type="number" th:field="*{termOfLoan}"/>
+                        <br/>
+                        <br/>
+                        <button type="submit" class="btn btn-success">
+                            See Payment Schedule
+                        </button>
+                        <br/>
+                        <br/>
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </section>
+</div>
 <div th:insert="footer::navbar"></div>
 </html>

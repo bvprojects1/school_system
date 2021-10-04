@@ -3,10 +3,7 @@ package com.bitsvalley.micro.controllers;
 import com.bitsvalley.micro.domain.*;
 import com.bitsvalley.micro.repositories.SavingAccountTransactionRepository;
 import com.bitsvalley.micro.repositories.UserRepository;
-import com.bitsvalley.micro.services.LoanAccountService;
-import com.bitsvalley.micro.services.SavingAccountService;
-import com.bitsvalley.micro.services.UserRoleService;
-import com.bitsvalley.micro.services.UserService;
+import com.bitsvalley.micro.services.*;
 import com.bitsvalley.micro.utils.BVMicroUtils;
 import com.bitsvalley.micro.webdomain.LoanBilanzList;
 import com.bitsvalley.micro.webdomain.SavingBilanzList;
@@ -16,6 +13,11 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.ui.ModelMap;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.util.*;
 
 /**
@@ -40,7 +42,13 @@ public class SuperController {
     private LoanAccountService loanAccountService;
 
     @Autowired
+    private LoanAccountTransactionService loanAccountTransactionService;
+
+    @Autowired
     private UserRoleService userRoleService;
+
+    @Autowired
+    private PdfService pdfService;
 
 
     public String  findUserByUserName(User user, ModelMap model, HttpServletRequest request) {
@@ -50,13 +58,27 @@ public class SuperController {
             if( null != savingAccount ){
                 aUser = savingAccount.getUser();
             }
-            if(aUser==null){
+            else if(aUser==null){
                 Optional<SavingAccountTransaction> byReference
                         = savingAccountTransactionRepository.findByReference(user.getUserName());
-
                 if(byReference.isPresent()){
                     aUser = byReference.get().getSavingAccount().getUser();
                 }
+            }
+            if(aUser == null){ //LoanReference
+                Optional<LoanAccountTransaction> byReference = loanAccountTransactionService.
+                        findByReference(user.getUserName());
+                    LoanAccountTransaction loanAccountTransaction = byReference.get();
+                    if(loanAccountTransaction != null) { //TODO: Identical code in loanAccountController
+                        LoanAccount aLoanAccount = loanAccountTransaction.getLoanAccount();
+                        List<LoanAccountTransaction> loanAccountTransactionList = aLoanAccount.getLoanAccountTransaction();
+                        LoanBilanzList loanBilanzByUserList = loanAccountService.calculateAccountBilanz(loanAccountTransactionList, false);
+                        model.put("name", getLoggedInUserName());
+                        model.put("loanBilanzList", loanBilanzByUserList);
+//                        byReference.get().setLoanAccount(aLoanAccount);
+                        model.put("loanAccountTransaction", loanAccountTransaction);
+                        return "loanBilanzNoInterest";
+                    }
             }
         }
         if("ROLE_CUSTOMER".equals(aUser.getUserRole().get(0).getName())){
@@ -129,6 +151,28 @@ public class SuperController {
         User loggedInUser = userRepository.findByUserName(getLoggedInUserName());
         final Branch branch = loggedInUser.getBranch();
         return branch;
+    }
+
+    public void generateByteOutputStream(HttpServletResponse response, String htmlInput) throws IOException {
+        response.setContentType("application/pdf");
+        ByteArrayOutputStream byteArrayOutputStream = null;
+        ByteArrayInputStream byteArrayInputStream = null;
+        try {
+            OutputStream responseOutputStream = response.getOutputStream();
+            byteArrayOutputStream = pdfService.generatePDF(htmlInput, response);
+            byteArrayInputStream = new ByteArrayInputStream(byteArrayOutputStream.toByteArray());
+            int bytes;
+            while ((bytes = byteArrayInputStream.read()) != -1) {
+                responseOutputStream.write(bytes);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            byteArrayInputStream.close();
+            byteArrayOutputStream.flush();
+            byteArrayOutputStream.close();
+        }
+        response.setHeader("X-Frame-Options", "SAMEORIGIN");
     }
 
 }

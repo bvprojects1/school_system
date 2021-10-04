@@ -1,98 +1,108 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
       xsi:schemaLocation="http://www.thymeleaf.org ">
-<div th:fragment="navbar" class="navbar">
 
-<table width="100%" class="center" border="0px"><tr><td>
+<div class="container">
+    <div th:fragment="navbar" class="navbar">
+        <table width="100%" class="center" border="0px">
+            <tr>
+                <td>
 
-<!--Footer area start-->
-<footer class="footer-area-start">
+                    <!--Footer area start-->
+                    <footer class="footer-area-start">
 
-    <!--Footer content area start-->
-    <div class="footer-content-area-start">
-        <div class="container">
-            <div class="row">
-                <!--Single footer widget start-->
-                <div class="col-md-3 mb-sm-5 mb-md-0">
-                    <div class="single-footer-widget">
-                        <div class="logo-area">
-                            <a href="#"><span th:text="${session.runtimeSettings.businessName}"></span>
-<!--                                LLC -->
-                            </a>
-                        </div>
-                        <p>The bank on your side. We will consult with you on a one on one basis?</p>
-                        <div class="team-member-social-icon">
-                            <a href="#"><i class="fab fa-facebook-f"></i></a>
-                            <a href="#"><i class="fab fa-dribbble"></i></a>
-                            <a href="#"><i class="fab fa-instagram"></i></a>
-                            <a href="#"><i class="fab fa-twitter"></i></a>
-                        </div>
-                    </div>
-                </div>
-                <!--Single footer widget end-->
+                        <!--Footer content area start-->
+                        <div class="footer-content-area-start">
+                            <div class="container">
+                                <div class="row">
+                                    <!--Single footer widget start-->
+                                    <div class="col-md-3 mb-sm-5 mb-md-0">
+                                        <div class="single-footer-widget">
+                                            <div class="logo-area">
+                                                <a href="#"><span
+                                                        th:text="${session.runtimeSettings.businessName}"></span>
+                                                    <!--                                LLC -->
+                                                </a>
+                                            </div>
+                                            <p>The bank on your side. We will consult with you on a one on one
+                                                basis?</p>
+                                            <div class="team-member-social-icon">
+                                                <a href="#"><i class="fab fa-facebook-f"></i></a>
+                                                <a href="#"><i class="fab fa-dribbble"></i></a>
+                                                <a href="#"><i class="fab fa-instagram"></i></a>
+                                                <a href="#"><i class="fab fa-twitter"></i></a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!--Single footer widget end-->
 
-                <!--Single footer widget footer menu start-->
-                <div class="col-md-2 mb-sm-5 mb-md-0">
-                    <div class="single-footer-widget">
-                        <h5>Features</h5>
-                        <ul class="footer-menu">
-                            <li><a href="#">Home</a></li>
-                            <li><a href="#">About</a></li>
-<!--                            <li><a href="#">Portfolio</a></li>-->
-                            <li><a href="#">Help</a></li>
-                            <li><a href="#">Policy</a></li>
-                        </ul>
-                    </div>
-                </div>
-                <!--Single footer widget footer menu end-->
+                                    <!--Single footer widget footer menu start-->
+                                    <div class="col-md-2 mb-sm-5 mb-md-0">
+                                        <div class="single-footer-widget">
+                                            <h5>Features</h5>
+                                            <ul class="footer-menu">
+                                                <li><a href="#">Home</a></li>
+                                                <li><a href="#">About</a></li>
+                                                <!--                            <li><a href="#">Portfolio</a></li>-->
+                                                <li><a href="#">Help</a></li>
+                                                <li><a href="#">Policy</a></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <!--Single footer widget footer menu end-->
 
-                <!--Single footer widget footer menu start-->
-                <div class="col-md-4 mb-sm-5 mb-md-0">
-                    <div class="single-footer-widget">
-                        <h5>Recent News</h5>
-                        <div class="media">
-                            <div class="media-body">
-                                <p>Cameroon’s microfinance institutions are still largely concentrated in the cities, although 60% of the total populatio a growing share of ACEP Cameroun’s activity.</p>
+                                    <!--Single footer widget footer menu start-->
+                                    <div class="col-md-4 mb-sm-5 mb-md-0">
+                                        <div class="single-footer-widget">
+                                            <h5>Recent News</h5>
+                                            <div class="media">
+                                                <div class="media-body">
+                                                    <p>Cameroon’s microfinance institutions are still largely
+                                                        concentrated in the cities, although 60% of the total populatio
+                                                        a growing share of ACEP Cameroun’s activity.</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!--Single footer widget footer menu end-->
+
+                                    <!--Single footer widget footer menu start-->
+                                    <div class="col-md-3">
+                                        <div class="single-footer-widget">
+                                            <h5 th:text="${session.runtimeSettings.businessName}"/></h5>
+                                            <ul class="footer-menu-touch">
+                                                <li>
+                                                    <!--<i class="fas fa-map-marker mr-2"></i> &ndash;&gt;-->
+                                                    <div th:text="${session.runtimeSettings.address}"/>
+                                                </li>
+                                                <li>
+                                                    <!--                            <i class="fas fa-envelope mr-2"></i> -->
+                                                    <div th:text="${session.runtimeSettings.email}"/>
+                                                </li>
+                                                <li>
+                                                    <!--                            <i class="fas fa-mobile mr-2"></i> -->
+                                                    <div th:text="${session.runtimeSettings.telephone}"/>
+                                                </li>
+                                                <li>
+                                                    <!--                            <i class="fas fa-globe-asia mr-2"></i> -->
+                                                    <div th:text="${session.runtimeSettings.website}"/>
+                                                </li>
+                                                <!--<li><i class="fab fa-twitter mr-2"></i> www.socialmedia.com</li>-->
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <!--Single footer widget footer menu end-->
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </div>
-                <!--Single footer widget footer menu end-->
+                    </footer>
+                    <!--Footer area end-->
 
-                <!--Single footer widget footer menu start-->
-                <div class="col-md-3">
-                    <div class="single-footer-widget">
-                        <h5 th:text="${session.runtimeSettings.businessName}"/></h5>
-                        <ul class="footer-menu-touch">
-                            <li>
-                                <!--<i class="fas fa-map-marker mr-2"></i> &ndash;&gt;-->
-                                <div th:text="${session.runtimeSettings.address}"/>
-                            </li>
-                            <li>
-<!--                            <i class="fas fa-envelope mr-2"></i> -->
-                                <div th:text="${session.runtimeSettings.email}"/>
-                            </li>
-                            <li>
-<!--                            <i class="fas fa-mobile mr-2"></i> -->
-                                <div th:text="${session.runtimeSettings.telephone}"/>
-                            </li>
-                            <li>
-<!--                            <i class="fas fa-globe-asia mr-2"></i> -->
-                                <div th:text="${session.runtimeSettings.website}"/>
-                            </li>
-                            <!--<li><i class="fab fa-twitter mr-2"></i> www.socialmedia.com</li>-->
-                        </ul>
-                    </div>
-                </div>
-                <!--Single footer widget footer menu end-->
-            </div>
-        </div>
+                </td>
+            </tr>
+        </table>
     </div>
-</footer>
-<!--Footer area end-->
-
-</td></tr></table>
-
+</div>
 <!--jQuery-->
 <script src="/assets/js/jquery-3.5.1.min.js"></script>
 <!--Bootstrap-->

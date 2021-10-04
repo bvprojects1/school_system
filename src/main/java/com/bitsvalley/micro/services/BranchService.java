@@ -32,8 +32,4 @@ public class BranchService {
         return callCenterRepository.findByAccountNumber(accountNumber);
     }
 
-    public List<CallCenter> findUserByFirstLastname(String firstLastName) {
-        return callCenterRepository.findByAccountHolderName(firstLastName);
-    }
-
 }

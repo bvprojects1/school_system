@@ -18,6 +18,11 @@ public class LoanAccountTransaction {
     private String createdBy;
     private LocalDateTime createdDate;
     private double loanAmount;
+    private double currentLoanAmount;
+    private double interestPaid;
+    private double interestNotPaid;
+    private double transactionCharge;
+    private double amountReceived;
     private String notes;
     private String modeOfPayment;
     private int tenThousand;
@@ -206,5 +211,45 @@ public class LoanAccountTransaction {
 
     public void setLoanAmountInLetters(String loanAmountInLetters) {
         this.loanAmountInLetters = loanAmountInLetters;
+    }
+
+    public double getCurrentLoanAmount() {
+        return currentLoanAmount;
+    }
+
+    public void setCurrentLoanAmount(double currentLoanAmount) {
+        this.currentLoanAmount = currentLoanAmount;
+    }
+
+    public double getInterestPaid() {
+        return interestPaid;
+    }
+
+    public void setInterestPaid(double interestPaid) {
+        this.interestPaid = interestPaid;
+    }
+
+    public double getInterestNotPaid() {
+        return interestNotPaid;
+    }
+
+    public void setInterestNotPaid(double interestNotPaid) {
+        this.interestNotPaid = interestNotPaid;
+    }
+
+    public double getAmountReceived() {
+        return amountReceived;
+    }
+
+    public void setAmountReceived(double amountReceived) {
+        this.amountReceived = amountReceived;
+    }
+
+    public double getTransactionCharge() {
+        return transactionCharge;
+    }
+
+    public void setTransactionCharge(double transactionCharge) {
+        this.transactionCharge = transactionCharge;
     }
 }

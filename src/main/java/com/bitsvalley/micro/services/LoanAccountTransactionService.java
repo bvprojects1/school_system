@@ -2,6 +2,7 @@ package com.bitsvalley.micro.services;
 
 import com.bitsvalley.micro.domain.LoanAccount;
 import com.bitsvalley.micro.domain.LoanAccountTransaction;
+import com.bitsvalley.micro.domain.SavingAccountTransaction;
 import com.bitsvalley.micro.repositories.LoanAccountRepository;
 import com.bitsvalley.micro.repositories.LoanAccountTransactionRepository;
 import com.bitsvalley.micro.utils.BVMicroUtils;
@@ -25,17 +26,6 @@ public class LoanAccountTransactionService extends SuperService {
     @Autowired
     private LoanAccountRepository loanAccountRepository;
 
-
-    @Transactional
-    public void createLoanAccountTransaction(LoanAccountTransaction loanAccountTransaction) {
-        //Get id of savingAccount transaction
-        loanAccountTransaction.setReference(BVMicroUtils.getSaltString()); //Collision
-        loanAccountTransaction.setCreatedBy(getLoggedInUserName());
-        loanAccountTransaction.setCreatedDate(LocalDateTime.now());
-        loanAccountTransactionRepository.save(loanAccountTransaction);
-        generalLedgerService.updateLoanAccountTransaction(loanAccountTransaction);
-    }
-
     @Transactional
     public LoanAccountTransaction createLoanAccountTransaction(LoanAccount loanAccount) {
         //Get id of savingAccount transaction
@@ -43,6 +33,7 @@ public class LoanAccountTransactionService extends SuperService {
         loanAccountTransaction.setAccountOwner(loanAccount.getUser().getLastName()
                 + ", " + loanAccount.getUser().getFirstName());
         loanAccountTransaction.setLoanAmount(loanAccount.getLoanAmount() * -1);
+        loanAccountTransaction.setCurrentLoanAmount(loanAccount.getLoanAmount() * -1);
         Optional<LoanAccount> byId = loanAccountRepository.findById(loanAccount.getId());
         loanAccount = byId.get();
         loanAccountTransaction.setLoanAccount(loanAccount);
@@ -62,6 +53,16 @@ public class LoanAccountTransactionService extends SuperService {
             arrayList.add(loanAccountTransaction);
             loanAccount.setLoanAccountTransaction(arrayList);
         }
+        return loanAccountTransaction;
+    }
+
+    public Optional<LoanAccountTransaction> findById(long id){
+        Optional<LoanAccountTransaction> loanAccountTransaction = loanAccountTransactionRepository.findById(id);
+        return loanAccountTransaction;
+    }
+
+    public Optional<LoanAccountTransaction> findByReference(String id){
+        Optional<LoanAccountTransaction> loanAccountTransaction = loanAccountTransactionRepository.findByReference(id);
         return loanAccountTransaction;
     }
 

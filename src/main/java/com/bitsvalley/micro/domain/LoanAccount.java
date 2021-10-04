@@ -32,6 +32,7 @@ public class LoanAccount {
     private int termOfLoan;
 
     private double initiationFee;
+    private double extraFee;
     private Date LastPaymentDate;
     private double monthlyPayment;
 
@@ -103,10 +104,6 @@ public class LoanAccount {
 
     public void setCreatedBy(String createdBy) {
         this.createdBy = createdBy;
-    }
-
-    public void setInterestRate(int interestRate) {
-        this.interestRate = interestRate;
     }
 
     public String getNotes() {
@@ -212,10 +209,6 @@ public class LoanAccount {
 
     public void setShorteeAccounts(List<ShorteeAccount> shorteeAccounts) {
         this.shorteeAccounts = shorteeAccounts;
-    }
-
-    public void setLoanAmount(int loanAmount) {
-        this.loanAmount = loanAmount;
     }
 
     public AccountType getAccountType() {
@@ -356,5 +349,13 @@ public class LoanAccount {
 
     public void setLoanAmount(double loanAmount) {
         this.loanAmount = loanAmount;
+    }
+
+    public double getExtraFee() {
+        return extraFee;
+    }
+
+    public void setExtraFee(double extraFee) {
+        this.extraFee = extraFee;
     }
 }
