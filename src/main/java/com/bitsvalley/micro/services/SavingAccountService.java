@@ -19,6 +19,7 @@ import java.util.*;
 @Service
 public class SavingAccountService extends SuperService {
 
+
     @Autowired
     private SavingAccountRepository savingAccountRepository;
 
@@ -49,6 +50,11 @@ public class SavingAccountService extends SuperService {
     @Autowired
     private CallCenterService callCenterService;
 
+    @Autowired
+    private LoanAccountService loanAccountService;
+
+    @Autowired
+    private BranchService branchService;
 
     private double minimumSaving;
 
@@ -89,6 +95,18 @@ public class SavingAccountService extends SuperService {
 
     }
 
+
+    public SavingBilanzList getSavingAccountByUser(User user, boolean calculateInterest) {
+        User aUser = null;
+        if (null != user.getUserName()) {
+            aUser = userRepository.findByUserName(user.getUserName());
+        } else {
+            aUser = userRepository.findById(user.getId()).get();
+        }
+        ArrayList<User> userList = new ArrayList<User>();
+        userList.add(aUser);
+        return calculateUsersInterest(userList, calculateInterest);
+    }
 
 
     @Transactional
@@ -171,18 +189,18 @@ public class SavingAccountService extends SuperService {
         SavingBilanzList savingBilanzsList = new SavingBilanzList();
         for (int i = 0; i < users.size(); i++) {
             List<SavingAccount> savingAccounts = users.get(i).getSavingAccount();
-
             List<SavingAccountTransaction> savingAccountTransactions = new ArrayList<SavingAccountTransaction>();
             for (int j = 0; j < savingAccounts.size(); j++) {
                 SavingAccount savingAccount = savingAccounts.get(j);
+
                 boolean defaultedPayments = checkDefaultLogic(savingAccount);
                 savingAccount.setDefaultedPayment(defaultedPayments); //TODO:defaultLogic
                 savingAccountTransactions = savingAccount.getSavingAccountTransaction();
                 double accountTotalSaved = 0.0;
                 for (int k = 0; k < savingAccountTransactions.size(); k++) {
                     final SavingAccountTransaction savingAccountTransaction = savingAccountTransactions.get(k);
-                    if (savingAccountTransaction.getSavingAmount() <= 0)
-                        continue;
+//                    if (savingAccountTransaction.getSavingAmount() <= 0)
+//                        continue;
                     SavingBilanz savingBilanz = calculateInterest(savingAccountTransaction, calculateInterest);
                     currentSaved = currentSaved + savingAccountTransaction.getSavingAmount();
                     savingBilanz.setCurrentBalance(BVMicroUtils.formatCurrency(currentSaved));
@@ -258,16 +276,6 @@ public class SavingAccountService extends SuperService {
     }
 
 
-//    private double calculateInterestAccruedYearCompounded(SavingAccountTransaction savingAccountTransaction){
-////        = P [(1 + i)pow of n – 1]
-////        P = principal, i = nominal annual interest rate in percentage terms, n = number of compounding periods
-//        double interestPlusOne = (savingAccountTransaction.getSavingAccount().getInterestRate()*.01) + 1;
-//        double temp = Math.pow(interestPlusOne,getNumberOfMonths(savingAccountTransaction.getCreatedDate()));
-//        temp = temp - 1;
-//        return savingAccountTransaction.getSavingAmount() * temp;
-//    }
-
-
     public boolean checkDefaultLogic(SavingAccount savingAccount) {
 
 //        if(savingAccount.getAccountSavingType().getName().equals("GENERAL SAVINGS")){
@@ -337,5 +345,46 @@ public class SavingAccountService extends SuperService {
             total = tran.getSavingAmount() + total;
         }
         return total;
+    }
+
+    public void transferFromSavingToLoan(String fromAccountNumber,
+                                         String toAccountNumber,
+                                         double transferAmount,
+                                         String notes) {
+        LocalDateTime now = LocalDateTime.now();
+        String loggedInUserName = getLoggedInUserName();
+        Branch branchInfo = branchService.getBranchInfo(loggedInUserName);
+
+        SavingAccount savingAccount = findByAccountNumber(fromAccountNumber);
+        SavingAccountTransaction savingAccountTransaction = new SavingAccountTransaction();
+        savingAccountTransaction.setNotes(notes);
+        savingAccountTransaction.setSavingAccount(savingAccount);
+        savingAccountTransaction.setSavingAmount(transferAmount*-1);
+
+        savingAccountTransaction.setBranch(branchInfo.getId());
+        savingAccountTransaction.setBranchCode(branchInfo.getCode());
+        savingAccountTransaction.setBranchCountry(branchInfo.getCountry());
+        createSavingAccountTransaction(savingAccountTransaction);
+
+        LoanAccount loanAccount = loanAccountService.findByAccountNumber(toAccountNumber);
+        LoanAccountTransaction loanAccountTransaction = new LoanAccountTransaction();
+        loanAccountTransaction.setLoanAccount(loanAccount);
+
+        loanAccountTransaction.setCreatedDate(now);
+        loanAccountTransaction.setCreatedBy(loggedInUserName);
+        loanAccountTransaction.setNotes(notes);
+
+        loanAccountTransaction.setBranch(branchInfo.getId());
+        loanAccountTransaction.setBranchCode(branchInfo.getCode());
+        loanAccountTransaction.setBranchCountry(branchInfo.getCountry());
+        loanAccountTransaction.setAmountReceived(transferAmount);
+        loanAccountTransaction.setAccountOwner(loanAccount.getUser().getLastName() +", "+
+                loanAccount.getUser().getLastName());
+        loanAccountTransaction.setReference(BVMicroUtils.getSaltString());
+        loanAccountService.createLoanAccountTransaction(loanAccountTransaction, loanAccount, BVMicroUtils.TRANSFER);
+
+        savingAccount.getSavingAccountTransaction().add(savingAccountTransaction);
+        savingAccountRepository.save(savingAccount);
+
     }
 }

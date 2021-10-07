@@ -99,7 +99,7 @@
                     <br/>
                     <br/>
                     <select name="deposit_withdrawal">
-                        <option value="DEPOSIT">LOAN</option>
+<!--                        <option value="DEPOSIT">LOAN</option>-->
                         <option value="LOAN PAYMENT">LOAN PAYMENT</option>
                     </select>
                     <select name="modeOfPayment" id="modeOfPayment">
@@ -153,14 +153,10 @@
                     <label for="true">Account Owner:</label>
                     True<input th:field="*{accountOwner}" type="checkbox" id="true" name="accountOwner" value="true"
                                checked>
-
                     <button type="submit" class="btn btn-success">SUBMIT PAYMENT TRANSACTION</button>
-
                     <br/><br/>
-
                 </td>
             </tr>
-
         </table>
     </form>
     <br/>
@@ -169,7 +165,20 @@
             <th align="center">
                 <font size="5" color="green"> LOAN PAYMENTS PROCESSED </font>
                 <a href="#" th:href="@{/statementLoanPDF/{id}(id=${loanAccountTransaction.loanAccount.id})}"><img
-                        width="40px" th:src="@{/assets/images/pdfIcon.png}"/> </a>
+                        width="40px" th:src="@{/assets/images/pdfIcon.png}"/>
+                </a>
+            </th>
+            <th>
+                Initial Loan Amount:
+                <font color="green" size="3px">
+                    <div th:text="${loanBilanzList.totalLoan}"/>
+                </font>
+            </th>
+            <th>
+                Current Loan Amount:
+                <font color="green" size="3px">
+                    <div th:text="${loanBilanzList.currentLoanBalance}"/>
+                </font>
             </th>
         </tr>
     </table>
@@ -184,9 +193,6 @@
             <td>Received</td>
             <td>Interest</td>
             <td>
-                <font color="green" size="4px">
-                    <div th:text="${loanBilanzList.totalLoan}"/>
-                </font>
             </td>
             <th></th>
         </tr>

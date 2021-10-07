@@ -55,6 +55,9 @@ public class UserController extends SuperController{
     @Autowired
     InitSystemService initSystemService;
 
+    @Autowired
+    BranchService branchService;
+
     @InitBinder
     public void initBinder(WebDataBinder binder) {
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
@@ -94,7 +97,7 @@ public class UserController extends SuperController{
             user.setSavingAccount(savingAccount);
             userService.saveUser(user);
         }else{
-            Branch branch = getBranchInfo(loggedInUserName);
+            Branch branch = branchService.getBranchInfo(loggedInUserName);
             user.setBranch(branch);
             userService.createUser(user);
         }
@@ -189,7 +192,6 @@ public class UserController extends SuperController{
 
     @GetMapping(value = "/createSavingAccountReceiptPdf/{id}")
     public void savingReceiptPDF(@PathVariable("id") long id, ModelMap model, HttpServletRequest request, HttpServletResponse response) throws IOException {
-//        response.setContentType("application/pdf");
         response.setHeader("Content-disposition","attachment;filename="+ "statementPDF.pdf");
 
         ByteArrayOutputStream byteArrayOutputStream = null;
@@ -202,24 +204,7 @@ public class UserController extends SuperController{
             String htmlInput = pdfService.generateTransactionReceiptPDF(aSavingAccountTransaction,initSystemService.findAll());
 
             generateByteOutputStream(response,htmlInput);
-//
-//            byteArrayOutputStream = pdfService.generatePDF(htmlInput, response);
-//            response.setHeader("Content-Length",String.valueOf(byteArrayOutputStream.size()));
-//            byteArrayInputStream = new ByteArrayInputStream(byteArrayOutputStream.toByteArray());
-//            int bytes;
-//            while ((bytes = byteArrayInputStream.read()) != -1) {
-//                responseOutputStream.write(bytes);
-//            }
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        } finally {
-//            byteArrayInputStream.close();
-//            byteArrayOutputStream.flush();
-//            byteArrayOutputStream.close();
-//        }
-//        response.setHeader("X-Frame-Options", "SAMEORIGIN");
+
     }
-
-
 
 }

@@ -59,13 +59,15 @@ public class LoanAccountService extends SuperService {
     @Autowired
     private SavingAccountService savingAccountService;
 
-    public SavingAccount findByAccountNumber(String accountNumber) {
-        return savingAccountRepository.findByAccountNumber(accountNumber);
+    public LoanAccount findByAccountNumber(String accountNumber) {
+        return loanAccountRepository.findByAccountNumber(accountNumber);
     }
 
     @Autowired
     private ShorteeAccountRepository shorteeAccountRepository;
 
+    @Autowired
+    BranchService branchService;
 
     @NotNull
     @Transactional
@@ -153,6 +155,31 @@ public class LoanAccountService extends SuperService {
     }
 
 
+    public void createLoanAccountTransaction(LoanAccountTransaction loanAccountTransaction, LoanAccount aLoanAccount, String modeOfPayment) {
+        loanAccountTransaction.setModeOfPayment(modeOfPayment);
+        Branch branchInfo = branchService.getBranchInfo(getLoggedInUserName());
+
+        loanAccountTransaction.setBranch(branchInfo.getId());
+        loanAccountTransaction.setBranchCode(branchInfo.getCode());
+        loanAccountTransaction.setBranchCountry(branchInfo.getCountry());
+
+        loanAccountTransaction.setLoanAccount(aLoanAccount);
+        if (aLoanAccount.getLoanAccountTransaction() != null) {
+            aLoanAccount.getLoanAccountTransaction().add(loanAccountTransaction);
+        } else {
+            aLoanAccount.setLoanAccountTransaction(new ArrayList<LoanAccountTransaction>());
+            aLoanAccount.getLoanAccountTransaction().add(loanAccountTransaction);
+        }
+        updateInterestOwedPayment(aLoanAccount, loanAccountTransaction);
+
+        save(aLoanAccount);
+
+        callCenterService.saveCallCenterLog(loanAccountTransaction.getReference(), aLoanAccount.getUser().getUserName(), aLoanAccount.getAccountNumber(),
+                "Loan account Payment received Amount: "+ loanAccountTransaction.getAmountReceived());
+
+        generalLedgerService.updateLoanAccountTransaction(loanAccountTransaction);
+    }
+
     public LoanBilanzList getLoanBilanzByUser(User user, boolean calculateInterest) {
         User aUser = null;
         if (null != user.getUserName()) {
@@ -163,7 +190,6 @@ public class LoanAccountService extends SuperService {
         ArrayList<User> userList = new ArrayList<User>();
         userList.add(aUser);
         return calculateUsersInterest(userList, calculateInterest);
-
     }
 
 
@@ -178,7 +204,6 @@ public class LoanAccountService extends SuperService {
 
 
     public LoanAccount updateInterestOwedPayment(LoanAccount loanAccount, LoanAccountTransaction loanAccountTransaction) {
-//        Date lastUpdatedDate = loanAccount.getLastUpdatedDate();
         LocalDateTime transactionDate = loanAccountTransaction.getCreatedDate();
         LocalDateTime date =
                 LocalDateTime.ofInstant(Instant.ofEpochMilli(loanAccount.getLastPaymentDate().getTime()), ZoneId.systemDefault());
@@ -210,7 +235,7 @@ public class LoanAccountService extends SuperService {
             List<LoanAccountTransaction> loanAccountTransactions,
             boolean calculateInterest) {
         double totalLoan = 0.0;
-        double currentLoan = 0.0;
+        String currentLoanBalance = "";
         double totalLoanAccountTransactionInterest = 0.0;
 
         LoanBilanzList loanBilanzsList = new LoanBilanzList();
@@ -219,7 +244,7 @@ public class LoanAccountService extends SuperService {
             final LoanAccountTransaction loanAccountTransaction = loanAccountTransactions.get(k);
             LoanBilanz loanBilanz = new LoanBilanz();
             loanBilanz = calculateInterest(loanAccountTransaction, calculateInterest);
-            currentLoan = currentLoan + loanAccountTransaction.getLoanAmount();
+            currentLoanBalance = loanBilanz.getCurrentBalance();
             loanBilanzsList.getLoanBilanzList().add(loanBilanz);
             totalLoan = totalLoan + loanAccountTransaction.getLoanAmount();
             if (calculateInterest) {
@@ -228,6 +253,7 @@ public class LoanAccountService extends SuperService {
         }
         loanBilanzsList.setTotalLoanInterest(BVMicroUtils.formatCurrency(totalLoanAccountTransactionInterest)); //TODO set total interest
         loanBilanzsList.setTotalLoan(BVMicroUtils.formatCurrency(totalLoan));
+        loanBilanzsList.setCurrentLoanBalance(currentLoanBalance);
         Collections.reverse(loanBilanzsList.getLoanBilanzList());
         return loanBilanzsList;
     }
@@ -238,37 +264,40 @@ public class LoanAccountService extends SuperService {
         double totalLoanAmount = 0.0;
         double loanAccountTransactionInterest = 0.0;
         LoanBilanzList loanBilanzsList = new LoanBilanzList();
+        double currentLoanBalanceAllUserLoans = 0.0;
         for (int i = 0; i < users.size(); i++) {
             List<LoanAccount> loanAccounts = users.get(i).getLoanAccount();
-
+            double currentLoanBalanceUserLoans = 0.0;
             List<LoanAccountTransaction> loanAccountTransactions = new ArrayList<LoanAccountTransaction>();
             for (int j = 0; j < loanAccounts.size(); j++) {
                 LoanAccount loanAccount = loanAccounts.get(j);
                 boolean defaultedPayments = checkDefaultLogic(loanAccount);
                 loanAccount.setDefaultedPayment(defaultedPayments); //TODO:defaultLogic
                 loanAccountTransactions = loanAccount.getLoanAccountTransaction();
+                double currentLoanBalance = 0.0;
                 for (int k = 0; k < loanAccountTransactions.size(); k++) {
                     final LoanAccountTransaction loanAccountTransaction = loanAccountTransactions.get(k);
-                    if (loanAccountTransaction.getLoanAmount() == 0)
-                        continue;
+//                    if (loanAccountTransaction.getLoanAmount() == 0)
+//                        continue;
                     LoanBilanz loanBilanz = calculateInterest(loanAccountTransaction, calculateInterest);
                     totalLoanAmount = totalLoanAmount + loanAccountTransaction.getLoanAmount();
                     loanBilanz.setCurrentBalance(BVMicroUtils.formatCurrency(totalLoanAmount));
                     loanBilanzsList.getLoanBilanzList().add(loanBilanz);
-                    totalCurrentLoan = totalCurrentLoan + loanAccountTransaction.getCurrentLoanAmount();
-                    double monthlyPayments = interestService.monthlyPaymentAmortisedPrincipal(
-                            loanAccount.getInterestRate(),
-                            loanAccount.getTermOfLoan(),
-                            loanAccount.getLoanAmount());
+                    currentLoanBalance = loanAccountTransaction.getCurrentLoanAmount();
                 }
-                if (checkMinBalanceLogin(totalLoanAmount, loanAccount)) {
-                    loanAccount.setDefaultedPayment(true);// Minimum balance check
-                }
+//                loanAccount.setCurrentLoanAmount(totalCurrentLoan);
+//                if (checkMinBalanceLogin(totalLoanAmount, loanAccount)) {
+//                    loanAccount.setDefaultedPayment(true);// Minimum balance check
+//                }
+                currentLoanBalanceUserLoans = currentLoanBalanceUserLoans + currentLoanBalance;
+                loanAccount.setCurrentLoanAmount(currentLoanBalance);
                 loanAccountRepository.save(loanAccount);
             }
+            currentLoanBalanceAllUserLoans = currentLoanBalanceAllUserLoans + currentLoanBalanceUserLoans;
+            loanBilanzsList.setCurrentLoanBalance(BVMicroUtils.formatCurrency(currentLoanBalanceUserLoans));
         }
         loanBilanzsList.setTotalLoan(BVMicroUtils.formatCurrency(totalLoanAmount));
-        loanBilanzsList.setTotalCurrentLoan(BVMicroUtils.formatCurrency(totalCurrentLoan));
+//        loanBilanzsList.setCurrentLoanBalanceAllUserLoans(BVMicroUtils.formatCurrency(currentLoanBalanceAllUserLoans));
         loanBilanzsList.setTotalLoanInterest(BVMicroUtils.formatCurrency(loanAccountTransactionInterest));
         Collections.reverse(loanBilanzsList.getLoanBilanzList());
         return loanBilanzsList;

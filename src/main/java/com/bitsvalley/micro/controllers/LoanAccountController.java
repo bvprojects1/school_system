@@ -69,6 +69,9 @@ public class LoanAccountController extends SuperController {
     @Autowired
     PdfService pdfService;
 
+    @Autowired
+    BranchService branchService;
+
     @GetMapping(value = "/registerLoanAccount")
     public String registerLoanAccount(ModelMap model, HttpServletRequest request) {
         User user = (User) request.getSession().getAttribute(BVMicroUtils.CUSTOMER_IN_USE);
@@ -108,7 +111,7 @@ public class LoanAccountController extends SuperController {
         User user = (User) request.getSession().getAttribute(BVMicroUtils.CUSTOMER_IN_USE);
         user = userRepository.findById(user.getId()).get();
 
-        Branch branchInfo = getBranchInfo(getLoggedInUserName());
+        Branch branchInfo = branchService.getBranchInfo(getLoggedInUserName());
         loanAccount.setBranchCode(new Long(branchInfo.getId()).toString());
         loanAccount.setBranchCode(branchInfo.getCode());
         loanAccount.setCountry(branchInfo.getCountry());
@@ -282,28 +285,7 @@ public class LoanAccountController extends SuperController {
         }
 
         String modeOfPayment = request.getParameter("modeOfPayment");
-        loanAccountTransaction.setModeOfPayment(modeOfPayment);
-        Branch branchInfo = getBranchInfo(getLoggedInUserName());
-
-        loanAccountTransaction.setBranch(branchInfo.getId());
-        loanAccountTransaction.setBranchCode(branchInfo.getCode());
-        loanAccountTransaction.setBranchCountry(branchInfo.getCountry());
-
-        loanAccountTransaction.setLoanAccount(aLoanAccount);
-        if (aLoanAccount.getLoanAccountTransaction() != null) {
-            aLoanAccount.getLoanAccountTransaction().add(loanAccountTransaction);
-        } else {
-            aLoanAccount.setLoanAccountTransaction(new ArrayList<LoanAccountTransaction>());
-            aLoanAccount.getLoanAccountTransaction().add(loanAccountTransaction);
-        }
-        loanAccountService.updateInterestOwedPayment(aLoanAccount, loanAccountTransaction);
-
-        loanAccountService.save(aLoanAccount);
-
-        callCenterService.saveCallCenterLog(loanAccountTransaction.getReference(), aLoanAccount.getUser().getUserName(),aLoanAccount.getAccountNumber(),
-                "Loan account Payment received Amount: "+loanAccountTransaction.getAmountReceived());
-
-        generalLedgerService.updateLoanAccountTransaction(loanAccountTransaction);
+        loanAccountService.createLoanAccountTransaction(loanAccountTransaction, aLoanAccount, modeOfPayment);
 
         LoanBilanzList loanBilanzByUserList = loanAccountService.calculateAccountBilanz(aLoanAccount.getLoanAccountTransaction(), false);
         model.put("name", getLoggedInUserName());
@@ -320,6 +302,7 @@ public class LoanAccountController extends SuperController {
         model.put("loanAccountTransaction", loanAccountTransaction);
         return "loanBilanzNoInterest";
     }
+
 
     private void resetLoansAccountTransaction(LoanAccountTransaction sat) {
         sat.setLoanAmount(0);

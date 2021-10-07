@@ -8,7 +8,7 @@ public class LoanBilanzList {
     List<LoanBilanz> loanBilanzList = new ArrayList<LoanBilanz>();
     String totalLoanInterest = "0";
     String totalLoan = "0";
-    String totalCurrentLoan = "";
+    String currentLoanBalance = "";
     String numberOfLoanAccounts = "0";
     String numberOfRetirementLoans = "0";
 
@@ -52,11 +52,12 @@ public class LoanBilanzList {
         this.numberOfRetirementLoans = numberOfRetirementLoans;
     }
 
-    public String getTotalCurrentLoan() {
-        return totalCurrentLoan;
+    public String getCurrentLoanBalance() {
+        return currentLoanBalance;
     }
 
-    public void setTotalCurrentLoan(String totalCurrentLoan) {
-        this.totalCurrentLoan = totalCurrentLoan;
+    public void setCurrentLoanBalance(String currentLoanBalance) {
+        this.currentLoanBalance = currentLoanBalance;
     }
+
 }

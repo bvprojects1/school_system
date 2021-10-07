@@ -5,8 +5,7 @@ import com.bitsvalley.micro.repositories.CallCenterRepository;
 import com.bitsvalley.micro.repositories.UserRepository;
 import com.bitsvalley.micro.services.*;
 import com.bitsvalley.micro.utils.BVMicroUtils;
-import com.bitsvalley.micro.webdomain.RuntimeSetting;
-import com.bitsvalley.micro.webdomain.SavingBilanzList;
+import com.bitsvalley.micro.webdomain.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -48,6 +47,10 @@ public class SavingAccountController extends SuperController {
     @Autowired
     PdfService pdfService;
 
+    @Autowired
+    BranchService branchService;
+
+
     @GetMapping(value = "/registerSavingAccount")
     public String registerSaving(ModelMap model, HttpServletRequest request) {
         User user = (User) request.getSession().getAttribute(BVMicroUtils.CUSTOMER_IN_USE);
@@ -64,7 +67,7 @@ public class SavingAccountController extends SuperController {
     public String registerSavingAccount(@ModelAttribute("saving") SavingAccount savingAccount, ModelMap model, HttpServletRequest request) {
         User user = (User) request.getSession().getAttribute(BVMicroUtils.CUSTOMER_IN_USE);
         user = userRepository.findById(user.getId()).get();
-        Branch branchInfo = getBranchInfo(getLoggedInUserName());//TODO Create branch repo
+        Branch branchInfo = branchService.getBranchInfo(getLoggedInUserName());//TODO Create branch repo
         savingAccount.setBranchCode(branchInfo.getCode());
         savingAccount.setCountry(branchInfo.getCountry());
         savingAccountService.createSavingAccount(savingAccount, user);
@@ -105,39 +108,33 @@ public class SavingAccountController extends SuperController {
             generateByteOutputStream(response, htmlInput);
     }
 
-//    @GetMapping(value = "/printSavingAccountDetails/{id}")
-//    public String printSavingAccountDetails(@PathVariable("id") long id, ModelMap model,
-//                                            @ModelAttribute("savingAccountTransaction") SavingAccountTransaction savingAccountTransaction,
-//                                            HttpServletRequest request, HttpServletResponse response) throws IOException {
-//        String username = getLoggedInUserName();
-//        Optional<SavingAccount> savingAccount = savingAccountService.findById(new Long(id));
-//        SavingBilanzList savingBilanzByUserList = savingAccountService.
-//                calculateAccountBilanz(savingAccount.get().getSavingAccountTransaction(), false);
-//        String htmlInput = null;
-////                pdfService.generatePDFSavingBilanzList(savingBilanzByUserList, username);
-//
-//        response.setContentType("application/pdf");
-//        response.setHeader("Content-disposition", "attachment;filename=" + "statementPDF.pdf");
-//        ByteArrayOutputStream byteArrayOutputStream = null;
-//        ByteArrayInputStream byteArrayInputStream = null;
-//        try {
-//            OutputStream responseOutputStream = response.getOutputStream();
-//            byteArrayOutputStream = pdfService.generatePDF(htmlInput, response);
-//            byteArrayInputStream = new ByteArrayInputStream(byteArrayOutputStream.toByteArray());
-//            int bytes;
-//            while ((bytes = byteArrayInputStream.read()) != -1) {
-//                responseOutputStream.write(bytes);
-//            }
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        } finally {
-//            byteArrayInputStream.close();
-//            byteArrayOutputStream.flush();
-//            byteArrayOutputStream.close();
-//        }
-//        response.setHeader("X-Frame-Options", "SAMEORIGIN");
-//        return "userHome";
-//    }
+
+    @GetMapping(value = "/transferBetweenAccounts")
+    public String transferBetweenAccounts(ModelMap model,
+                                        HttpServletRequest request,
+                                        HttpServletResponse response) {
+
+
+        SavingBilanzList savingBilanzList = (SavingBilanzList)request.getSession().getAttribute("savingBilanzList");
+        LoanBilanzList loanBilanzList = (LoanBilanzList)request.getSession().getAttribute("loanBilanzList");
+
+        model.put("transferBilanz", new TransferBilanz());
+        model.put("transferFromAccount", savingBilanzList);
+        model.put("transferToAccount", loanBilanzList.getLoanBilanzList());
+        return "transfer";
+    }
+
+
+    @PostMapping(value = "/transferFromSavingToLoanAccountsForm")
+    public String transferFromSavingToLoanAccountsForm(ModelMap model,
+                                                       @ModelAttribute("transferBilanz") TransferBilanz transferBilanz) {
+        savingAccountService.transferFromSavingToLoan(transferBilanz.getFromAccount(),
+                transferBilanz.getToAccount(),
+                transferBilanz.getTransferAmount(), transferBilanz.getNotes());
+
+        return "transferReview";
+    }
+
 
 
     @PostMapping(value = "/registerSavingAccountTransactionForm")
@@ -173,7 +170,7 @@ public class SavingAccountController extends SuperController {
         }
         String modeOfPayment = request.getParameter("modeOfPayment");
         savingAccountTransaction.setModeOfPayment(modeOfPayment);
-        Branch branchInfo = getBranchInfo(getLoggedInUserName());
+        Branch branchInfo = branchService.getBranchInfo(getLoggedInUserName());
 
         savingAccountTransaction.setBranch(branchInfo.getId());
         savingAccountTransaction.setBranchCode(branchInfo.getCode());

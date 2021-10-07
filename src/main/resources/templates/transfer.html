@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<div th:insert="header::navbar"></div>
+<br/>
+<br/>
+
+<div class="container">
+    <!-- Contact form area start -->
+    <section class="contact-form-area-start space df-bg">
+        <form action="#" th:action="@{/transferFromSavingToLoanAccountsForm}" method="post" th:object="${transferBilanz}">
+            <table class="center" width="100%" border="1">
+                <tr>
+                    <td align="center">
+                        <div class="project-title-content">
+                            <h3>TRANSFER FROM PERSONAL SAVING TO LOAN ACCOUNT</h3>
+                            <span><i class="fas fa-crosshairs"></i></span>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td align="center" colspan="2">
+                        <font size="1.5">Account Owner</font><br/>
+                        <font size="4">
+                            <span style th:text="${session.customerInUse.userName}"/>'s
+                        </font>
+                        <br/><br/>
+                        <label> From Account:</label>
+                        <select th:field="*{fromAccount}">
+                            <option th:each="i : ${session.customerInUse.savingAccount}"
+                                    th:value="${i.accountNumber}"
+                                    th:text="${i.accountType.name}+ ----Balance + ${#numbers.formatDecimal(i.accountBalance, 0, 'COMMA', 0, 'POINT')} + ----MinimumBalance + ${#numbers.formatDecimal(i.accountMinBalance, 0, 'COMMA', 0, 'POINT')}">
+                            </option>
+                        </select>
+                        <br/>
+                        <br/>
+                        <label> To Account:</label>
+                        <select th:field="*{toAccount}">
+                            <option th:each="i : ${session.customerInUse.loanAccount}"
+                                    th:value="${i.accountNumber}"
+                                    th:text="${i.accountType.name}+ ----Balance + ${#numbers.formatDecimal(i.currentLoanAmount, 0, 'COMMA', 0, 'POINT')} + ----InitialLoanAmount + ${#numbers.formatDecimal(i.loanAmount, 0, 'COMMA', 0, 'POINT')}">
+                            </option>
+                        </select>
+                        <br/>
+                        <br/>
+                        <label> Enter Amount:</label>
+                        <input size="6" name="transferAmount" type="number" value=""/>
+
+                        <br/>
+                        <br/>
+                        <label> Notes:</label>
+                        <textarea  id="notes" rows="3" cols="30" th:field="*{notes}">
+                        </textarea>
+
+                        <button type="submit" class="btn btn-success">
+                            Submit Transfer
+                        </button>
+                        <br/>
+                        <br/>
+                    </td>
+                </tr>
+            </table>
+        </form>
+        <br/><br/><br/>
+
+
+
+        <form action="#" th:action="@{/transferFromSavingToLoanAccountsForm}" method="post" th:object="${transferBilanz}">
+            <table class="center" width="100%" border="1">
+                <tr>
+                    <td align="center">
+                        <div class="project-title-content">
+                            <h3>TRANSFER FROM SAVING TO LOAN ACCOUNT</h3>
+                            <span><i class="fas fa-crosshairs"></i></span>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td align="center" colspan="2">
+                        <font size="1.5">Account Owner</font><br/>
+                        <font size="4">
+                            <span style th:text="${session.customerInUse.userName}"/>'s
+                        </font>
+                        <br/><br/>
+                        <label> From Account:</label>
+                        <select th:field="*{fromAccount}">
+                            <option th:each="i : ${session.customerInUse.savingAccount}"
+                                    th:value="${i.id}"
+                                    th:text="${i.accountType}+ ----Balance + ${i.accountBalance} + ----MinimumBalance + ${i.accountMinBalance}">
+                            </option>
+                        </select>
+                        <br/>
+                        <br/>
+                        <label> To Account:</label>
+                        <select th:field="*{toAccount}">
+                            <option th:each="i : ${session.customerInUse.loanAccount}"
+                                    th:value="${i.id}"
+                                    th:text="${i.accountType}+ ----Balance + ${i.currentLoanAmount} + ----InitialLoanAmount + ${i.loanAmount}">
+                            </option>
+                        </select>
+                        <br/>
+                        <br/>
+                        <label> Enter Amount:</label>
+                        <input size="6" name="transferAmount" type="number" value=""/>
+                        <br/>
+                        <br/>
+                        <label> Notes:</label>
+                        <textarea id="loanNotes" rows="3" cols="30" th:field="*{notes}">
+                        </textarea>
+                        <button type="submit" class="btn btn-success">
+                            Submit Transfer
+                        </button>
+                        <br/>
+                        <br/>
+                    </td>
+                </tr>
+            </table>
+        </form>
+
+    </section>
+</div>
+<div th:insert="footer::navbar"></div>
+</html>

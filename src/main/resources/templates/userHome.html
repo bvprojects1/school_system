@@ -10,7 +10,7 @@
     <section class="choosen-area-start space">
         <!-- Use this as a header after login-->
 
-        <table style="border:1px" class="center" width="100%">
+        <table style="border:0px" class="center" width="100%" cellpadding="5">
             <tr>
                 <td>
                     <font size="3">Account Owner</font>
@@ -22,7 +22,7 @@
                     </font>
                     <button type="submit">
                         <a href="#" th:href="@{/file/{userName}(userName=${session.customerInUse.userName})}">
-                            <font color="gray" size="4px">Upload I.D</font></a>
+                            <font color="gray" size="2px">Upload I.D</font></a>
                     </button>
                     <a href="#" th:href="@{/reloadUser}">
                         <img width="40px" th:src="@{/getImage}"/>
@@ -36,7 +36,7 @@
                 </td>
                 <td> Loan<br/>
                     <font size="4px" color="gray">
-                        <div th:text="${session.loanBilanzList.totalCurrentLoan}"/>
+                        <div th:text="${session.loanBilanzList.currentLoanBalance}"/>
                     </font></td>
                 <td> Current<br/> <font size="4px" color="gray"> 0</font></td>
                 <td>Retirement saving <br/> <font size="4px" color="gray">0</font></b></td>
@@ -46,44 +46,49 @@
         <br/>
 
         &nbsp;
-        <table border="0" class="center" width="100%">
+        <table border="0" class="center" width="100%" cellpadding="5">
             <tr>
-                <td colspan="9">
+                <td colspan="7">
                     <font size="5px" color="#738980"> <b>SAVING ACCOUNTS</b> </font>
                     <span th:if="${createSavingAccountEligible}">
-                    <a href="#" th:href="@{/registerSavingAccount}">
-                        <img width="25px" th:src="@{/assets/images/add.png}"/>
+                        <a href="#" th:href="@{/registerSavingAccount}">
+                            <img width="25px" th:src="@{/assets/images/add.png}"/>
+                        </a>
+                    </span>
+                </td>
+                <td colspan="3">
+                    <a href="#" th:href="@{/transferBetweenAccounts}">
+                        Transfer between accounts
                     </a>
-                </span>
                 </td>
             </tr>
             <tr>
                 <td>
-                    Acc Type
+                    Account Type
                 </td>
                 <td>
-                    Acc No.
-                </td>
-                <td>
-                    Description
-                </td>
-                <td>
-                    Min
+                    Account Number
                 </td>
                 <td>
                     Balance
                 </td>
                 <td>
-                    %
+                    Minimum Balance
                 </td>
                 <td>
                     Locked
+                </td>
+                <td>
+                    Description
                 </td>
                 <td>
                     Created
                 </td>
                 <td>
                     Creator
+                </td>
+                <td>
+                    Annual Rate
                 </td>
                 <td>
                 </td>
@@ -106,19 +111,22 @@
                     </span>
                     </a>
                 </td>
-                <td th:text="${savingAccount.notes}"/>
+                <td th:text="${#numbers.formatDecimal(savingAccount.accountBalance, 0, 'COMMA', 0, 'POINT')}"/>
 
                 <td th:text="${#numbers.formatDecimal(savingAccount.accountMinBalance, 0, 'COMMA', 0, 'POINT')}"/>
 
-                <td th:text="${#numbers.formatDecimal(savingAccount.accountBalance, 0, 'COMMA', 0, 'POINT')}"/>
-
-                <td th:text="${savingAccount.interestRate}"/>
-
                 <td th:text="${savingAccount.accountMinBalanceLocked}"/>
+
+                <td th:text="${savingAccount.notes}"/>
 
                 <td th:text="${#dates.format(savingAccount.createdDate, 'dd-MMM-yyyy HH:mm')}"/>
 
                 <td th:text="${savingAccount.createdBy}"/>
+
+                <td>
+                    <span th:text="${savingAccount.interestRate}"/>%
+                </td>
+
                 <td>
                     <a href="#" th:href="@{/registerSavingAccountTransaction/{id}(id=${savingAccount.id})}">
                         <img width="30px" th:src="@{/assets/images/depositIcon.png}"/>
@@ -134,9 +142,9 @@
 
         <br/> <br/> <br/> <br/>
 
-        <table border="0" class="center" width="100%">
+        <table border="0" class="center" width="100%" cellpadding="5">
             <tr>
-                <td colspan="7">
+                <td colspan="8">
                     <font size="5px" color="#738980">
                         <b>LOAN ACCOUNTS</b>
                     </font>
@@ -149,27 +157,28 @@
             </tr>
             <tr>
                 <td>
-                    Acc Type
+                    Account Type
                 </td>
                 <td>
-                    Acc No.
+                    Account Number
                 </td>
                 <td>
-                    Loan Amount
+                    Original Amount
                 </td>
                 <td>
-                    %
+                    Current Balance
                 </td>
-
                 <td>
                     Description
                 </td>
-
                 <td>
                     Created
                 </td>
                 <td>
                     Creator
+                </td>
+                <td>
+                    Annual Rate
                 </td>
                 <td>
                 </td>
@@ -188,7 +197,7 @@
                 </td>
                 <td th:text="${#numbers.formatDecimal(loanAccount.loanAmount, 0, 'COMMA', 0, 'POINT')}"/>
 
-                <td th:text="${loanAccount.interestRate}"/>
+                <td th:text="${#numbers.formatDecimal(loanAccount.currentLoanAmount, 0, 'COMMA', 0, 'POINT')}"/>
 
                 <td th:text="${loanAccount.notes}"/>
 
@@ -196,6 +205,9 @@
 
                 <td th:text="${loanAccount.createdBy}"/>
 
+                <td>
+                    <span th:text="${loanAccount.interestRate}"/>%
+                </td>
                 <td>
                     <a href="#" th:href="@{/registerLoanAccountTransaction/{id}(id=${loanAccount.id})}">
                         <img width="30px" th:src="@{/assets/images/depositIcon.png}"/>

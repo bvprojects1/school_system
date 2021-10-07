@@ -32,8 +32,8 @@ public class LoanAccountTransactionService extends SuperService {
         LoanAccountTransaction loanAccountTransaction = new LoanAccountTransaction();
         loanAccountTransaction.setAccountOwner(loanAccount.getUser().getLastName()
                 + ", " + loanAccount.getUser().getFirstName());
-        loanAccountTransaction.setLoanAmount(loanAccount.getLoanAmount() * -1);
-        loanAccountTransaction.setCurrentLoanAmount(loanAccount.getLoanAmount() * -1);
+        loanAccountTransaction.setLoanAmount(loanAccount.getLoanAmount());
+        loanAccountTransaction.setCurrentLoanAmount(loanAccount.getLoanAmount());
         Optional<LoanAccount> byId = loanAccountRepository.findById(loanAccount.getId());
         loanAccount = byId.get();
         loanAccountTransaction.setLoanAccount(loanAccount);

@@ -410,8 +410,8 @@ public class PdfService {
             "<td><br/><b>Number</b></td><td><br/><b>Date</b></td><td><br/><b>Interest</b></td><td><br/><b>Payment</b></td>"+
             "<td><br/><b>Principal</b></td><td><br/><b>Balance</b></td></tr>"+
             getAmortizationRow(amortization.getAmortizationRowEntryList())+
-            "<tr><td colspan=\"6\" align=\"center\"> Prepared by "+ firstName +"  Date: "+ LocalDateTime.now() +"+</td></tr>"+
-            "<tr><td colspan=\"6\" align=\"center\"> This loan offer is valid till "+ LocalDateTime.now().plusDays(14) +"</td></tr>"+
+            "<tr><td colspan=\"6\" align=\"center\"> Prepared by "+ firstName +" <br/> Date: "+ LocalDateTime.now() +"+</td></tr>"+
+            "<tr><td colspan=\"6\" align=\"center\"><br/> This loan offer is valid till "+ LocalDateTime.now().plusDays(14) +"</td></tr>"+
     "</table></body></html>";
     }
 

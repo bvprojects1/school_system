@@ -58,11 +58,17 @@ public class SuperController {
             if( null != savingAccount ){
                 aUser = savingAccount.getUser();
             }
-            else if(aUser==null){
+            if(aUser==null){
                 Optional<SavingAccountTransaction> byReference
                         = savingAccountTransactionRepository.findByReference(user.getUserName());
                 if(byReference.isPresent()){
                     aUser = byReference.get().getSavingAccount().getUser();
+                }
+            }if(aUser==null){
+                LoanAccount byReference
+                        = loanAccountService.findByAccountNumber(user.getUserName());
+                if( byReference != null ){
+                    aUser = byReference.getUser();
                 }
             }
             if(aUser == null){ //LoanReference
@@ -75,7 +81,7 @@ public class SuperController {
                         LoanBilanzList loanBilanzByUserList = loanAccountService.calculateAccountBilanz(loanAccountTransactionList, false);
                         model.put("name", getLoggedInUserName());
                         model.put("loanBilanzList", loanBilanzByUserList);
-//                        byReference.get().setLoanAccount(aLoanAccount);
+                        byReference.get().setLoanAccount(aLoanAccount);
                         model.put("loanAccountTransaction", loanAccountTransaction);
                         return "loanBilanzNoInterest";
                     }
@@ -96,11 +102,8 @@ public class SuperController {
         LoanBilanzList loanBilanzByUserList = loanAccountService.getLoanBilanzByUser(aUser, false);
 //        if(null != aUser.getSavingAccount() && 0 < aUser.getSavingAccount().size()){
             request.getSession().setAttribute("savingBilanzList",savingBilanzByUserList);
-//        }
-//        if(null != aUser.getLoanAccount() && 0 < aUser.getLoanAccount().size()){
-            request.getSession().setAttribute("loanBilanzList",loanBilanzByUserList);
-//        }
 
+            request.getSession().setAttribute("loanBilanzList",loanBilanzByUserList);
         if(aUser.getSavingAccount().size() == 0 && aUser.getLoanAccount().size() == 0){
             model.put("name", getLoggedInUserName());
             request.getSession().setAttribute("savingBilanzList", savingBilanzByUserList);
@@ -147,11 +150,6 @@ public class SuperController {
         return principal.toString();
     }
 
-    protected Branch getBranchInfo(String userName){
-        User loggedInUser = userRepository.findByUserName(getLoggedInUserName());
-        final Branch branch = loggedInUser.getBranch();
-        return branch;
-    }
 
     public void generateByteOutputStream(HttpServletResponse response, String htmlInput) throws IOException {
         response.setContentType("application/pdf");

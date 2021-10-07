@@ -78,7 +78,7 @@ public class GeneralLedgerService extends SuperService{
     private GeneralLedger loanAccountGLMapper(LoanAccountTransaction loanAccountTransaction) {
         GeneralLedger gl = new GeneralLedger();
         gl.setAccountNumber(loanAccountTransaction.getLoanAccount().getAccountNumber());
-        gl.setAmount(loanAccountTransaction.getLoanAmount());
+        gl.setAmount(loanAccountTransaction.getAmountReceived());
         gl.setDate(new Date());
         gl.setLastUpdatedDate(new Date(System.currentTimeMillis()));
         gl.setNotes(loanAccountTransaction.getNotes());

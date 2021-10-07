@@ -191,9 +191,11 @@
             <td th:text="${bilanz.notes}"></td>
             <td th:text="${bilanz.savingAmount}"></td>
             <td th:text="${bilanz.currentBalance}"></td>
-            <td><a href="#" th:href="@{/createSavingAccountReceiptPdf/{id}(id=${bilanz.id})}"><img width="30px"
-                                                                                                   th:src="@{/assets/images/pdfIcon.png}"/>
-            </a></td>
+            <td>
+                <a href="#" th:href="@{/createSavingAccountReceiptPdf/{id}(id=${bilanz.id})}">
+                    <img width="30px" th:src="@{/assets/images/pdfIcon.png}"/>
+                </a>
+            </td>
         </tr>
     </table>
 </div>
