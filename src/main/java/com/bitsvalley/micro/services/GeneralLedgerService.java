@@ -87,6 +87,7 @@ public class GeneralLedgerService extends SuperService{
         gl.setCreatedBy(BVMicroUtils.SYSTEM);
         gl.setGlClass(4); //TODO Saving which class in GL ?
         gl.setType(getGeneralLedgerType(loanAccountTransaction.getLoanAmount()));
+        gl.setType(loanAccountTransaction.getLoanAmount()>=0?"CREDIT":"DEBIT");
         return gl;
     }
 
@@ -101,7 +102,7 @@ public class GeneralLedgerService extends SuperService{
         gl.setLastUpdatedBy(BVMicroUtils.SYSTEM);
         gl.setCreatedBy(BVMicroUtils.SYSTEM);
         gl.setGlClass(4); //TODO Saving which class in GL ?
-        gl.setType(getGeneralLedgerType(savingAccountTransaction.getSavingAmount()));
+        gl.setType(savingAccountTransaction.getSavingAmount()>=0?"CREDIT":"DEBIT");
         return gl;
     }
 
