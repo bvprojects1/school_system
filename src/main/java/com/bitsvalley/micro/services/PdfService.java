@@ -257,7 +257,7 @@ public class PdfService {
     }
 
 
-    public String generatePDFLoanBilanzList(LoanBilanzList loanBilanzList, LoanAccount loanAccount, String logoPath) throws IOException {
+    public String generatePDFLoanBilanzList(LoanBilanzList loanBilanzList, LoanAccount loanAccount, String logoPath, RuntimeSetting rt) throws IOException {
         String savingBilanzNoInterest = "<html><head><style>\n" +
                 "#transactions {\n" +
                 "  border-collapse: collapse;\n" +
@@ -269,7 +269,7 @@ public class PdfService {
                 "  padding: 4px;\n" +
                 "}\n" +
                 "\n" +
-                "#transactions tr:nth-child(even){background-color: #f2f2f2;}\n" +
+                "#transactions tr:nth-child(even){background-color: "+rt.getThemeColor2()+";}\n" +
                 "\n" +
                 "#transactions tr:hover {background-color: #ddd;}\n" +
                 "\n" +

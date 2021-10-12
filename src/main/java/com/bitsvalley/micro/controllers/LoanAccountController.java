@@ -166,6 +166,7 @@ public class LoanAccountController extends SuperController {
         byId.setAccountStatus(AccountStatus.ACTIVE);
         byId.setApprovedBy(getLoggedInUserName());
         byId.setApprovedDate(new Date());
+        callCenterService.saveCallCenterLog("LOAN APPROVAL", getLoggedInUserName(), byId.getAccountNumber(),"LOAN ACCOUNT APPROVED"); //TODO ADD DATE
         loanAccountService.save(byId);
         return registerLoanAccountTransaction(id, model);
     }
@@ -261,7 +262,7 @@ public class LoanAccountController extends SuperController {
                 calculateAccountBilanz(loanAccount1.getLoanAccountTransaction(),false);
         RuntimeSetting runtimeSetting = (RuntimeSetting)request.getSession().getAttribute("runtimeSettings");
         String htmlInput = pdfService.generatePDFLoanBilanzList(loanBilanzByUserList, loanAccount1,
-                runtimeSetting.getLogo());
+                runtimeSetting.getLogo(), initSystemService.findAll());
         generateByteOutputStream(response, htmlInput);
     }
 
