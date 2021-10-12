@@ -32,7 +32,7 @@ public class BranchController extends SuperController {
                                      ModelMap model, HttpServletRequest request) {
         branchRepository.save(branch);
         model.put("branch", branch );
-        model.put("error", branch.getName() + " - New Branch Created" );
+        model.put("info", branch.getName() + " - New Branch Created" );
         return "branch";
     }
 

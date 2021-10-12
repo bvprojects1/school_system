@@ -31,7 +31,11 @@
         </td>
         <td>
             <font size="2px" color="gray">Loan Amount</font><br/>
-            <font size="3"><strong><span th:text="${session.loanAccount.loanAmount}"/></strong></font>
+            <font size="3">
+                <strong>
+                    <span th:text="${#numbers.formatDecimal(session.loanAccount.loanAmount, 0, 'COMMA', 0, 'POINT')}"/>
+                </strong>
+            </font>
         </td>
         <td>
             <font size="2px" color="gray">Interest On Loan</font><br/>

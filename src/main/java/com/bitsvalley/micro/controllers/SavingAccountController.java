@@ -50,6 +50,9 @@ public class SavingAccountController extends SuperController {
     @Autowired
     BranchService branchService;
 
+    @Autowired
+    InitSystemService initSystemService;
+
 
     @GetMapping(value = "/registerSavingAccount")
     public String registerSaving(ModelMap model, HttpServletRequest request) {
@@ -104,7 +107,7 @@ public class SavingAccountController extends SuperController {
             SavingBilanzList savingBilanzByUserList = savingAccountService.
                     calculateAccountBilanz(savingAccount.get().getSavingAccountTransaction(),false);
             RuntimeSetting runtimeSetting = (RuntimeSetting)request.getSession().getAttribute("runtimeSettings");
-            String htmlInput = pdfService.generatePDFSavingBilanzList(savingBilanzByUserList, savingAccount.get(),runtimeSetting.getLogo());
+            String htmlInput = pdfService.generatePDFSavingBilanzList(savingBilanzByUserList, savingAccount.get(),runtimeSetting.getLogo(), initSystemService.findAll() );
             generateByteOutputStream(response, htmlInput);
     }
 
@@ -127,6 +130,16 @@ public class SavingAccountController extends SuperController {
 
     @PostMapping(value = "/transferFromSavingToLoanAccountsForm")
     public String transferFromSavingToLoanAccountsForm(ModelMap model,
+                                                       @ModelAttribute("transferBilanz") TransferBilanz transferBilanz) {
+        savingAccountService.transferFromSavingToLoan(transferBilanz.getFromAccount(),
+                transferBilanz.getToAccount(),
+                transferBilanz.getTransferAmount(), transferBilanz.getNotes());
+
+        return "transferReview";
+    }
+
+    @PostMapping(value = "/transferFromSavingToLoanAccountsFormReview")
+    public String transferFromSavingToLoanAccountsFormReview(ModelMap model,
                                                        @ModelAttribute("transferBilanz") TransferBilanz transferBilanz) {
         savingAccountService.transferFromSavingToLoan(transferBilanz.getFromAccount(),
                 transferBilanz.getToAccount(),

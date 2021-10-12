@@ -85,7 +85,7 @@ public class LoanAccountService extends SuperService {
                 shorteeSavingAccount.getAccountMinBalance() + loanAccount.getGuarantor1Amount1());
         shorteeSavingAccount.setLastUpdatedDate(createdDate);
         shorteeSavingAccount.setLastUpdatedBy(loggedInUserName);
-        shorteeSavingAccount.setAccountStatus(AccountStatus.ACTIVE);
+        shorteeSavingAccount.setAccountStatus(AccountStatus.SHORTEE_ACCOUNT);
         shorteeSavingAccount.setAccountLocked(true);
         savingAccountService.save(shorteeSavingAccount);
 
@@ -125,10 +125,12 @@ public class LoanAccountService extends SuperService {
         loanAccount.setCurrentLoanAmount(loanAccount.getLoanAmount());
         loanAccount.setAccountNumber(BVMicroUtils.getCobacSavingsAccountNumber(loanAccount.getCountry(),
                 loanAccount.getProductCode(), loanAccount.getBranchCode(), allCount)); //TODO: Collision
-        loanAccount.setAccountStatus(AccountStatus.ACTIVE);
+        loanAccount.setAccountStatus(AccountStatus.PENDING_APPROVAL);
 
         Date dateNow = new Date(System.currentTimeMillis());
         loanAccount.setCreatedDate(dateNow);
+        loanAccount.setApprovedDate(new Date(0));
+        loanAccount.setApprovedBy(AccountStatus.PENDING_APPROVAL.name());
         loanAccount.setLastUpdatedDate(dateNow);
         loanAccount.setLastPaymentDate(dateNow);
 

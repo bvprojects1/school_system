@@ -2,168 +2,170 @@
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
-<div th:insert="header::navbar">  </div>
+<div th:insert="header::navbar"></div>
 <br/>
 <br/>
 
-<!--Choosen area start-->
-<section class="choosen-area-start space">
-    <!-- Use this as a header after login-->
+<div class="container">
+    <!--Choosen area start-->
+    <section class="choosen-area-start space">
+        <!-- Use this as a header after login-->
 
-    <table style="border:0px" class="center" width="100%">
-        <tr>
-            <td><font size="3">Account Owner</font><br/><font size="4">
-                <span style th:text="${session.customerInUse.userName}"/>'s
-            </font>
-                <button type="submit">
-                    <a href="#" th:href="@{/file/{userName}(userName=${session.customerInUse.userName})}">
-                        Upload I.D
-                    </a>
-                </button>
-                <br/>
-            <td>
-                <font color="gray" size="4">
-                    <h4>View Accounts</h4>
+        <table style="border:0px" class="center" width="100%">
+            <tr>
+                <td><font size="3">Account Owner</font><br/><font size="4">
+                    <span style th:text="${session.customerInUse.userName}"/>'s
                 </font>
-            </td>
-            <td> Saving <br/>
-                <font color="gray" size="4px">
-                <div th:text="${session.savingBilanzList.totalSaving}"/>
-            </font>
-            </td>
-            <td> Current<br/> <font size="4px" color="gray"> 0</font></td>
-            <td> Loan<br/> <font size="4px" color="gray"> 0</font></td>
-            <td>Retirement saving <br/> <font size="4px" color="gray">0</font></b></td>
-        </tr>
-    </table>
-    <!-- END -->
-    <br/>
+                    <button type="submit">
+                        <a href="#" th:href="@{/file/{userName}(userName=${session.customerInUse.userName})}">
+                            Upload I.D
+                        </a>
+                    </button>
+                    <br/>
+                <td>
+                    <font color="gray" size="4">
+                        <h4>View Accounts</h4>
+                    </font>
+                </td>
+                <td> Saving <br/>
+                    <font color="gray" size="4px">
+                        <div th:text="${session.savingBilanzList.totalSaving}"/>
+                    </font>
+                </td>
+                <td> Current<br/> <font size="4px" color="gray"> 0</font></td>
+                <td> Loan<br/> <font size="4px" color="gray"> 0</font></td>
+                <td>Retirement saving <br/> <font size="4px" color="gray">0</font></b></td>
+            </tr>
+        </table>
+        <!-- END -->
+        <br/>
 
-    <table border="1" class="center" width="90%">
-        <tr>
-            <td colspan="9"><font size="5px" color="#738980">
-                <b>SAVING ACCOUNT</b> </font>
+        <table border="0" class="center" width="100%">
+            <tr>
+                <td colspan="9"><font size="5px" color="#738980">
+                    <b>SAVING ACCOUNT</b> </font>
 
-                <div th:if="${createSavingAccountEligible}">
-                    <a href="#" th:href="@{/registerSavingAccount}">
+                    <div th:if="${createSavingAccountEligible}">
+                        <a href="#" th:href="@{/registerSavingAccount}">
+                            <img width="25px" th:src="@{/assets/images/add.png}"/>
+                        </a>
+                    </div>
+
+                    <br/>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Account Type
+                </td>
+                <td>
+                    Account Number
+                </td>
+                <td>
+                    Description
+                </td>
+                <td>
+                    Minimum Balance
+                </td>
+                <td>
+                    %
+                </td>
+                <td>
+                    Locked
+                </td>
+                <td>
+                    Created
+                </td>
+                <td>
+                    Creator
+                </td>
+                <td>
+                </td>
+            <tr>
+                <td colspan="8">
+                    No Account exists
+                </td>
+            </tr>
+
+            <tr th:each="savingAccount : ${session.customerInUse.savingAccount}">
+                <td>
+                    <p th:text="${savingAccount.accountType.name}"/>
+                </td>
+                <td>
+                    <a th:href="@{/callcenter/{id}(id=${savingAccount.accountNumber})}" href="/callcenter"><span
+                            th:if="${savingAccount.defaultedPayment}"><b><font size="6" color="red">**</font></b></span>
+                        <p th:text="${savingAccount.accountNumber}"/></a>
+                </td>
+                <td>
+                    <p th:text="${savingAccount.notes}"/>
+                </td>
+                <td>
+                    <!-- <p th:text="${savingAccount.accountMinBalance}"/>-->
+                    <p th:text="${#numbers.formatDecimal(savingAccount.accountMinBalance, 0, 'COMMA', 0, 'POINT')}">
+                        10.00 </p>
+                </td>
+                <td>
+                    <p th:text="${savingAccount.interestRate}"/>
+                </td>
+                <td>
+                    <p th:text="${savingAccount.accountMinBalanceLocked}"/>
+                    <!--            ${#numbers.formatDecimal(abc.value, 1, 'DEFAULT', 2, 'DEFAULT')}-->
+                </td>
+                <td>
+                    <p th:text="${#dates.format(savingAccount.createdDate, 'dd-MMM-yyyy HH:mm')}">
+                </td>
+                <td>
+                    <p th:text="${savingAccount.createdBy}"/>
+                </td>
+                <td>
+                    <a href="#" th:href="@{/registerSavingAccountTransaction/{id}(id=${savingAccount.id})}">
+                        <font size="4"> Make payment/
+                            withdrawal</font> <img width="25px" th:src="@{/assets/images/add.png}"/> </a><br/>
+                    <a href="#" th:href="@{/showSavingBilanz/{id}(id=${session.customerInUse.id})}">
+                        <font size="4"> Show Savings
+                            interest</font></a>
+                    </font>
+                </td>
+            </tr>
+        </table>
+
+        <br/> <br/>
+        <table border="0" class="center" width="100%">
+            <tr>
+                <td colspan="8">
+                    <font size="5px" color="#738980">
+                        <b>LOAN ACCOUNT</b>
+                    </font>
+                    <a href="#" th:href="@{/registerLoanAccount}">
                         <img width="25px" th:src="@{/assets/images/add.png}"/>
                     </a>
-                </div>
+                    <br/>
+                </td>
+            </tr>
+        </table>
+        <br/> <br/>
 
-                <br/>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                Account Type
-            </td>
-            <td>
-                Account Number
-            </td>
-            <td>
-                Description
-            </td>
-            <td>
-                Minimum Balance
-            </td>
-            <td>
-                %
-            </td>
-            <td>
-                Locked
-            </td>
-            <td>
-                Created
-            </td>
-            <td>
-                Creator
-            </td>
-            <td>
-            </td>
-        <tr>
-            <td colspan="8">
-                No Account exists
-            </td>
-        </tr>
-
-        <tr th:each="savingAccount : ${session.customerInUse.savingAccount}">
-            <td>
-                <p th:text="${savingAccount.accountType.name}"/>
-            </td>
-            <td>
-                <a th:href="@{/callcenter/{id}(id=${savingAccount.accountNumber})}" href="/callcenter"><span
-                        th:if="${savingAccount.defaultedPayment}"><b><font size="6" color="red">**</font></b></span>
-                    <p th:text="${savingAccount.accountNumber}"/></a>
-            </td>
-            <td>
-                <p th:text="${savingAccount.notes}"/>
-            </td>
-            <td>
-                <!-- <p th:text="${savingAccount.accountMinBalance}"/>-->
-                <p th:text="${#numbers.formatDecimal(savingAccount.accountMinBalance, 0, 'COMMA', 0, 'POINT')}">
-                    10.00 </p>
-            </td>
-            <td>
-                <p th:text="${savingAccount.interestRate}"/>
-            </td>
-            <td>
-                <p th:text="${savingAccount.accountMinBalanceLocked}"/>
-                <!--            ${#numbers.formatDecimal(abc.value, 1, 'DEFAULT', 2, 'DEFAULT')}-->
-            </td>
-            <td>
-                <p th:text="${#dates.format(savingAccount.createdDate, 'dd-MMM-yyyy HH:mm')}">
-            </td>
-            <td>
-                <p th:text="${savingAccount.createdBy}"/>
-            </td>
-            <td>
-                <a href="#" th:href="@{/registerSavingAccountTransaction/{id}(id=${savingAccount.id})}">
-                    <font size="4"> Make payment/
-                        withdrawal</font> <img width="25px" th:src="@{/assets/images/add.png}"/> </a><br/>
-                <a href="#" th:href="@{/showSavingBilanz/{id}(id=${session.customerInUse.id})}">
-                    <font size="4"> Show Savings
-                        interest</font></a>
-                </font>
-            </td>
-        </tr>
-    </table>
-
-    <br/> <br/>
-    <table border="1" class="center" width="90%">
-        <tr>
-            <td colspan="8">
-                <font size="5px" color="#738980">
-                    <b>LOAN ACCOUNT</b>
-                </font>
-                <a href="#" th:href="@{/registerLoanAccount}">
-                    <img width="25px" th:src="@{/assets/images/add.png}"/>
-                </a>
-                <br/>
-            </td>
-        </tr>
-    </table>
-    <br/> <br/>
-
-    <table border="1" class="center" width="90%">
-        <tr>
-            <td colspan="8"><font size="5px" color="#738980"> <b>CURRENT ACCOUNT</b> </font><a href="#"> <img
-                    width="25px" th:src="@{/assets/images/add.png}"/></a><br/></span></td>
-        </tr>
-    </table>
+        <table border="0" class="center" width="100%">
+            <tr>
+                <td colspan="8"><font size="5px" color="#738980"> <b>CURRENT ACCOUNT</b> </font><a href="#"> <img
+                        width="25px" th:src="@{/assets/images/add.png}"/></a><br/></span></td>
+            </tr>
+        </table>
 
 
-    <br/>
+        <br/>
 
-    <table border="1" class="center" width="90%">
-        <tr>
-            <td colspan="8"><font size="5px" color="#738980"> <b>RETIREMENT SAVING ACCOUNT</b> </font><a href="#"> <img
-                    width="25px" th:src="@{/assets/images/add.png}"/></a><br/></span></td>
-        </tr>
-    </table>
+        <table border="1" class="center" width="90%">
+            <tr>
+                <td colspan="8"><font size="5px" color="#738980"> <b>RETIREMENT SAVING ACCOUNT</b> </font><a href="#">
+                    <img
+                            width="25px" th:src="@{/assets/images/add.png}"/></a><br/></span></td>
+            </tr>
+        </table>
 
-
-    <!--Choosen main area end-->
-</section>
+        <!--Choosen main area end-->
+    </section>
+</div>
 <!--Choosen area end-->
 
 
@@ -244,37 +246,7 @@
     </div>
 </div>
 <br/>
-<!--Blog area content end-->
-
-<!--&lt;!&ndash;About area start&ndash;&gt;-->
-<!--<section class="about-area-start df-bg">-->
-<!--    <div class="container-fluid">-->
-<!--        <div class="row">-->
-<!--            &lt;!&ndash;About-left area end&ndash;&gt;-->
-<!--            <div class="col-md-6">-->
-<!--                <div class="about-right-area-content">-->
-<!--                    <h3>Our Product Recommendations</h3>-->
-<!--                    <ul class="about-lists">-->
-<!--                        <li><i class="far fa-check-circle mr-3"></i> Consectetur adipisicing elit.</li>-->
-<!--                        <li><i class="far fa-check-circle mr-3"></i> Animi dolorum minus harum reiciendis.</li>-->
-<!--                        <li><i class="far fa-check-circle mr-3"></i> Voluptatibus quis sunt in repellendus.</li>-->
-<!--                        <li><i class="far fa-check-circle mr-3"></i> Pero quod eos, iusto blanditiis culpa.</li>-->
-<!--                        <li><i class="far fa-check-circle mr-3"></i> Dignissimos eum ipsam vitae?</li>-->
-<!--                    </ul>-->
-
-<!--                    <p class="mt-3">If you are going to use a passage of Lorem Ipsum, you need to be sure there isn't-->
-<!--                        anything embarrassing hidden in the middle of text. All the Lorem Ipsum generators on the-->
-<!--                        Internet tend to repeat predefined chunks as necessary,-->
-<!--                        making this the first true generator on the Internet.</p>-->
-<!--                    <a href="#" class="df-sq-btn active">read more</a>-->
-<!--                </div>-->
-<!--            </div>-->
-<!--            &lt;!&ndash;About right area end&ndash;&gt;-->
-<!--        </div>-->
-<!--    </div>-->
-<!--</section>-->
-<!--&lt;!&ndash;About area end&ndash;&gt;-->
 
 
-<div th:insert="footer::navbar">  </div>
+<div th:insert="footer::navbar"></div>
 </html>

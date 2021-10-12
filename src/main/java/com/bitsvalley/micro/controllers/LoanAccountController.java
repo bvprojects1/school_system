@@ -3,6 +3,7 @@ package com.bitsvalley.micro.controllers;
 import com.bitsvalley.micro.domain.*;
 import com.bitsvalley.micro.repositories.UserRepository;
 import com.bitsvalley.micro.services.*;
+import com.bitsvalley.micro.utils.AccountStatus;
 import com.bitsvalley.micro.utils.Amortization;
 import com.bitsvalley.micro.utils.BVMicroUtils;
 import com.bitsvalley.micro.webdomain.LoanBilanzList;
@@ -23,6 +24,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -148,7 +150,6 @@ public class LoanAccountController extends SuperController {
 
         request.getSession().setAttribute("loanAccount",loanAccount);
         model.put("loanAccount", loanAccount);
-
         return "loanShorteeAccounts";
     }
 
@@ -157,6 +158,16 @@ public class LoanAccountController extends SuperController {
     public String registerLoanAccountTransaction(@PathVariable("id") long id, ModelMap model) {
         LoanAccountTransaction loanAccountTransaction = new LoanAccountTransaction();
         return displayLoanBilanzNoInterest(id, model, loanAccountTransaction);
+    }
+
+    @GetMapping(value = "/approveLoan/{id}")
+    public String approveLoan(@PathVariable("id") long id, ModelMap model) {
+        LoanAccount byId = loanAccountService.findById(id).get();
+        byId.setAccountStatus(AccountStatus.ACTIVE);
+        byId.setApprovedBy(getLoggedInUserName());
+        byId.setApprovedDate(new Date());
+        loanAccountService.save(byId);
+        return registerLoanAccountTransaction(id, model);
     }
 
     @PostMapping(value = "/loanShorteeAccountsForm")
@@ -203,7 +214,7 @@ public class LoanAccountController extends SuperController {
 
 //        TODO:  create shortee, update minimum acc. balance on guarantor, call center log, GL entry
         User user = (User) request.getSession().getAttribute(BVMicroUtils.CUSTOMER_IN_USE);
-        LoanAccount loanAccountReturn = loanAccountService.createLoanAccount(user,
+        loanAccountService.createLoanAccount(user,
                 loanAccountSession, savingAccountGuarantor1Session);
 
         return "loanCreated";

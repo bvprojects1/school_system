@@ -386,5 +386,12 @@ public class SavingAccountService extends SuperService {
         savingAccount.getSavingAccountTransaction().add(savingAccountTransaction);
         savingAccountRepository.save(savingAccount);
 
+        //Update shortee accounts min balance
+        List<ShorteeAccount> shorteeAccounts = loanAccount.getShorteeAccounts();
+        ShorteeAccount shorteeAccount = shorteeAccounts.get(0);
+        SavingAccount shorteeSavingAccount = shorteeAccount.getSavingAccount();
+        shorteeSavingAccount.setAccountMinBalance(shorteeSavingAccount.getAccountMinBalance()-loanAccountTransaction.getAmountReceived());
+        savingAccountRepository.save(shorteeSavingAccount);
+
     }
 }

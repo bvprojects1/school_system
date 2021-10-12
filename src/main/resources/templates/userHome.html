@@ -58,7 +58,7 @@
                 </td>
                 <td colspan="3">
                     <a href="#" th:href="@{/transferBetweenAccounts}">
-                        Transfer between accounts
+                        Transfer between accounts <img width="25px" th:src="@{/assets/images/depositIcon.png}"/>
                     </a>
                 </td>
             </tr>
@@ -70,10 +70,10 @@
                     Account Number
                 </td>
                 <td>
-                    Balance
+                    Account Balance
                 </td>
                 <td>
-                    Minimum Balance
+                    Minimum
                 </td>
                 <td>
                     Locked
@@ -129,11 +129,11 @@
 
                 <td>
                     <a href="#" th:href="@{/registerSavingAccountTransaction/{id}(id=${savingAccount.id})}">
-                        <img width="30px" th:src="@{/assets/images/depositIcon.png}"/>
+                        <img width="30px" th:src="@{/assets/images/lens.png}"/>
                     </a>
 
                     <a href="#" th:href="@{/showSavingAccountBilanz/{accountId}(accountId=${savingAccount.id})}">
-                        <img width="30px" th:src="@{/assets/images/interestIcon.png}"/>
+                        <img width="35px" th:src="@{/assets/images/interestImg.png}"/>
                     </a>
                     </font>
                 </td>
@@ -169,11 +169,12 @@
                     Current Balance
                 </td>
                 <td>
-                    Description
+                    Guarantor
                 </td>
                 <td>
                     Created
                 </td>
+
                 <td>
                     Creator
                 </td>
@@ -199,7 +200,12 @@
 
                 <td th:text="${#numbers.formatDecimal(loanAccount.currentLoanAmount, 0, 'COMMA', 0, 'POINT')}"/>
 
-                <td th:text="${loanAccount.notes}"/>
+                <td><span th:text="${loanAccount.shorteeAccounts[0].savingAccount.accountNumber}"/>
+
+                <br/>
+                    <span th:text="${loanAccount.shorteeAccounts[0].savingAccount.user.lastName}"/>,
+                    <span th:text="${loanAccount.shorteeAccounts[0].savingAccount.user.firstName}"/>
+                </td>
 
                 <td th:text="${#dates.format(loanAccount.createdDate, 'dd-MMM-yyyy HH:mm')}"/>
 
@@ -210,10 +216,10 @@
                 </td>
                 <td>
                     <a href="#" th:href="@{/registerLoanAccountTransaction/{id}(id=${loanAccount.id})}">
-                        <img width="30px" th:src="@{/assets/images/depositIcon.png}"/>
+                        <img width="30px" th:src="@{/assets/images/lens.png}"/>
                     </a>
                     <a href="#" th:href="@{/showLoanAccountBilanz/{accountId}(accountId=${loanAccount.id})}">
-                        <img width="30px" th:src="@{/assets/images/interestIcon.png}"/>
+                        <img width="35px" th:src="@{/assets/images/interestImg.png}"/>
                     </a>
                     </font>
                 </td>

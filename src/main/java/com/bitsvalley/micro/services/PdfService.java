@@ -32,7 +32,7 @@ public class PdfService {
     public String generateTransactionReceiptPDF(SavingAccountTransaction savingAccountTransaction, RuntimeSetting rt) {
 
         String savingBilanzNoInterest = "<html><head>" +
-                "</head><body><br/><br/><font color=\"green\" size=\"8px\"><b>RECEIPT FOR PAYMENT MADE</b></font>" +
+                "</head><body><br/><br/><font color=\""+rt.getThemeColor()+"\" size=\"8px\"><b>RECEIPT FOR PAYMENT MADE</b></font>" +
                 "<table width=\"100%\">" +
                 "<tr> <td> Form N. 120000029    </td>" +
                 "<td colspan=\"3\"><img width=\"125\" src=\""+ rt.getLogo()+"\"/><br/><b>"+ rt.getBusinessName() +"</b><br/> BranchName <br/>"+rt.getAddress()+" "+rt.getTelephone()+"</td>" +
@@ -45,7 +45,7 @@ public class PdfService {
                 "Representative: <b>"+ savingAccountTransaction.getCreatedBy() +"</b> </td>" +
                 "</tr>" +
                 "<tr><td></td>\n" +
-                "        <td colspan=\"4\">Amount in Letters: <font color=\"green\" size=\"8px\"> "+savingAccountTransaction.getSavingAmountInLetters()+"</font></td>\n" +
+                "        <td colspan=\"4\">Amount in Letters: <font color=\""+rt.getThemeColor()+"\" size=\"8px\"> "+savingAccountTransaction.getSavingAmountInLetters()+"</font></td>\n" +
                 "        </tr></table><br/><br/><br/>" +
                 "    <table  border=\"0\" width=\"100\" class=\"center\">\n" +
                 "            <tr>\n" +
@@ -69,8 +69,8 @@ public class PdfService {
                 "<img width=\"100px\" src=\"" +rt.getUnionLogo()+"\"/> </td>" +
                 "<td>Customer Name:<b>"+savingAccountTransaction.getSavingAccount().getUser().getFirstName() +" "+savingAccountTransaction.getSavingAccount().getUser().getLastName() +"</b></td><td>Account No. <b>"+savingAccountTransaction.getSavingAccount().getAccountNumber()+"</b></td></tr>" +
                 "<tr><td></td>\n" +
-                "        <td> <font color=\"green\" size=\"8px\"><b>RECEIPT FOR PAYMENT MADE</b></font></td>\n" +
-                "        <td>Total: <font color=\"green\" size=\"8px\"><b>"+BVMicroUtils.formatCurrency(savingAccountTransaction.getSavingAmount())+"</b>frs cfa</font></td>\n" +
+                "        <td> <font color=\""+rt.getThemeColor()+"\" size=\"8px\"><b>RECEIPT FOR PAYMENT MADE</b></font></td>\n" +
+                "        <td>Total: <font color=\""+rt.getThemeColor()+"\" size=\"8px\"><b>"+BVMicroUtils.formatCurrency(savingAccountTransaction.getSavingAmount())+"</b>frs cfa</font></td>\n" +
                 "        <td></td>\n" +
                 "        <td></td>\n" +
                 "        </tr></table><br/><br/><br/>Cash Breakdown" +
@@ -104,7 +104,7 @@ public class PdfService {
     public String generateLoanTransactionReceiptPDF(LoanAccountTransaction loanAccountTransaction, RuntimeSetting rt) {
 
         String savingBilanzNoInterest = "<html><head>" +
-                "</head><body><br/><br/><font color=\"green\" size=\"8px\"><b>RECEIPT FOR LOAN PAYMENT MADE</b></font>" +
+                "</head><body><br/><br/><font color=\""+rt.getThemeColor()+"\" size=\"8px\"><b>RECEIPT FOR LOAN PAYMENT MADE</b></font>" +
                 "<table width=\"100%\">" +
                 "<tr> <td> Form N. 120000029    </td>" +
                 "<td colspan=\"3\"><img width=\"125\" src=\""+ rt.getLogo()+"\"/><br/><b>"+ rt.getBusinessName() +"</b><br/> BranchName <br/>"+rt.getAddress()+" "+rt.getTelephone()+"</td>" +
@@ -117,7 +117,7 @@ public class PdfService {
                 "Representative: <b>"+ loanAccountTransaction.getCreatedBy() +"</b> </td>" +
                 "</tr>" +
                 "<tr><td></td>\n" +
-                "        <td colspan=\"4\">Amount in Letters: <font color=\"green\" size=\"8px\"> "+loanAccountTransaction.getLoanAmountInLetters()+"</font></td>\n" +
+                "        <td colspan=\"4\">Amount in Letters: <font color=\""+rt.getThemeColor()+"\" size=\"8px\"> "+loanAccountTransaction.getLoanAmountInLetters()+"</font></td>\n" +
                 "        </tr></table><br/><br/><br/>" +
                 "    <table  border=\"0\" width=\"100\" class=\"center\">\n" +
                 "            <tr>\n" +
@@ -141,8 +141,8 @@ public class PdfService {
                 "<img width=\"100px\" src=\"" +rt.getUnionLogo()+"\"/> </td>" +
                 "<td>Customer Name:<b>"+loanAccountTransaction.getLoanAccount().getUser().getFirstName() +" "+loanAccountTransaction.getLoanAccount().getUser().getLastName() +"</b></td><td>Account No. <b>"+loanAccountTransaction.getLoanAccount().getAccountNumber()+"</b></td></tr>" +
                 "<tr><td></td>\n" +
-                "        <td> <font color=\"green\" size=\"8px\"><b>RECEIPT FOR PAYMENT MADE</b></font></td>\n" +
-                "        <td>Total: <font color=\"green\" size=\"8px\"><b>"+BVMicroUtils.formatCurrency(loanAccountTransaction.getLoanAmount())+"</b>frs cfa</font></td>\n" +
+                "        <td> <font color=\""+rt.getThemeColor()+"\" size=\"8px\"><b>RECEIPT FOR PAYMENT MADE</b></font></td>\n" +
+                "        <td>Total: <font color=\""+rt.getThemeColor()+"\" size=\"8px\"><b>"+BVMicroUtils.formatCurrency(loanAccountTransaction.getLoanAmount())+"</b>frs cfa</font></td>\n" +
                 "        <td></td>\n" +
                 "        <td></td>\n" +
                 "        </tr></table><br/><br/><br/>Cash Breakdown" +
@@ -173,7 +173,7 @@ public class PdfService {
         return savingBilanzNoInterest;
     }
 
-    public String generatePDFSavingBilanzList(SavingBilanzList savingBilanzList, SavingAccount savingAccount, String logoPath) throws IOException {
+    public String generatePDFSavingBilanzList(SavingBilanzList savingBilanzList, SavingAccount savingAccount, String logoPath, RuntimeSetting rt) throws IOException {
         String savingBilanzNoInterest = "<html><head><style>\n" +
                 "#transactions {\n" +
                 "  border-collapse: collapse;\n" +
@@ -185,7 +185,7 @@ public class PdfService {
                 "  padding: 4px;\n" +
                 "}\n" +
                 "\n" +
-                "#transactions tr:nth-child(even){background-color: #f2f2f2;}\n" +
+                "#transactions tr:nth-child(even){background-color: \""+rt.getThemeColor2()+"\";}\n" +
                 "\n" +
                 "#transactions tr:hover {background-color: #ddd;}\n" +
                 "\n" +
@@ -200,28 +200,28 @@ public class PdfService {
                 "</head><body><br/><br/>" +
                 "    <table border=\"0\" width=\"100%\">" +
                 "        <tr><td align=\"center\"> <img width=\"125px\" src=\""+ logoPath+"\"/><br/>TBC MFI PLC <br/> Together each achieves more</td>" +
-                "       <td colspan=\"2\"><b><font size=\"4\" color=\"green\">ACCOUNT STATEMENT</font></b></td>" +
+                "       <td colspan=\"2\"><b><font size=\"4\" color=\""+rt.getThemeColor()+"\">ACCOUNT STATEMENT</font></b></td>" +
                 "       <td align=\"right\"><font size=\"4\">"+ BVMicroUtils.formatDate(new Date(System.currentTimeMillis())) +"</font></td></tr>" +
                 "        <tr><td> </td><td> </td>" +
-                "       <td align=\"right\"><font size=\"6\" color=\"green\">Period From:</font></td>" +
+                "       <td align=\"right\"><font size=\"6\" color=\""+rt.getThemeColor()+"\">Period From:</font></td>" +
                 "       <td align=\"right\"><font size=\"4\"> 01 January 2021 </font></td></tr>" +
                 "        <tr><td> </td><td> </td>" +
-                "       <td align=\"right\"><font size=\"6\" color=\"green\">Period To</font></td>" +
+                "       <td align=\"right\"><font size=\"6\" color=\""+rt.getThemeColor()+"\">Period To</font></td>" +
                 "       <td align=\"right\"><font size=\"4\">"+ BVMicroUtils.formatDate(new Date(System.currentTimeMillis())) +"</font></td></tr>" +
                 "        <tr><td> </td><td> </td>" +
-                "       <td align=\"right\"><font size=\"6\" color=\"green\">Account Number:</font></td>" +
+                "       <td align=\"right\"><font size=\"6\" color=\""+rt.getThemeColor()+"\">Account Number:</font></td>" +
                 "       <td align=\"right\"><font size=\"4\">"+ savingAccount.getAccountNumber() +"</font></td></tr>" +
                 "        <tr><td> </td><td> </td>" +
-                "       <td align=\"right\"><font size=\"6\" color=\"green\">Product Number:</font></td>" +
+                "       <td align=\"right\"><font size=\"6\" color=\""+rt.getThemeColor()+"\">Product Number:</font></td>" +
                 "       <td align=\"right\"><font size=\"4\">"+ savingAccount.getProductCode() +"</font></td></tr>" +
                 "        <tr><td> </td><td> </td>" +
-                "       <td align=\"right\"><font size=\"6\" color=\"green\">Branch Code:</font></td>" +
+                "       <td align=\"right\"><font size=\"6\" color=\""+rt.getThemeColor()+"\">Branch Code:</font></td>" +
                 "       <td align=\"right\"><font size=\"4\">"+ savingAccount.getBranchCode() +"</font></td></tr>" +
                 "        <tr><td> </td><td> </td>" +
-                "       <td align=\"right\"><font size=\"6\" color=\"green\">Branch Name:</font></td>" +
+                "       <td align=\"right\"><font size=\"6\" color=\""+rt.getThemeColor()+"\">Branch Name:</font></td>" +
                 "       <td align=\"right\"><font size=\"4\"> Bamenda Branch </font></td></tr>" +
                 "        <tr><td> </td><td> </td>" +
-                "       <td align=\"right\"><font size=\"4\" color=\"green\">Customer Shortname:</font></td>" +
+                "       <td align=\"right\"><font size=\"4\" color=\""+rt.getThemeColor()+"\">Customer Shortname:</font></td>" +
                 "       <td align=\"right\">" + savingAccount.getUser().getLastName() +"</td></tr>" +
                 "       </table><br/><br/><br/>" +
                 "    <table id=\"transactions\" border=\"0\" width=\"100%\" class=\"center\">\n" +
@@ -350,7 +350,7 @@ public class PdfService {
 
                     "<td>"+bilanz.getReference()+"</td>" +
                     "<td>"+bilanz.getNotes()+"</td>" +
-                    "<td>"+bilanz.getLoanAmount()+"</td>" +
+                    "<td>"+bilanz.getAmountReceived()+"</td>" +
                     "<td>"+bilanz.getCurrentBalance()+"</td>" +
                     "</tr>";
         }

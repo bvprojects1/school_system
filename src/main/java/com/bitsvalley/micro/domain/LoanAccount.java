@@ -31,6 +31,9 @@ public class LoanAccount {
     private String productCode;
     private int termOfLoan;
 
+    private Date approvedDate;
+    private String approvedBy;
+
     private double initiationFee;
     private double extraFee;
     private Date LastPaymentDate;
@@ -69,6 +72,22 @@ public class LoanAccount {
 
     @ManyToOne
     private User user;
+
+    public Date getApprovedDate() {
+        return approvedDate;
+    }
+
+    public void setApprovedDate(Date approvedDate) {
+        this.approvedDate = approvedDate;
+    }
+
+    public String getApprovedBy() {
+        return approvedBy;
+    }
+
+    public void setApprovedBy(String approvedBy) {
+        this.approvedBy = approvedBy;
+    }
 
     public void setMinimumPayment(int minimumPayment) {
         this.minimumPayment = minimumPayment;
