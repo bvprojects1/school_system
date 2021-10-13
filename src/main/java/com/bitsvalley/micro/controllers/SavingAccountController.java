@@ -39,6 +39,9 @@ public class SavingAccountController extends SuperController {
     SavingAccountService savingAccountService;
 
     @Autowired
+    LoanAccountService loanAccountService;
+
+    @Autowired
     AccountTypeService accountTypeService;
 
     @Autowired
@@ -112,18 +115,13 @@ public class SavingAccountController extends SuperController {
     }
 
 
-    @GetMapping(value = "/transferBetweenAccounts")
+    @GetMapping(value = "/transferFromSavingToLoanAccountsForm")
     public String transferBetweenAccounts(ModelMap model,
                                         HttpServletRequest request,
                                         HttpServletResponse response) {
 
-
-        SavingBilanzList savingBilanzList = (SavingBilanzList)request.getSession().getAttribute("savingBilanzList");
-        LoanBilanzList loanBilanzList = (LoanBilanzList)request.getSession().getAttribute("loanBilanzList");
-
         model.put("transferBilanz", new TransferBilanz());
-        model.put("transferFromAccount", savingBilanzList);
-        model.put("transferToAccount", loanBilanzList.getLoanBilanzList());
+
         return "transfer";
     }
 
@@ -131,19 +129,29 @@ public class SavingAccountController extends SuperController {
     @PostMapping(value = "/transferFromSavingToLoanAccountsForm")
     public String transferFromSavingToLoanAccountsForm(ModelMap model,
                                                        @ModelAttribute("transferBilanz") TransferBilanz transferBilanz) {
-        savingAccountService.transferFromSavingToLoan(transferBilanz.getFromAccount(),
-                transferBilanz.getToAccount(),
+        savingAccountService.transferFromSavingToLoan(transferBilanz.getTransferFromAccount(),
+                transferBilanz.getTransferToAccount(),
                 transferBilanz.getTransferAmount(), transferBilanz.getNotes());
 
-        return "transferReview";
+        model.put("fromTransferText",transferBilanz.getTransferFromAccount() );
+        model.put("toTransferText",transferBilanz.getTransferToAccount() );
+        model.put("transferAmount",transferBilanz.getTransferAmount() );
+        model.put("notes", transferBilanz.getNotes());
+
+        return "transferConfirm";
     }
 
     @PostMapping(value = "/transferFromSavingToLoanAccountsFormReview")
     public String transferFromSavingToLoanAccountsFormReview(ModelMap model,
                                                        @ModelAttribute("transferBilanz") TransferBilanz transferBilanz) {
-        savingAccountService.transferFromSavingToLoan(transferBilanz.getFromAccount(),
-                transferBilanz.getToAccount(),
-                transferBilanz.getTransferAmount(), transferBilanz.getNotes());
+        model.put("transferBilanz", transferBilanz);
+        SavingAccount fromAccount= savingAccountService.findByAccountNumber(transferBilanz.getTransferFromAccount());
+        LoanAccount toAccount = loanAccountService.findByAccountNumber(transferBilanz.getTransferToAccount());
+
+        model.put("fromTransferText",fromAccount.getAccountType().getName() +" --- Balance " + BVMicroUtils.formatCurrency(fromAccount.getAccountBalance()) +"--- Minimum Balance "+ BVMicroUtils.formatCurrency(fromAccount.getAccountMinBalance()) );
+        model.put("toTransferText",toAccount.getAccountType().getName() +" --- Balance " + BVMicroUtils.formatCurrency(fromAccount.getAccountBalance()) +"--- Initial Loan "+ BVMicroUtils.formatCurrency(fromAccount.getAccountMinBalance()) );
+        model.put("transferAmount",transferBilanz.getTransferAmount() );
+        model.put("notes", transferBilanz.getNotes());
 
         return "transferReview";
     }

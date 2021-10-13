@@ -2,13 +2,15 @@ package com.bitsvalley.micro.webdomain;
 
 public class TransferBilanz {
 
-    String fromAccount;
+    String transferFromAccount;
     double transferAmount;
-    String toAccount;
+    String transferToAccount;
     String reference;
     String transferDateTime;
     String userAgent;
     String notes;
+    String transferFromText;
+    String transferToText;
 
     public double getTransferAmount() {
         return transferAmount;
@@ -43,20 +45,20 @@ public class TransferBilanz {
         this.userAgent = userAgent;
     }
 
-    public String getFromAccount() {
-        return fromAccount;
+    public String getTransferFromAccount() {
+        return transferFromAccount;
     }
 
-    public void setFromAccount(String fromAccount) {
-        this.fromAccount = fromAccount;
+    public void setTransferFromAccount(String transferFromAccount) {
+        this.transferFromAccount = transferFromAccount;
     }
 
-    public String getToAccount() {
-        return toAccount;
+    public String getTransferToAccount() {
+        return transferToAccount;
     }
 
-    public void setToAccount(String toAccount) {
-        this.toAccount = toAccount;
+    public void setTransferToAccount(String toAccount) {
+        this.transferToAccount = toAccount;
     }
 
     public String getNotes() {
@@ -66,4 +68,21 @@ public class TransferBilanz {
     public void setNotes(String notes) {
         this.notes = notes;
     }
+
+    public String getTransferFromText() {
+        return transferFromText;
+    }
+
+    public void setTransferFromText(String transferFromText) {
+        this.transferFromText = transferFromText;
+    }
+
+    public String getTransferToText() {
+        return transferToText;
+    }
+
+    public void setTransferToText(String transferToText) {
+        this.transferToText = transferToText;
+    }
+
 }

@@ -57,7 +57,7 @@
                     </span>
                 </td>
                 <td colspan="3">
-                    <a href="#" th:href="@{/transferBetweenAccounts}">
+                    <a href="#" th:href="@{/transferFromSavingToLoanAccountsForm}">
                         Transfer between accounts <img width="25px" th:src="@{/assets/images/depositIcon.png}"/>
                     </a>
                 </td>
@@ -133,7 +133,7 @@
                     </a>
 
                     <a href="#" th:href="@{/showSavingAccountBilanz/{accountId}(accountId=${savingAccount.id})}">
-                        <img width="35px" th:src="@{/assets/images/interestImg.png}"/>
+                        <img width="30px" th:src="@{/assets/images/percentIcon.png}"/>
                     </a>
                     </font>
                 </td>
@@ -219,7 +219,7 @@
                         <img width="30px" th:src="@{/assets/images/lens.png}"/>
                     </a>
                     <a href="#" th:href="@{/showLoanAccountBilanz/{accountId}(accountId=${loanAccount.id})}">
-                        <img width="35px" th:src="@{/assets/images/interestImg.png}"/>
+                        <img width="30px" th:src="@{/assets/images/percentIcon.png}"/>
                     </a>
                     </font>
                 </td>

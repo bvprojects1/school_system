@@ -14,7 +14,7 @@
                 <tr>
                     <td align="center">
                         <div class="project-title-content">
-                            <h4>SUMMARY OF TRANSFER</h4>
+                            <h4>SUCCESSFUL TRANSFER</h4>
                             <span><i class="fas fa-crosshairs"></i></span>
                         </div>
                     </td>
@@ -26,30 +26,26 @@
                             <span style th:text="${session.customerInUse.userName}"/>'s
                         </font>
                         <br/><br/>
-                        <label> <b>From Account:</b></label>
+
+                        <label><b> From Account:</b></label>
                         <span th:text="${fromTransferText}"/>
-                        <input type="hidden"  id="transferFromAccount" th:field="*{transferFromAccount}">
                         <br/>
                         <br/>
                         <label> <b>To Account:</b></label>
                         <span th:text="${toTransferText}"/>
-                        <input type="hidden"  id="transferToAccount" th:field="*{transferToAccount}">
                         <br/>
                         <br/>
-                        <label><b> Amount:</b></label>
-                        <span th:text="${transferAmount}"/>
-                        <input type="hidden"  id="amount" th:field="*{transferAmount}">
+                        <label> Amount:</label>
+                        <font size="6"> <span th:text="${transferAmount}"/> </font>
 
                         <br/>
                         <br/>
-                        <label> Notes:</label>
+                        <label><b> Notes:</b></label>
                         <span th:text="${notes}"/>
                         <input type="hidden"  id="notes" rows="3" cols="30" th:field="*{notes}"/>
 
-
-                        <button type="submit" class="btn btn-success">
-                            Submit Transfer
-                        </button>
+                        <br/><br/>
+                        <a th:href="@{/welcomeGlobal}"><font size="4">Home</font></a>
                         <br/>
                         <br/>
                     </td>
