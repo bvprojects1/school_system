@@ -27,7 +27,8 @@
         <div class="container">
             <div class="row">
                 <div class="offset-md-2 col-md-8">
-                    <div class="error" th:text="${error}"/>
+                    <span th:text="${info}"/>
+                    <div class="error" th:text="${error}"/> <a href="#" th:href="@{/branches}"> See Branches </a>
                     <form action="#" th:action="@{/registerBranchForm}" method="post" th:object="${branch}">
 
                             <div class="col-md-12">
@@ -66,7 +67,7 @@
 
                                 <br/>
 
-                                <input type="text" name="email" th:field="*{email}" id="email"
+                                <input type="email" name="email" th:field="*{email}" id="email"
                                        placeholder="Email" class="form-control" required>
 
                                 <br/>

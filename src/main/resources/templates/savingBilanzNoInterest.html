@@ -2,249 +2,203 @@
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TBC MFI PLC - MICRO FINANCE</title>
-    <!-- Favicon  -->
-    <link rel="icon" type="image/x-icon" href="assets/images/favicon/favicon.ico">
-
-    <link rel="stylesheet" href="../css/main.css" th:href="@{css/main.css}" type="text/css"/>
-
-    <!--Bootstrap-->
-    <link rel="stylesheet" href="../assets/css/bootstrap.min.css">
-    <!--Fontawesome-->
-    <link rel="stylesheet" href="../assets/css/all.min.css">
-    <!--Owl-carousel-->
-    <link rel="stylesheet" href="../assets/css/owl.carousel.min.css">
-    <!--Owl Carousel theme-->
-    <link rel="stylesheet" href="../assets/css/owl.theme.default.min.css">
-    <!--Animate-->
-    <link rel="stylesheet" href="../assets/css/animate.min.css">
-    <!-- magnific CSS -->
-    <link rel="stylesheet" href="../assets/css/magnific-popup.css">
-    <!-- Mmenu CSS -->
-    <link rel="stylesheet" href="../assets/css/slicknav.min.css">
-    <!--Style-->
-    <link rel="stylesheet" href="../assets/css/style.css">
-    <!-- Responsive -->
-    <link rel="stylesheet" href="../assets/css/responsive.css">
-
-    <style>
-        table, th, td {
-<!--          border: 0px solid #BF360C;-->
-          align: center;
-           padding: 10px;
-        }
-        table.center {
-          margin-left: 50px;
-          margin-right: 50px;
-        }
-          tr:nth-child(even) {background-color: #cda893;}
-
-        .error {
-            color: red;
-        }
-
-    </style>
-
-</head>
-<body>
-
-<div class="navigation-area-start shadow">
-    <div class="container">
-        <div class="row">
-            <!--Logo area start-->
-            <div class="col-md-3 col-5 col-sm-5">
-                <div class="logo-area">
-<!--                    <a href="index.html"><img th:src="@{/assets/images/logo.jpeg}"/> </a>-->
-                    <a href="index.html"><img th:src="@{/getLogoImage}"/> </a>
-                </div>
-            </div>
-            <div class="col-md-9 col-7 col-sm-7">
-                <nav class="main-menu-area">
-                    <ul class="main-menu" id="mobile-menu">
-                        <li> Welcome
-                            <span sec:authentication="name"></span>,</li>
-                        <!--                            <li><a th:href="@{/welcome}" href="/welcome"> Customer Home</a></li>-->
-                        <li><a th:href="@{/welcomeGlobal}" href="/Logout">TBC MFI PLC Home</a></li>
-                        <li><a href="#">Accounts <i class="fas fa-angle-down"></i></a>
-                            <ul class="sub-menu">
-                                <li class="drop-list"><a href="#">BLog Page</a>
-                                    <ul class="sub-menu">
-                                        <li><a href="blog-2-column.html">Blog 2 Column</a></li>
-                                        <li><a href="blog-3-column.html">Blog 3 Column</a></li>
-                                    </ul>
-                                </li>
-                                <li><a href="left-sidebar.html">Loans</a></li>
-                                <li><a href="right-sidebar.html">Retirement Savings</a></li>
-                                <li><a href="single.html">Withdrawals</a></li>
-                            </ul>
-                        </li>
-                        <li>
-                            <form action="#" th:action="@{/findUserByUserName}" method="post" >
-                                <nobr>
-                                    <input type="text" name="userName" placeholder="Search.." value=""/>
-                                    <input style="font-size:12pt;color:white;background-color:green;border:2px solid #336600;padding:3px" type="submit" value="Submit"> </nobr>
-                            </form>
-                        </li>
-                        <li>
-<!--                            <a th:href="@{/logout}" href="/Logout"><i class="fas fa-sign-out-alt"></i>Logout</a>-->
-                        </li>
-                    </ul>
-                </nav>
-            </div>
-        </div>
-    </div>
-</div>
-
-<br/><br/><br/><br/><br/><br/><br/>
-
-<table class="center" width="80%" border="0"><tr>
-    <td><font size="6"> <span style th:text="${session.customerInUse.userName}"/>'s </font>
-        <button style="font-face: 'Comic Sans MS'; font-size: larger; color: teal; background-color: #FFFFC0; border: 3pt ridge lightgrey" type="submit" >
-            <a href="#" th:href="@{/file/{userName}(userName=${session.customerInUse.userName})}">Upload I.D</a></button>
-        <a href="#" th:href="@{/reloadUser}"><img width="40px" th:src="@{/getImage}"/> </a>
-    </td>
-    <td> <font size="1.5px">Saving</font> <br/> <font color="green" size="6px"> <div th:text="${savingBilanzList.totalSaving}"/></font></td>
-    <td> <font size="1.5px">Current</font> <br/> <font size="6"> 0</font></td>
-    <td> <font size="1.5px">Loan</font> <br/> <font size="6"> 0</font></td>
-    <td><font size="1.5px"> Retirement saving </font> <br/> <font size="6" color="#A57C00">0 </font> </td>
-</tr></table>
-
-<table border="0" width="90%" class="center">
-
-    <tr>
-        <td>
-            <font size="1.5px"> Account Type</font><font color="#2d363f" size="4px"> <div th:text="${savingAccountTransaction.savingAccount.savingAccountType.name}"/></font>
-        </td>
-        <td>
-            <font size="1.5px"> Account Number</font><br/>
-            <font color="#2d363f" size="4px">
-                <a href="#" th:href="@{/showCustomer/{userid}(userid=${savingAccountTransaction.savingAccount.user.id})}">
-                    <div th:text="${savingAccountTransaction.savingAccount.accountNumber}"/>
-                </a>
-            </font>
-        </td>
-        <td>
-            <font size="1.5px"> Account Owner</font><br/>
-            <font color="#2d363f" size="4px">
-                <a href="#" th:href="@{/showCustomer/{userid}(userid=${savingAccountTransaction.savingAccount.user.id})}">
-                    <div th:text="${savingAccountTransaction.savingAccount.user.lastName}"/>
-                </a>
-            </font>
-        </td>
-        <td>
-            <font size="1.5px"> Notes</font><font color="#2d363f" size="4px"><div th:text="${savingAccountTransaction.savingAccount.notes}"/></font>
-        </td>
-        <td>
-            <font size="1.5px"> Rate</font><font color="#2d363f" size="4px"><div th:text="${savingAccountTransaction.savingAccount.interestRate}"/></font>
-        </td>
-        <td>
-            <font size="1.5px"> Min. Balance</font><font color="#2d363f" size="4px"> <div th:text="${#numbers.formatDecimal(savingAccountTransaction.savingAccount.accountMinBalance, 0, 'COMMA', 0, 'POINT')}"/></font>
-        </td>
-
-        <td>
-            <font size="1.5px"> Notes</font><font color="#2d363f" size="4px"><div th:text="${savingAccountTransaction.savingAccount.notes}"/></font>
-        </td>
-    </tr>
-</table>
-
-<form action="#" th:action="@{/registerSavingAccountTransactionForm}" method="post" th:object="${savingAccountTransaction}" >
+<div th:insert="header::navbar"></div>
+<br/>
+<br/>
+<br/><br/><br/><br/>
+<div class="container">
+    <table class="center" width="100%" border="0">
+        <tr>
+            <td align="center">
+                <font size="2px">Username</font> <br/> <font size="6">
+                <span style th:text="${session.customerInUse.userName}"/> </font>
+                <button style="font-face: 'Comic Sans MS'; font-size: larger; color: teal; background-color: #FFFFC0; border: 3pt ridge lightgrey"
+                        type="submit">
+                    <a href="#" th:href="@{/file/{userName}(userName=${session.customerInUse.userName})}"><font size="2px">Upload I.D</font></a>
+                </button>
+                <a href="#" th:href="@{/reloadUser}"><img width="40px" th:src="@{/getImage}"/> </a>
+            </td>
+            <td align="center">
+                <font size="2px">Saving</font> <br/> <font color="#77adbf" size="6px">
+                <div th:text="${savingBilanzList.totalSaving}"/>
+            </font></td>
+            <td align="center">
+                <font size="2px">Current</font> <br/> <font size="6"> 0</font></td>
+            <td align="center">
+                <font size="2px">Loan</font> <br/> <font size="6"> 0</font></td>
+            <td align="center">
+                <font size="2px"> Retirement saving </font> <br/> <font size="6" color="#A57C00">0 </font></td>
+        </tr>
+    </table>
 
     <table border="0" width="90%" class="center">
+
         <tr>
-            <th>
-                <div class="error" th:text="${billSelectionError}"/>
-            </th>
-        </tr>
-        <tr>
-            <td>
-                <font size="5" color="green"><b> MAKE A TRANSACTION</b></font>
-                <br/>
-                <select name="deposit_withdrawal">
-                    <option value="DEPOSIT">DEPOSIT</option>
-                    <option value="WITHDRAWAL">WITHDRAWAL</option>
-                </select>
-                <select name="modeOfPayment" id="modeOfPayment">
-                    <option value="CASH">CASH</option>
-                    <option value="MOMO">MOMO</option>
-                    <option value="ORANGE MONEY">ORANGE MONEY</option>
-                    <option value="TRANSFER">TRANSFER</option>
-                    <option value="RECEIPT">RECEIPT</option>
-                    <option value="OTHER">OTHER</option>
-                </select>
-                <b>Enter Amount:</b><input placeholder="Enter Amount" size="6" type="number" th:field="*{savingAmount}"
-                                           value="${savingAccountTransaction.savingAmount}"/>
+            <td align="center">
+                <font size="2px"> Account Type</font><font color="#2d363f" size="4px">
+                <div th:text="${savingAccountTransaction.savingAccount.accountType.name}"/>
+            </font>
+            </td>
+            <td align="center">
+                <font size="2px"> Account Number</font><br/>
+                <font color="#2d363f" size="4px">
+                    <a href="#"
+                       th:href="@{/showCustomer/{userid}(userid=${savingAccountTransaction.savingAccount.user.id})}">
+                        <div th:text="${savingAccountTransaction.savingAccount.accountNumber}"/>
+                    </a>
+                </font>
+            </td>
+            <td align="center">
+                <font size="2px"> Account Owner</font><br/>
+                <font color="#2d363f" size="4px">
+                    <a href="#"
+                       th:href="@{/showCustomer/{userid}(userid=${savingAccountTransaction.savingAccount.user.id})}">
+                        <div th:text="${savingAccountTransaction.savingAccount.user.lastName}"/>
+                    </a>
+                </font>
+            </td>
 
-                <b>Minimum:</b><span th:text="${#numbers.formatDecimal(savingAccountTransaction.savingAccount.minimumPayment, 0, 'COMMA', 0, 'POINT')}"/>
-                <textarea placeholder="Enter Amount in letters ..."  id="savingAmountInLetters" rows="1" cols="90" th:field="*{savingAmountInLetters}" maxlength="255">
-                </textarea>
+            <td align="center">
+                <font size="2px"> Rate</font><font color="#2d363f" size="4px">
+                <div th:text="${savingAccountTransaction.savingAccount.interestRate}"/>
+            </font>
+            </td>
+            <td align="center">
+                <font size="2px"> Min. Balance</font><font color="#2d363f" size="4px">
+                <div th:text="${#numbers.formatDecimal(savingAccountTransaction.savingAccount.accountMinBalance, 0, 'COMMA', 0, 'POINT')}"/>
+            </font>
+            </td>
 
-                <br/>
-                <br/>
-
-                <font size="3" color="green"> BILL SELECTION:</font><br/>
-                <input name="tenThousand" th:field="*{tenThousand}" type="number" min="0" max="999" maxlength="4" value="${savingAccountTransaction.tenThousand}" size="4"/>10 000 &nbsp;
-                <input name="fiveThousand" th:field="*{fiveThousand}" type="number" min="0" max="999" maxlength="4" size="4"/>5 000 &nbsp;
-                <input name="twoThousand" th:field="*{twoThousand}" type="number" min="0" max="999" maxlength="4" size="4"/>2 000 &nbsp;
-                <input name="oneThousand" th:field="*{oneThousand}" type="number" min="0" max="999" maxlength="4" size="4"/>1 000 &nbsp;
-                <input name="fiveHundred" th:field="*{fiveHundred}" type="number" min="0" max="999" maxlength="4" size="4"/>500 &nbsp;
-                <input name="oneHundred" th:field="*{oneHundred}" type="number" min="0" max="999" maxlength="4" size="4"/>100 &nbsp;
-                <input name="fifty" th:field="*{fifty}" type="number" min="0" max="999" maxlength="4" size="4"/>50 &nbsp;
-                <input name="twentyFive" th:field="*{twentyFive}" type="number" min="0" max="999" maxlength="4" size="4"/>25 &nbsp;
-
-                <input type="hidden" th:value="${savingAccountTransaction.savingAccount.id}" th:attr="name='savingAccountId'"/>
-                <br/> <br/>
-                <textarea placeholder="Enter Notes ..."  id="notes" rows="2" cols="90" th:field="*{notes}" maxlength="255">
-                </textarea>
-
-                <br/> <br/>
-                <label for="true">Account Owner:</label>
-                True<input th:field="*{accountOwner}"  type="checkbox" id="true" name="accountOwner" value="true" checked>
-
-                <button type="submit" class="btn btn-success">SUBMIT TRANSACTION</button><br/>
+            <td align="center">
+                <font size="2px"> Notes</font><font color="#2d363f" size="4px">
+                <div th:text="${savingAccountTransaction.savingAccount.notes}"/>
+            </font>
             </td>
         </tr>
-
     </table>
-</form>
-<br/>
-<table  border="0" width="100%" class="center">
-    <tr>
-        <th>
-            <font size="5" color="green"> SAVING PAYMENTS PROCESSED </font>
-            <a href="#" th:href="@{/statementPDF/{id}(id=${savingAccountTransaction.savingAccount.id})}"><img width="40px" th:src="@{/assets/images/pdfIcon.png}"/> </a>
-        </th>
-    </tr>
-</table>
-<table  border="0" width="90%" class="center">
-    <tr>
-        <th>DOP</th>
-        <th>MOP </th>
-        <th>Reference </th>
-        <th>Agent</th>
-        <th>Owner</th>
-        <th>Notes</th>
-        <th>Amount</th>
-        <th><font color="green" size="6px"><div th:text="${savingBilanzList.totalSaving}"/></font></th>
-        <th></th>
-    </tr>
+    <br/> <br/> <br/> <br/>
+    <form action="#" th:action="@{/registerSavingAccountTransactionForm}" method="post"
+          th:object="${savingAccountTransaction}">
 
-    <tr th:each="bilanz : ${savingBilanzList.savingBilanzList}">
-        <td th:text="${bilanz.createdDate}"></td>
-        <td th:text="${bilanz.modeOfPayment}"></td>
-        <td th:text="${bilanz.reference}"></td>
-        <td th:text="${bilanz.agent}"></td>
-        <td th:text="${bilanz.accountOwner}"></td>
-        <td th:text="${bilanz.notes}"></td>
-        <td th:text="${bilanz.savingAmount}"></td>
-        <td th:text="${bilanz.currentBalance}"></td>
-        <td><a href="#" th:href="@{/createSavingAccountReceiptPdf/{id}(id=${bilanz.id})}"><img width="30px" th:src="@{/assets/images/pdfIcon.png}"/> </a></td>
-    </tr>
+        <table border="0" width="100%" class="center">
+            <tr>
+                <th width="10%">
+                </th>
+                <th>
+                    <div class="error" th:text="${billSelectionError}"/>
+                </th>
+            </tr>
+            <tr>
+                <td width="10%">
+                </td>
+                <td>
+                    <font size="5" color="green"><b> MAKE A TRANSACTION</b></font>
+                    <br/>
+                    <select name="deposit_withdrawal">
+                        <option value="DEPOSIT">DEPOSIT</option>
+                        <option value="WITHDRAWAL">WITHDRAWAL</option>
+                    </select>
+                    <select name="modeOfPayment" id="modeOfPayment">
+                        <option value="CASH">CASH</option>
+                        <option value="MOMO">MOMO</option>
+                        <option value="ORANGE MONEY">ORANGE MONEY</option>
+                        <option value="TRANSFER">TRANSFER</option>
+                        <option value="RECEIPT">RECEIPT</option>
+                        <option value="OTHER">OTHER</option>
+                    </select>
+                    <b>Enter Amount:</b><input placeholder="Enter Amount" size="6" type="number"
+                                               th:field="*{savingAmount}"
+                                               value="${savingAccountTransaction.savingAmount}"/>
 
-</table>
+                    <span
+                        th:text="${#numbers.formatDecimal(savingAccountTransaction.savingAccount.minimumPayment, 0, 'COMMA', 0, 'POINT')}"/>(Minimum)
+                    <textarea placeholder="Enter Amount in letters ..." id="savingAmountInLetters" rows="1" cols="90"
+                              th:field="*{savingAmountInLetters}" maxlength="255">
+                </textarea>
 
+                    <br/>
+                    <br/>
+
+                    <font size="3" color="green"> BILL SELECTION:</font><br/>
+                    <input name="tenThousand" th:field="*{tenThousand}" type="number" min="0" max="999" maxlength="4"
+                           value="${savingAccountTransaction.tenThousand}" size="4"/>10 000 &nbsp;
+                    <input name="fiveThousand" th:field="*{fiveThousand}" type="number" min="0" max="999" maxlength="4"
+                           size="4"/>5 000 &nbsp;
+                    <input name="twoThousand" th:field="*{twoThousand}" type="number" min="0" max="999" maxlength="4"
+                           size="4"/>2 000 &nbsp;
+                    <input name="oneThousand" th:field="*{oneThousand}" type="number" min="0" max="999" maxlength="4"
+                           size="4"/>1 000 &nbsp;
+                    <input name="fiveHundred" th:field="*{fiveHundred}" type="number" min="0" max="999" maxlength="4"
+                           size="4"/>500 &nbsp;
+                    <input name="oneHundred" th:field="*{oneHundred}" type="number" min="0" max="999" maxlength="4"
+                           size="4"/>100 &nbsp;
+                    <input name="fifty" th:field="*{fifty}" type="number" min="0" max="999" maxlength="4" size="4"/>50
+                    &nbsp;
+                    <input name="twentyFive" th:field="*{twentyFive}" type="number" min="0" max="999" maxlength="4"
+                           size="4"/>25 &nbsp;
+
+                    <input type="hidden" th:value="${savingAccountTransaction.savingAccount.id}"
+                           th:attr="name='savingAccountId'"/>
+                    <br/> <br/>
+                    <textarea placeholder="Enter Notes ..." id="notes" rows="2" cols="90" th:field="*{notes}"
+                              maxlength="255">
+                </textarea>
+
+                    <br/> <br/>
+                    <label for="true">Account Owner:</label>
+                    True<input th:field="*{accountOwner}" type="checkbox" id="true" name="accountOwner" value="true"
+                               checked>
+
+                    <button type="submit" class="btn btn-success">SUBMIT TRANSACTION</button>
+                    <br/><br/>
+
+                </td>
+            </tr>
+
+        </table>
+    </form>
+    <br/>
+    <table border="0" width="100%" class="center">
+        <tr>
+            <th>
+                <font size="5" color="green"> SAVING PAYMENTS PROCESSED </font>
+                <a href="#" th:href="@{/statementPDF/{id}(id=${savingAccountTransaction.savingAccount.id})}"><img
+                        width="40px" th:src="@{/assets/images/pdfIcon.png}"/> </a>
+            </th>
+        </tr>
+    </table>
+    <table border="0" width="100%" class="center">
+        <tr>
+            <td>Payment Date</td>
+            <td>MOP</td>
+            <td>Reference</td>
+            <td>Agent</td>
+            <td>Owner</td>
+            <td>Notes</td>
+            <td>Amount</td>
+            <td><font color="green" size="6px">
+                <div th:text="${savingBilanzList.totalSaving}"/>
+            </font></td>
+            <td></td>
+        </tr>
+
+        <tr th:each="bilanz : ${savingBilanzList.savingBilanzList}">
+            <td th:text="${bilanz.createdDate}"></td>
+            <td th:text="${bilanz.modeOfPayment}"></td>
+            <td th:text="${bilanz.reference}"></td>
+            <td th:text="${bilanz.agent}"></td>
+            <td th:text="${bilanz.accountOwner}"></td>
+            <td th:text="${bilanz.notes}"></td>
+            <td th:text="${bilanz.savingAmount}"></td>
+            <td th:text="${bilanz.currentBalance}"></td>
+            <td>
+                <a href="#" th:href="@{/createSavingAccountReceiptPdf/{id}(id=${bilanz.id})}">
+                    <img width="30px" th:src="@{/assets/images/pdfIcon.png}"/>
+                </a>
+            </td>
+        </tr>
+    </table>
+</div>
 <br/> <br/>
 
 <div th:insert="footer::navbar"></div>

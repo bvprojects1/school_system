@@ -1,121 +1,16 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TBC MFI PLC - MICRO FINANCE</title>
-    <!-- Favicon  -->
-    <link rel="icon" type="image/x-icon" href="assets/images/favicon/favicon.ico">
-
-    <link rel="stylesheet" href="../css/main.css" th:href="@{css/main.css}" type="text/css"/>
-
-    <!--Bootstrap-->
-    <link rel="stylesheet" href="../assets/css/bootstrap.min.css">
-    <!--Fontawesome-->
-    <link rel="stylesheet" href="../assets/css/all.min.css">
-    <!--Owl-carousel-->
-    <link rel="stylesheet" href="../assets/css/owl.carousel.min.css">
-    <!--Owl Carousel theme-->
-    <link rel="stylesheet" href="../assets/css/owl.theme.default.min.css">
-    <!--Animate-->
-    <link rel="stylesheet" href="../assets/css/animate.min.css">
-    <!-- magnific CSS -->
-    <link rel="stylesheet" href="../assets/css/magnific-popup.css">
-    <!-- Mmenu CSS -->
-    <link rel="stylesheet" href="../assets/css/slicknav.min.css">
-    <!--Style-->
-    <link rel="stylesheet" href="../assets/css/style.css">
-    <!-- Responsive -->
-    <link rel="stylesheet" href="../assets/css/responsive.css">
-
-    <style>
-        table, th, td {
-<!--          border: 0px solid #BF360C;-->
-          align: center;
-        }
-        table.center {
-          margin-left: 50px;
-          margin-right: 50px;
-        }
-          tr:nth-child(even) {background-color: #cda893;}
-
-
-    </style>
-
-</head>
-<body>
-
-<header class="header-area-start">
-    <!--Header top area start-->
-    <div class="header-top-area-start">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-6 col-12 col-sm-5">
-                    <div class="header-top-left">
-                        <a href="#" data-toggle="modal" data-target="#exampleModal"><i class="fas fa-sign-in-alt"></i>
-                            login</a>
-                        <!--                            <a href="#" data-toggle="modal" data-target="#exampleModal1"><i class="far fa-user"></i> register</a>-->
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!--Header top area end-->
-
-    <!--Header navigation area start-->
-    <div class="navigation-area-start shadow">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-3 col-5 col-sm-5">
-                    <div class="logo-area">
-<!--                        <a href="index.html"><img th:src="@{/assets/images/logo.jpeg}"/> </a>-->
-                        <a href="index.html"><img th:src="@{/getLogoImage}"/> </a>
-                    </div>
-                </div>
-                <!--Logo area end-->
-                <div class="col-md-9 col-7 col-sm-7">
-                    <nav class="main-menu-area">
-                        <ul class="main-menu" id="mobile-menu">
-                            <li> Welcome
-                                <span sec:authentication="name"></span>,
-                            </li>
-                            <!--                            <li><a th:href="@{/welcome}" href="/welcome"> Customer Home</a></li>-->
-                            <li><a th:href="@{/welcomeGlobal}" href="/Logout">TBC MFI PLC Home</a></li>
-                            <!--                            <li><a href="#">Accounts <i class="fas fa-angle-down"></i></a>-->
-                            <!--                                <ul class="sub-menu">-->
-                            <!--                                    <li class="drop-list"><a href="#">BLog Page</a>-->
-                            <!--                                        <ul class="sub-menu">-->
-                            <!--                                            <li><a href="blog-2-column.html">Blog 2 Column</a></li>-->
-                            <!--                                            <li><a href="blog-3-column.html">Blog 3 Column</a></li>-->
-                            <!--                                        </ul>-->
-                            <!--                                    </li>-->
-                            <!--                                    <li><a href="left-sidebar.html">Loans</a></li>-->
-                            <!--                                    <li><a href="right-sidebar.html">Retirement Savings</a></li>-->
-                            <!--                                    <li><a href="single.html">Withdrawals</a></li>-->
-                            <!--                                </ul>-->
-                            <!--                            </li>-->
-                            <li>
-                                <a th:href="@{/logout}" href="/Logout"><i class="fas fa-sign-out-alt"></i>Logout</a>
-                            </li>
-                        </ul>
-                    </nav>
-                </div>
-                <!--Menu area end-->
-            </div>
-        </div>
-    </div>
-    <!--Header navigation area end-->
-</header>
-
+<div th:insert="header::navbar"></div>
+<br/>
+<br/>
 
 <section class="contact-form-area-start space df-bg">
     <!--Project title area start-->
     <div class="project-title-area text-center">
         <div class="col-md-12">
             <div class="project-title-content">
-                <font color="#BF360C;" size="4"><h4> General Ledger Transactions </h4></font> </div>
+                <font color="gray;" size="4"><h4> General Ledger Transactions </h4></font> </div>
             <table border="0" width="80%" class="center">
                 <tr><td>
                      <font size="1.5px"> DEBIT</font> <br/>
@@ -144,6 +39,7 @@
                         <th>Date</th>
                         <th>Reference</th>
                         <th>Account</th>
+                        <th>Notes</th>
                         <th>Type</th>
                         <th>Amount</th>
                     </tr>
@@ -151,6 +47,7 @@
                         <td><div th:text="${#dates.format(gl.date, 'dd-MMM-yyyy HH:mm')}"></div></td>
                         <td th:text="${gl.reference}"></td>
                         <td th:text="${gl.accountNumber}"></td>
+                        <td th:text="${gl.notes}"></td>
                         <td>
                             <a href="#" th:href="@{/findGlByType/{type}(type=${gl.type})}">
                                 <span th:text="${gl.type}"/>

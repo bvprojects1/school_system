@@ -6,6 +6,9 @@
     <br/>
     <br/>
 
+    <div class="footer-content-area-start">
+        <div class="container">
+            <div class="row">
     <!--Service area start-->
     <section class="service-area-start space">
 
@@ -22,11 +25,13 @@
                             <p>Create & View existing Users</p>
                            <div th:if="${#authorization.expression('hasAnyAuthority(''ROLE_MANAGER'')')}OR ${#authorization.expression('hasAnyAuthority(''ROLE_ADMIN'')')}">
                             <a href="/registerUser"> <img width="5px" th:src="@{/assets/images/add.png}"/> </a>
+                            <a href="/findAllCustomers">See More ...</a>
                            </div>
                            <div th:if="${#authorization.expression('hasAnyAuthority(''ROLE_AGENT'')')}">
                                <a href="/registerCustomer"> <img width="5px" th:src="@{/assets/images/add.png}"/> </a>
+                               <span class="far fa-user"></span>
                            </div>
-                            <a href="/findAllCustomers">See More ...</a>
+
                         </div>
                     </div>
                     <!--Single service area end-->
@@ -51,15 +56,15 @@
                         </div>
                     </div>
                     <!--Single service area end-->
-                    <div th:if="${#authorization.expression('hasAnyAuthority(''ROLE_MANAGER'')')} OR ${#authorization.expression('hasAnyAuthority(''ROLE_AGENT'')')}" class="col-md-6 col-lg-4">
-                        <div class="single-choosen-content text-center single-service-content box-pad">
-                            <i class="fas fa-landmark"></i>
-                            <h4>WITHDRAWAL</h4>
-                            <p>Do withdrawals from saving accounts and stay above minimum balance</p>
-                            <a href="#">See more</a>
-                            <span class="fas fa-landmark"></span>
-                        </div>
-                    </div>
+<!--                    <div th:if="${#authorization.expression('hasAnyAuthority(''ROLE_MANAGER'')')} OR ${#authorization.expression('hasAnyAuthority(''ROLE_AGENT'')')}" class="col-md-6 col-lg-4">-->
+<!--                        <div class="single-choosen-content text-center single-service-content box-pad">-->
+<!--                            <i class="fas fa-landmark"></i>-->
+<!--                            <h4>WITHDRAWAL</h4>-->
+<!--                            <p>Do withdrawals from saving accounts and stay above minimum balance</p>-->
+<!--                            <a href="#">See more</a>-->
+<!--                            <span class="fas fa-landmark"></span>-->
+<!--                        </div>-->
+<!--                    </div>-->
                     <!--Single service area end-->
                     <div th:if="${#authorization.expression('hasAnyAuthority(''ROLE_ADMIN'')')} OR ${#authorization.expression('hasAnyAuthority(''ROLE_MANAGER'')')} " class="col-md-6 col-lg-4">
                         <div class="single-choosen-content text-center single-service-content box-pad">
@@ -100,6 +105,9 @@
         <!--Service content area end-->
     </section>
     <!--Service area end-->
+            </div>
+        </div>
+    </div>
 
     <div th:insert="blog::navbar"></div>
 

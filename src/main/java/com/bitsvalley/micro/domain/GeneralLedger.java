@@ -25,9 +25,10 @@ public class GeneralLedger {
     private String lastUpdatedBy;
     private Date createdDate;
     private Date lastUpdatedDate;
-    private int amount;
+    private double amount;
     private Date date;
     private String notes;
+    private int glClass;
 
     public GeneralLedger() {
         super();
@@ -85,11 +86,11 @@ public class GeneralLedger {
         this.lastUpdatedDate = lastUpdatedDate;
     }
 
-    public int getAmount() {
+    public double getAmount() {
         return amount;
     }
 
-    public void setAmount(int amount) {
+    public void setAmount(double amount) {
         this.amount = amount;
     }
 
@@ -123,5 +124,13 @@ public class GeneralLedger {
 
     public void setDate(Date date) {
         this.date = date;
+    }
+
+    public int getGlClass() {
+        return glClass;
+    }
+
+    public void setGlClass(int glClass) {
+        this.glClass = glClass;
     }
 }

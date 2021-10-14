@@ -7,25 +7,23 @@
 
 <section class="contact-form-area-start space df-bg">
 <br/>
-    <table width="80%" class="center" border="0px">
+    <table width="90%" class="center" border="0px">
         <tr>
             <td align="center">
-                <font color="#BF360C;" size="4"><h4>All Branches</h4></font>
+                <font color="#BF360C;" size="4">
+                    <h4>ALL BRANCHES
+                        <a href="/registerBranch">
+                            <img width="30px" th:src="@{/assets/images/add.png}"/>
+                        </a>
+                    </h4>
+                </font>
             </td>
         </tr>
     </table>
     <table width="90%" class="center" border="0px">
-        <tr>
-            <th>Name</th>
-            <th>Code</th>
-            <th>Street</th>
-            <th>City</th>
-            <th>telephone</th>
-            <th>fax</th>
-            <th>Contact</th>
-            <th></th>
-        </tr>
-        <tr th:each="branch : ${branchList}">
+        <table class="center" width="90%" border="1">
+
+            <tr th:each="branch : ${branchList}">
             <td th:text="${branch.name}"></td>
             <td th:text="${branch.code}"></td>
             <td>

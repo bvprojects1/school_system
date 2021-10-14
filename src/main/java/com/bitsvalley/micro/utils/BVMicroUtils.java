@@ -1,8 +1,18 @@
 package com.bitsvalley.micro.utils;
 
+import com.bitsvalley.micro.webdomain.RuntimeSetting;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
 import java.nio.charset.Charset;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Month;
 import java.time.format.DateTimeFormatter;
@@ -12,9 +22,14 @@ import java.util.Random;
 
 public class BVMicroUtils {
 
+    public static final String TRANSFER = "TRANSFER";
+
+    public static final String SAVINGS_MINIMUM_BALANCE_ADDED_BY = "Savings minimum balance added by: ";
+    public static final String SAVING_ACCOUNT_CREATED = "Saving account created ";
 
     public static final String CUSTOMER_IN_USE = "customerInUse";
     public static final String DATE_FORMATTER= "dd-MM-yyyy HH:mm";
+    public static final String DATE_ONLY_FORMATTER= "dd-MM-yyyy";
     public static final String SYSTEM = "SYSTEM";
     public static final String REGULAR_MONTHLY_PAYMENT_MISSING = "Regular Monthly payment not on schedule might be missing payment for some months. " +
             "Please check the account statement";
@@ -63,6 +78,12 @@ public class BVMicroUtils {
             return formatDateTime;
         }
 
+    public  static String formatDateOnly(LocalDate localDate) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(DATE_ONLY_FORMATTER);
+        String formatDateTime = localDate.format(formatter);
+        return formatDateTime;
+    }
+
     public static String formatCurrency(double totalSaved) {
         Locale locale = new Locale("en", "CM");
         NumberFormat fmt = NumberFormat.getCurrencyInstance(locale);
@@ -88,4 +109,12 @@ public class BVMicroUtils {
     }
 
 
+
+//    @ResponseBody
+//    public static byte[] getLogoImage(Path path) throws IOException {
+////        RuntimeSetting runtimeSetting = (RuntimeSetting)request.getSession().getAttribute("runtimeSettings");
+////        Path path = Paths.get(logoPath);
+//        byte[] data = Files.readAllBytes(path);
+//        return data;
+//    }
 }

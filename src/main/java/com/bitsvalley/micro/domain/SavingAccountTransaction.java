@@ -17,7 +17,7 @@ public class SavingAccountTransaction {
 
     private String createdBy;
     private LocalDateTime createdDate;
-    private int savingAmount;
+    private double savingAmount;
     private String notes;
     private String modeOfPayment;
     private int tenThousand;
@@ -164,11 +164,11 @@ public class SavingAccountTransaction {
         this.createdDate = createdDate;
     }
 
-    public int getSavingAmount() {
+    public double getSavingAmount() {
         return savingAmount;
     }
 
-    public void setSavingAmount(int savingAmount) {
+    public void setSavingAmount(double savingAmount) {
         this.savingAmount = savingAmount;
     }
 

@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<div th:insert="header::navbar"></div>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<body>
+<br/>
+
+<table width="90%" class="center" border="0px">
+    <tr>
+        <td>
+            <font size="2px" color="gray">Loan Type</font><br/>
+                <span th:text="${session.loanAccount.accountType.name}"></span>
+        </td>
+        <td>
+            <font size="2px" color="gray">Interval Of Payment</font><br/>
+            <font size="3"><span th:text="${session.loanAccount.intervalOfLoanPayment}"/></font>
+        </td>
+        <td>
+            <font size="2px" color="gray">Term Of Loan</font><br/>
+            <font size="3"><span th:text="${session.loanAccount.termOfLoan}"/></font>
+        </td>
+        <td>
+            <font size="2px" color="gray">Interest Rate</font><br/>
+            <font size="3"><span th:text="${session.loanAccount.interestRate}"/></font>
+        </td>
+        <td>
+            <font size="2px" color="gray">Loan Amount</font><br/>
+            <font size="3">
+                <strong>
+                    <span th:text="${#numbers.formatDecimal(session.loanAccount.loanAmount, 0, 'COMMA', 0, 'POINT')}"/>
+                </strong>
+            </font>
+        </td>
+        <td>
+            <font size="2px" color="gray">Interest On Loan</font><br/>
+            <font size="3"><span th:text="${session.loanAccount.totalInterestOnLoan}"/></font>
+        </td>
+    </tr>
+</table>
+
+<br/>
+<table width="90%" class="center" border="0px">
+    <tr>
+        <th>SHORTEE ACCOUNTS </th>
+    </tr>
+</table>
+<form action="#" th:action="@{/loanShorteeAccountsForm}" method="post" th:object="${loanAccount}">
+    <table width="90%" class="center" border="0px">
+        <tr>
+            <th>
+                <font size="2px" color="gray">Account #</font>
+            </th>
+            <th colspan="2">
+                <font size="2px" color="gray">Name</font>
+            </th>
+            <th>
+                <font size="2px" color="gray">Default</font>
+            </th>
+            <th>
+                <font size="2px" color="gray">Product code</font>
+            </th>
+            <th>
+                <font size="2px" color="gray">Balance</font>
+            </th>
+            <th>
+                <font size="2px" color="gray">Min. Balance</font>
+            </th>
+            <th>
+                <div class="error" th:text="${errorShorteeAmount}"/>
+            </th>
+            <th>
+            </th>
+        </tr>
+        <tr>
+            <td th:text="${session.guarantor1.accountNumber}"></td>
+            <td th:text="${session.guarantor1.user.firstName}"></td>
+            <td th:text="${session.guarantor1.user.lastName}"></td>
+            <td th:text="${session.guarantor1.defaultedPayment}"></td>
+            <td th:text="${session.guarantor1.productCode}"></td>
+            <td>
+                <span th:text="${#numbers.formatDecimal(session.guarantor1.accountBalance, 0, 'COMMA', 0, 'POINT')}"/>
+            </td>
+            <td>
+                <span th:text="${#numbers.formatDecimal(session.guarantor1.accountMinBalance, 0, 'COMMA', 0, 'POINT')}"/>
+            </td>
+            <td>
+                Enter Amount: <input type="number" name="guarantor1Amount1" th:field="*{guarantor1Amount1}">
+            </td>
+            <td>
+                <button type="submit" class="btn btn-success">
+                    Apply Loan Guarantees
+                </button>
+            </td>
+        </tr>
+    <!--    <tr>-->
+    <!--        <td th:text="${guarantor2.accountNumber}"></td>-->
+    <!--        <td>-->
+    <!--            <div th:text="${guarantor2.defaultedPayment}"></div>-->
+    <!--            <div th:text="${guarantor2.productCode}"></div>-->
+    <!--        </td>-->
+    <!--        <td th:text="${guarantor2.accountMinBalance}"></td>-->
+    <!--        <td th:text="${guarantor2.accountBalance}"></td>-->
+    <!--        <td>-->
+    <!--            <input type="checkbox" name="shortee2Amount">-->
+    <!--        </td>-->
+    <!--    </tr>-->
+    <!--    <tr>-->
+    <!--        <td th:text="${guarantor3.accountNumber}"></td>-->
+    <!--        <td>-->
+    <!--            <div th:text="${guarantor3.defaultedPayment}"></div>-->
+    <!--            <div th:text="${guarantor3.productCode}"></div>-->
+    <!--        </td>-->
+    <!--        <td th:text="${guarantor3.accountMinBalance}"></td>-->
+    <!--        <td th:text="${guarantor3.accountBalance}"></td>-->
+    <!--        <td>-->
+    <!--            <input type="checkbox" name="shortee3Amount">-->
+    <!--        </td>-->
+    <!--    </tr>-->
+    <!--    <tr><td colspan="5" th:text="${loanAccount.loanAmount}"></td></tr>-->
+    </table>
+</form>
+
+<br/>
+<br/>
+
+<br/><br/>
+
+<!--<table width="90%" class="center" border="0px">-->
+<!--    <tr>-->
+<!--        <th><font color="green">ASSIGN A BRANCH TO THESE USERS</div> </font></th>-->
+<!--    </tr>-->
+<!--</table>-->
+
+<!--<table width="90%" class="center" border="0px">-->
+<!--    <tr>-->
+<!--        <th>Username</th>-->
+<!--        <th>Name</th>-->
+<!--        <th>Role</th>-->
+<!--        <th>telephone</th>-->
+<!--        <th>Member Since</th>-->
+<!--        <th>Creator</th>-->
+<!--        <th></th>-->
+<!--    </tr>-->
+<!--    <tr th:each="user : ${noBranchUserList}">-->
+<!--        <td th:text="${user.userName}"></td>-->
+<!--        <td>-->
+<!--            <div th:text="${user.firstName}"></div>-->
+<!--            <div th:text="${user.lastName}"></div>-->
+<!--        </td>-->
+<!--        <td>-->
+<!--            <div th:each="userRole : ${user.userRole}">-->
+<!--                <span th:text="${userRole.name}"></span>-->
+<!--            </div>-->
+<!--        </td>-->
+<!--        <td th:text="${user.telephone1}"></td>-->
+<!--        <td th:text="${#dates.format(user.created, 'dd-MMM-yyyy HH:mm')}"></td>-->
+<!--        <td th:text="${user.createdBy}"></td>-->
+<!--        <td>-->
+<!--            <a th:href="${'/addCustomerToBranch/' + {user.id} + '/' + {branch.id}}">Add</a>-->
+<!--        </td>-->
+<!--    </tr>-->
+<!--</table>-->
+<br/>
+</body>
+<div th:insert="footer::navbar"></div>
+</html>

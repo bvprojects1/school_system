@@ -7,9 +7,9 @@ import java.util.List;
 public class GeneralLedgerBilanz {
 
     List<GeneralLedger> generalLedger;
-    int creditTotal;
-    int debitTotal;
-    int total;
+    double creditTotal;
+    double debitTotal;
+    double total;
 
     public List<GeneralLedger> getGeneralLedger() {
         return generalLedger;
@@ -19,27 +19,27 @@ public class GeneralLedgerBilanz {
         this.generalLedger = generalLedger;
     }
 
-    public int getCreditTotal() {
+    public double getCreditTotal() {
         return creditTotal;
     }
 
-    public void setCreditTotal(int creditTotal) {
+    public void setCreditTotal(double creditTotal) {
         this.creditTotal = creditTotal;
     }
 
-    public int getDebitTotal() {
+    public double getDebitTotal() {
         return debitTotal;
     }
 
-    public void setDebitTotal(int debitTotal) {
+    public void setDebitTotal(double debitTotal) {
         this.debitTotal = debitTotal;
     }
 
-    public int getTotal() {
+    public double getTotal() {
         return total;
     }
 
-    public void setTotal(int total) {
+    public void setTotal(double total) {
         this.total = total;
     }
 }

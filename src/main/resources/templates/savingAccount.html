@@ -44,12 +44,12 @@
             <tr>
                 <td width="33%"></td>
                 <td width="10%"><label> Minimum balance:</label></td>
-                <td><label> <input placeholder="0" type="number" th:field="*{accountMinBalance}"/></label></td>
+                <td><br/> <input placeholder="0" type="number" th:field="*{accountMinBalance}"/></td>
             </tr>
             <tr>
                 <td width="33%"></td>
                 <td width="10%"><label> Interest Rate:</label></td>
-                <td><label> <input type="number" th:field="*{interestRate}" max="100" maxlength="2"/></label></td>
+                <td><br/> <input type="number" th:field="*{interestRate}" max="100" maxlength="2"/></td>
             </tr>
 
             <tr>
@@ -71,7 +71,7 @@
             <tr>
                 <td width="33%"></td>
                 <td width="10%"><label> Notes:</label></td>
-                <td><textarea id="notes" rows="3" cols="30" th:field="*{notes}">
+                <td><br/><textarea id="notes" rows="3" cols="30" th:field="*{notes}">
                         </textarea></td>
             </tr>
 
@@ -79,6 +79,7 @@
                 <td width="33%"></td>
                 <td width="10%"></td>
                 <td>
+                    <br/>
                     <button type="submit" class="btn btn-success">Create Account</button>
                 </td>
             </tr>

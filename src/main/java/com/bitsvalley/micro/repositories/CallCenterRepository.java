@@ -13,6 +13,6 @@ public interface CallCenterRepository extends CrudRepository<CallCenter, Long> {
 
     List<CallCenter> findByAccountNumber(String accountNumber);
 
-    List<CallCenter> findByAccountHolderName(String accountNumber);
+    List<CallCenter> findByUserName(String userName);
 
 }

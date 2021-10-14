@@ -23,7 +23,8 @@ public class ShorteeAccount {
     private AccountStatus accountStatus;
     private double amountShortee;
 
-    private String savingAccount;
+    @OneToOne(cascade = CascadeType.ALL)
+    private SavingAccount savingAccount;
 
     private String notes;
 
@@ -91,11 +92,11 @@ public class ShorteeAccount {
         this.amountShortee = amountShortee;
     }
 
-    public String getSavingAccount() {
+    public SavingAccount getSavingAccount() {
         return savingAccount;
     }
 
-    public void setSavingAccount(String savingAccount) {
+    public void setSavingAccount(SavingAccount savingAccount) {
         this.savingAccount = savingAccount;
     }
 

@@ -40,7 +40,7 @@
                     </tr>
                     <tr th:each="callCenter : ${callCenterList}">
                         <td><p th:text="${#dates.format(callCenter.date, 'dd-MMM-yyyy HH:mm')}"></p></td>
-                        <td> System Generated</td>
+                        <td th:text="${callCenter.userName}"></td>
                         <td th:text="${callCenter.notes}"></td>
                     </tr>
                 </table>

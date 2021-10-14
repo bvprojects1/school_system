@@ -13,9 +13,11 @@ public class AccountTypeService extends SuperService{
 
     public AccountType getAccountType(String name){
         AccountType byName = accountTypeRepository.findByName(name);
-//        if(null == byName){
-//            accountTypeRepository.save();
-//        }
+        return byName;
+    }
+
+    public AccountType getAccountTypeByProductCode(String productCode){
+        AccountType byName = accountTypeRepository.findByNumber(productCode);
         return byName;
     }
 

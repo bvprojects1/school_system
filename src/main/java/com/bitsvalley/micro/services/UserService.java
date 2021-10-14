@@ -1,17 +1,18 @@
 package com.bitsvalley.micro.services;
 
-import com.bitsvalley.micro.domain.*;
-import com.bitsvalley.micro.repositories.CallCenterRepository;
-import com.bitsvalley.micro.repositories.AccountTypeRepository;
-import com.bitsvalley.micro.repositories.UserRepository;
 import com.bitsvalley.micro.domain.AccountType;
 import com.bitsvalley.micro.domain.User;
 import com.bitsvalley.micro.domain.UserRole;
+import com.bitsvalley.micro.repositories.AccountTypeRepository;
+import com.bitsvalley.micro.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Optional;
 
 /**
  * @author Fru Chifen
@@ -27,7 +28,7 @@ public class UserService {
     private UserRoleService userRoleService;
 
     @Autowired
-    private CallCenterRepository callCenterRepository;
+    private CallCenterService callCenterService;
 
     @Autowired
     private AccountTypeRepository accountTypeRepository;
@@ -52,13 +53,7 @@ public class UserService {
         User save = userRepository.save(user);
 
         // - Update callcenter
-        CallCenter cc = new CallCenter();
-        cc.setUserName(user.getUserName());
-        cc.setDate(new Date(System.currentTimeMillis()));
-        cc.setAccountHolderName(user.getFirstName() +", "+ user.getLastName());
-        cc.setNotes("Login account created by "+ user.getCreatedBy() + " on " + user.getCreated() );
-        callCenterRepository.save(cc);
-
+        callCenterService.callCenterUserAccount(user,"Login account created by "+ user.getCreatedBy() + " on " + user.getCreated());
         return save;
     }
 
