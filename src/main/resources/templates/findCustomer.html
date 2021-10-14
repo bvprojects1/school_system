@@ -28,28 +28,37 @@
         <div class="container">
             <div class="row">
                 <div class="offset-md-2 col-md-8">
-                    <form action="#" th:action="@{/findCustomerForm}" method="post" th:object="${user}">
+<!--                    <form action="#" th:action="@{/findCustomerForm}" method="post" th:object="${user}">-->
                         <div class="row">
-
                             <div class="col-md-12">
 
                                 FIND CUSTOMER FOR MORE ACCOUNT DETAILS<br/>
 
-                                <form action="#" th:action="@{/findUserByUserName}" method="post" >
-                                    <nobr>  Username
-                                        <input type="text" name="userName" th:field="*{userName}" id="userName"
+                                <form action="#" th:action="@{/findUserByUserName}" method="post">
+                                    <nobr>
+                                        <input type="text" name="userName" id="userName"
                                                placeholder="Username" class="form-control" required>
+<!--                                        <input type="text" name="userName" placeholder="Search" value=""/>-->
                                     </nobr>
+                                    <br/>
+
+<!--                                    <input style="font-size:12pt;color:white;background-color:green;border:2px solid #336600;padding:3px"-->
+<!--                                           type="submit" value="Submit">-->
+
+                                    <button type="submit" class="btn-block btn contact-btn"
+                                            id="message-btn">Search Customer
+                                    </button>
                                 </form>
 
-                                <div class="col-md-12">
-                                <button type="button" class="btn-block btn contact-btn"
-                                        id="message-btn">Create User
-                                </button>
-                                <!--                                    <div class="mt-4 text-uppercase custom-color text-center" id="mail-status"></div>-->
-                            </div>
+
+<!--                                <div class="col-md-12">-->
+<!--                                <button type="button" class="btn-block btn contact-btn"-->
+<!--                                        id="message-btn">Search-->
+<!--                                </button>-->
+<!--                                &lt;!&ndash;                                    <div class="mt-4 text-uppercase custom-color text-center" id="mail-status"></div>&ndash;&gt;-->
+<!--                            </div>-->
                         </div>
-                    </form>
+<!--                    </form>-->
                 </div>
             </div>
         </div>

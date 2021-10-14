@@ -119,10 +119,27 @@ public class SavingAccountController extends SuperController {
     public String transferBetweenAccounts(ModelMap model,
                                         HttpServletRequest request,
                                         HttpServletResponse response) {
-
         model.put("transferBilanz", new TransferBilanz());
-
         return "transfer";
+    }
+
+
+    @GetMapping(value = "/transferFromDebitToDebitForm")
+    public String transferFromDebitToDebitForm(ModelMap model,
+                                               HttpServletRequest request) {
+        model.put("transferBilanz", new TransferBilanz());
+        User user = (User) request.getSession().getAttribute(BVMicroUtils.CUSTOMER_IN_USE);
+        if (user == null ) {
+            model.addAttribute("user", new User());
+            return "findCustomer";
+        }
+        try{
+            user.getSavingAccount().size();
+        }catch (RuntimeException exp){
+            model.addAttribute("user", new User());
+            return "findCustomer";
+        }
+        return "transferDebitToDebit";
     }
 
 
@@ -137,8 +154,23 @@ public class SavingAccountController extends SuperController {
         model.put("toTransferText",transferBilanz.getTransferToAccount() );
         model.put("transferAmount",transferBilanz.getTransferAmount() );
         model.put("notes", transferBilanz.getNotes());
-
         return "transferConfirm";
+    }
+
+
+    @PostMapping(value = "/transferFromDebitToDebitFormReview")
+    public String transferFromDebitToDebitFormReview(ModelMap model,
+                                                             @ModelAttribute("transferBilanz") TransferBilanz transferBilanz) {
+
+        model.put("transferBilanz", transferBilanz);
+        SavingAccount fromAccount= savingAccountService.findByAccountNumber(transferBilanz.getTransferFromAccount());
+        SavingAccount toAccount = savingAccountService.findByAccountNumber(transferBilanz.getTransferToAccount());
+
+        model.put("fromTransferText",fromAccount.getAccountType().getName() +" --- Balance " + BVMicroUtils.formatCurrency(fromAccount.getAccountBalance()) +"--- Minimum Balance "+ BVMicroUtils.formatCurrency(fromAccount.getAccountMinBalance()) );
+        model.put("toTransferText",toAccount.getAccountType().getName() +" --- Balance " + BVMicroUtils.formatCurrency(toAccount.getAccountBalance()) +"--- Initial Loan "+ BVMicroUtils.formatCurrency(toAccount.getAccountMinBalance()) );
+        model.put("transferAmount",transferBilanz.getTransferAmount() );
+        model.put("notes", transferBilanz.getNotes());
+        return "transferDebitToDebitReview";
     }
 
     @PostMapping(value = "/transferFromSavingToLoanAccountsFormReview")
@@ -149,7 +181,7 @@ public class SavingAccountController extends SuperController {
         LoanAccount toAccount = loanAccountService.findByAccountNumber(transferBilanz.getTransferToAccount());
 
         model.put("fromTransferText",fromAccount.getAccountType().getName() +" --- Balance " + BVMicroUtils.formatCurrency(fromAccount.getAccountBalance()) +"--- Minimum Balance "+ BVMicroUtils.formatCurrency(fromAccount.getAccountMinBalance()) );
-        model.put("toTransferText",toAccount.getAccountType().getName() +" --- Balance " + BVMicroUtils.formatCurrency(fromAccount.getAccountBalance()) +"--- Initial Loan "+ BVMicroUtils.formatCurrency(fromAccount.getAccountMinBalance()) );
+        model.put("toTransferText",toAccount.getAccountType().getName() +" --- Balance " + BVMicroUtils.formatCurrency(toAccount.getCurrentLoanAmount()) +"--- Initial Loan "+ BVMicroUtils.formatCurrency(toAccount.getLoanAmount()) );
         model.put("transferAmount",transferBilanz.getTransferAmount() );
         model.put("notes", transferBilanz.getNotes());
 

@@ -360,7 +360,7 @@ public class SavingAccountService extends SuperService {
         savingAccountTransaction.setNotes(notes);
         savingAccountTransaction.setSavingAccount(savingAccount);
         savingAccountTransaction.setSavingAmount(transferAmount*-1);
-
+        savingAccountTransaction.setModeOfPayment(BVMicroUtils.TRANSFER);
         savingAccountTransaction.setBranch(branchInfo.getId());
         savingAccountTransaction.setBranchCode(branchInfo.getCode());
         savingAccountTransaction.setBranchCountry(branchInfo.getCountry());

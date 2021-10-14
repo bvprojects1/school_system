@@ -38,10 +38,10 @@
                     <div th:if="${#authorization.expression('hasAnyAuthority(''ROLE_MANAGER'')')} OR ${#authorization.expression('hasAnyAuthority(''ROLE_AGENT'')')}" class="col-md-6 col-lg-4">
                         <div class="single-choosen-content text-center single-service-content box-pad">
                             <i class="fas fa-piggy-bank"></i>
-                            <h4>SAVINGS</h4>
-                            <p>Create multiple Saving accounts</p>
-                            <a href="/registerUser"> <img width="5px" th:src="@{/assets/images/add.png}"/> </a>
-                            <a href="/findAllCustomers">See More ...</a>
+                            <h4>TRANSFERS</h4>
+                            <p>Transfer between debit accounts</p>
+                            <a href="/transferFromDebitToDebitForm"> <img width="5px" th:src="@{/assets/images/add.png}"/> </a>
+                            <a href="/transferFromDebitToDebitForm">See More ...</a>
                             <span class="fas fa-piggy-bank"></span>
                         </div>
                     </div>
