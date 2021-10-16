@@ -48,7 +48,7 @@
         &nbsp;
         <table border="0" class="center" width="100%" cellpadding="5">
             <tr>
-                <td colspan="7">
+                <td colspan="4">
                     <font size="5px" color="#738980"> <b>SAVING ACCOUNTS</b> </font>
                     <span th:if="${createSavingAccountEligible}">
                         <a href="#" th:href="@{/registerSavingAccount}">
@@ -57,8 +57,13 @@
                     </span>
                 </td>
                 <td colspan="3">
+                    <a href="#" th:href="@{/transferFromDebitToDebitForm}">
+                        Transfer to another account <img width="25px" th:src="@{/assets/images/depositIcon.png}"/>
+                    </a>
+                </td>
+                <td colspan="3">
                     <a href="#" th:href="@{/transferFromSavingToLoanAccountsForm}">
-                        Transfer between accounts <img width="25px" th:src="@{/assets/images/depositIcon.png}"/>
+                        Loan re-payment <img width="25px" th:src="@{/assets/images/depositIcon.png}"/>
                     </a>
                 </td>
             </tr>
