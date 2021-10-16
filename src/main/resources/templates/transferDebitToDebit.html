@@ -22,6 +22,7 @@
                 </tr>
                 <tr>
                     <td align="center" colspan="2">
+
                         <font size="1.5">Account Owner</font><br/>
                         <font size="6">
                             <span style th:text="${session.customerInUse.userName}"/>
@@ -36,12 +37,14 @@
                         </select>
                         <br/>
                         <br/>
+                        <b><div class="error" th:text="${invalidToAccount}"/></b>
                         <label> To Account:</label>
                         <input type="number" size="12" th:field="*{transferToAccount}">
                         <br/>
                         <br/>
                         <label> <b>Enter Amount:</b></label>
                         <input size="6" name="transferAmount" type="number" value="" th:field="*{transferAmount}"/>
+                        <input type="hidden"  id="transferType" th:field="*{transferType}" value="${transferType}">
                         <br/>
                         <br/>
                         <label> Notes:</label>

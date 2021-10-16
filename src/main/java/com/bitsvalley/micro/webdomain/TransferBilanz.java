@@ -11,6 +11,7 @@ public class TransferBilanz {
     String notes;
     String transferFromText;
     String transferToText;
+    String transferType;
 
     public double getTransferAmount() {
         return transferAmount;
@@ -85,4 +86,11 @@ public class TransferBilanz {
         this.transferToText = transferToText;
     }
 
+    public String getTransferType() {
+        return transferType;
+    }
+
+    public void setTransferType(String transferType) {
+        this.transferType = transferType;
+    }
 }

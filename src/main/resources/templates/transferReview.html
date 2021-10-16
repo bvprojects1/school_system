@@ -39,14 +39,13 @@
                         <label><b> Amount:</b></label>
                         <span th:text="${transferAmount}"/>
                         <input type="hidden"  id="amount" th:field="*{transferAmount}">
-
+                        <input type="hidden"  id="transferType" th:field="*{transferType}" value="${transferType}">
                         <br/>
                         <br/>
                         <label> Notes:</label>
                         <span th:text="${notes}"/>
                         <input type="hidden"  id="notes" rows="3" cols="30" th:field="*{notes}"/>
-
-
+                        <br/>
                         <button type="submit" class="btn btn-success">
                             Submit Transfer
                         </button>
