@@ -15,6 +15,7 @@ public class RuntimeSetting {
     private String website;
     private int noOfAccounts;
     private String address;
+    private String vatPercent;
 
 
     public String getFax() {
@@ -119,6 +120,14 @@ public class RuntimeSetting {
 
     public void setUnionLogo(String unionLogo) {
         this.unionLogo = unionLogo;
+    }
+
+    public String getVatPercent() {
+        return vatPercent;
+    }
+
+    public void setVatPercent(String vatPercent) {
+        this.vatPercent = vatPercent;
     }
 
 }

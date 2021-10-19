@@ -10,14 +10,12 @@ import com.bitsvalley.micro.repositories.UserRepository;
 import com.bitsvalley.micro.utils.BVMicroUtils;
 import com.bitsvalley.micro.utils.GeneralLedgerType;
 import com.bitsvalley.micro.webdomain.GeneralLedgerBilanz;
+import com.bitsvalley.micro.webdomain.GeneralLedgerWeb;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * @author Fru Chifen
@@ -79,7 +77,9 @@ public class GeneralLedgerService extends SuperService{
         GeneralLedger gl = new GeneralLedger();
         gl.setAccountNumber(loanAccountTransaction.getLoanAccount().getAccountNumber());
         gl.setAmount(loanAccountTransaction.getAmountReceived());
-        gl.setDate(new Date());
+        Date date = new Date();
+        gl.setDate(date);
+        gl.setCreatedDate(date);
         gl.setLastUpdatedDate(new Date(System.currentTimeMillis()));
         gl.setNotes(loanAccountTransaction.getNotes());
         gl.setReference(loanAccountTransaction.getReference());
@@ -95,13 +95,15 @@ public class GeneralLedgerService extends SuperService{
         GeneralLedger gl = new GeneralLedger();
         gl.setAccountNumber(savingAccountTransaction.getSavingAccount().getAccountNumber());
         gl.setAmount(savingAccountTransaction.getSavingAmount());
-        gl.setDate(new Date());
+        Date date = new Date();
+        gl.setDate(date);
+        gl.setCreatedDate(date);
         gl.setLastUpdatedDate(new Date(System.currentTimeMillis()));
         gl.setNotes(savingAccountTransaction.getNotes());
         gl.setReference(savingAccountTransaction.getReference());
         gl.setLastUpdatedBy(BVMicroUtils.SYSTEM);
         gl.setCreatedBy(BVMicroUtils.SYSTEM);
-        gl.setGlClass(4); //TODO Saving which class in GL ?
+        gl.setGlClass(3); //TODO Saving which class in GL ?
         gl.setType(savingAccountTransaction.getSavingAmount()>=0?"CREDIT":"DEBIT");
         return gl;
     }
@@ -112,37 +114,72 @@ public class GeneralLedgerService extends SuperService{
 
     public GeneralLedgerBilanz findAll() {
             Iterable<GeneralLedger> glIterable = generalLedgerRepository.findAll();
-        List<GeneralLedger> result = new ArrayList<GeneralLedger>();
-        glIterable.forEach(result::add);
-        return getGeneralLedgerBilanz( result);
+        List<GeneralLedgerWeb> generalLedgerWebs = mapperGeneralLedger(glIterable);
+//        List<GeneralLedgerWeb> result = new ArrayList<GeneralLedgerWeb>();
+//        glIterable.forEach(result::add);
+        return getGeneralLedgerBilanz( generalLedgerWebs );
+    }
+
+    public List<GeneralLedgerWeb> mapperGeneralLedger(Iterable<GeneralLedger> resultGeneralLedger){
+        final Iterator<GeneralLedger> iterator = resultGeneralLedger.iterator();
+        List<GeneralLedgerWeb> result = new ArrayList<GeneralLedgerWeb>();
+        while (iterator.hasNext()) {
+            GeneralLedger next = iterator.next();
+            result.add(extracted( next));
+        }
+        return result;
+    }
+
+    private GeneralLedgerWeb  extracted( GeneralLedger next) {
+        GeneralLedgerWeb generalLedgerWeb = new GeneralLedgerWeb();
+        generalLedgerWeb.setCreatedDate(next.getCreatedDate());
+        generalLedgerWeb.setAccountNumber(next.getAccountNumber());
+        generalLedgerWeb.setCreatedBy(next.getCreatedBy());
+        generalLedgerWeb.setGlClass(next.getGlClass());
+        generalLedgerWeb.setLastUpdatedDate(next.getLastUpdatedDate());
+        generalLedgerWeb.setNotes(next.getNotes());
+        generalLedgerWeb.setAmount(next.getAmount());
+        generalLedgerWeb.setLastUpdatedBy(next.getLastUpdatedBy());
+        generalLedgerWeb.setType(next.getType());
+        generalLedgerWeb.setReference(next.getReference());
+        return generalLedgerWeb;
+
     }
 
     @NotNull
-    private GeneralLedgerBilanz getGeneralLedgerBilanz( List<GeneralLedger> generalLedgerList) {
+    private GeneralLedgerBilanz getGeneralLedgerBilanz( List<GeneralLedgerWeb> generalLedgerList) {
         double debitTotal = 0.0;
         double creditTotal = 0.0;
-        GeneralLedgerBilanz bilanz = bilanz = new GeneralLedgerBilanz();
-        for (GeneralLedger current: generalLedgerList ) {
+        double currentTotal = 0.0;
+        GeneralLedgerBilanz bilanz = new GeneralLedgerBilanz();
+        for (GeneralLedgerWeb current: generalLedgerList ) {
 
                 if (GeneralLedgerType.CREDIT.name().equals(current.getType())) {
                     creditTotal = creditTotal + current.getAmount();
                 } else if (GeneralLedgerType.DEBIT.name().equals(current.getType())) {
                     debitTotal = debitTotal + current.getAmount();
                 }
-            }
-        bilanz.setTotal(debitTotal-creditTotal);
+                currentTotal = currentTotal + current.getAmount();
+            current.setCurrentTotal(currentTotal);
+        }
+
+        bilanz.setTotal(debitTotal + creditTotal);
         bilanz.setDebitTotal(debitTotal);
         bilanz.setCreditTotal(creditTotal);
+
         Collections.reverse(generalLedgerList);
-        bilanz.setGeneralLedger(generalLedgerList);
+        bilanz.setGeneralLedgerWeb(generalLedgerList);
         return bilanz;
     }
 
-    
     public GeneralLedgerBilanz findGLByType(String type) {
         List<GeneralLedger> glByType = generalLedgerRepository.findGLByType(type);
-        Collections.reverse(glByType);
-        return getGeneralLedgerBilanz(glByType);
+        List<GeneralLedgerWeb> generalLedgerWebList = new ArrayList<GeneralLedgerWeb>();
+        for ( GeneralLedger aGeneralLedger: glByType ) {
+            generalLedgerWebList.add(extracted(aGeneralLedger));
+        }
+        Collections.reverse( generalLedgerWebList );
+        return getGeneralLedgerBilanz( generalLedgerWebList );
     }
 
 }

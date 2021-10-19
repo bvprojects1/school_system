@@ -80,6 +80,11 @@ public class InitSystemService {
             themeColor2.setPropertyValue("gray");
             runtimePropertiesList.add(themeColor2);
 
+            RuntimeProperties vatPercent = new RuntimeProperties();
+            themeColor2.setPropertyName("vatPercent");
+            themeColor2.setPropertyValue("0.195");
+            runtimePropertiesList.add(themeColor2);
+
             Iterable<RuntimeProperties> runtimePropertiesListIterable = runtimePropertiesList;
             runtimePropertiesRepository.saveAll(runtimePropertiesListIterable);
         }
@@ -115,6 +120,8 @@ public class InitSystemService {
                 runtime.setThemeColor(rp.getPropertyValue());
             }else if (rp.getPropertyName().equals("themeColor2")) {
                 runtime.setThemeColor2(rp.getPropertyValue());
+            }else if (rp.getPropertyName().equals("vatPercent")) {
+                runtime.setVatPercent(rp.getPropertyValue());
             }
         }
         return runtime;

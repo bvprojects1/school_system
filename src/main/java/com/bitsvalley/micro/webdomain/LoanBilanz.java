@@ -24,6 +24,7 @@ public class LoanBilanz {
     String id;
     String accountOwner;
     String amountReceived;
+    String vatPercent;
 
     public String getBranch() {
         return branch;
@@ -199,6 +200,14 @@ public class LoanBilanz {
 
     public void setAmountReceived(String amountReceived) {
         this.amountReceived = amountReceived;
+    }
+
+    public String getVatPercent() {
+        return vatPercent;
+    }
+
+    public void setVatPercent(String vatPercent) {
+        this.vatPercent = vatPercent;
     }
 
     //    public String getSetAmortizationSchedule() {

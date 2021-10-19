@@ -146,6 +146,11 @@ public class SettingController extends SuperController{
         list.add(themeColor2);
 
 
+        RuntimeProperties vatPercent = runtimePropertiesRepository.findByPropertyName("vatPercent");
+        vatPercent.setPropertyValue(runtimeSetting.getVatPercent());
+        list.add(vatPercent);
+
+
 
         runtimePropertiesRepository.saveAll(list);
         request.getSession().setAttribute("runtimeSettings",initSystemService.findAll());

@@ -227,7 +227,7 @@ public class LoanAccountController extends SuperController {
         Optional<LoanAccount> loanAccount = loanAccountService.findById(id);
         LoanAccount aLoanAccount = loanAccount.get();
         List<LoanAccountTransaction> loanAccountTransactionList = aLoanAccount.getLoanAccountTransaction();
-        LoanBilanzList loanBilanzByUserList = loanAccountService.calculateAccountBilanz(loanAccountTransactionList, false);
+        LoanBilanzList loanBilanzByUserList = loanAccountService.calculateAccountBilanz(loanAccountTransactionList, true);
         model.put("name", getLoggedInUserName());
         model.put("loanBilanzList", loanBilanzByUserList);
         loanAccountTransaction.setLoanAccount(aLoanAccount);
@@ -259,7 +259,7 @@ public class LoanAccountController extends SuperController {
 
 
         LoanBilanzList loanBilanzByUserList = loanAccountService.
-                calculateAccountBilanz(loanAccount1.getLoanAccountTransaction(),false);
+                calculateAccountBilanz(loanAccount1.getLoanAccountTransaction(),true);
         RuntimeSetting runtimeSetting = (RuntimeSetting)request.getSession().getAttribute("runtimeSettings");
         String htmlInput = pdfService.generatePDFLoanBilanzList(loanBilanzByUserList, loanAccount1,
                 runtimeSetting.getLogo(), initSystemService.findAll());
@@ -299,7 +299,7 @@ public class LoanAccountController extends SuperController {
         String modeOfPayment = request.getParameter("modeOfPayment");
         loanAccountService.createLoanAccountTransaction(loanAccountTransaction, aLoanAccount, modeOfPayment);
 
-        LoanBilanzList loanBilanzByUserList = loanAccountService.calculateAccountBilanz(aLoanAccount.getLoanAccountTransaction(), false);
+        LoanBilanzList loanBilanzByUserList = loanAccountService.calculateAccountBilanz(aLoanAccount.getLoanAccountTransaction(), true);
         model.put("name", getLoggedInUserName());
         model.put("billSelectionError", BVMicroUtils.formatCurrency(loanAccountTransaction.getLoanAmount()) + " ---- PAYMENT HAS REGISTERED ----- ");
         model.put("loanBilanzList", loanBilanzByUserList);

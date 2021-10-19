@@ -36,22 +36,19 @@
                             </option>
                         </select>
                         <br/>
-                        <br/>
-                        <b><div class="error" th:text="${invalidToAccount}"/></b>
+                        <font size="4"> <div class="error" th:text="${invalidToAccount}"/> </font>
                         <label> To Account:</label>
                         <input type="number" size="12" th:field="*{transferToAccount}">
                         <br/>
                         <br/>
                         <label> <b>Enter Amount:</b></label>
-                        <input size="6" name="transferAmount" type="number" value="" th:field="*{transferAmount}"/>
+                        <input size="6" name="transferAmount" type="number" value="${transferAmount}" />
                         <input type="hidden"  id="transferType" th:field="*{transferType}" value="${transferType}">
                         <br/>
                         <br/>
-                        <label> Notes:</label>
-                        <textarea id="loanNotes" rows="3" cols="30" th:field="*{notes}">
+                        <textarea placeholder="Notes here ..." id="loanNotes" rows="3" cols="30" th:field="*{notes}">
                         </textarea>
 
-                        <br/>
                         <br/>
                         <button type="submit" class="btn btn-success">
                             Next - Review Transfer

@@ -2,6 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <div th:insert="header::navbar"></div>
+
 <br/>
 <br/>
 
@@ -10,19 +11,21 @@
     <div class="project-title-area text-center">
         <div class="col-md-12">
             <div class="project-title-content">
-                <font color="gray;" size="4"><h4> General Ledger Transactions </h4></font> </div>
+                <br/>
+                <font color="gray;" size="4"> General Ledger Transactions </font></div>
             <table border="0" width="80%" class="center">
-                <tr><td>
-                     <font size="1.5px"> DEBIT</font> <br/>
-                    <font color="#2d363f" size="4px">
-                        <div th:text="${#numbers.formatDecimal(generalLedgerBilanz.debitTotal, 0, 'COMMA', 0, 'POINT')}"></div>
-                    </font> </td>
-                <td>
-                    <font color="#2d363f" size="1.5px"> CREDIT </font> <br/>
+                <tr>
+                    <td>
+                        <font size="1.5px"> DEBIT</font> <br/>
+                        <font color="#2d363f" size="4px">
+                            <div th:text="${#numbers.formatDecimal(generalLedgerBilanz.debitTotal, 0, 'COMMA', 0, 'POINT')}"></div>
+                        </font></td>
+                    <td>
+                        <font color="#2d363f" size="1.5px"> CREDIT </font> <br/>
                         <font color="#2d363f" size="4px">
                             <div th:text="${#numbers.formatDecimal(generalLedgerBilanz.creditTotal, 0, 'COMMA', 0, 'POINT')}"></div>
-                    </font>
-                </td>
+                        </font>
+                    </td>
                     <td>
                         <font color="#2d363f" size="1.5px"> TOTAL </font> <br/>
                         <font color="#2d363f" size="4px">
@@ -33,33 +36,42 @@
             </table>
         </div>
     </div>
-    <!--Project title area end-->
-                <table border="0" width="90%" class="center">
-                    <tr>
-                        <th>Date</th>
-                        <th>Reference</th>
-                        <th>Account</th>
-                        <th>Notes</th>
-                        <th>Type</th>
-                        <th>Amount</th>
-                    </tr>
-                    <tr th:each="gl : ${generalLedgerBilanz.generalLedger}">
-                        <td><div th:text="${#dates.format(gl.date, 'dd-MMM-yyyy HH:mm')}"></div></td>
-                        <td th:text="${gl.reference}"></td>
-                        <td th:text="${gl.accountNumber}"></td>
-                        <td th:text="${gl.notes}"></td>
-                        <td>
-                            <a href="#" th:href="@{/findGlByType/{type}(type=${gl.type})}">
-                                <span th:text="${gl.type}"/>
-                            </a>
-                        </td>
-                        <td th:text="${#numbers.formatDecimal(gl.amount, 0, 'COMMA', 0, 'POINT')}"></td>
 
-                    </tr>
-                </table>
+    <!--Project title area end-->
+    <table border="0" width="90%" class="center">
+        <tr>
+            <th>Date</th>
+            <th>Class</th>
+            <th>Reference</th>
+            <th>Account</th>
+            <th>Notes</th>
+            <th><a href="#" th:href="@{/findGlByType/{type}(type='DEBIT')}">DEBIT</a></th>
+            <th><a href="#" th:href="@{/findGlByType/{type}(type='CREDIT')}">CREDIT</a></th>
+            <th><a href="#" th:href="@{/gl}">Balance</a></th>
+        </tr>
+        <tr th:each="gl : ${generalLedgerBilanz.generalLedgerWeb}">
+            <td>
+                <div th:text="${#dates.format(gl.createdDate, 'dd-MMM-yyyy HH:mm')}"></div>
+            </td>
+            <td th:text="${gl.glClass}"></td>
+            <td th:text="${gl.reference}"></td>
+            <td th:text="${gl.accountNumber}"></td>
+            <td th:text="${gl.notes}"></td>
+            <td>
+                <div th:if="${gl.type == 'DEBIT'}">
+                        <span th:text="${#numbers.formatDecimal(gl.amount, 0, 'COMMA', 0, 'POINT')}"></span>
+                </div>
+            </td>
+            <td>
+                <div th:if="${gl.type == 'CREDIT'}">
+                    <span th:text="${#numbers.formatDecimal(gl.amount, 0, 'COMMA', 0, 'POINT')}"></span>
+                </div>
+            </td>
+            <td><span th:text="${#numbers.formatDecimal(gl.currentTotal, 0, 'COMMA', 0, 'POINT')}"/></td>
+        </tr>
+    </table>
 </section>
 
 </body>
 <div th:insert="footer::navbar"></div>
-
 </html>

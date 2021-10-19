@@ -193,7 +193,6 @@
         <tr>
             <th align="center">
                 <font size="3" color="green"> PREVIOUS LOAN PAYMENTS PROCESSED </font>
-
             </th>
             <th>
                 Initial Loan Amount:
@@ -219,6 +218,7 @@
             <th>Notes</th>
             <th>Received</th>
             <th>Interest</th>
+            <th>VAT</th>
             <th>
             </th>
             <td><a href="#" th:href="@{/statementLoanPDF/{id}(id=${loanAccountTransaction.loanAccount.id})}"><img
@@ -234,6 +234,7 @@
             <td th:text="${bilanz.notes}"></td>
             <td th:text="${bilanz.amountReceived}"></td>
             <td th:text="${bilanz.interestAccrued}"></td>
+            <td th:text="${bilanz.vatPercent}"></td>
             <td th:text="${bilanz.currentBalance}"></td>
             <td>
                 <a href="#" th:href="@{/createLoanAccountReceiptPdf/{id}(id=${bilanz.id})}">
