@@ -163,13 +163,15 @@ public class LoanAccountController extends SuperController {
     @GetMapping(value = "/approveLoan/{id}")
     public String approveLoan(@PathVariable("id") long id, ModelMap model) {
         LoanAccount byId = loanAccountService.findById(id).get();
-        byId.setAccountStatus(AccountStatus.ACTIVE);
+        byId.setAccountStatus(AccountStatus.PENDING_PAYOUT);
         byId.setApprovedBy(getLoggedInUserName());
         byId.setApprovedDate(new Date());
-        callCenterService.saveCallCenterLog("LOAN APPROVAL", getLoggedInUserName(), byId.getAccountNumber(),"LOAN ACCOUNT APPROVED"); //TODO ADD DATE
+        callCenterService.saveCallCenterLog("PENDING PAYOUT", getLoggedInUserName(), byId.getAccountNumber(),"LOAN ACCOUNT APPROVED"); //TODO ADD DATE
         loanAccountService.save(byId);
-        return registerLoanAccountTransaction(id, model);
+        model.put("loanDetails",byId);
+        return "loans";
     }
+
 
     @PostMapping(value = "/loanShorteeAccountsForm")
     public String loanGuarantorForm(@ModelAttribute("loanAccount") LoanAccount loanAccount,
@@ -356,6 +358,34 @@ public class LoanAccountController extends SuperController {
         model.put("name", getLoggedInUserName());
         model.put("loanBilanzList", loanBilanzByUserList);
         return "loanBilanz";
+    }
+
+    @GetMapping(value = "/loansPendingAction")
+    public String loansPendingAction( ModelMap model ) {
+        List<LoanAccount> loansPendingAction = loanAccountService.findLoansPendingAction();
+        model.put("loansList", loansPendingAction);
+        return "loans";
+    }
+
+
+    @GetMapping(value = "/loanDetails/{id}")
+    public String loanDetails( @PathVariable("id") long id, ModelMap model ) {
+        Optional<LoanAccount> byId = loanAccountService.findById(id);
+        model.put("loan", byId.get());
+        return "loanDetails";
+    }
+
+
+    @GetMapping(value = "/transferToCurrent/{id}")
+    public String transferToCurrent(@PathVariable("id") long id, ModelMap model) {
+        LoanAccount byId = loanAccountService.findById(id).get();
+        byId.setAccountStatus(AccountStatus.ACTIVE);
+        byId.setApprovedBy(getLoggedInUserName());
+        byId.setApprovedDate(new Date());
+        callCenterService.saveCallCenterLog("ACTIVE", getLoggedInUserName(), byId.getAccountNumber(),"LOAN FUNDS TRANSFERRED TO CURRENT"); //TODO ADD DATE
+        loanAccountService.save(byId);
+        model.put("loanDetails",byId);
+        return "loans";
     }
 
 }

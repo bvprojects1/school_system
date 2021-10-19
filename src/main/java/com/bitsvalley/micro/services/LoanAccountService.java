@@ -132,7 +132,7 @@ public class LoanAccountService extends SuperService {
         Date dateNow = new Date(System.currentTimeMillis());
         loanAccount.setCreatedDate(dateNow);
         loanAccount.setApprovedDate(new Date(0));
-        loanAccount.setApprovedBy(AccountStatus.PENDING_APPROVAL.name());
+        loanAccount.setApprovedBy( AccountStatus.PENDING_APPROVAL.name() );
         loanAccount.setLastUpdatedDate(dateNow);
         loanAccount.setLastPaymentDate(dateNow);
 
@@ -404,11 +404,15 @@ public class LoanAccountService extends SuperService {
         return false;
     }
 
-    //
     private String padding(int i) {
         if (i < 10)
             return "" + 0 + 1;
         return "" + i;
+    }
+
+    public List<LoanAccount> findLoansPendingAction() {
+        List<LoanAccount> byStatusNotActive = loanAccountRepository.findByStatusNotActive();
+        return byStatusNotActive;
     }
 
 }
