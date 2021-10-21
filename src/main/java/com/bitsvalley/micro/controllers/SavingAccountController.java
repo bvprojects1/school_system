@@ -119,7 +119,9 @@ public class SavingAccountController extends SuperController {
     public String transferBetweenAccounts(ModelMap model,
                                         HttpServletRequest request,
                                         HttpServletResponse response) {
-        model.put("transferBilanz", new TransferBilanz());
+        TransferBilanz transferBilanz = new TransferBilanz();
+        transferBilanz.setTransferType(BVMicroUtils.DEBIT_LOAN_TRANSFER);
+        model.put("transferBilanz", transferBilanz);
         return "transfer";
     }
 
@@ -153,7 +155,7 @@ public class SavingAccountController extends SuperController {
 
         model.put("fromTransferText",transferBilanz.getTransferFromAccount() );
         model.put("toTransferText",transferBilanz.getTransferToAccount() );
-        model.put("transferAmount",transferBilanz.getTransferAmount() );
+        model.put("transferAmount",BVMicroUtils.formatCurrency(transferBilanz.getTransferAmount()) );
         model.put("notes", transferBilanz.getNotes());
 
         if(transferBilanz.getTransferType().equals(BVMicroUtils.DEBIT_LOAN_TRANSFER)) {
@@ -180,14 +182,13 @@ public class SavingAccountController extends SuperController {
             model.put("invalidToAccount","Please make sure Account Number is valid" );
             return "transferDebitToDebit";
         }
-
         model.put("transferBilanz", transferBilanz);
         SavingAccount fromAccount = savingAccountService.findByAccountNumber(transferBilanz.getTransferFromAccount());
 
         model.put("transferType", transferBilanz.getTransferType());
         model.put("fromTransferText",fromAccount.getAccountType().getName() +" --- Balance " + BVMicroUtils.formatCurrency(fromAccount.getAccountBalance()) +"--- Minimum Balance "+ BVMicroUtils.formatCurrency(fromAccount.getAccountMinBalance()) );
-        model.put("toTransferText",toAccount.getAccountType().getName() +" --- Balance " + BVMicroUtils.formatCurrency(toAccount.getAccountBalance()) +"--- Initial Loan "+ BVMicroUtils.formatCurrency(toAccount.getAccountMinBalance()) );
-        model.put("transferAmount",transferBilanz.getTransferAmount() );
+        model.put("toTransferText",toAccount.getAccountType().getName() +" --- Balance " + BVMicroUtils.formatCurrency(toAccount.getAccountBalance()) +"--- Minimum Balance "+ BVMicroUtils.formatCurrency(toAccount.getAccountMinBalance()) );
+        model.put("transferAmount", BVMicroUtils.formatCurrency(transferBilanz.getTransferAmount()));
         model.put("notes", transferBilanz.getNotes());
         return "transferReview";
     }

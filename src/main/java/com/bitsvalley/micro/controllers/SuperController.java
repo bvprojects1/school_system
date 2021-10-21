@@ -5,6 +5,7 @@ import com.bitsvalley.micro.repositories.SavingAccountTransactionRepository;
 import com.bitsvalley.micro.repositories.UserRepository;
 import com.bitsvalley.micro.services.*;
 import com.bitsvalley.micro.utils.BVMicroUtils;
+import com.bitsvalley.micro.webdomain.CurrentBilanzList;
 import com.bitsvalley.micro.webdomain.LoanBilanzList;
 import com.bitsvalley.micro.webdomain.SavingBilanzList;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,6 +41,9 @@ public class SuperController {
 
     @Autowired
     private LoanAccountService loanAccountService;
+
+    @Autowired
+    private CurrentAccountService currentAccountService;
 
     @Autowired
     private LoanAccountTransactionService loanAccountTransactionService;
@@ -90,9 +94,11 @@ public class SuperController {
         if("ROLE_CUSTOMER".equals(aUser.getUserRole().get(0).getName())){
             model.put("createSavingAccountEligible", true);
             model.put("createLoanAccountEligible", true);
+            model.put("createCurrentAccountEligible", true);
         }else{
             model.put("createSavingAccountEligible", false);
             model.put("createLoanAccountEligible", false);
+            model.put("createCurrentAccountEligible", false);
         }
         if(null != aUser){
             model.put("user", aUser); //TODO: stay consitent session or model
@@ -100,11 +106,13 @@ public class SuperController {
         }
         SavingBilanzList savingBilanzByUserList = savingAccountService.getSavingBilanzByUser(aUser, false);
         LoanBilanzList loanBilanzByUserList = loanAccountService.getLoanBilanzByUser(aUser, false);
-//        if(null != aUser.getSavingAccount() && 0 < aUser.getSavingAccount().size()){
-            request.getSession().setAttribute("savingBilanzList",savingBilanzByUserList);
+        CurrentBilanzList currentBilanzByUserList = currentAccountService.getCurrentBilanzByUser(aUser, false);
 
+            request.getSession().setAttribute("savingBilanzList",savingBilanzByUserList);
             request.getSession().setAttribute("loanBilanzList",loanBilanzByUserList);
-        if(aUser.getSavingAccount().size() == 0 && aUser.getLoanAccount().size() == 0){
+            request.getSession().setAttribute("currentBilanzList",currentBilanzByUserList);
+
+        if(aUser.getSavingAccount().size() == 0 && aUser.getLoanAccount().size() == 0 && aUser.getCurrentAccount().size() == 0){
             model.put("name", getLoggedInUserName());
             request.getSession().setAttribute("savingBilanzList", savingBilanzByUserList);
             request.getSession().setAttribute(BVMicroUtils.CUSTOMER_IN_USE, aUser);

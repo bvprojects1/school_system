@@ -6,17 +6,17 @@ import java.util.List;
 
 public class GeneralLedgerBilanz {
 
-    List<GeneralLedger> generalLedger;
+    List<GeneralLedgerWeb> generalLedgerWeb;
     double creditTotal;
     double debitTotal;
     double total;
 
-    public List<GeneralLedger> getGeneralLedger() {
-        return generalLedger;
+    public List<GeneralLedgerWeb> getGeneralLedgerWeb() {
+        return generalLedgerWeb;
     }
 
-    public void setGeneralLedger(List<GeneralLedger> generalLedger) {
-        this.generalLedger = generalLedger;
+    public void setGeneralLedgerWeb(List<GeneralLedgerWeb> generalLedgerWeb) {
+        this.generalLedgerWeb = generalLedgerWeb;
     }
 
     public double getCreditTotal() {

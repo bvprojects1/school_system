@@ -8,8 +8,6 @@
 
 <div class="container">
     <section class="choosen-area-start space">
-        <!-- Use this as a header after login-->
-
         <table style="border:0px" class="center" width="100%" cellpadding="5">
             <tr>
                 <td>
@@ -134,11 +132,11 @@
 
                 <td>
                     <a href="#" th:href="@{/registerSavingAccountTransaction/{id}(id=${savingAccount.id})}">
-                        <img width="30px" th:src="@{/assets/images/lens.png}"/>
+                        <img width="30px" th:src="@{/assets/images/aLens.png}"/>
                     </a>
 
                     <a href="#" th:href="@{/showSavingAccountBilanz/{accountId}(accountId=${savingAccount.id})}">
-                        <img width="30px" th:src="@{/assets/images/percentIcon.png}"/>
+                        <img width="30px" th:src="@{/assets/images/aPercent.png}"/>
                     </a>
                     </font>
                 </td>
@@ -153,6 +151,7 @@
                     <font size="5px" color="#738980">
                         <b>LOAN ACCOUNTS</b>
                     </font>
+                    <span class="error" th:text="${loanMustBeInActiveState}"/>
                     <span th:if="${createLoanAccountEligible}">
                         <a href="#" th:href="@{/registerLoanAccount}">
                             <img width="25px" th:src="@{/assets/images/add.png}"/>
@@ -221,10 +220,10 @@
                 </td>
                 <td>
                     <a href="#" th:href="@{/registerLoanAccountTransaction/{id}(id=${loanAccount.id})}">
-                        <img width="30px" th:src="@{/assets/images/lens.png}"/>
+                        <img width="30px" th:src="@{/assets/images/aLens.png}"/>
                     </a>
                     <a href="#" th:href="@{/showLoanAccountBilanz/{accountId}(accountId=${loanAccount.id})}">
-                        <img width="30px" th:src="@{/assets/images/percentIcon.png}"/>
+                        <img width="30px" th:src="@{/assets/images/aPercent.png}"/>
                     </a>
                     </font>
                 </td>
@@ -232,19 +231,99 @@
         </table>
         <br/><br/><br/><br/>
 
-        <table border="0" class="center" width="100%">
+
+        <table border="0" class="center" width="100%" cellpadding="5">
             <tr>
-                <td colspan="8">
+                <td colspan="9">
                     <font size="5px" color="#738980">
                         <b>CURRENT ACCOUNT</b>
                     </font>
-                    <a href="#">
+                    <a href="#" th:href="@{/registerCurrentAccount}">
                         <img width="25px" th:src="@{/assets/images/add.png}"/>
                     </a><br/>
                 </td>
+
+            </tr>
+            <tr>
+
+                <td>
+                    Account Number
+                </td>
+                <td>
+                    Account Balance
+                </td>
+                <td>
+                    Minimum
+                </td>
+                <td>
+                    Locked
+                </td>
+                <td>
+                    Description
+                </td>
+                <td>
+                    Created
+                </td>
+                <td>
+                    Creator
+                </td>
+                <td>
+                    Annual Rate
+                </td>
+                <td>
+                </td>
+            </tr>
+
+            <tr th:each="currentAccount : ${session.customerInUse.currentAccount}">
+
+
+                <td>
+                    <a th:href="@{/callcenter/{id}(id=${currentAccount.accountNumber})}" href="/callcenter">
+
+                        <font size="4">
+                            <span th:text="${currentAccount.accountNumber}"/>
+                        </font>
+                        <span th:if="${currentAccount.defaultedPayment}">
+                            <font size="4" color="red">
+                                **
+                            </font>
+                    </span>
+                    </a>
+                </td>
+                <td th:text="${#numbers.formatDecimal(currentAccount.accountBalance, 0, 'COMMA', 0, 'POINT')}"/>
+
+                <td th:text="${#numbers.formatDecimal(currentAccount.accountMinBalance, 0, 'COMMA', 0, 'POINT')}"/>
+
+                <td th:text="${currentAccount.accountMinBalanceLocked}"/>
+
+                <td th:text="${currentAccount.notes}"/>
+
+                <td th:text="${#dates.format(currentAccount.createdDate, 'dd-MMM-yyyy HH:mm')}"/>
+
+                <td th:text="${currentAccount.createdBy}"/>
+
+                <td>
+                    <span th:text="${currentAccount.interestRate}"/>%
+                </td>
+
+                <td>
+                    <a href="#" th:href="@{/registerCurrentAccountTransaction/{id}(id=${currentAccount.id})}">
+                        <img width="30px" th:src="@{/assets/images/aLens.png}"/>
+                    </a>
+
+                    <a href="#" th:href="@{/showCurrentAccountBilanz/{accountId}(accountId=${currentAccount.id})}">
+                        <img width="30px" th:src="@{/assets/images/aPercent.png}"/>
+                    </a>
+                    </font>
+                </td>
             </tr>
         </table>
-        <br/>
+
+        <br/> <br/> <br/> <br/>
+
+
+
+
 
     </section>
 </div>

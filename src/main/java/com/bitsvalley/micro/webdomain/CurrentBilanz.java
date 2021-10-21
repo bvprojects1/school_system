@@ -1,6 +1,6 @@
 package com.bitsvalley.micro.webdomain;
 
-public class LoanBilanz {
+public class CurrentBilanz {
 
     String branch;
     String createdDate;
@@ -10,7 +10,7 @@ public class LoanBilanz {
     String modeOfPayment;
     String noOfDays;
     String monthYearOfLastPayment;
-    String loanAmount;
+    String currentAmount;
     String monthlyPayment;
     String initiationFee;
     String initialLoanAmount;
@@ -146,12 +146,12 @@ public class LoanBilanz {
         this.noOfDays = noOfDays;
     }
 
-    public String getLoanAmount() {
-        return loanAmount;
+    public String getCurrentAmount() {
+        return currentAmount;
     }
 
-    public void setLoanAmount(String loanAmount) {
-        this.loanAmount = loanAmount;
+    public void setCurrentAmount(String currentAmount) {
+        this.currentAmount = currentAmount;
     }
 
     public String getReference() {

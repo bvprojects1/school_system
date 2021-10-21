@@ -44,6 +44,9 @@ public class User {
     private List<SavingAccount> savingAccount = new ArrayList<SavingAccount>();
 
     @OneToMany(cascade = CascadeType.ALL)
+    private List<CurrentAccount> currentAccount = new ArrayList<CurrentAccount>();
+
+    @OneToMany(cascade = CascadeType.ALL)
     private List<LoanAccount> loanAccount = new ArrayList<LoanAccount>();
 
     private LocalDateTime accountExpiredDate;
@@ -262,5 +265,13 @@ public class User {
 
     public void setBranch(Branch branch) {
         this.branch = branch;
+    }
+
+    public List<CurrentAccount> getCurrentAccount() {
+        return currentAccount;
+    }
+
+    public void setCurrentAccount(List<CurrentAccount> currentAccount) {
+        this.currentAccount = currentAccount;
     }
 }

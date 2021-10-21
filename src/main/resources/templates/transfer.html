@@ -46,7 +46,7 @@
                         <br/>
                         <label> <b>Enter Amount:</b></label>
                         <input size="6" name="transferAmount" type="number" th:field="*{transferAmount}"/>
-
+                        <input type="hidden"  id="transferType" th:field="*{transferType}" value="${transferType}">
                         <br/>
                         <br/>
                         <textarea placeholder="Notes here ...." id="notes" rows="3" cols="30" th:field="*{notes}">

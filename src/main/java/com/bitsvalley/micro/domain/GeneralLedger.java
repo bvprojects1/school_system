@@ -133,4 +133,5 @@ public class GeneralLedger {
     public void setGlClass(int glClass) {
         this.glClass = glClass;
     }
+
 }

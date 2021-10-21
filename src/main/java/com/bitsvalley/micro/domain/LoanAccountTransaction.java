@@ -38,6 +38,7 @@ public class LoanAccountTransaction {
     private String branchCode;
     private String branchCountry;
     private String loanAmountInLetters;
+    private double vatPercent;
 
     @Column(unique = true)
     private String reference;
@@ -251,5 +252,13 @@ public class LoanAccountTransaction {
 
     public void setTransactionCharge(double transactionCharge) {
         this.transactionCharge = transactionCharge;
+    }
+
+    public double getVatPercent() {
+        return vatPercent;
+    }
+
+    public void setVatPercent(double vatPercent) {
+        this.vatPercent = vatPercent;
     }
 }
