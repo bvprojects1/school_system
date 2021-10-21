@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<div th:insert="header::navbar">  </div>
+<br/>
+<br/>
+
+<!-- Contact form area start -->
+<section class="contact-form-area-start space df-bg">
+    <!--Project title area start-->
+    <div class="project-title-area text-center">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="project-title-content">
+                        <h3>CREATE A CURRENT ACCOUNT</h3>
+                        <span><i class="fas fa-crosshairs"></i></span>
+                        <!--
+                        <p>
+                            Cross-agency coordination clean water rural, promising
+                            development turmoil inclusive education transformative community.
+                        </p>-->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <form action="#" th:action="@{/registerCurrentAccountForm}" method="post" th:object="${currentAccount}">
+        <table class="center" width="100%">
+            <tr>
+                <td width="33%"></td>
+                <td><label> Account Type:</label></td>
+                <td><select name="currentType" id="currentType" th:field="*{productCode}">
+                    <option value="20">Current - 20</option>
+                </select>
+                </td>
+            </tr>
+            <tr>
+                <td width="33%"></td>
+                <td width="10%"><label> Minimum balance:</label></td>
+                <td><br/> <input placeholder="0" type="number" th:field="*{accountMinBalance}"/></td>
+            </tr>
+<!--            <tr>-->
+<!--                <td width="33%"></td>-->
+<!--                <td width="10%"><label> Interest Rate:</label></td>-->
+<!--                <td><br/> <input type="number" th:field="*{interestRate}" max="100" maxlength="2"/></td>-->
+<!--            </tr>-->
+
+<!--            <tr>-->
+<!--                <td width="33%"></td>-->
+<!--                <td width="10%"><label> Minimum Payment:</label></td>-->
+<!--                <td><input type="number" th:field="*{minimumPayment}"/></td>-->
+<!--            </tr>-->
+
+<!--            <tr>-->
+<!--                <td width="33%"></td>-->
+<!--                <td width="10%"><label for="intervalOfSaving">Saving Interval:</label></td>-->
+<!--                <td><select name="intervalOfSaving" id="intervalOfSaving">-->
+<!--                    <option value="01 DAY">01 DAY</option>-->
+<!--                    <option value="15 DAY">15 DAY</option>-->
+<!--                    <option value="OTHER">OTHER</option>-->
+<!--                </select></td>-->
+<!--            </tr>-->
+
+            <tr>
+                <td width="33%"></td>
+                <td width="10%"><label> Notes:</label></td>
+                <td><br/><textarea id="notes" rows="3" cols="30" th:field="*{notes}">
+                        </textarea></td>
+            </tr>
+
+            <tr>
+                <td width="33%"></td>
+                <td width="10%"></td>
+                <td>
+                    <br/>
+                    <button type="submit" class="btn btn-success">Create Current Account</button>
+                </td>
+            </tr>
+        </table>
+    </form>
+    <!--                </div>-->
+    <!--            </div>-->
+    <!--        </div>-->
+    <!--    </div>-->
+</section>
+
+<div th:insert="footer::navbar">  </div>
+</html>

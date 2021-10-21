@@ -146,12 +146,12 @@ public class LoanAccountService extends SuperService {
         user.getLoanAccount().add(loanAccount);
         userService.saveUser(user);
 
-        //Create a initial loan transaction of borrowed amount
-        LoanAccountTransaction loanAccountTransaction =
-                loanAccountTransactionService.createLoanAccountTransaction(loanAccount);
+//        //Create a initial loan transaction of borrowed amount
+//        LoanAccountTransaction loanAccountTransaction =
+//                loanAccountTransactionService.createLoanAccountTransaction(loanAccount);
 
-        // Update new loan account transaction
-        generalLedgerService.updateLoanAccountTransaction(loanAccountTransaction);
+//        // Update new loan account transaction
+//        generalLedgerService.updateLoanAccountTransaction(loanAccountTransaction);
 
         //Trace
         callCenterService.saveCallCenterLog("",
@@ -180,7 +180,7 @@ public class LoanAccountService extends SuperService {
         callCenterService.saveCallCenterLog(loanAccountTransaction.getReference(), aLoanAccount.getUser().getUserName(), aLoanAccount.getAccountNumber(),
                 "Loan account Payment received Amount: "+ loanAccountTransaction.getAmountReceived());
 
-        generalLedgerService.updateLoanAccountTransaction(loanAccountTransaction);
+        generalLedgerService.updateGLWithLoanAccountTransaction(loanAccountTransaction,BVMicroUtils.DEBIT);
     }
 
     public LoanBilanzList getLoanBilanzByUser(User user, boolean calculateInterest) {

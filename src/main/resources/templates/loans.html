@@ -51,8 +51,8 @@
                     <img width="75px" th:src="@{/assets/images/pendingApproval.png}"/>
                 </span>
                 <span th:if="${loan.accountStatus.name == 'PENDING_PAYOUT'}">
-                    <img width="75px" th:src="@{/assets/images/approved.png}"/><br/>
                     <font size="2"> <span th:text="${loan.approvedBy}"></span></font><br/>
+                    <img width="75px" th:src="@{/assets/images/approvedIcon.png}"/><br/>
                     <font size="2"> <span th:text="${#dates.format(loan.approvedDate, 'dd-MMM-yyyy HH:mm')}"></span></font>
                 </span>
             </td>

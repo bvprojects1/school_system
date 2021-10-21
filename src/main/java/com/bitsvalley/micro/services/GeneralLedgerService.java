@@ -1,9 +1,6 @@
 package com.bitsvalley.micro.services;
 
-import com.bitsvalley.micro.domain.GeneralLedger;
-import com.bitsvalley.micro.domain.LoanAccount;
-import com.bitsvalley.micro.domain.LoanAccountTransaction;
-import com.bitsvalley.micro.domain.SavingAccountTransaction;
+import com.bitsvalley.micro.domain.*;
 import com.bitsvalley.micro.repositories.AccountTypeRepository;
 import com.bitsvalley.micro.repositories.GeneralLedgerRepository;
 import com.bitsvalley.micro.repositories.UserRepository;
@@ -45,8 +42,13 @@ public class GeneralLedgerService extends SuperService{
         generalLedgerRepository.save(generalLedger);
     }
 
-    public void updateLoanAccountTransaction(LoanAccountTransaction loanAccountTransaction) {
-        GeneralLedger generalLedger = loanAccountGLMapper(loanAccountTransaction);
+    public void updateCurrentAccountTransaction(CurrentAccountTransaction currentAccountTransaction) {
+        GeneralLedger generalLedger = currentAccountGLMapper(currentAccountTransaction);
+        generalLedgerRepository.save(generalLedger);
+    }
+
+    public void updateGLWithLoanAccountTransaction(LoanAccountTransaction loanAccountTransaction, String gLType) {
+        GeneralLedger generalLedger = loanAccountGLMapper(loanAccountTransaction, gLType);
         generalLedgerRepository.save(generalLedger);
     }
 
@@ -73,7 +75,7 @@ public class GeneralLedgerService extends SuperService{
         return gl;
     }
 
-    private GeneralLedger loanAccountGLMapper(LoanAccountTransaction loanAccountTransaction) {
+    private GeneralLedger loanAccountGLMapper(LoanAccountTransaction loanAccountTransaction, String GLType) {
         GeneralLedger gl = new GeneralLedger();
         gl.setAccountNumber(loanAccountTransaction.getLoanAccount().getAccountNumber());
         gl.setAmount(loanAccountTransaction.getAmountReceived());
@@ -87,7 +89,25 @@ public class GeneralLedgerService extends SuperService{
         gl.setCreatedBy(BVMicroUtils.SYSTEM);
         gl.setGlClass(4); //TODO Saving which class in GL ?
         gl.setType(getGeneralLedgerType(loanAccountTransaction.getLoanAmount()));
-        gl.setType(loanAccountTransaction.getLoanAmount()>=0?"CREDIT":"DEBIT");
+        gl.setType(GLType);
+        return gl;
+    }
+
+
+    private GeneralLedger currentAccountGLMapper(CurrentAccountTransaction savingAccountTransaction) {
+        GeneralLedger gl = new GeneralLedger();
+        gl.setAccountNumber(savingAccountTransaction.getCurrentAccount().getAccountNumber());
+        gl.setAmount(savingAccountTransaction.getCurrentAmount());
+        Date date = new Date();
+        gl.setDate(date);
+        gl.setCreatedDate(date);
+        gl.setLastUpdatedDate(new Date(System.currentTimeMillis()));
+        gl.setNotes(savingAccountTransaction.getNotes());
+        gl.setReference(savingAccountTransaction.getReference());
+        gl.setLastUpdatedBy(BVMicroUtils.SYSTEM);
+        gl.setCreatedBy(BVMicroUtils.SYSTEM);
+        gl.setGlClass(3); //TODO Saving which class in GL ?
+        gl.setType(savingAccountTransaction.getCurrentAmount()>=0?"CREDIT":"DEBIT");
         return gl;
     }
 

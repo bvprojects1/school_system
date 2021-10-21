@@ -35,11 +35,15 @@ import java.util.Optional;
 @Controller
 public class LoanAccountController extends SuperController {
 
+
     @Autowired
     UserService userService;
 
     @Autowired
     LoanAccountService loanAccountService;
+
+    @Autowired
+    CurrentAccountService currentAccountService;
 
     @Autowired
     LoanAccountTransactionService loanAccountTransactionService;
@@ -156,6 +160,11 @@ public class LoanAccountController extends SuperController {
 
     @GetMapping(value = "/registerLoanAccountTransaction/{id}")
     public String registerLoanAccountTransaction(@PathVariable("id") long id, ModelMap model) {
+        LoanAccount loanAccount = loanAccountService.findById(id).get();
+        if(!loanAccount.getAccountStatus().name().equals(BVMicroUtils.ACTIVE)){
+            model.put("loanMustBeInActiveState",BVMicroUtils.LOAN_MUST_BE_IN_ACTIVE_STATE);
+            return "userHome";
+        }
         LoanAccountTransaction loanAccountTransaction = new LoanAccountTransaction();
         return displayLoanBilanzNoInterest(id, model, loanAccountTransaction);
     }
@@ -168,8 +177,8 @@ public class LoanAccountController extends SuperController {
         byId.setApprovedDate(new Date());
         callCenterService.saveCallCenterLog("PENDING PAYOUT", getLoggedInUserName(), byId.getAccountNumber(),"LOAN ACCOUNT APPROVED"); //TODO ADD DATE
         loanAccountService.save(byId);
-        model.put("loanDetails",byId);
-        return "loans";
+        model.put("loan",byId);
+        return "loanDetails";
     }
 
 
@@ -272,10 +281,11 @@ public class LoanAccountController extends SuperController {
     @PostMapping(value = "/registerLoanAccountTransactionForm")
     public String registerLoanAccountTransactionForm(ModelMap model, @ModelAttribute("loanAccountTransaction")
             LoanAccountTransaction loanAccountTransaction, HttpServletRequest request) {
-        String loanAccountId = request.getParameter("loanAccountId");
 
+        String loanAccountId = request.getParameter("loanAccountId");
         Optional<LoanAccount> loanAccount = loanAccountService.findById(new Long(loanAccountId));
         LoanAccount aLoanAccount = loanAccount.get();
+
         loanAccountTransaction.setLoanAccount(aLoanAccount);
         loanAccountTransaction.setCreatedDate(LocalDateTime.now());
         loanAccountTransaction.setCreatedBy(getLoggedInUserName());
@@ -303,7 +313,7 @@ public class LoanAccountController extends SuperController {
 
         LoanBilanzList loanBilanzByUserList = loanAccountService.calculateAccountBilanz(aLoanAccount.getLoanAccountTransaction(), true);
         model.put("name", getLoggedInUserName());
-        model.put("billSelectionError", BVMicroUtils.formatCurrency(loanAccountTransaction.getLoanAmount()) + " ---- PAYMENT HAS REGISTERED ----- ");
+        model.put("billSelectionInfo", BVMicroUtils.formatCurrency(loanAccountTransaction.getLoanAmount()) + " ---- PAYMENT HAS REGISTERED ----- ");
         model.put("loanBilanzList", loanBilanzByUserList);
         request.getSession().setAttribute("loanBilanzList", loanBilanzByUserList);
         Optional<User> byId = userRepository.findById(user.getId());
@@ -352,8 +362,12 @@ public class LoanAccountController extends SuperController {
 
     @GetMapping(value = "/showLoanAccountBilanz/{accountId}")
     public String showLoanAccountBilanz(@PathVariable("accountId") long accountId, ModelMap model, HttpServletRequest request) {
-        Optional<LoanAccount> byId = loanAccountService.findById(accountId);
-        List<LoanAccountTransaction> loanAccountTransaction = byId.get().getLoanAccountTransaction();
+        LoanAccount loanAccount = loanAccountService.findById(accountId).get();
+        if(!loanAccount.getAccountStatus().name().equals(BVMicroUtils.ACTIVE)){
+            model.put("loanMustBeInActiveState", BVMicroUtils.LOAN_MUST_BE_IN_ACTIVE_STATE);
+            return "userHome";
+        }
+        List<LoanAccountTransaction> loanAccountTransaction = loanAccount.getLoanAccountTransaction();
         LoanBilanzList loanBilanzByUserList = loanAccountService.calculateAccountBilanz(loanAccountTransaction, true);
         model.put("name", getLoggedInUserName());
         model.put("loanBilanzList", loanBilanzByUserList);
@@ -378,14 +392,30 @@ public class LoanAccountController extends SuperController {
 
     @GetMapping(value = "/transferToCurrent/{id}")
     public String transferToCurrent(@PathVariable("id") long id, ModelMap model) {
-        LoanAccount byId = loanAccountService.findById(id).get();
-        byId.setAccountStatus(AccountStatus.ACTIVE);
-        byId.setApprovedBy(getLoggedInUserName());
-        byId.setApprovedDate(new Date());
-        callCenterService.saveCallCenterLog("ACTIVE", getLoggedInUserName(), byId.getAccountNumber(),"LOAN FUNDS TRANSFERRED TO CURRENT"); //TODO ADD DATE
-        loanAccountService.save(byId);
-        model.put("loanDetails",byId);
-        return "loans";
+        LoanAccount loanAccount = loanAccountService.findById(id).get();
+        loanAccount.setAccountStatus(AccountStatus.ACTIVE);
+        loanAccount.setApprovedBy(getLoggedInUserName());
+        loanAccount.setApprovedDate(new Date());
+
+        //Create a initial loan transaction of borrowed amount
+        LoanAccountTransaction loanAccountTransaction =
+                loanAccountTransactionService.createLoanAccountTransaction(loanAccount);
+
+//        currentAccountService.getCurrentAccountByUser();
+        currentAccountService.createCurrentAccountTransaction(loanAccountTransaction);//
+
+        // Update new loan account transaction
+        loanAccountTransaction.setAmountReceived(loanAccount.getLoanAmount());
+        generalLedgerService.updateGLWithLoanAccountTransaction(loanAccountTransaction, BVMicroUtils.CREDIT);
+        loanAccountTransaction.setAmountReceived(0); // Reset loanAmount
+        callCenterService.saveCallCenterLog("ACTIVE", getLoggedInUserName(), loanAccount.getAccountNumber(),"LOAN FUNDS TRANSFERRED TO CURRENT"); //TODO ADD DATE
+        loanAccountService.save(loanAccount);
+
+
+
+        model.put("loanDetails",loanAccount);
+        model.put("loanDetailsInfo","FUNDS TRANSFERRED to CURRENT ACCOUNT IS NOW ACTIVE");
+        return "loanDetails";
     }
 
 }

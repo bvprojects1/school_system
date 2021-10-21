@@ -33,6 +33,16 @@ public class BVMicroUtils {
     public static final String SYSTEM = "SYSTEM";
     public static final String REGULAR_MONTHLY_PAYMENT_MISSING = "Regular Monthly payment not on schedule might be missing payment for some months. " +
             "Please check the account statement";
+    public static final String PENDING_APPROVAL = "PENDING_APPROVAL";
+    public static final String PENDING_PAYOUT = "PENDING_PAYOUT";
+    public static final String ACTIVE = "ACTIVE";
+
+
+    public static final String LOAN_MUST_BE_IN_ACTIVE_STATE = "LOAN MUST BE IN 'ACTIVE' STATE";
+
+    public static final String CREDIT = "CREDIT";
+    public static final String DEBIT = "DEBIT";
+
 
     public static  String getSaltString() {
         String SALTCHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890"; //TODO: avoid collision

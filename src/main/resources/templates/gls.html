@@ -46,7 +46,9 @@
             <th>Account</th>
             <th>Notes</th>
             <th><a href="#" th:href="@{/findGlByType/{type}(type='DEBIT')}">DEBIT</a></th>
+            <th width="5"></th>
             <th><a href="#" th:href="@{/findGlByType/{type}(type='CREDIT')}">CREDIT</a></th>
+            <th width="5"></th>
             <th><a href="#" th:href="@{/gl}">Balance</a></th>
         </tr>
         <tr th:each="gl : ${generalLedgerBilanz.generalLedgerWeb}">
@@ -62,11 +64,15 @@
                         <span th:text="${#numbers.formatDecimal(gl.amount, 0, 'COMMA', 0, 'POINT')}"></span>
                 </div>
             </td>
+            <td width="5">
+
+            </td>
             <td>
                 <div th:if="${gl.type == 'CREDIT'}">
                     <span th:text="${#numbers.formatDecimal(gl.amount, 0, 'COMMA', 0, 'POINT')}"></span>
                 </div>
             </td>
+            <td width="5"></td>
             <td><span th:text="${#numbers.formatDecimal(gl.currentTotal, 0, 'COMMA', 0, 'POINT')}"/></td>
         </tr>
     </table>

@@ -8,111 +8,120 @@
     <section class="choosen-area-start space">
         <table width="90%" class="center" border="0px">
             <tr>
-                <td align="center">
+                <td align="center" colspan="2">
                     <font color="#BF360C;" size="4">
-                        <h4>LOAN DETAILS
-                        </h4>
+                        <h3>LOAN DETAILS </h3>
                     </font>
                 </td>
+            </tr>
+        </table>
+        <table>
+            <tr>
                 <td>
-                    <a href="#" th:href="@{/approveLoan/{id}(id=${loan.id})}">Approve Loan</a>
+                        <span th:if="${loan.accountStatus.name == 'PENDING_APPROVAL'}">
+                            <a href="#" th:href="@{/approveLoan/{id}(id=${loan.id})}">Approve this Loan</a>
+                        </span>
                 </td>
-                <td>
-                    <a href="#" th:href="@{/transferToCurrent/{id}(id=${loan.id})}">
-                        Transfer loan amount to <span th:text="${loan.user.lastName}"/>'s current account</a>
+                <td colspan="3">
+                    <font color="blue"> <span th:text="${loanDetailsInfo}"/></font>
+                    <span th:if="${loan.accountStatus.name == 'PENDING_PAYOUT'}">
+
+                            Transfer loan amount(<span
+                                th:text="${#numbers.formatDecimal(loan.loanAmount, 0, 'COMMA', 0, 'POINT')}"/>) to <span
+                                th:text="${loan.user.lastName}"/>'s current account<br/>
+                            <font size="2"> This loan was APPROVED by <span th:text="${loan.approvedBy}"/> on <span th:text="${#dates.format(loan.approvedDate, 'dd-MMM-yyyy HH:mm')}"/> </font>
+                        <a href="#" th:href="@{/transferToCurrent/{id}(id=${loan.id})}"> MAKE TRANSFER TO CURRENT ACCOUNT</a>
+                    </span>
+                    <br/>
+                    <br/>
                 </td>
             </tr>
             <tr>
-                <td>
-                    <font size="3">Loan Owner</font>
+                <td align="center">
+                    <font size="2">Loan Owner</font>
                     <br/>
                     <font size="4">
                         <span th:text="${loan.user.gender}"/>.
                         <span th:text="${loan.user.firstName}"/> <span th:text="${loan.user.lastName}"/>
                     </font>
-                <td></td>
-                <td> Account Number <br/>
+                </td>
+                <td align="center"><font size="2"> Account Number</font> <br/>
                     <font size="4px">
                         <div th:text="${loan.accountNumber}"/>
                     </font>
                 </td>
-                <td> Loan Amount<br/>
+                <td align="center"><font size="2">Loan Amount</font><br/>
                     <font size="4px">
                         <span th:text="${#numbers.formatDecimal(loan.loanAmount, 0, 'COMMA', 0, 'POINT')}"/>
                     </font>
                 </td>
-                <td> Created By<br/>
+                <td align="center"><font size="2">Created By</font><br/>
                     <font size="4px">
                         <div th:text="${loan.createdBy}"/>
                     </font>
                 </td>
-                <td>Created On <br/>
+                <td align="center"><font size="2">Created On </font><br/>
                     <font size="4px">
                         <span th:text="${#dates.format(loan.createdDate, 'dd-MMM-yyyy HH:mm')}"></span>
                     </font>
                 </td>
             </tr>
-        </table>
-        <table style="border:0px" class="center" width="100%" cellpadding="5">
             <tr>
-                <td>
-                    <font size="3">Loan Status</font>
+                <td align="center">
+                    <font size="2">Loan Status</font>
                     <br/>
                     <font size="4">
                         <span th:text="${loan.accountStatus.name}"/>
                     </font>
-                <td></td>
-                <td> Monthly Payment <br/>
+                </td>
+                <td align="center"><font size="2"> Monthly Payment</font> <br/>
                     <font size="4px">
                         <span th:text="${#numbers.formatDecimal(loan.monthlyPayment, 0, 'COMMA', 0, 'POINT')}"/>
                     </font>
                 </td>
-                <td> Account Type<br/>
+                <td align="center"><font size="2">Account Type</font><br/>
                     <font size="4px">
                         <div th:text="${loan.accountType.name}"/>
                     </font>
                 </td>
-                <td> Interest Rate<br/>
+                <td align="center"><font size="2"> Interest Rate</font><br/>
                     <font size="4px">
                         <div th:text="${loan.interestRate}"/>
                     </font>
                 </td>
-                <td>Country/ Branch Created <br/>
+                <td align="center">Country/ Branch Created <br/>
                     <font size="4px">
                         <span th:text="${loan.country}"/>/
                         <span th:text="${loan.branchCode}"/>
                     </font>
                 </td>
             </tr>
-        </table>
-
-        <table style="border:0px" class="center" width="100%" cellpadding="5">
             <tr>
-                <td>
-                    <font size="3">Loan Term</font>
+                <td align="center">
+                    <font size="2">Loan Term</font>
                     <br/>
                     <font size="4">
                         <span th:text="${loan.termOfLoan}"/>
                     </font>
-                <td></td>
-                <td> Loan Shortee <br/>
+                </td>
+                <td align="center"><font size="2"> Loan Shortee</font> <br/>
                     <font size="4px">
                         <span th:text="${loan.shorteeAccounts[0].savingAccount.user.gender}"/>
                         <span th:text="${loan.shorteeAccounts[0].savingAccount.user.lastName}"/>,
                         <span th:text="${loan.shorteeAccounts[0].savingAccount.user.firstName}"/>
                     </font>
                 </td>
-                <td> Term of Loan<br/>
+                <td align="center"><font size="2"> Term of Loan</font><br/>
                     <font size="4px">
                         <div th:text="${loan.termOfLoan}"/>
                     </font>
                 </td>
-                <td> Shortee Account Number<br/>
+                <td align="center"><font size="2">Shortee Account Number</font><br/>
                     <font size="4px">
                         <span th:text="${loan.shorteeAccounts[0].savingAccount.accountNumber}"/>
                     </font>
                 </td>
-                <td>Notes <br/>
+                <td align="center"><font size="2">Notes </font><br/>
                     <font size="4px">
                         <span th:text="${loan.notes}"/>
                     </font>

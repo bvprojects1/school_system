@@ -81,9 +81,9 @@ public class InitSystemService {
             runtimePropertiesList.add(themeColor2);
 
             RuntimeProperties vatPercent = new RuntimeProperties();
-            themeColor2.setPropertyName("vatPercent");
-            themeColor2.setPropertyValue("0.195");
-            runtimePropertiesList.add(themeColor2);
+            vatPercent.setPropertyName("vatPercent");
+            vatPercent.setPropertyValue("0.195");
+            runtimePropertiesList.add(vatPercent);
 
             Iterable<RuntimeProperties> runtimePropertiesListIterable = runtimePropertiesList;
             runtimePropertiesRepository.saveAll(runtimePropertiesListIterable);
