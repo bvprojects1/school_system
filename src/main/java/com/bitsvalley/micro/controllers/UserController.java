@@ -192,7 +192,7 @@ public class UserController extends SuperController{
 
     @GetMapping(value = "/createSavingAccountReceiptPdf/{id}")
     public void savingReceiptPDF(@PathVariable("id") long id, ModelMap model, HttpServletRequest request, HttpServletResponse response) throws IOException {
-        response.setHeader("Content-disposition","attachment;filename="+ "statementPDF.pdf");
+        response.setHeader("Content-disposition","attachment;filename="+ "statementSaving.pdf");
 
         ByteArrayOutputStream byteArrayOutputStream = null;
         ByteArrayInputStream byteArrayInputStream = null;

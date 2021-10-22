@@ -411,9 +411,7 @@ public class LoanAccountController extends SuperController {
         callCenterService.saveCallCenterLog("ACTIVE", getLoggedInUserName(), loanAccount.getAccountNumber(),"LOAN FUNDS TRANSFERRED TO CURRENT"); //TODO ADD DATE
         loanAccountService.save(loanAccount);
 
-
-
-        model.put("loanDetails",loanAccount);
+        model.put("loan",loanAccount);
         model.put("loanDetailsInfo","FUNDS TRANSFERRED to CURRENT ACCOUNT IS NOW ACTIVE");
         return "loanDetails";
     }

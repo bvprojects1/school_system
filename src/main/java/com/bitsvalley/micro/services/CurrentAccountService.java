@@ -117,6 +117,11 @@ public class CurrentAccountService extends SuperService {
 
     @Transactional
     public void createCurrentAccountTransaction(CurrentAccountTransaction currentAccountTransaction) {
+
+        currentAccountTransaction.setCreatedBy(getLoggedInUserName());
+        currentAccountTransaction.setCreatedDate(LocalDateTime.now());
+        currentAccountTransaction.setReference(BVMicroUtils.getSaltString());
+
         currentAccountTransactionRepository.save(currentAccountTransaction);
 
         generalLedgerService.updateCurrentAccountTransaction(currentAccountTransaction);
@@ -128,20 +133,25 @@ public class CurrentAccountService extends SuperService {
         String loggedInUserName = getLoggedInUserName();
         Branch branchInfo = branchService.getBranchInfo(loggedInUserName);
 
+        List<CurrentAccount> currentAccounts = loanAccountTransaction.getLoanAccount().
+                getUser().getCurrentAccount();
+        CurrentAccount currentAccount = currentAccounts.get(0);
+
         CurrentAccountTransaction currentAccountTransaction = new CurrentAccountTransaction();
         currentAccountTransaction.setCurrentAmount(loanAccountTransaction.getLoanAmount());
-        currentAccountTransaction.setCurrentAmountInLetters("TRANSFER");
+        currentAccountTransaction.setCurrentAmountInLetters(BVMicroUtils.TRANSFER);
+        currentAccountTransaction.setModeOfPayment(BVMicroUtils.TRANSFER);
         currentAccountTransaction.setBranch(branchInfo.getId());
         currentAccountTransaction.setBranchCode(branchInfo.getCode());
         currentAccountTransaction.setBranchCountry(branchInfo.getCountry());
-
+        currentAccountTransaction.setCurrentAccount(currentAccount);
         currentAccountTransaction.setNotes("Transfer, loan init payment "+ loanAccountTransaction.getLoanAccount().getAccountNumber());
         currentAccountTransaction.setReference(BVMicroUtils.getSaltString());
         currentAccountTransaction.setCreatedBy(getLoggedInUserName());
         currentAccountTransaction.setCreatedDate(LocalDateTime.now());
         currentAccountTransactionRepository.save(currentAccountTransaction);
-
-
+        currentAccount.getCurrentAccountTransaction().add(currentAccountTransaction);
+        currentAccountRepository.save(currentAccount);
 
         generalLedgerService.updateCurrentAccountTransaction(currentAccountTransaction);
 

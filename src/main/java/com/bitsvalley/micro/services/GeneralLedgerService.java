@@ -6,6 +6,7 @@ import com.bitsvalley.micro.repositories.GeneralLedgerRepository;
 import com.bitsvalley.micro.repositories.UserRepository;
 import com.bitsvalley.micro.utils.BVMicroUtils;
 import com.bitsvalley.micro.utils.GeneralLedgerType;
+import com.bitsvalley.micro.webdomain.GLSearchDTO;
 import com.bitsvalley.micro.webdomain.GeneralLedgerBilanz;
 import com.bitsvalley.micro.webdomain.GeneralLedgerWeb;
 import org.jetbrains.annotations.NotNull;
@@ -107,7 +108,7 @@ public class GeneralLedgerService extends SuperService{
         gl.setLastUpdatedBy(BVMicroUtils.SYSTEM);
         gl.setCreatedBy(BVMicroUtils.SYSTEM);
         gl.setGlClass(3); //TODO Saving which class in GL ?
-        gl.setType(savingAccountTransaction.getCurrentAmount()>=0?"CREDIT":"DEBIT");
+        gl.setType(savingAccountTransaction.getCurrentAmount()<=0?"CREDIT":"DEBIT");
         return gl;
     }
 
@@ -149,6 +150,17 @@ public class GeneralLedgerService extends SuperService{
         }
         return result;
     }
+
+
+    public List<GeneralLedgerWeb> mapperGeneralLedger(List<GeneralLedger> gls){
+
+        List<GeneralLedgerWeb> result = new ArrayList<GeneralLedgerWeb>();
+        for (GeneralLedger next : gls ) {
+            result.add(extracted( next));
+        }
+        return result;
+    }
+
 
     private GeneralLedgerWeb  extracted( GeneralLedger next) {
         GeneralLedgerWeb generalLedgerWeb = new GeneralLedgerWeb();
@@ -202,4 +214,10 @@ public class GeneralLedgerService extends SuperService{
         return getGeneralLedgerBilanz( generalLedgerWebList );
     }
 
+    public GeneralLedgerBilanz searchCriteria(String startDate, String endDate, String type, String accountNumber) {
+        List<GeneralLedger> glList = generalLedgerRepository.searchCriteria( startDate, endDate );
+        List<GeneralLedgerWeb> generalLedgerWebs = mapperGeneralLedger(glList);
+        GeneralLedgerBilanz generalLedgerBilanz = getGeneralLedgerBilanz(generalLedgerWebs);
+        return generalLedgerBilanz;
+    }
 }

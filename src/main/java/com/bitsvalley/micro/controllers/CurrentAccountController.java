@@ -18,8 +18,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -43,9 +46,17 @@ public class CurrentAccountController extends SuperController {
     @Autowired
     UserRepository userRepository;
 
+    @Autowired
+    CurrentAccountTransactionService currentAccountTransactionService;
 
     @Autowired
     BranchService branchService;
+
+    @Autowired
+    PdfService pdfService;
+
+    @Autowired
+    InitSystemService initSystemService;
 
 
     @GetMapping(value = "/registerCurrentAccount")
@@ -90,20 +101,44 @@ public class CurrentAccountController extends SuperController {
         return "currentBilanzNoInterest";
     }
 
-//    @GetMapping(value = "/statementPDF/{id}")
-//    public void generateStatementPDF(@PathVariable("id") long id, ModelMap model, HttpServletRequest request, HttpServletResponse response) throws IOException {
-//
-//        response.setHeader("Content-disposition","attachment;filename="+ "statementSavingPDF.pdf");
+
+
+
+
+    @GetMapping(value = "/createCurrentAccountReceiptPdf/{id}")
+    public void currentReceiptPDF(@PathVariable("id") long id, ModelMap model, HttpServletRequest request, HttpServletResponse response) throws IOException {
+        response.setHeader("Content-disposition","attachment;filename="+ "statementCurrent.pdf");
+
+        ByteArrayOutputStream byteArrayOutputStream = null;
+        ByteArrayInputStream byteArrayInputStream = null;
+//        try {
+        OutputStream responseOutputStream = response.getOutputStream();
+        CurrentAccountTransaction currentAccountTransaction = currentAccountTransactionService.findById(new Long(id)).get();
+        CurrentAccountTransaction aCurrentAccountTransaction = currentAccountTransaction;
+        String htmlInput = pdfService.generateCurrentTransactionReceiptPDF(aCurrentAccountTransaction,initSystemService.findAll());
+        generateByteOutputStream(response,htmlInput);
+
+    }
+
+
+
+    @GetMapping(value = "/statementCurrentPDF/{id}")
+    public void generateStatementPDF(@PathVariable("id") long id, ModelMap model, HttpServletRequest request, HttpServletResponse response) throws IOException {
+
+        response.setHeader("Content-disposition","attachment;filename="+ "currentCurrent.pdf");
 //            OutputStream responseOutputStream = response.getOutputStream();
-//            Optional<SavingAccount> savingAccount = savingAccountService.findById(new Long(id));
-//            SavingBilanzList savingBilanzByUserList = savingAccountService.
-//                    calculateAccountBilanz(savingAccount.get().getSavingAccountTransaction(),false);
-//            RuntimeSetting runtimeSetting = (RuntimeSetting)request.getSession().getAttribute("runtimeSettings");
-//            String htmlInput = pdfService.generatePDFSavingBilanzList(savingBilanzByUserList, savingAccount.get(),runtimeSetting.getLogo(), initSystemService.findAll() );
-//            generateByteOutputStream(response, htmlInput);
-//    }
-//
-//
+            CurrentAccount currentAccount = currentAccountService.findById(new Long(id)).get();
+            CurrentBilanzList currentBilanzByUserList = currentAccountService.
+                    calculateAccountBilanz(currentAccount.getCurrentAccountTransaction(),false);
+            RuntimeSetting runtimeSetting = (RuntimeSetting)request.getSession().getAttribute("runtimeSettings");
+            String htmlInput = pdfService.generatePDFCurrentBilanzList(currentBilanzByUserList,
+                    currentAccount,runtimeSetting.getLogo(),
+                    initSystemService.findAll() );
+            generateByteOutputStream(response, htmlInput);
+
+    }
+
+
 //    @GetMapping(value = "/transferFromSavingToLoanAccountsForm")
 //    public String transferBetweenAccounts(ModelMap model,
 //                                        HttpServletRequest request,
@@ -250,20 +285,20 @@ public class CurrentAccountController extends SuperController {
         String username = getLoggedInUserName();
         callCenterService.saveCallCenterLog(currentAccountTransaction.getReference(),
                 username, currentAccount.get().getAccountNumber(),
-                "Saving account transaction made "+ BVMicroUtils.formatCurrency(currentAccountTransaction.getCurrentAmount()));
+                "Current account transaction made "+ BVMicroUtils.formatCurrency(currentAccountTransaction.getCurrentAmount()));
 
-        CurrentBilanzList savingBilanzByUserList = currentAccountService.calculateAccountBilanz(currentAccount.get().getCurrentAccountTransaction(), false);
+        CurrentBilanzList currentBilanzByUserList = currentAccountService.calculateAccountBilanz(currentAccount.get().getCurrentAccountTransaction(), false);
         model.put("name", username );
         model.put("billSelectionInfo", BVMicroUtils.formatCurrency(currentAccountTransaction.getCurrentAmount()) + " ---- PAYMENT HAS REGISTERED ----- ");
-        model.put("savingBilanzList", savingBilanzByUserList);
-        request.getSession().setAttribute("savingBilanzList", savingBilanzByUserList);
+        model.put("currentBilanzList", currentBilanzByUserList);
+        request.getSession().setAttribute("currentBilanzList", currentBilanzByUserList);
         Optional<User> byId = userRepository.findById(user.getId());
         request.getSession().setAttribute(BVMicroUtils.CUSTOMER_IN_USE, byId.get());
         currentAccountTransaction.setCurrentAccount(currentAccount.get());
         resetCurrentAccountTransaction(currentAccountTransaction); //reset BillSelection and amount
         currentAccountTransaction.setNotes("");
-        model.put("savingAccountTransaction", currentAccountTransaction);
-        return "savingBilanzNoInterest";
+        model.put("currentAccountTransaction", currentAccountTransaction);
+        return "currentBilanzNoInterest";
 
     }
 //

@@ -3,8 +3,6 @@
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <div th:insert="header::navbar"></div>
 
-<br/>
-<br/>
 
 <section class="contact-form-area-start space df-bg">
     <!--Project title area start-->
@@ -12,7 +10,44 @@
         <div class="col-md-12">
             <div class="project-title-content">
                 <br/>
-                <font color="gray;" size="4"> General Ledger Transactions </font></div>
+                <font color="gray;" size="4"> GENERAL LEDGER TRANSACTIONS </font></div>
+            <form action="#" th:action="@{/filterGenaralLedger}" method="post" th:object="${glSearchDTO}">
+                <table border="0" width="80%" class="center">
+                    <tr>
+                        <td>
+                            Type<select class="select" name="creditOrDebit" id="creditOrDebit" th:field="*{creditOrDebit}">
+                            <option value="ALL">ALL</option>
+                            <option value="CREDIT">CREDIT</option>
+                            <option value="DEBIT">DEBIT</option>
+                        </select>
+                        </td>
+                        <td width="5"></td>
+                        <td>
+                            Start Date<input type="date" name="startDate" th:field="*{startDate}" id="startDate"
+                                              placeholder="Start Date:" class="form-control" required>
+                        </td>
+                        <td width="5"></td>
+                        <td>
+                            End Date<input type="date" name="endDate" th:field="*{endDate}" id="endDate"
+                                            placeholder="End Date:" class="form-control" required>
+                        </td>
+                        <td width="5"></td>
+
+                        <td>
+                            Account No<input type="accountNumber" name="accountNumber" th:field="*{accountNumber}" id="accountNumber"
+                                   placeholder="accountNumber" class="form-control"/>
+                        </td>
+                        <td width="5"></td>
+                        <td>
+                            <br/>
+                            <button type="submit" class="btn btn-success">SEARCH RECORDS</button>
+                        </td>
+                    </tr>
+                </table>
+            </form>
+
+            <br/>
+
             <table border="0" width="80%" class="center">
                 <tr>
                     <td>
@@ -61,7 +96,7 @@
             <td th:text="${gl.notes}"></td>
             <td>
                 <div th:if="${gl.type == 'DEBIT'}">
-                        <span th:text="${#numbers.formatDecimal(gl.amount, 0, 'COMMA', 0, 'POINT')}"></span>
+                    <span th:text="${#numbers.formatDecimal(gl.amount, 0, 'COMMA', 0, 'POINT')}"></span>
                 </div>
             </td>
             <td width="5">
