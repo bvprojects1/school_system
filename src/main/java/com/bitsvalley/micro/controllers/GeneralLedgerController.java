@@ -7,12 +7,15 @@ import com.bitsvalley.micro.repositories.CallCenterRepository;
 import com.bitsvalley.micro.repositories.GeneralLedgerRepository;
 import com.bitsvalley.micro.services.CallCenterService;
 import com.bitsvalley.micro.services.GeneralLedgerService;
+import com.bitsvalley.micro.webdomain.GLSearchDTO;
 import com.bitsvalley.micro.webdomain.GeneralLedgerBilanz;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
@@ -42,20 +45,37 @@ public class GeneralLedgerController extends SuperController{
 //        return "gl";
 //    }
 
+
+
+    @PostMapping(value = "/filterGenaralLedger")
+    public String showGlReference(ModelMap model, HttpServletRequest request,
+                                  @ModelAttribute("glSearchDTO") GLSearchDTO glSearchDTO){
+
+        GeneralLedgerBilanz generalLedgerBilanz =
+                generalLedgerService.searchCriteria(glSearchDTO.getStartDate()+" 00:00:00.000", glSearchDTO.getEndDate()+" 23:59:59.999",
+                glSearchDTO.getCreditOrDebit(), glSearchDTO.getAccountNumber());
+        model.put("generalLedgerBilanz",generalLedgerBilanz);
+        model.put("glSearchDTO",new GLSearchDTO());
+        return "gls";
+    }
+
     @GetMapping(value = "/gl/{reference}")
     public String showGlReference(@PathVariable("reference") String reference, ModelMap model, HttpServletRequest request) {
         List<GeneralLedger> glList = generalLedgerService.findByAccountNumber(reference);
         Collections.reverse(glList);
+        model.put("glSearchDTO",new GLSearchDTO());
         model.put("glList", glList);
         model.put("reference",reference );
-        return "gl";
+        return "gls";
     }
 
 
     @GetMapping(value = "/gl")
     public String showAllGL( ModelMap model, HttpServletRequest request) {
+
         GeneralLedgerBilanz generalLedgerBilanz = generalLedgerService.findAll();
         model.put("generalLedgerBilanz",generalLedgerBilanz);
+        model.put("glSearchDTO",new GLSearchDTO());
         return "gls";
     }
 
@@ -64,6 +84,7 @@ public class GeneralLedgerController extends SuperController{
     public String findByGlType(@PathVariable("type") String type,ModelMap model) {
         GeneralLedgerBilanz generalLedgerBilanz = generalLedgerService.findGLByType(type);
         model.put("generalLedgerBilanz",generalLedgerBilanz);
+        model.put("glSearchDTO",new GLSearchDTO());
         return "gls";
     }
 }
