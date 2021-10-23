@@ -267,7 +267,7 @@ public class SavingAccountController extends SuperController {
 
         SavingBilanzList savingBilanzByUserList = savingAccountService.calculateAccountBilanz(savingAccount.get().getSavingAccountTransaction(), false);
         model.put("name", username );
-        model.put("billSelectionError", BVMicroUtils.formatCurrency(savingAccountTransaction.getSavingAmount()) + " ---- PAYMENT HAS REGISTERED ----- ");
+        model.put("billSelectionInfo", BVMicroUtils.formatCurrency(savingAccountTransaction.getSavingAmount()) + " ---- PAYMENT HAS REGISTERED ----- ");
         model.put("savingBilanzList", savingBilanzByUserList);
         request.getSession().setAttribute("savingBilanzList", savingBilanzByUserList);
         Optional<User> byId = userRepository.findById(user.getId());

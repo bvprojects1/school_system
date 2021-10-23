@@ -9,6 +9,7 @@ import com.bitsvalley.micro.utils.GeneralLedgerType;
 import com.bitsvalley.micro.webdomain.GLSearchDTO;
 import com.bitsvalley.micro.webdomain.GeneralLedgerBilanz;
 import com.bitsvalley.micro.webdomain.GeneralLedgerWeb;
+import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -215,9 +216,22 @@ public class GeneralLedgerService extends SuperService{
     }
 
     public GeneralLedgerBilanz searchCriteria(String startDate, String endDate, String type, String accountNumber) {
-        List<GeneralLedger> glList = generalLedgerRepository.searchCriteria( startDate, endDate );
+        List<GeneralLedger> glList = null;
+        if(StringUtils.isNotEmpty(type) && StringUtils.isNotEmpty(accountNumber) ){
+            if(type.equals("ALL")){
+                glList = generalLedgerRepository.searchCriteriaWithAccountNumber( startDate, endDate, accountNumber );
+            }
+            else {
+                glList = generalLedgerRepository.searchCriteriaWithAccountNumberAndType(type, startDate, endDate, accountNumber );
+            }
+        }else if("ALL".equals(type) && StringUtils.isEmpty(accountNumber) ){
+            glList = generalLedgerRepository.searchCriteria( startDate, endDate );
+        }else if( accountNumber != null){
+            glList = generalLedgerRepository.searchCriteriaWithAccountNumber( startDate, endDate , accountNumber);
+        }
         List<GeneralLedgerWeb> generalLedgerWebs = mapperGeneralLedger(glList);
         GeneralLedgerBilanz generalLedgerBilanz = getGeneralLedgerBilanz(generalLedgerWebs);
         return generalLedgerBilanz;
     }
+
 }

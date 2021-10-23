@@ -15,4 +15,11 @@ public interface GeneralLedgerRepository extends CrudRepository<GeneralLedger, L
     @Query(value = "SELECT * FROM GENERALLEGDER gl WHERE gl.created_date BETWEEN :startDate AND :endDate", nativeQuery = true)
     List<GeneralLedger> searchCriteria(String startDate, String endDate);
 
+    @Query(value = "SELECT * FROM GENERALLEGDER gl WHERE gl.created_date BETWEEN :startDate AND :endDate AND account_number = :accountNumber", nativeQuery = true)
+    List<GeneralLedger> searchCriteriaWithAccountNumber(String startDate, String endDate, String accountNumber);
+
+    @Query(value = "SELECT * FROM GENERALLEGDER gl WHERE gl.type = :type AND gl.created_date BETWEEN :startDate AND :endDate AND account_number = :accountNumber", nativeQuery = true)
+    List<GeneralLedger> searchCriteriaWithAccountNumberAndType(String type, String startDate, String endDate, String accountNumber);
+
+
 }
