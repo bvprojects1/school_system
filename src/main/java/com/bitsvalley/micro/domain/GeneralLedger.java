@@ -1,7 +1,5 @@
 package com.bitsvalley.micro.domain;
 
-import com.bitsvalley.micro.utils.GeneralLedgerType;
-
 import javax.persistence.*;
 import java.util.Date;
 
@@ -12,12 +10,11 @@ import java.util.Date;
 
 @Entity
 @Table(name = "generallegder")
-public class GeneralLedger {
+public class LedgerEntry {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
-
     private String type;
     private String reference;
     private String accountNumber;
@@ -28,13 +25,15 @@ public class GeneralLedger {
     private double amount;
     private Date date;
     private String notes;
+    @ManyToOne
+    private LedgerAccount ledgerAccount;
     private int glClass;
 
-    public GeneralLedger() {
+    public LedgerEntry() {
         super();
     }
 
-    public GeneralLedger(String user, String desc, Date targetDate, boolean isDone) {
+    public LedgerEntry(String user, String desc, Date targetDate, boolean isDone) {
         super();
     }
 
@@ -132,6 +131,14 @@ public class GeneralLedger {
 
     public void setGlClass(int glClass) {
         this.glClass = glClass;
+    }
+
+    public LedgerAccount getLedgerAccount() {
+        return ledgerAccount;
+    }
+
+    public void setLedgerAccount(LedgerAccount ledgerAccount) {
+        this.ledgerAccount = ledgerAccount;
     }
 
 }
