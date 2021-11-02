@@ -10,7 +10,7 @@ import java.util.Date;
 
 @Entity
 @Table(name = "generallegder")
-public class LedgerEntry {
+public class GeneralLedger {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -25,15 +25,17 @@ public class LedgerEntry {
     private double amount;
     private Date date;
     private String notes;
-    @ManyToOne
+
+    @OneToOne(cascade = CascadeType.ALL)
     private LedgerAccount ledgerAccount;
+
     private int glClass;
 
-    public LedgerEntry() {
+    public GeneralLedger() {
         super();
     }
 
-    public LedgerEntry(String user, String desc, Date targetDate, boolean isDone) {
+    public GeneralLedger(String user, String desc, Date targetDate, boolean isDone) {
         super();
     }
 

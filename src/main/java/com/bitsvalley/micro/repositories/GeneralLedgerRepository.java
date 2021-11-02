@@ -1,7 +1,7 @@
 package com.bitsvalley.micro.repositories;
 
-import com.bitsvalley.micro.domain.CallCenter;
 import com.bitsvalley.micro.domain.GeneralLedger;
+import com.bitsvalley.micro.domain.LedgerAccount;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
@@ -21,5 +21,8 @@ public interface GeneralLedgerRepository extends CrudRepository<GeneralLedger, L
     @Query(value = "SELECT * FROM GENERALLEGDER gl WHERE gl.type = :type AND gl.created_date BETWEEN :startDate AND :endDate AND account_number = :accountNumber", nativeQuery = true)
     List<GeneralLedger> searchCriteriaWithAccountNumberAndType(String type, String startDate, String endDate, String accountNumber);
 
+
+//    @Query(value = "SELECT * FROM GENERALLEGDER gl WHERE gl.ledgerAccount.id = :id", nativeQuery = true)
+//    List<GeneralLedger> searchCriteriaWithLedgerAccount(long id);
 
 }

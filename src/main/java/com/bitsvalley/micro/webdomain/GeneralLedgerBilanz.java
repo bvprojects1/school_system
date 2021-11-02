@@ -1,7 +1,5 @@
 package com.bitsvalley.micro.webdomain;
 
-import com.bitsvalley.micro.domain.GeneralLedger;
-
 import java.util.List;
 
 public class GeneralLedgerBilanz {

@@ -13,7 +13,7 @@
             <div class="row">
                 <div class="col-md-12">
                     <div class="project-title-content">
-                        <h3>REGISTER A NEW BRANCH</h3>
+                        <h3>CREATE LEDGER ACCOUNT</h3>
                         <span><i class="fas fa-crosshairs"></i></span>
                         <!--  <p>Cross-agency coordination clean water rural, promising development turmoil inclusive education transformative community.</p>-->
                     </div>
@@ -27,65 +27,59 @@
         <div class="container">
             <div class="row">
                 <div class="offset-md-2 col-md-8">
-                    <span th:text="${info}"/>
-                    <font color="blue"><b><div class="error" th:text="${error}"/></b></font> <a href="#" th:href="@{/branches}"> See Branches </a>
-                    <form action="#" th:action="@{/registerBranchForm}" method="post" th:object="${branch}">
+                    <font size="6" color="gray"><span  th:text="${ledgerAccountInfo}"/></font>
+                    <form action="#" th:action="@{/saveLedgerAccountForm}" method="post" th:object="${ledgerAccount}">
 
                             <div class="col-md-12">
 
-                                <label for="country">Choose a Country:</label>
-                                <select class="select" name="country" id="country">
-                                        <option value="01">Cameroon</option>
-                                        <option value="02">Gabon</option>
+                                <select class="select" name="Category" id="category">
+                                    <option value="Assets">Assets (100 – 199)</option>
+                                    <option value="Liabilities">Liabilities (200 – 299)</option>
+                                    <option value="Equity">Equity (300 – 399)</option>
+                                    <option value="Revenue">Revenue (400 – 599)</option>
+                                    <option value="Expense">Expense (600 – 799)</option>
                                 </select>
+                                <br/>
+                                <br/>
+                                <input type="text" name="name" th:field="*{name}" id="name"
+                                       placeholder="name" class="form-control" required>
 
                                 <br/>
-
                                 <input type="text" name="code" th:field="*{code}" id="code"
                                        placeholder="code" class="form-control" required>
                                 <br/>
-
-                                <input type="text" name="name" th:field="*{name}" id="name"
-                                       placeholder="name" class="form-control" required>
-                                <br/>
-                                <input type="text" name="street" th:field="*{street}" id="street"
-                                       placeholder="Street" class="form-control" required>
-
-                                <br/>
-                                <input type="text" name="city" th:field="*{city}" id="city"
-                                       placeholder="city" class="form-control" required>
-
-                                <br/>
-                                <input type="poBox" name="poBox" th:field="*{poBox}" id="poBox"
-                                       placeholder="PO Box" class="form-control">
-
-                                <br/>
-                                <input type="text" name="telephone" th:field="*{telephone}" id="telephone"
-                                       placeholder="Telephone" class="form-control" required>
+                                Active
+                                <label>
+                                    True
+                                    <input type="radio" value="ACTIVE" th:field="*{status}" name="status" checked>
+                                </label>
+                                <label>
+                                    False
+                                    <input type="radio" value="INACTIVE" th:field="*{status}" name="status">
+                                </label>
                                 <br/>
 
-                                <input type="text" name="fax" th:field="*{fax}" id="fax"
-                                       placeholder="fax" class="form-control">
-
+                                <input type="submit" class="btn-block btn contact-btn"
+                                       value="CREATE LEDGER ACCOUNT"/>
                                 <br/>
-
-                                <input type="email" name="email" th:field="*{email}" id="email"
-                                       placeholder="Email" class="form-control" required>
-
-                                <br/>
-
-                                <input type="text" name="contact" th:field="*{contact}" id="contact"
-                                       placeholder="contact" class="form-control" required>
-
-                                <br/>
-
-                                <input type="text" name="notes" th:field="*{notes}" id="notes"
-                                       placeholder="Notes e.g Opening hours .." class="form-control">
-                                <br/>
-
-                                <input type="submit" class="btn-block btn contact-btn" value="CREATE BRANCH"/>
                         </div>
                     </form>
+
+                    <br/><br/>
+                    <h3>EXISTING LEDGER ACCOUNTS</h3>
+                    <table width="90%" class="center" border="0px">
+                        <tr th:each="aLedgerAccount : ${ledgerAccountList}">
+                            <td th:text="${aLedgerAccount.name}"></td>
+                            <td th:text="${aLedgerAccount.code}"></td>
+                            <td th:text="${aLedgerAccount.category}"> </td>
+                            <td th:text="${aLedgerAccount.status}"> </td>
+                            <td>
+                                <a href="#" th:href="@{/addGeneralLedgerEntry/{id}(id=${aLedgerAccount.id})}"> <img width="30px" th:src="@{/assets/images/add.png}"/> </a>
+                                <a href="#" th:href="@{/viewLedgerAccount/{id}(id=${aLedgerAccount.id})}">See more ...</a>
+                            </td>
+                        </tr>
+                    </table>
+
                 </div>
             </div>
         </div>

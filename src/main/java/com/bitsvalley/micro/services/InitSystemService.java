@@ -1,7 +1,10 @@
 package com.bitsvalley.micro.services;
 
+import com.bitsvalley.micro.domain.LedgerAccount;
 import com.bitsvalley.micro.domain.RuntimeProperties;
+import com.bitsvalley.micro.repositories.LedgerAccountRepository;
 import com.bitsvalley.micro.repositories.RuntimePropertiesRepository;
+import com.bitsvalley.micro.utils.BVMicroUtils;
 import com.bitsvalley.micro.webdomain.RuntimeSetting;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,8 +16,12 @@ import java.util.List;
 @Service
 public class InitSystemService {
 
+
     @Autowired
     RuntimePropertiesRepository runtimePropertiesRepository;
+
+    @Autowired
+    LedgerAccountRepository ledgerAccountRepository;
 
     public List<RuntimeProperties> initSystem() {
         List<RuntimeProperties> runtimePropertiesList = new ArrayList<RuntimeProperties>();
@@ -87,9 +94,52 @@ public class InitSystemService {
 
             Iterable<RuntimeProperties> runtimePropertiesListIterable = runtimePropertiesList;
             runtimePropertiesRepository.saveAll(runtimePropertiesListIterable);
+
+            //init ledgerAccounts
+//            List<LedgerAccount> ledgerAccountList = new ArrayList<LedgerAccount>();
+//
+//            LedgerAccount ledgerAccount = new LedgerAccount();
+//            ledgerAccount.setName(BVMicroUtils.ASSETS);
+//            ledgerAccount.setCategory("100 – 199");
+//            ledgerAccount.setCode("ASSETS 100");
+//            ledgerAccount.setStatus(BVMicroUtils.ACTIVE);
+//            ledgerAccountList.add(ledgerAccount);
+//
+//            ledgerAccount = new LedgerAccount();
+//            ledgerAccount.setName(BVMicroUtils.LIABILITIES);
+//            ledgerAccount.setCategory("200 – 299");
+//            ledgerAccount.setCode("LIABILITIES 200");
+//            ledgerAccount.setStatus(BVMicroUtils.ACTIVE);
+//            ledgerAccountList.add(ledgerAccount);
+//
+//            ledgerAccount = new LedgerAccount();
+//            ledgerAccount.setName(BVMicroUtils.EQUITY);
+//            ledgerAccount.setCode("300");
+//            ledgerAccount.setCategory("EQUITY 300 – 399");
+//            ledgerAccount.setStatus(BVMicroUtils.ACTIVE);
+//            ledgerAccountList.add(ledgerAccount);
+//
+//            ledgerAccount = new LedgerAccount();
+//            ledgerAccount.setName(BVMicroUtils.REVENUE);
+//            ledgerAccount.setCode("400");
+//            ledgerAccount.setCategory("REVENUE 400 – 599");
+//            ledgerAccount.setStatus(BVMicroUtils.ACTIVE);
+//            ledgerAccountList.add(ledgerAccount);
+//
+//            ledgerAccount = new LedgerAccount();
+//            ledgerAccount.setName(BVMicroUtils.EXPENSES);
+//            ledgerAccount.setCode("600");
+//            ledgerAccount.setCategory("EXPENSES 600 – 799");
+//            ledgerAccount.setStatus(BVMicroUtils.ACTIVE);
+//            ledgerAccountList.add(ledgerAccount);
+//
+//            Iterable<LedgerAccount> ledgerListIterable = ledgerAccountList;
+//            ledgerAccountRepository.saveAll(ledgerListIterable);
+
         }
         return runtimePropertiesList;
     }
+
 
     public RuntimeSetting  findAll() {
         List<RuntimeSetting> list = new ArrayList<RuntimeSetting>();

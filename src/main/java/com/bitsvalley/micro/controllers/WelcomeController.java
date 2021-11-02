@@ -1,6 +1,10 @@
 package com.bitsvalley.micro.controllers;
 
+import com.bitsvalley.micro.domain.Branch;
+import com.bitsvalley.micro.domain.LedgerAccount;
+import com.bitsvalley.micro.domain.LoanAccountTransaction;
 import com.bitsvalley.micro.domain.User;
+import com.bitsvalley.micro.repositories.BranchRepository;
 import com.bitsvalley.micro.repositories.UserRepository;
 import com.bitsvalley.micro.repositories.UserRoleRepository;
 import com.bitsvalley.micro.services.InitSystemService;
@@ -42,6 +46,9 @@ public class WelcomeController extends SuperController{
 
     @Autowired
     UserRoleRepository userRoleRepository;
+
+    @Autowired
+    BranchRepository branchRepository;
 
     @Autowired
     UserService userService;

@@ -1,14 +1,36 @@
 package com.bitsvalley.micro.webdomain;
 
-import java.util.Date;
+public class LedgerEntryDTO {
 
-public class GLSearchDTO {
-
-    private String startDate;
-    private String endDate;
+    private String originLedgerAccount;
+    private String destinationLedgerAccount;
+    private String ledgerAmount;
     private String creditOrDebit;
-    private String accountNumber;
+    private String notes;
 
+    public String getOriginLedgerAccount() {
+        return originLedgerAccount;
+    }
+
+    public void setOriginLedgerAccount(String originLedgerAccount) {
+        this.originLedgerAccount = originLedgerAccount;
+    }
+
+    public String getDestinationLedgerAccount() {
+        return destinationLedgerAccount;
+    }
+
+    public void setDestinationLedgerAccount(String destinationLedgerAccount) {
+        this.destinationLedgerAccount = destinationLedgerAccount;
+    }
+
+    public String getLedgerAmount() {
+        return ledgerAmount;
+    }
+
+    public void setLedgerAmount(String ledgerAmount) {
+        this.ledgerAmount = ledgerAmount;
+    }
 
     public String getCreditOrDebit() {
         return creditOrDebit;
@@ -18,27 +40,12 @@ public class GLSearchDTO {
         this.creditOrDebit = creditOrDebit;
     }
 
-    public String getAccountNumber() {
-        return accountNumber;
+    public String getNotes() {
+        return notes;
     }
 
-    public void setAccountNumber(String accountNumber) {
-        this.accountNumber = accountNumber;
+    public void setNotes(String notes) {
+        this.notes = notes;
     }
 
-    public String getStartDate() {
-        return startDate;
-    }
-
-    public void setStartDate(String startDate) {
-        this.startDate = startDate;
-    }
-
-    public String getEndDate() {
-        return endDate;
-    }
-
-    public void setEndDate(String endDate) {
-        this.endDate = endDate;
-    }
 }
