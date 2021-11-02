@@ -31,12 +31,15 @@
                 <th></th>
             </tr>
             <tr th:each="user : ${userList}">
-                <td th:text="${user.userName}"> </td>
+                <td>
+                    <span th:text="${user.userName}"/>
+                </td>
                 <td th:text="${user.firstName}"></td>
                 <td th:text="${user.lastName}"></td>
                 <td>
                     <div th:each="userRole : ${user.userRole}">
-                        <span th:text="${userRole.name}"></span>
+                        <span th:text="${userRole.name}">
+                        </span>
                     </div>
                 </td>
                 <td th:text="${user.telephone1}"></td>
@@ -50,7 +53,16 @@
                 </div>
                 <td th:text="${user.createdBy}"></td>
                 <td>
-                    <a href="#" th:href="@{/showCustomer/{id}(id=${user.id})}">See more ...</a>
+                    <a href="#" th:href="@{/showCustomer/{id}(id=${user.id})}">
+                        See more ...
+                    </a>
+                </td>
+                <td>
+                    <span th:if="${#authorization.expression('hasAnyAuthority(''ROLE_MANAGER'')')}">
+                        <a  th:href="@{/editUserRole/{id}(id=${user.id})}">
+                            <i class="fas fa-pencil-alt" style='font-size:16px;color:gray'></i>
+                        </a>
+                    </span>
                 </td>
             </tr>
         </table>

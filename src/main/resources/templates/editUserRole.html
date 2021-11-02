@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<div th:insert="header::navbar"></div>
+<br/>
+<br/>
+
+<!-- Contact form area start -->
+<section class="contact-form-area-start space df-bg">
+    <!--Project title area start-->
+    <div class="project-title-area text-center">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="project-title-content">
+                        <h3>UPDATE USER ROLE</h3>
+                        <span><i class="fas fa-crosshairs"></i></span>
+                        <!-- <p>Cross-agency coordination clean water rural, promising development turmoil
+                             inclusive education transformative community.</p>
+                        -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--Project title area end-->
+
+    <div class="contact-from-area">
+        <div class="container">
+            <div class="row">
+                <div class="offset-md-2 col-md-8">
+                    <font color="blue"> <span th:text="${updatedInfo}"/></font>
+                    <form action="#" th:action="@{/editUserRoleForm}" method="post" th:object="${user}">
+                        <div class="col-md-12">
+                            <label for="aUserRole">Choose a User Role:</label>
+                            <span th:if="${#authorization.expression('hasAnyAuthority(''ROLE_MANAGER'')')} OR ${#authorization.expression('hasAnyAuthority(''ROLE_ADMIN'')')}">
+                                    <select class="select" name="aUserRole" id="aUserRole">
+                                        <option value="ROLE_ACCOUNTANT">ACCOUNTANT</option>
+                                        <option value="ROLE_AUDITOR">AUDITOR</option>
+                                        <option value="ROLE_AGENT">AGENT</option>
+                                        <option value="ROLE_BOARD_MEMBER">BOARD MEMBER</option>
+                                        <option value="ROLE_CASHIER">CASHIER</option>
+                                        <option value="ROLE_CUSTOMER">CUSTOMER</option>
+                                        <option value="ROLE_CUSTOMER_SERVICE">CUSTOMER SERVICE</option>
+                                        <option value="ROLE_EXECUTIVE_DIRECTOR">EXECUTIVE DIRECTOR</option>
+                                        <option value="ROLE_GENERAL_MANAGER">GENERAL_MANAGER</option>
+                                        <option value="ROLE_LOAN_OFFICER">LOAD OFFICER</option>
+                                        <option value="ROLE_MANAGER">MANAGER</option>
+                                        <option value="ROLE_MARKETER">MARKETER</option>
+                                        <option value="ROLE_OPERATION_OFFICER">OPERATIONS OFFICER</option>
+                                    </select>
+                                </span>
+                            <input type="hidden" name="id" th:field="*{id}"/> <br/>
+
+                            <table border="0" class="center" width="100%" cellpadding="5">
+                                <tr>
+                                    <td colspan="8">
+                                        <font size="3"> Username </font><br/>
+                                        <span th:text="${user.userName}"/>
+                                    </td>
+                                    <td>
+                                        <font size="3"> Name </font><br/>
+                                        <span th:text="${user.lastName}"/>,<span th:text="${user.firstName}"/><br/>
+                                    </td>
+                                    <td>
+                                        <font size="3"> Current Role </font><br/>
+                                        <font color="#803e59"><b> <span th:text="${user.userRole[0].name}"/></b></font>
+                                    </td>
+                                </tr>
+                            </table>
+
+                            <table border="0" class="center" width="100%" cellpadding="5">
+                                <br/><br/>
+                                <input type="submit" class="btn-block btn contact-btn" value="UPDATE USER ROLE"/>
+                            </table>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<div th:insert="footer::navbar">
+</div>
+</html>

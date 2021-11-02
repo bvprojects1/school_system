@@ -42,6 +42,13 @@ public class BVMicroUtils {
 
     public static final String CREDIT = "CREDIT";
     public static final String DEBIT = "DEBIT";
+    public static final String EXPENSES = "EXPENSES";
+    public static final String LIABILITIES = "LIABILITIES";
+    public static final String REVENUE = "REVENUE";
+    public static final String ASSETS = "ASSETS";
+    public static final String EQUITY = "EQUITY";
+
+
 
 
     public static  String getSaltString() {

@@ -36,7 +36,7 @@
                     <font size="4px" color="gray">
                         <div th:text="${session.loanBilanzList.currentLoanBalance}"/>
                     </font></td>
-                <td> Current<br/> <font size="4px" color="gray"> 0</font></td>
+                <td> Current<br/> <font size="4px" color="gray"> <span th:text="${session.currentBilanzList.totalCurrent}"/></font></td>
                 <td>Retirement saving <br/> <font size="4px" color="gray">0</font></b></td>
             </tr>
         </table>

@@ -170,6 +170,32 @@ public class UserController extends SuperController{
         return findUserByUserName(user,model,request);
     }
 
+
+    @GetMapping(value = "/editUserRole/{id}")
+    public String editUserRole(@PathVariable("id") long id, ModelMap model,
+                                   HttpServletRequest request) {
+        Optional<User> userById = userRepository.findById(id);
+        User user = userById.get();
+        model.put("user", user);
+        return "editUserRole";
+    }
+
+    @PostMapping(value = "/editUserRoleForm")
+    public String editUserRoleForm(ModelMap model, HttpServletRequest req, @ModelAttribute("user") User user) {
+
+        User aUser = userRepository.findById(user.getId()).get();
+        String userRole = req.getParameter("aUserRole");
+
+        List<UserRole> userRolesList = new ArrayList<UserRole>();
+        UserRole aUserRole = userRoleService.findUserRoleByName(userRole);
+        userRolesList.add(aUserRole);
+        aUser.setUserRole(userRolesList);
+        userRepository.save(aUser);
+        model.put("user", aUser);
+        model.put("updatedInfo", "User Role updated ");
+        return "editUserRole";
+    }
+
     @GetMapping(value = "/lockAccount/{id}")
     public String lockAccount(@PathVariable("id") long id, ModelMap model,
                                  HttpServletRequest request,
@@ -180,7 +206,6 @@ public class UserController extends SuperController{
             user.setAccountLocked(!user.isAccountLocked());
             userService.saveUser(user);
             String blocked = user.isAccountLocked()?"Blocked":"UnBlocked";
-
             callCenterService.callCenterUserAccount(user, "Account has been switched "+ "Account is now "+ blocked +"by " + getLoggedInUserName());
 
         };
@@ -191,7 +216,8 @@ public class UserController extends SuperController{
 
 
     @GetMapping(value = "/createSavingAccountReceiptPdf/{id}")
-    public void savingReceiptPDF(@PathVariable("id") long id, ModelMap model, HttpServletRequest request, HttpServletResponse response) throws IOException {
+    public void savingReceiptPDF(@PathVariable("id") long id, ModelMap model,
+                                 HttpServletRequest request, HttpServletResponse response) throws IOException {
         response.setHeader("Content-disposition","attachment;filename="+ "statementSaving.pdf");
 
         ByteArrayOutputStream byteArrayOutputStream = null;

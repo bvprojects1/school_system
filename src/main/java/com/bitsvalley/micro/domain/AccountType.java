@@ -14,11 +14,22 @@ public class AccountType {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
+    @Column
+    String category;
+
     @Column(unique = true)
     String name;
 
     @Column(unique = true)
     String number;
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
 
     public String getNumber() {
         return number;

@@ -1,11 +1,8 @@
 package com.bitsvalley.micro.controllers;
 
-import com.bitsvalley.micro.domain.CallCenter;
 import com.bitsvalley.micro.domain.GeneralLedger;
-import com.bitsvalley.micro.domain.User;
-import com.bitsvalley.micro.repositories.CallCenterRepository;
 import com.bitsvalley.micro.repositories.GeneralLedgerRepository;
-import com.bitsvalley.micro.services.CallCenterService;
+import com.bitsvalley.micro.repositories.LedgerAccountRepository;
 import com.bitsvalley.micro.services.GeneralLedgerService;
 import com.bitsvalley.micro.webdomain.GLSearchDTO;
 import com.bitsvalley.micro.webdomain.GeneralLedgerBilanz;
@@ -18,9 +15,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -28,7 +23,7 @@ import java.util.List;
  * 11.06.2021
  */
 @Controller
-public class GeneralLedgerController extends SuperController{
+public class GeneralAccountController extends SuperController{
 
     @Autowired
     GeneralLedgerService generalLedgerService;
@@ -80,6 +75,15 @@ public class GeneralLedgerController extends SuperController{
     }
 
 
+    @GetMapping(value = "/viewLedgerAccount/{id}")
+    public String ledgerAccount(@PathVariable("id") long id, ModelMap model, HttpServletRequest request) {
+        GeneralLedgerBilanz generalLedgerBilanz = generalLedgerService.findGLByLedgerAccount(id);
+        model.put("generalLedgerBilanz",generalLedgerBilanz);
+        model.put("glSearchDTO",new GLSearchDTO());
+        return "gls";
+    }
+
+
     @GetMapping(value = "/findGlByType/{type}")
     public String findByGlType(@PathVariable("type") String type,ModelMap model) {
         GeneralLedgerBilanz generalLedgerBilanz = generalLedgerService.findGLByType(type);
@@ -87,4 +91,5 @@ public class GeneralLedgerController extends SuperController{
         model.put("glSearchDTO",new GLSearchDTO());
         return "gls";
     }
+
 }

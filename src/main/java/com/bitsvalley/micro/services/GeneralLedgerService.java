@@ -3,12 +3,13 @@ package com.bitsvalley.micro.services;
 import com.bitsvalley.micro.domain.*;
 import com.bitsvalley.micro.repositories.AccountTypeRepository;
 import com.bitsvalley.micro.repositories.GeneralLedgerRepository;
+import com.bitsvalley.micro.repositories.LedgerAccountRepository;
 import com.bitsvalley.micro.repositories.UserRepository;
 import com.bitsvalley.micro.utils.BVMicroUtils;
 import com.bitsvalley.micro.utils.GeneralLedgerType;
-import com.bitsvalley.micro.webdomain.GLSearchDTO;
 import com.bitsvalley.micro.webdomain.GeneralLedgerBilanz;
 import com.bitsvalley.micro.webdomain.GeneralLedgerWeb;
+import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -33,6 +34,12 @@ public class GeneralLedgerService extends SuperService{
 
     @Autowired
     private AccountTypeRepository accountTypeRepository;
+
+    @Autowired
+    private GeneralLedgerService generalLedgerService;
+
+    @Autowired
+    private LedgerAccountRepository ledgerAccountRepository;
 
     public List<GeneralLedger> findByAccountNumber(String accountNumber) {
         return generalLedgerRepository.findByAccountNumber(accountNumber);
@@ -207,17 +214,53 @@ public class GeneralLedgerService extends SuperService{
     public GeneralLedgerBilanz findGLByType(String type) {
         List<GeneralLedger> glByType = generalLedgerRepository.findGLByType(type);
         List<GeneralLedgerWeb> generalLedgerWebList = new ArrayList<GeneralLedgerWeb>();
-        for ( GeneralLedger aGeneralLedger: glByType ) {
+        for ( GeneralLedger aGeneralLedger : glByType ) {
             generalLedgerWebList.add(extracted(aGeneralLedger));
         }
         Collections.reverse( generalLedgerWebList );
         return getGeneralLedgerBilanz( generalLedgerWebList );
     }
 
+//    public GeneralLedgerBilanz findGLByAccountLedger(Long ledgerAccountId) {
+//        LedgerAccount byId = ledgerAccountRepository.findById(ledgerAccountId).get();
+//
+//        List<GeneralLedger> glByType = generalLedgerService.findGLByAccountLedger(byId);
+//        List<GeneralLedgerWeb> generalLedgerWebList = new ArrayList<GeneralLedgerWeb>();
+//        for ( GeneralLedger aGeneralLedger : glByType ) {
+//            generalLedgerWebList.add(extracted(aGeneralLedger));
+//        }
+//        Collections.reverse( generalLedgerWebList );
+//        return getGeneralLedgerBilanz( generalLedgerWebList );
+//    }
+
     public GeneralLedgerBilanz searchCriteria(String startDate, String endDate, String type, String accountNumber) {
-        List<GeneralLedger> glList = generalLedgerRepository.searchCriteria( startDate, endDate );
+        List<GeneralLedger> glList = null;
+        if(StringUtils.isNotEmpty(type) && StringUtils.isNotEmpty(accountNumber) ){
+            if(type.equals("ALL")){
+                glList = generalLedgerRepository.searchCriteriaWithAccountNumber( startDate, endDate, accountNumber );
+            }
+            else {
+                glList = generalLedgerRepository.searchCriteriaWithAccountNumberAndType(type, startDate, endDate, accountNumber );
+            }
+        }else if("ALL".equals(type) && StringUtils.isEmpty(accountNumber) ){
+            glList = generalLedgerRepository.searchCriteria( startDate, endDate );
+        }else if( accountNumber != null){
+            glList = generalLedgerRepository.searchCriteriaWithAccountNumber( startDate, endDate , accountNumber);
+        }
         List<GeneralLedgerWeb> generalLedgerWebs = mapperGeneralLedger(glList);
         GeneralLedgerBilanz generalLedgerBilanz = getGeneralLedgerBilanz(generalLedgerWebs);
         return generalLedgerBilanz;
     }
+
+    public GeneralLedgerBilanz findGLByLedgerAccount(long ledgerAccountId) {
+
+        LedgerAccount ledgerAccount = ledgerAccountRepository.findById(ledgerAccountId).get();
+        List<GeneralLedger> glList = ledgerAccount.getGeneralLedger();
+
+//        List<GeneralLedger> glList = generalLedgerRepository.searchCriteriaWithLedgerAccount(  ledgerAccountId );
+        List<GeneralLedgerWeb> generalLedgerWebs = mapperGeneralLedger(glList);
+        GeneralLedgerBilanz generalLedgerBilanz = getGeneralLedgerBilanz(generalLedgerWebs);
+        return generalLedgerBilanz;
+    }
+
 }

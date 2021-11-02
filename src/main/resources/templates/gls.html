@@ -10,6 +10,17 @@
         <div class="col-md-12">
             <div class="project-title-content">
                 <br/>
+                <table width="90%" class="center" border="0px">
+                    <ul th:each="accountLedger : ${accountLedgerList}">
+                        <li th:text="${accountLedger.code}"></li>
+                        <li>
+                            <a href="#" th:href="@{/accountLedger/{id}(id=${accountLedger.id})}">
+                                <span th:text="${accountLedger.name}"/>
+                            </a>
+                        </li>
+                    </ul>
+                </table>
+                <br/>
                 <font color="gray;" size="4"> GENERAL LEDGER TRANSACTIONS </font></div>
             <form action="#" th:action="@{/filterGenaralLedger}" method="post" th:object="${glSearchDTO}">
                 <table border="0" width="80%" class="center">
@@ -55,6 +66,7 @@
                         <font color="#2d363f" size="4px">
                             <div th:text="${#numbers.formatDecimal(generalLedgerBilanz.debitTotal, 0, 'COMMA', 0, 'POINT')}"></div>
                         </font></td>
+                    <td width="5"></td>
                     <td>
                         <font color="#2d363f" size="1.5px"> CREDIT </font> <br/>
                         <font color="#2d363f" size="4px">
