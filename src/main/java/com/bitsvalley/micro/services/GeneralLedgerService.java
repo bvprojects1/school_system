@@ -9,10 +9,12 @@ import com.bitsvalley.micro.utils.BVMicroUtils;
 import com.bitsvalley.micro.utils.GeneralLedgerType;
 import com.bitsvalley.micro.webdomain.GeneralLedgerBilanz;
 import com.bitsvalley.micro.webdomain.GeneralLedgerWeb;
+import com.bitsvalley.micro.webdomain.LedgerEntryDTO;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 
@@ -181,6 +183,7 @@ public class GeneralLedgerService extends SuperService{
         generalLedgerWeb.setLastUpdatedBy(next.getLastUpdatedBy());
         generalLedgerWeb.setType(next.getType());
         generalLedgerWeb.setReference(next.getReference());
+        generalLedgerWeb.setLedgerAccount(next.getLedgerAccount());
         return generalLedgerWeb;
 
     }
@@ -233,20 +236,34 @@ public class GeneralLedgerService extends SuperService{
 //        return getGeneralLedgerBilanz( generalLedgerWebList );
 //    }
 
-    public GeneralLedgerBilanz searchCriteria(String startDate, String endDate, String type, String accountNumber) {
+    public GeneralLedgerBilanz searchCriteria(String startDate, String endDate, String type, String accountNumber, long ledgerAccount) {
         List<GeneralLedger> glList = null;
-        if(StringUtils.isNotEmpty(type) && StringUtils.isNotEmpty(accountNumber) ){
-            if(type.equals("ALL")){
-                glList = generalLedgerRepository.searchCriteriaWithAccountNumber( startDate, endDate, accountNumber );
+    if(ledgerAccount!=-1) {
+
+        if (StringUtils.isNotEmpty(type) && StringUtils.isNotEmpty(accountNumber)) {
+            if (type.equals("ALL")) {
+                glList = generalLedgerRepository.searchCriteriaWithAccountNumberLedger(startDate, endDate, accountNumber, ledgerAccount);
+            } else {
+                glList = generalLedgerRepository.searchCriteriaWithAccountNumberAndTypeLedger(type, startDate, endDate, accountNumber, ledgerAccount);
             }
-            else {
-                glList = generalLedgerRepository.searchCriteriaWithAccountNumberAndType(type, startDate, endDate, accountNumber );
-            }
-        }else if("ALL".equals(type) && StringUtils.isEmpty(accountNumber) ){
-            glList = generalLedgerRepository.searchCriteria( startDate, endDate );
-        }else if( accountNumber != null){
-            glList = generalLedgerRepository.searchCriteriaWithAccountNumber( startDate, endDate , accountNumber);
+        } else if ("ALL".equals(type) && StringUtils.isEmpty(accountNumber)) {
+            glList = generalLedgerRepository.searchCriteriaLedger(startDate, endDate, ledgerAccount);
+        } else if (StringUtils.isNotEmpty(accountNumber)) {
+            glList = generalLedgerRepository.searchCriteriaWithAccountNumberLedger(startDate, endDate, accountNumber, ledgerAccount);
         }
+    }else{
+        if (StringUtils.isNotEmpty(type) && StringUtils.isNotEmpty(accountNumber)) {
+            if (type.equals("ALL")) {
+                glList = generalLedgerRepository.searchCriteriaWithAccountNumber(startDate, endDate, accountNumber);
+            } else {
+                glList = generalLedgerRepository.searchCriteriaWithAccountNumberAndType(type, startDate, endDate, accountNumber);
+            }
+        } else if ("ALL".equals(type) && StringUtils.isEmpty(accountNumber)) {
+            glList = generalLedgerRepository.searchCriteria(startDate, endDate);
+        } else if (accountNumber != null) {
+            glList = generalLedgerRepository.searchCriteriaWithAccountNumber(startDate, endDate, accountNumber);
+        }
+    }
         List<GeneralLedgerWeb> generalLedgerWebs = mapperGeneralLedger(glList);
         GeneralLedgerBilanz generalLedgerBilanz = getGeneralLedgerBilanz(generalLedgerWebs);
         return generalLedgerBilanz;
@@ -262,5 +279,49 @@ public class GeneralLedgerService extends SuperService{
         GeneralLedgerBilanz generalLedgerBilanz = getGeneralLedgerBilanz(generalLedgerWebs);
         return generalLedgerBilanz;
     }
+
+    @Transactional
+    public void updateManualAccountTransaction(LedgerEntryDTO ledgerEntryDTO) {
+        Date date = new Date();
+        String loggedInUserName = getLoggedInUserName();
+        GeneralLedger generalLedger = new GeneralLedger();
+        generalLedger.setType(ledgerEntryDTO.getCreditOrDebit());
+        generalLedger.setGlClass(4);
+        generalLedger.setNotes(ledgerEntryDTO.getNotes());
+        generalLedger.setReference(BVMicroUtils.getSaltString());
+
+        generalLedger.setDate(date);
+        generalLedger.setLastUpdatedBy(loggedInUserName);
+        generalLedger.setCreatedBy(loggedInUserName);
+        generalLedger.setAmount(ledgerEntryDTO.getLedgerAmount());
+        generalLedger.setCreatedDate(date);
+        generalLedger.setLastUpdatedDate(date);
+
+        LedgerAccount originalAccount = ledgerAccountRepository.findById(ledgerEntryDTO.getOriginLedgerAccount()).get();
+        generalLedger.setLedgerAccount(originalAccount);
+        generalLedgerRepository.save(generalLedger);
+
+        //record opposite double entry
+        generalLedger = new GeneralLedger();
+        generalLedger.setType(BVMicroUtils.getOppositeCreditOrDebit(ledgerEntryDTO.getCreditOrDebit()));
+        generalLedger.setGlClass(4);
+        generalLedger.setNotes(ledgerEntryDTO.getNotes());
+        generalLedger.setReference(BVMicroUtils.getSaltString());
+
+        generalLedger.setDate(date);
+        generalLedger.setLastUpdatedBy(loggedInUserName);
+        generalLedger.setCreatedBy(loggedInUserName);
+        generalLedger.setAmount(ledgerEntryDTO.getLedgerAmount());
+        generalLedger.setCreatedDate(date);
+        generalLedger.setLastUpdatedDate(date);
+
+        LedgerAccount destinetionAccount = ledgerAccountRepository.findById(ledgerEntryDTO.getDestinationLedgerAccount()).get();
+        generalLedger.setLedgerAccount(destinetionAccount);
+        generalLedgerRepository.save(generalLedger);
+
+
+    }
+
+
 
 }

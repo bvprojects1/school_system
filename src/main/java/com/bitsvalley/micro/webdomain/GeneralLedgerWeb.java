@@ -1,5 +1,7 @@
 package com.bitsvalley.micro.webdomain;
 
+import com.bitsvalley.micro.domain.LedgerAccount;
+
 import java.util.Date;
 
 /**
@@ -20,6 +22,7 @@ public class GeneralLedgerWeb {
         private String notes;
         private int glClass;
         private double currentTotal;
+        private LedgerAccount ledgerAccount;
 
         public String getType() {
             return type;
@@ -117,4 +120,12 @@ public class GeneralLedgerWeb {
         public void setCurrentTotal(double currentTotal) {
             this.currentTotal = currentTotal;
         }
+
+    public LedgerAccount getLedgerAccount() {
+        return ledgerAccount;
     }
+
+    public void setLedgerAccount(LedgerAccount ledgerAccount) {
+        this.ledgerAccount = ledgerAccount;
+    }
+}

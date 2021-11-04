@@ -6,7 +6,9 @@ import com.bitsvalley.micro.domain.LedgerAccount;
 import com.bitsvalley.micro.domain.RuntimeProperties;
 import com.bitsvalley.micro.repositories.LedgerAccountRepository;
 import com.bitsvalley.micro.repositories.RuntimePropertiesRepository;
+import com.bitsvalley.micro.services.GeneralLedgerService;
 import com.bitsvalley.micro.services.InitSystemService;
+import com.bitsvalley.micro.utils.BVMicroUtils;
 import com.bitsvalley.micro.webdomain.GLSearchDTO;
 import com.bitsvalley.micro.webdomain.GeneralLedgerBilanz;
 import com.bitsvalley.micro.webdomain.LedgerEntryDTO;
@@ -35,6 +37,9 @@ public class LedgerAccountController extends SuperController{
     @Autowired
     LedgerAccountRepository ledgerAccountRepository;
 
+    @Autowired
+    GeneralLedgerService generalLedgerService;
+
     @GetMapping(value = "/newLedgerAccount")
     public String newLedgerAccount(ModelMap model, HttpServletRequest request) {
         model.put("ledgerAccount",new LedgerAccount());
@@ -45,6 +50,7 @@ public class LedgerAccountController extends SuperController{
     @PostMapping(value = "/saveLedgerAccountForm")
     public String saveLedgerAccountForm(@ModelAttribute("ledgerAccount") LedgerAccount ledgerAccount,
                                         ModelMap model ) {
+        if(null == ledgerAccount.getStatus()) ledgerAccount.setStatus(BVMicroUtils.INACTIVE);
         ledgerAccount.setStatus(ledgerAccount.getStatus().equals("true")?"ACTIVE":"INACTIVE");
         ledgerAccountRepository.save(ledgerAccount);
 
@@ -61,7 +67,21 @@ public class LedgerAccountController extends SuperController{
         model.put("ledgerEntryDTO", new LedgerEntryDTO());
         model.put("destinationLedgerAccounts", destinationLedgerAccount);
         model.put("originLedgerAccount", originLedgerAccount);
+
         return "glAddEntry";
+    }
+
+
+    @PostMapping(value = "/addLedgerEntryFormReviewForm")
+    public String addLedgerEntryFormReviewForm(@ModelAttribute("ledgerEntryDTO") LedgerEntryDTO ledgerEntryDTO,
+                                        ModelMap model, HttpServletRequest request ) {
+
+        generalLedgerService.updateManualAccountTransaction(ledgerEntryDTO);
+
+//        model.put("ledgerAccountList", ledgerAccountRepository.findAll());
+//        model.put("ledgerAccountInfo", "Created "+ledgerAccount.getName()+ " successfully ");
+
+        return "ledgeraccount";
     }
 
 }
