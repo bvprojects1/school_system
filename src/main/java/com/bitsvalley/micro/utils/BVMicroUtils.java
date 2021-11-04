@@ -36,7 +36,7 @@ public class BVMicroUtils {
     public static final String PENDING_APPROVAL = "PENDING_APPROVAL";
     public static final String PENDING_PAYOUT = "PENDING_PAYOUT";
     public static final String ACTIVE = "ACTIVE";
-
+    public static final String INACTIVE = "INACTIVE";
 
     public static final String LOAN_MUST_BE_IN_ACTIVE_STATE = "LOAN MUST BE IN 'ACTIVE' STATE";
 
@@ -47,9 +47,6 @@ public class BVMicroUtils {
     public static final String REVENUE = "REVENUE";
     public static final String ASSETS = "ASSETS";
     public static final String EQUITY = "EQUITY";
-
-
-
 
     public static  String getSaltString() {
         String SALTCHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890"; //TODO: avoid collision
@@ -130,6 +127,13 @@ public class BVMicroUtils {
         return Instant.ofEpochMilli(dateToConvert.getTime())
                 .atZone(ZoneId.systemDefault())
                 .toLocalDateTime();
+    }
+
+    public static String getOppositeCreditOrDebit(String creditOrDebit) {
+        if(creditOrDebit.equals(BVMicroUtils.DEBIT)){
+            return BVMicroUtils.CREDIT;
+        }
+        return BVMicroUtils.DEBIT;
     }
 
 //    @ResponseBody

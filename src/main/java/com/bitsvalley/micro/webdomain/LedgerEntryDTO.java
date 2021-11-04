@@ -2,33 +2,33 @@ package com.bitsvalley.micro.webdomain;
 
 public class LedgerEntryDTO {
 
-    private String originLedgerAccount;
-    private String destinationLedgerAccount;
-    private String ledgerAmount;
+    private long originLedgerAccount;
+    private long destinationLedgerAccount;
+    private double ledgerAmount;
     private String creditOrDebit;
     private String notes;
 
-    public String getOriginLedgerAccount() {
+    public long getOriginLedgerAccount() {
         return originLedgerAccount;
     }
 
-    public void setOriginLedgerAccount(String originLedgerAccount) {
+    public void setOriginLedgerAccount(long originLedgerAccount) {
         this.originLedgerAccount = originLedgerAccount;
     }
 
-    public String getDestinationLedgerAccount() {
+    public Long getDestinationLedgerAccount() {
         return destinationLedgerAccount;
     }
 
-    public void setDestinationLedgerAccount(String destinationLedgerAccount) {
+    public void setDestinationLedgerAccount(Long destinationLedgerAccount) {
         this.destinationLedgerAccount = destinationLedgerAccount;
     }
 
-    public String getLedgerAmount() {
+    public double getLedgerAmount() {
         return ledgerAmount;
     }
 
-    public void setLedgerAmount(String ledgerAmount) {
+    public void setLedgerAmount(double ledgerAmount) {
         this.ledgerAmount = ledgerAmount;
     }
 

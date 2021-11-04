@@ -26,12 +26,18 @@
                 <table border="0" width="80%" class="center">
                     <tr>
                         <td>
-                            Type<select class="select" name="creditOrDebit" id="creditOrDebit" th:field="*{creditOrDebit}">
-                            <option value="ALL">ALL</option>
-                            <option value="CREDIT">CREDIT</option>
-                            <option value="DEBIT">DEBIT</option>
-                        </select>
+                            Ledger
+                            <select class="select" th:field="*{allLedgerAccount}">
+                                <option value="-1">
+                                    ALL
+                                </option>
+                                <option th:each="i : ${allLedgerAccount}"
+                                        th:value="${i.id}">
+                                    <span th:text="${i.name} + -- +${i.code}"/>
+                                </option>
+                            </select>
                         </td>
+
                         <td width="5"></td>
                         <td>
                             Start Date<input type="date" name="startDate" th:field="*{startDate}" id="startDate"
@@ -50,8 +56,17 @@
                         </td>
                         <td width="5"></td>
                         <td>
+                            Type<select class="select" name="creditOrDebit" id="creditOrDebit" th:field="*{creditOrDebit}">
+                            <option value="ALL">ALL</option>
+                            <option value="CREDIT">CREDIT</option>
+                            <option value="DEBIT">DEBIT</option>
+                        </select>
+                        </td>
+                        <td width="5"></td>
+                        <td>
+
                             <br/>
-                            <button type="submit" class="btn btn-success">SEARCH RECORDS</button>
+                            <button type="submit" class="btn btn-success">SEARCH</button>
                         </td>
                     </tr>
                 </table>
@@ -90,6 +105,7 @@
             <th>Date</th>
             <th>Class</th>
             <th>Reference</th>
+            <th>Ledger</th>
             <th>Account</th>
             <th>Notes</th>
             <th><a href="#" th:href="@{/findGlByType/{type}(type='DEBIT')}">DEBIT</a></th>
@@ -104,6 +120,7 @@
             </td>
             <td th:text="${gl.glClass}"></td>
             <td th:text="${gl.reference}"></td>
+            <td th:text="${gl.ledgerAccount.name} + -- + ${gl.ledgerAccount.code}"></td>
             <td th:text="${gl.accountNumber}"></td>
             <td th:text="${gl.notes}"></td>
             <td>

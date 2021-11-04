@@ -31,6 +31,9 @@ public class GeneralAccountController extends SuperController{
     @Autowired
     GeneralLedgerRepository generalLedgerRepository;
 
+    @Autowired
+    LedgerAccountRepository ledgerAccountRepository;
+
 //    @GetMapping(value = "/gl/{accountNumber}")
 //    public String showCustomer(@PathVariable("accountNumber") String accountNumber, ModelMap model, HttpServletRequest request) {
 //        List<GeneralLedger> glList = generalLedgerService.findByAccountNumber(accountNumber);
@@ -46,11 +49,21 @@ public class GeneralAccountController extends SuperController{
     public String showGlReference(ModelMap model, HttpServletRequest request,
                                   @ModelAttribute("glSearchDTO") GLSearchDTO glSearchDTO){
 
-        GeneralLedgerBilanz generalLedgerBilanz =
-                generalLedgerService.searchCriteria(glSearchDTO.getStartDate()+" 00:00:00.000", glSearchDTO.getEndDate()+" 23:59:59.999",
-                glSearchDTO.getCreditOrDebit(), glSearchDTO.getAccountNumber());
+        GeneralLedgerBilanz generalLedgerBilanz = null;
+        if(glSearchDTO.getAllLedgerAccount().get(0) == null ){
+            generalLedgerBilanz =
+                    generalLedgerService.searchCriteria(glSearchDTO.getStartDate()+" 00:00:00.000", glSearchDTO.getEndDate()+" 23:59:59.999",
+                            glSearchDTO.getCreditOrDebit(), glSearchDTO.getAccountNumber(), -1);
+        }else{
+            generalLedgerBilanz =
+                    generalLedgerService.searchCriteria(glSearchDTO.getStartDate()+" 00:00:00.000", glSearchDTO.getEndDate()+" 23:59:59.999",
+                            glSearchDTO.getCreditOrDebit(), glSearchDTO.getAccountNumber(), glSearchDTO.getAllLedgerAccount().get(0).getId());
+        }
+
         model.put("generalLedgerBilanz",generalLedgerBilanz);
-        model.put("glSearchDTO",new GLSearchDTO());
+        GLSearchDTO glSearchDTO1 = new GLSearchDTO();
+        model.put("allLedgerAccount",ledgerAccountRepository.findAll());
+        model.put("glSearchDTO", glSearchDTO1);
         return "gls";
     }
 
@@ -61,6 +74,7 @@ public class GeneralAccountController extends SuperController{
         model.put("glSearchDTO",new GLSearchDTO());
         model.put("glList", glList);
         model.put("reference",reference );
+        model.put("allLedgerAccount",ledgerAccountRepository.findAll());
         return "gls";
     }
 
@@ -69,8 +83,11 @@ public class GeneralAccountController extends SuperController{
     public String showAllGL( ModelMap model, HttpServletRequest request) {
 
         GeneralLedgerBilanz generalLedgerBilanz = generalLedgerService.findAll();
+
+        model.put("allLedgerAccount",ledgerAccountRepository.findAll());
         model.put("generalLedgerBilanz",generalLedgerBilanz);
         model.put("glSearchDTO",new GLSearchDTO());
+
         return "gls";
     }
 
@@ -78,6 +95,7 @@ public class GeneralAccountController extends SuperController{
     @GetMapping(value = "/viewLedgerAccount/{id}")
     public String ledgerAccount(@PathVariable("id") long id, ModelMap model, HttpServletRequest request) {
         GeneralLedgerBilanz generalLedgerBilanz = generalLedgerService.findGLByLedgerAccount(id);
+        model.put("allLedgerAccount",ledgerAccountRepository.findAll());
         model.put("generalLedgerBilanz",generalLedgerBilanz);
         model.put("glSearchDTO",new GLSearchDTO());
         return "gls";
@@ -87,6 +105,7 @@ public class GeneralAccountController extends SuperController{
     @GetMapping(value = "/findGlByType/{type}")
     public String findByGlType(@PathVariable("type") String type,ModelMap model) {
         GeneralLedgerBilanz generalLedgerBilanz = generalLedgerService.findGLByType(type);
+        model.put("allLedgerAccount",ledgerAccountRepository.findAll());
         model.put("generalLedgerBilanz",generalLedgerBilanz);
         model.put("glSearchDTO",new GLSearchDTO());
         return "gls";
