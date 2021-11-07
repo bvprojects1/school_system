@@ -62,6 +62,51 @@ public class GeneralLedgerService extends SuperService{
         generalLedgerRepository.save(generalLedger);
     }
 
+    public void updateGLWithLoanAccountRepayment(LoanAccountTransaction loanAccountTransaction, String gLType) {
+
+        GeneralLedger generalLedger = null;
+
+        //DEBIT CASH RECEIVED
+        generalLedger = loanAccountGLMapper(loanAccountTransaction, gLType);
+        LedgerAccount cashGL = ledgerAccountRepository.findByCode(BVMicroUtils.CASH_5001);
+        generalLedger.setLedgerAccount(cashGL);
+        generalLedger.setType(BVMicroUtils.DEBIT);
+        generalLedger.setAmount(loanAccountTransaction.getAmountReceived());
+        generalLedger.setGlClass(5);
+        generalLedgerRepository.save(generalLedger);
+
+        //CREDIT INTEREST PAID
+        generalLedger = loanAccountGLMapper(loanAccountTransaction, gLType);
+        LedgerAccount interestGL = ledgerAccountRepository.findByCode(BVMicroUtils.LOAN_INTEREST_7001);
+        generalLedger.setLedgerAccount(interestGL);
+        generalLedger.setType(BVMicroUtils.CREDIT);
+        generalLedger.setAmount(loanAccountTransaction.getInterestPaid());
+        generalLedger.setGlClass(7);
+        generalLedgerRepository.save(generalLedger);
+
+        //CREDIT VAT PAID
+        generalLedger = loanAccountGLMapper(loanAccountTransaction, gLType);
+        LedgerAccount vatGL = ledgerAccountRepository.findByCode(BVMicroUtils.VAT_4002);
+        generalLedger.setLedgerAccount(vatGL);
+        generalLedger.setType(BVMicroUtils.CREDIT);
+        generalLedger.setAmount(loanAccountTransaction.getVatPercent());
+        generalLedger.setGlClass(4);
+        generalLedgerRepository.save(generalLedger);
+
+        //PRINCIPAL PAID
+        generalLedger = loanAccountGLMapper(loanAccountTransaction, gLType);
+        LedgerAccount loanGL = ledgerAccountRepository.findByCode(BVMicroUtils.LOAN_3001);
+        generalLedger.setLedgerAccount(loanGL);
+        generalLedger.setType(BVMicroUtils.CREDIT);
+        generalLedger.setAmount(
+                loanAccountTransaction.getAmountReceived() -
+                        loanAccountTransaction.getInterestPaid() -
+                        loanAccountTransaction.getVatPercent());
+        generalLedger.setGlClass(3);
+        generalLedgerRepository.save(generalLedger);
+
+    }
+
     public void updateLoanAccountCreation(LoanAccount loanAccount) {
         GeneralLedger generalLedger = loanAccountGLMapper(loanAccount);
         generalLedgerRepository.save(generalLedger);
@@ -88,18 +133,17 @@ public class GeneralLedgerService extends SuperService{
     private GeneralLedger loanAccountGLMapper(LoanAccountTransaction loanAccountTransaction, String GLType) {
         GeneralLedger gl = new GeneralLedger();
         gl.setAccountNumber(loanAccountTransaction.getLoanAccount().getAccountNumber());
-        gl.setAmount(loanAccountTransaction.getAmountReceived());
-        Date date = new Date();
+//        gl.setAmount(loanAccountTransaction.getAmountReceived());
+
+        Date date = BVMicroUtils.convertToDate(loanAccountTransaction.getCreatedDate());
         gl.setDate(date);
         gl.setCreatedDate(date);
+
         gl.setLastUpdatedDate(new Date(System.currentTimeMillis()));
         gl.setNotes(loanAccountTransaction.getNotes());
         gl.setReference(loanAccountTransaction.getReference());
         gl.setLastUpdatedBy(BVMicroUtils.SYSTEM);
         gl.setCreatedBy(BVMicroUtils.SYSTEM);
-        gl.setGlClass(4); //TODO Saving which class in GL ?
-        gl.setType(getGeneralLedgerType(loanAccountTransaction.getLoanAmount()));
-        gl.setType(GLType);
         return gl;
     }
 
@@ -198,14 +242,15 @@ public class GeneralLedgerService extends SuperService{
 
                 if (GeneralLedgerType.CREDIT.name().equals(current.getType())) {
                     creditTotal = creditTotal + current.getAmount();
+                    currentTotal = currentTotal + current.getAmount();
                 } else if (GeneralLedgerType.DEBIT.name().equals(current.getType())) {
                     debitTotal = debitTotal + current.getAmount();
+                    currentTotal = currentTotal - current.getAmount();
                 }
-                currentTotal = currentTotal + current.getAmount();
             current.setCurrentTotal(currentTotal);
         }
 
-        bilanz.setTotal(debitTotal + creditTotal);
+        bilanz.setTotal(debitTotal - creditTotal);
         bilanz.setDebitTotal(debitTotal);
         bilanz.setCreditTotal(creditTotal);
 

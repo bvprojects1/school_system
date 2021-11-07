@@ -120,7 +120,7 @@
             </td>
             <td th:text="${gl.glClass}"></td>
             <td th:text="${gl.reference}"></td>
-            <td th:text="${gl.ledgerAccount.name} + -- + ${gl.ledgerAccount.code}"></td>
+            <td th:text="${gl?.ledgerAccount?.name}"></td>
             <td th:text="${gl.accountNumber}"></td>
             <td th:text="${gl.notes}"></td>
             <td>

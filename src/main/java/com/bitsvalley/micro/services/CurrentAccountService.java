@@ -76,7 +76,7 @@ public class CurrentAccountService extends SuperService {
 
     public void createCurrentAccount(CurrentAccount currentAccount, User user) {
 
-        long count = savingAccountRepository.count();
+        long count = currentAccountRepository.count();
 
         currentAccount.setAccountNumber(BVMicroUtils.getCobacSavingsAccountNumber(currentAccount.getCountry(),
                 currentAccount.getProductCode(), currentAccount.getBranchCode(), count)); //TODO: Collision

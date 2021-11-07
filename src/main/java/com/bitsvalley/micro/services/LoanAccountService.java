@@ -175,12 +175,15 @@ public class LoanAccountService extends SuperService {
             aLoanAccount.getLoanAccountTransaction().add(loanAccountTransaction);
         }
         updateInterestOwedPayment(aLoanAccount, loanAccountTransaction);
+        // ro
         save(aLoanAccount);
 
         callCenterService.saveCallCenterLog(loanAccountTransaction.getReference(), aLoanAccount.getUser().getUserName(), aLoanAccount.getAccountNumber(),
                 "Loan account Payment received Amount: "+ loanAccountTransaction.getAmountReceived());
 
-        generalLedgerService.updateGLWithLoanAccountTransaction(loanAccountTransaction,BVMicroUtils.DEBIT);
+        generalLedgerService.updateGLWithLoanAccountRepayment(loanAccountTransaction,BVMicroUtils.DEBIT);
+//        generalLedgerService.updateLoanRepayment();
+
     }
 
     public LoanBilanzList getLoanBilanzByUser(User user, boolean calculateInterest) {
@@ -206,7 +209,7 @@ public class LoanAccountService extends SuperService {
     }
 
 
-    public LoanAccount updateInterestOwedPayment(LoanAccount loanAccount, LoanAccountTransaction loanAccountTransaction) {
+    public LoanAccountTransaction updateInterestOwedPayment(LoanAccount loanAccount, LoanAccountTransaction loanAccountTransaction) {
         LocalDateTime transactionDate = loanAccountTransaction.getCreatedDate();
         LocalDateTime date =
                 LocalDateTime.ofInstant(Instant.ofEpochMilli(loanAccount.getLastPaymentDate().getTime()), ZoneId.systemDefault());
@@ -232,7 +235,9 @@ public class LoanAccountService extends SuperService {
 //            loanAccountTransaction.setInterestPaid(interestOwed);
 //        }
         loanAccountTransactionRepository.save(loanAccountTransaction);
-        return loanAccount;
+
+
+        return loanAccountTransaction;
     }
 
 
@@ -252,9 +257,9 @@ public class LoanAccountService extends SuperService {
             currentLoanBalance = loanBilanz.getCurrentBalance();
             loanBilanzsList.getLoanBilanzList().add(loanBilanz);
             totalLoan = totalLoan + loanAccountTransaction.getLoanAmount();
-//            if (calculateInterest) {
-//                totalLoanAccountTransactionInterest = totalLoanAccountTransactionInterest + loanAccountTransaction.getInterestPaid();
-//            }
+            if (calculateInterest) {
+                totalLoanAccountTransactionInterest = totalLoanAccountTransactionInterest + loanAccountTransaction.getInterestPaid();
+            }
         }
         loanBilanzsList.setTotalLoanInterest(BVMicroUtils.formatCurrency(totalLoanAccountTransactionInterest)); //TODO set total interest
         loanBilanzsList.setTotalLoan(BVMicroUtils.formatCurrency(totalLoan));

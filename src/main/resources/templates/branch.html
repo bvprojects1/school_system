@@ -27,20 +27,17 @@
         <div class="container">
             <div class="row">
                 <div class="offset-md-2 col-md-8">
-                    <span th:text="${info}"/>
+                    <font size="6" color="gray"><span th:text="${branchInfo}"/> </font>
                     <font color="blue"><b><div class="error" th:text="${error}"/></b></font> <a href="#" th:href="@{/branches}"> See Branches </a>
                     <form action="#" th:action="@{/registerBranchForm}" method="post" th:object="${branch}">
-
                             <div class="col-md-12">
-
                                 <label for="country">Choose a Country:</label>
                                 <select class="select" name="country" id="country">
                                         <option value="01">Cameroon</option>
                                         <option value="02">Gabon</option>
                                 </select>
-
                                 <br/>
-
+                                <br/>
                                 <input type="text" name="code" th:field="*{code}" id="code"
                                        placeholder="code" class="form-control" required>
                                 <br/>

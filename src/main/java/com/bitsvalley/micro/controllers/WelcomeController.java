@@ -153,4 +153,8 @@ public class WelcomeController extends SuperController{
         return "FAILURE";
     }
 
+    @GetMapping(value = "/error")
+    public String handleError(HttpServletRequest request) {
+        return "error";
+    }
 }

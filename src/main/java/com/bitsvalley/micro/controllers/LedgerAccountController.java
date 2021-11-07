@@ -1,18 +1,10 @@
 package com.bitsvalley.micro.controllers;
 
-import com.bitsvalley.micro.domain.Branch;
-import com.bitsvalley.micro.domain.GeneralLedger;
 import com.bitsvalley.micro.domain.LedgerAccount;
-import com.bitsvalley.micro.domain.RuntimeProperties;
 import com.bitsvalley.micro.repositories.LedgerAccountRepository;
-import com.bitsvalley.micro.repositories.RuntimePropertiesRepository;
 import com.bitsvalley.micro.services.GeneralLedgerService;
-import com.bitsvalley.micro.services.InitSystemService;
 import com.bitsvalley.micro.utils.BVMicroUtils;
-import com.bitsvalley.micro.webdomain.GLSearchDTO;
-import com.bitsvalley.micro.webdomain.GeneralLedgerBilanz;
 import com.bitsvalley.micro.webdomain.LedgerEntryDTO;
-import com.bitsvalley.micro.webdomain.RuntimeSetting;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -23,9 +15,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Optional;
 
 /**
  * @author Fru Chifen
@@ -42,8 +32,84 @@ public class LedgerAccountController extends SuperController{
 
     @GetMapping(value = "/newLedgerAccount")
     public String newLedgerAccount(ModelMap model, HttpServletRequest request) {
+
+        Iterable<LedgerAccount> all = ledgerAccountRepository.findAll();
+        if( !all.iterator().hasNext()){
+            //init ledgerAccounts
+            List<LedgerAccount> ledgerAccountList = new ArrayList<LedgerAccount>();
+//
+            LedgerAccount ledgerAccount = new LedgerAccount();
+//            ledgerAccount.setName(BVMicroUtils.CASH);
+//            ledgerAccount.setCategory(BVMicroUtils.ASSETS);
+//            ledgerAccount.setCode(BVMicroUtils.CASH_1001);
+//            ledgerAccount.setStatus(BVMicroUtils.ACTIVE);
+//            ledgerAccountList.add(ledgerAccount);
+
+            ledgerAccount = new LedgerAccount();
+            ledgerAccount.setName(BVMicroUtils.SAVINGS_3003);
+            ledgerAccount.setCategory("3000 – 3999");
+            ledgerAccount.setCode(BVMicroUtils.SAVINGS_3003);
+            ledgerAccount.setStatus(BVMicroUtils.ACTIVE);
+            ledgerAccountList.add(ledgerAccount);
+
+//            ledgerAccount = new LedgerAccount();
+//            ledgerAccount.setName(BVMicroUtils.SAVINGS);
+//            ledgerAccount.setCategory("3000 – 3999");
+//            ledgerAccount.setCode(BVMicroUtils.SAVINGS_3004);
+//            ledgerAccount.setStatus(BVMicroUtils.ACTIVE);
+//            ledgerAccountList.add(ledgerAccount);
+
+            ledgerAccount = new LedgerAccount();
+            ledgerAccount.setName(BVMicroUtils.LOAN_3001);
+            ledgerAccount.setCategory("3000 – 3999");
+            ledgerAccount.setCode(BVMicroUtils.LOAN_3001);
+            ledgerAccount.setStatus(BVMicroUtils.ACTIVE);
+            ledgerAccountList.add(ledgerAccount);
+
+            ledgerAccount = new LedgerAccount();
+            ledgerAccount.setName(BVMicroUtils.CASH_5001);
+            ledgerAccount.setCategory("5000 – 5999");
+            ledgerAccount.setCode(BVMicroUtils.CASH_5001);
+            ledgerAccount.setStatus(BVMicroUtils.ACTIVE);
+            ledgerAccountList.add(ledgerAccount);
+
+            ledgerAccount = new LedgerAccount();
+            ledgerAccount.setName(BVMicroUtils.LOAN_INTEREST_7001);
+            ledgerAccount.setCategory("7001 – 7999");
+            ledgerAccount.setCode(BVMicroUtils.LOAN_INTEREST_7001);
+            ledgerAccount.setStatus(BVMicroUtils.ACTIVE);
+            ledgerAccountList.add(ledgerAccount);
+
+            ledgerAccount = new LedgerAccount();
+            ledgerAccount.setName(BVMicroUtils.VAT_4002);
+            ledgerAccount.setCode(BVMicroUtils.VAT_4002);
+            ledgerAccount.setCategory("VAT 4000 – 4999");
+            ledgerAccount.setStatus(BVMicroUtils.ACTIVE);
+            ledgerAccountList.add(ledgerAccount);
+//
+//            ledgerAccount = new LedgerAccount();
+//            ledgerAccount.setName(BVMicroUtils.REVENUE);
+//            ledgerAccount.setCode("400");
+//            ledgerAccount.setCategory("REVENUE 400 – 599");
+//            ledgerAccount.setStatus(BVMicroUtils.ACTIVE);
+//            ledgerAccountList.add(ledgerAccount);
+//
+//            ledgerAccount = new LedgerAccount();
+//            ledgerAccount.setName(BVMicroUtils.EXPENSES);
+//            ledgerAccount.setCode("600");
+//            ledgerAccount.setCategory("EXPENSES 600 – 799");
+//            ledgerAccount.setStatus(BVMicroUtils.ACTIVE);
+//            ledgerAccountList.add(ledgerAccount);
+
+            Iterable<LedgerAccount> ledgerListIterable = ledgerAccountList;
+            ledgerAccountRepository.saveAll(ledgerListIterable);
+        }
+
+
+
+
         model.put("ledgerAccount",new LedgerAccount());
-        model.put("ledgerAccountList", ledgerAccountRepository.findAll());
+        model.put("ledgerAccountList", all);
         return "ledgeraccount";
     }
 

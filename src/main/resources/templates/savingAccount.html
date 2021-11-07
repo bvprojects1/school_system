@@ -24,7 +24,7 @@
     </div>
 
     <form action="#" th:action="@{/registerSavingAccountForm}" method="post" th:object="${savingAccount}">
-        <table class="center" width="100%">
+        <table class="center" width="60%">
             <tr>
                 <td width="33%"></td>
                 <td><label> Saving Type:</label></td>
@@ -44,12 +44,12 @@
             <tr>
                 <td width="33%"></td>
                 <td width="10%"><label> Minimum balance:</label></td>
-                <td><br/> <input placeholder="0" type="number" th:field="*{accountMinBalance}"/></td>
+                <td><input placeholder="0" type="number" th:field="*{accountMinBalance}"/></td>
             </tr>
             <tr>
                 <td width="33%"></td>
                 <td width="10%"><label> Interest Rate:</label></td>
-                <td><br/> <input type="number" th:field="*{interestRate}" max="100" maxlength="2"/></td>
+                <td>  <input type="number" th:field="*{interestRate}" max="100" maxlength="2"/></td>
             </tr>
 
             <tr>

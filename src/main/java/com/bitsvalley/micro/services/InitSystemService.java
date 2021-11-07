@@ -95,47 +95,6 @@ public class InitSystemService {
             Iterable<RuntimeProperties> runtimePropertiesListIterable = runtimePropertiesList;
             runtimePropertiesRepository.saveAll(runtimePropertiesListIterable);
 
-            //init ledgerAccounts
-//            List<LedgerAccount> ledgerAccountList = new ArrayList<LedgerAccount>();
-//
-//            LedgerAccount ledgerAccount = new LedgerAccount();
-//            ledgerAccount.setName(BVMicroUtils.ASSETS);
-//            ledgerAccount.setCategory("100 – 199");
-//            ledgerAccount.setCode("ASSETS 100");
-//            ledgerAccount.setStatus(BVMicroUtils.ACTIVE);
-//            ledgerAccountList.add(ledgerAccount);
-//
-//            ledgerAccount = new LedgerAccount();
-//            ledgerAccount.setName(BVMicroUtils.LIABILITIES);
-//            ledgerAccount.setCategory("200 – 299");
-//            ledgerAccount.setCode("LIABILITIES 200");
-//            ledgerAccount.setStatus(BVMicroUtils.ACTIVE);
-//            ledgerAccountList.add(ledgerAccount);
-//
-//            ledgerAccount = new LedgerAccount();
-//            ledgerAccount.setName(BVMicroUtils.EQUITY);
-//            ledgerAccount.setCode("300");
-//            ledgerAccount.setCategory("EQUITY 300 – 399");
-//            ledgerAccount.setStatus(BVMicroUtils.ACTIVE);
-//            ledgerAccountList.add(ledgerAccount);
-//
-//            ledgerAccount = new LedgerAccount();
-//            ledgerAccount.setName(BVMicroUtils.REVENUE);
-//            ledgerAccount.setCode("400");
-//            ledgerAccount.setCategory("REVENUE 400 – 599");
-//            ledgerAccount.setStatus(BVMicroUtils.ACTIVE);
-//            ledgerAccountList.add(ledgerAccount);
-//
-//            ledgerAccount = new LedgerAccount();
-//            ledgerAccount.setName(BVMicroUtils.EXPENSES);
-//            ledgerAccount.setCode("600");
-//            ledgerAccount.setCategory("EXPENSES 600 – 799");
-//            ledgerAccount.setStatus(BVMicroUtils.ACTIVE);
-//            ledgerAccountList.add(ledgerAccount);
-//
-//            Iterable<LedgerAccount> ledgerListIterable = ledgerAccountList;
-//            ledgerAccountRepository.saveAll(ledgerListIterable);
-
         }
         return runtimePropertiesList;
     }
