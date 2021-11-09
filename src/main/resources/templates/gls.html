@@ -33,7 +33,7 @@
                                 </option>
                                 <option th:each="i : ${allLedgerAccount}"
                                         th:value="${i.id}">
-                                    <span th:text="${i.name} + -- +${i.code}"/>
+                                    <span th:text="${i.name}"/>
                                 </option>
                             </select>
                         </td>

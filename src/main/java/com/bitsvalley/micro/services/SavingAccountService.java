@@ -393,6 +393,8 @@ public class SavingAccountService extends SuperService {
         shorteeSavingAccount.setAccountMinBalance(shorteeSavingAccount.getAccountMinBalance()-loanAccountTransaction.getAmountReceived());
         savingAccountRepository.save(shorteeSavingAccount);
 
+        generalLedgerService.updateGLAfterLoanAccountTransferRepayment(loanAccountTransaction);
+
     }
 
     public SavingAccount transferFromDebitToDebit(String fromAccountNumber,

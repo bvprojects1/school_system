@@ -57,54 +57,54 @@ public class GeneralLedgerService extends SuperService{
         generalLedgerRepository.save(generalLedger);
     }
 
-    public void updateGLWithLoanAccountTransaction(LoanAccountTransaction loanAccountTransaction, String gLType) {
-        GeneralLedger generalLedger = loanAccountGLMapper(loanAccountTransaction, gLType);
+    public void updateGLWithLoanAccountTransaction(LoanAccountTransaction loanAccountTransaction) {
+        GeneralLedger generalLedger = loanAccountGLMapper(loanAccountTransaction);
         generalLedgerRepository.save(generalLedger);
     }
 
-    public void updateGLWithLoanAccountRepayment(LoanAccountTransaction loanAccountTransaction, String gLType) {
-
+    public void updateGLAfterLoanAccountCASHRepayment(LoanAccountTransaction loanAccountTransaction, String gLType) {
         GeneralLedger generalLedger = null;
 
         //DEBIT CASH RECEIVED
-        generalLedger = loanAccountGLMapper(loanAccountTransaction, gLType);
-        LedgerAccount cashGL = ledgerAccountRepository.findByCode(BVMicroUtils.CASH_5001);
-        generalLedger.setLedgerAccount(cashGL);
-        generalLedger.setType(BVMicroUtils.DEBIT);
-        generalLedger.setAmount(loanAccountTransaction.getAmountReceived());
-        generalLedger.setGlClass(5);
-        generalLedgerRepository.save(generalLedger);
-
-        //CREDIT INTEREST PAID
-        generalLedger = loanAccountGLMapper(loanAccountTransaction, gLType);
-        LedgerAccount interestGL = ledgerAccountRepository.findByCode(BVMicroUtils.LOAN_INTEREST_7001);
-        generalLedger.setLedgerAccount(interestGL);
-        generalLedger.setType(BVMicroUtils.CREDIT);
-        generalLedger.setAmount(loanAccountTransaction.getInterestPaid());
-        generalLedger.setGlClass(7);
-        generalLedgerRepository.save(generalLedger);
+        updateGeneralLedger(loanAccountTransaction, BVMicroUtils.CASH_5001, BVMicroUtils.DEBIT, loanAccountTransaction.getAmountReceived(), 5);
+        updateGeneralLedger(loanAccountTransaction, BVMicroUtils.LOAN_INTEREST_7001, BVMicroUtils.CREDIT, loanAccountTransaction.getInterestPaid(), 7);
 
         //CREDIT VAT PAID
-        generalLedger = loanAccountGLMapper(loanAccountTransaction, gLType);
-        LedgerAccount vatGL = ledgerAccountRepository.findByCode(BVMicroUtils.VAT_4002);
-        generalLedger.setLedgerAccount(vatGL);
-        generalLedger.setType(BVMicroUtils.CREDIT);
-        generalLedger.setAmount(loanAccountTransaction.getVatPercent());
-        generalLedger.setGlClass(4);
-        generalLedgerRepository.save(generalLedger);
+        updateGeneralLedger(loanAccountTransaction,BVMicroUtils.VAT_4002, BVMicroUtils.CREDIT, loanAccountTransaction.getVatPercent(), 4);
 
         //PRINCIPAL PAID
-        generalLedger = loanAccountGLMapper(loanAccountTransaction, gLType);
-        LedgerAccount loanGL = ledgerAccountRepository.findByCode(BVMicroUtils.LOAN_3001);
-        generalLedger.setLedgerAccount(loanGL);
-        generalLedger.setType(BVMicroUtils.CREDIT);
-        generalLedger.setAmount(
-                loanAccountTransaction.getAmountReceived() -
-                        loanAccountTransaction.getInterestPaid() -
-                        loanAccountTransaction.getVatPercent());
-        generalLedger.setGlClass(3);
+        double amount = loanAccountTransaction.getAmountReceived() - loanAccountTransaction.getInterestPaid() - loanAccountTransaction.getVatPercent();
+        updateGeneralLedger(loanAccountTransaction, BVMicroUtils.LOAN_3001,BVMicroUtils.CREDIT,amount,3);
+
         generalLedgerRepository.save(generalLedger);
 
+    }
+
+    public void updateGLAfterLoanAccountTransferRepayment(LoanAccountTransaction loanAccountTransaction) {
+        GeneralLedger generalLedger = null;
+
+        //DEBIT CASH RECEIVED
+        updateGeneralLedger(loanAccountTransaction, BVMicroUtils.SAVINGS_3003, BVMicroUtils.DEBIT, loanAccountTransaction.getAmountReceived(), 5);
+        updateGeneralLedger(loanAccountTransaction, BVMicroUtils.LOAN_INTEREST_7001, BVMicroUtils.CREDIT, loanAccountTransaction.getInterestPaid(), 7);
+
+        //CREDIT VAT PAID
+        updateGeneralLedger(loanAccountTransaction,BVMicroUtils.VAT_4002, BVMicroUtils.CREDIT, loanAccountTransaction.getVatPercent(), 4);
+
+        //PRINCIPAL PAID
+        double amount = loanAccountTransaction.getAmountReceived() - loanAccountTransaction.getInterestPaid() - loanAccountTransaction.getVatPercent();
+        updateGeneralLedger(loanAccountTransaction, BVMicroUtils.LOAN_3001,BVMicroUtils.CREDIT,amount,3);
+
+    }
+
+    private void updateGeneralLedger(LoanAccountTransaction loanAccountTransaction,  String ledgerAccount, String creditDebit, double amount, int classNumber) {
+        GeneralLedger generalLedger;//CREDIT INTEREST PAID
+        generalLedger = loanAccountGLMapper(loanAccountTransaction);
+        LedgerAccount interestGL = ledgerAccountRepository.findByCode(ledgerAccount);
+        generalLedger.setLedgerAccount(interestGL);
+        generalLedger.setType(creditDebit);
+        generalLedger.setAmount(amount);
+        generalLedger.setGlClass(classNumber);
+        generalLedgerRepository.save(generalLedger);
     }
 
     public void updateLoanAccountCreation(LoanAccount loanAccount) {
@@ -130,10 +130,10 @@ public class GeneralLedgerService extends SuperService{
         return gl;
     }
 
-    private GeneralLedger loanAccountGLMapper(LoanAccountTransaction loanAccountTransaction, String GLType) {
+    private GeneralLedger loanAccountGLMapper(LoanAccountTransaction loanAccountTransaction) {
         GeneralLedger gl = new GeneralLedger();
         gl.setAccountNumber(loanAccountTransaction.getLoanAccount().getAccountNumber());
-//        gl.setAmount(loanAccountTransaction.getAmountReceived());
+        gl.setAmount(loanAccountTransaction.getAmountReceived());
 
         Date date = BVMicroUtils.convertToDate(loanAccountTransaction.getCreatedDate());
         gl.setDate(date);

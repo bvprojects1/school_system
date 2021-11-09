@@ -412,7 +412,7 @@ public class LoanAccountController extends SuperController {
 
         // Update new loan account transaction
         loanAccountTransaction.setAmountReceived(loanAccount.getLoanAmount());
-        generalLedgerService.updateGLWithLoanAccountTransaction(loanAccountTransaction, BVMicroUtils.CREDIT);
+        generalLedgerService.updateGLWithLoanAccountTransaction(loanAccountTransaction);
         loanAccountTransaction.setAmountReceived(0); // Reset loanAmount
         callCenterService.saveCallCenterLog("ACTIVE", getLoggedInUserName(), loanAccount.getAccountNumber(),"LOAN FUNDS TRANSFERRED TO CURRENT"); //TODO ADD DATE
         loanAccountService.save(loanAccount);

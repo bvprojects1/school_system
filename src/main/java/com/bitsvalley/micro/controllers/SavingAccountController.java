@@ -203,7 +203,7 @@ public class SavingAccountController extends SuperController {
         model.put("transferType", BVMicroUtils.DEBIT_LOAN_TRANSFER);
         model.put("fromTransferText", fromAccount.getAccountType().getName() +" --- Balance " + BVMicroUtils.formatCurrency(fromAccount.getAccountBalance()) +"--- Minimum Balance "+ BVMicroUtils.formatCurrency(fromAccount.getAccountMinBalance()) );
         model.put("toTransferText", toAccount.getAccountType().getName() +" --- Balance " + BVMicroUtils.formatCurrency(toAccount.getCurrentLoanAmount()) +"--- Initial Loan "+ BVMicroUtils.formatCurrency(toAccount.getLoanAmount()) );
-        model.put("transferAmount", transferBilanz.getTransferAmount() );
+        model.put("transferAmount", BVMicroUtils.formatCurrency(transferBilanz.getTransferAmount()) );
         model.put("notes", transferBilanz.getNotes());
 
         return "transferReview";

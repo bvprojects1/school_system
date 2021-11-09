@@ -30,7 +30,10 @@
                                 th:text="${#numbers.formatDecimal(loan.loanAmount, 0, 'COMMA', 0, 'POINT')}"/>) to <span
                                 th:text="${loan.user.lastName}"/>'s current account<br/>
                             <font size="2"> This loan was APPROVED by <span th:text="${loan.approvedBy}"/> on <span th:text="${#dates.format(loan.approvedDate, 'dd-MMM-yyyy HH:mm')}"/> </font>
-                        <a href="#" th:href="@{/transferToCurrent/{id}(id=${loan.id})}"> MAKE TRANSFER TO CURRENT ACCOUNT</a>
+                        <br/>
+                        <a href="#" th:href="@{/transferToCurrent/{id}(id=${loan.id})}">
+                            MAKE TRANSFER TO CURRENT ACCOUNT
+                        </a>
                     </span>
                     <br/>
                     <br/>
