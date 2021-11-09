@@ -1,9 +1,11 @@
 package com.bitsvalley.micro.controllers;
 
 import com.bitsvalley.micro.domain.GeneralLedger;
+import com.bitsvalley.micro.domain.LedgerAccount;
 import com.bitsvalley.micro.repositories.GeneralLedgerRepository;
 import com.bitsvalley.micro.repositories.LedgerAccountRepository;
 import com.bitsvalley.micro.services.GeneralLedgerService;
+import com.bitsvalley.micro.utils.BVMicroUtils;
 import com.bitsvalley.micro.webdomain.GLSearchDTO;
 import com.bitsvalley.micro.webdomain.GeneralLedgerBilanz;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -94,8 +97,11 @@ public class GeneralAccountController extends SuperController{
 
     @GetMapping(value = "/viewLedgerAccount/{id}")
     public String ledgerAccount(@PathVariable("id") long id, ModelMap model, HttpServletRequest request) {
+
+        Iterable<LedgerAccount> all = ledgerAccountRepository.findAll();
+
         GeneralLedgerBilanz generalLedgerBilanz = generalLedgerService.findGLByLedgerAccount(id);
-        model.put("allLedgerAccount",ledgerAccountRepository.findAll());
+        model.put("allLedgerAccount", all);
         model.put("generalLedgerBilanz",generalLedgerBilanz);
         model.put("glSearchDTO",new GLSearchDTO());
         return "gls";

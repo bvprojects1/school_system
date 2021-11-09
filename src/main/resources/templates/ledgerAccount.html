@@ -33,30 +33,30 @@
                             <div class="col-md-12">
 
                                 <select class="select" name="Category" id="category">
-                                    <option value="Assets">Assets (100 – 199)</option>
-                                    <option value="Liabilities">Liabilities (200 – 299)</option>
-                                    <option value="Equity">Equity (300 – 399)</option>
-                                    <option value="Revenue">Revenue (400 – 599)</option>
-                                    <option value="Expense">Expense (600 – 799)</option>
+                                    <option value="Assets">Assets (1000 – 1999)</option>
+                                    <option value="Long Term Assets">Long Term Assets (2000 – 2999)</option>
+                                    <option value="Inventory">Inventory (3000 – 3999)</option>
+                                    <option value="Third Party Revenue">Third Party Revenue (4000 – 4999)</option>
+                                    <option value="Treasury Accounts">Treasury Accounts (5000 – 5999)</option>
+                                    <option value="Expense">Expense (6000 – 6999)</option>
+                                    <option value="Revenue">Revenue (7000 – 7999)</option>
+                                    <option value="Extra Ordinary Activities">Extra Ordinary Activities (8000 – 8999)</option>
                                 </select>
                                 <br/>
                                 <br/>
+                                <label for="status"><font size="4px"> Name</font></label>
                                 <input type="text" name="name" th:field="*{name}" id="name"
                                        placeholder="name" class="form-control" required>
 
                                 <br/>
+                                <label for="status"><font size="4px"> Code</font></label>
                                 <input type="text" name="code" th:field="*{code}" id="code"
                                        placeholder="code" class="form-control" required>
                                 <br/>
-                                Active
-                                <label>
-                                    True
-                                    <input type="radio" value="ACTIVE" th:field="*{status}" name="status" checked>
-                                </label>
-                                <label>
-                                    False
-                                    <input type="radio" value="INACTIVE" th:field="*{status}" name="status">
-                                </label>
+
+                                <label for="status"><font size="4px"> Active</font></label>
+                                <input class="largerCheckbox" th:field="*{status}" type="checkbox" id="status" name="status" value="true"
+                                           checked>
                                 <br/>
 
                                 <input type="submit" class="btn-block btn contact-btn"
@@ -66,8 +66,8 @@
                     </form>
 
                     <br/><br/>
-                    <h3>EXISTING LEDGER ACCOUNTS</h3>
                     <table width="90%" class="center" border="0px">
+                        <tr><th colspan="5"><h4>EXISTING LEDGER ACCOUNTS</h4></th></tr>
                         <tr th:each="aLedgerAccount : ${ledgerAccountList}">
                             <td th:text="${aLedgerAccount.name}"></td>
                             <td th:text="${aLedgerAccount.code}"></td>

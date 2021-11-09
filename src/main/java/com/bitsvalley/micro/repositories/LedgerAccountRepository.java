@@ -13,4 +13,7 @@ public interface LedgerAccountRepository extends CrudRepository<LedgerAccount, L
     @Query(value = "SELECT * FROM LEDGERACCOUNT la WHERE la.id != :id", nativeQuery = true)
     List<LedgerAccount>  findAllExcept(Long id);
 
+    @Query(value = "SELECT * FROM LEDGERACCOUNT la WHERE la.code = :code", nativeQuery = true)
+    LedgerAccount  findByCode(String code);
+
 }

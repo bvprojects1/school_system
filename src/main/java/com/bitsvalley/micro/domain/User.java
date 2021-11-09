@@ -49,6 +49,9 @@ public class User {
     @OneToMany(cascade = CascadeType.ALL)
     private List<LoanAccount> loanAccount = new ArrayList<LoanAccount>();
 
+//    @OneToMany(cascade = CascadeType.ALL)
+//    private List<ShareAccount> loanAccount = new ArrayList<LoanAccount>();
+
     private LocalDateTime accountExpiredDate;
     private boolean accountLocked;
 

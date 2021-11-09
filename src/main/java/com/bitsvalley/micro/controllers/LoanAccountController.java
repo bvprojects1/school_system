@@ -134,7 +134,13 @@ public class LoanAccountController extends SuperController {
         loanAccount.setMonthlyPayment(new Double(monthlyPayment).intValue());
 
 //         interestService.calculateInterestAccruedMonthCompounded(
-//              loanAccount.getInterestRate(),loanAccount.getTermOfLoan(),loanAccount.getLoanAmount()));
+//              loanAccount.getInterestRate(),
+//                 loanAccount.getTermOfLoan(),
+//                 loanAccount.getLoanAmount()));
+
+//        currentAccountTransaction.getCurrentAccount().getInterestRate(),
+//                currentAccountTransaction.getCreatedDate(),
+//                currentAccountTransaction.getCurrentAmount());
 
         AccountType accountType = accountTypeService.getAccountTypeByProductCode(loanAccount.getProductCode());
         loanAccount.setAccountType(accountType);
@@ -361,7 +367,7 @@ public class LoanAccountController extends SuperController {
     }
 
     @GetMapping(value = "/showLoanAccountBilanz/{accountId}")
-    public String showLoanAccountBilanz(@PathVariable("accountId") long accountId, ModelMap model, HttpServletRequest request) {
+    public String showLoanAccountBilanz(@PathVariable("accountId") long accountId, ModelMap model) {
         LoanAccount loanAccount = loanAccountService.findById(accountId).get();
         if(!loanAccount.getAccountStatus().name().equals(BVMicroUtils.ACTIVE)){
             model.put("loanMustBeInActiveState", BVMicroUtils.LOAN_MUST_BE_IN_ACTIVE_STATE);
@@ -406,7 +412,7 @@ public class LoanAccountController extends SuperController {
 
         // Update new loan account transaction
         loanAccountTransaction.setAmountReceived(loanAccount.getLoanAmount());
-        generalLedgerService.updateGLWithLoanAccountTransaction(loanAccountTransaction, BVMicroUtils.CREDIT);
+        generalLedgerService.updateGLWithLoanAccountTransaction(loanAccountTransaction);
         loanAccountTransaction.setAmountReceived(0); // Reset loanAmount
         callCenterService.saveCallCenterLog("ACTIVE", getLoggedInUserName(), loanAccount.getAccountNumber(),"LOAN FUNDS TRANSFERRED TO CURRENT"); //TODO ADD DATE
         loanAccountService.save(loanAccount);
@@ -414,6 +420,21 @@ public class LoanAccountController extends SuperController {
         model.put("loan",loanAccount);
         model.put("loanDetailsInfo","FUNDS TRANSFERRED to CURRENT ACCOUNT IS NOW ACTIVE");
         return "loanDetails";
+    }
+
+
+
+
+    @PostMapping(value = "/updateTrxDateForm")
+    public String updateTrxDateForm(ModelMap model, @ModelAttribute("loanAccountTransaction")
+            LoanAccountTransaction loanAccountTransaction, HttpServletRequest request) {
+        String transaction = request.getParameter("transactionID");
+        String dateChange = request.getParameter("dateChange");
+        LoanAccountTransaction loanAccountTransaction1 = loanAccountTransactionService.updateDateForTest(transaction, dateChange);
+
+
+
+        return showLoanAccountBilanz(loanAccountTransaction1.getLoanAccount().getId(), model);
     }
 
 }
