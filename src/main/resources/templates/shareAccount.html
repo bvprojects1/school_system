@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<div th:insert="header::navbar">  </div>
+<br/>
+<br/>
+
+<!-- Contact form area start -->
+<section class="contact-form-area-start space df-bg">
+    <!--Project title area start-->
+    <div class="project-title-area text-center">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="project-title-content">
+                        <h3> PURCHASE SHARES</h3>
+                        <span><i class="fas fa-crosshairs"></i></span>
+                        <!--  <p>Cross-agency coordination clean water rural, promising development turmoil inclusive education transformative community.</p>-->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--Project title area end-->
+
+    <div class="contact-from-area">
+        <div class="container">
+            <div class="row">
+                <div class="offset-md-2 col-md-8">
+                    <font size="6" color="gray"><span th:text="${ShareAccountInfo}"/> </font>
+                    <font color="blue"><b><div class="error" th:text="${error}"/></b></font>
+                    <form action="#" th:action="@{/registerShareAccountForm}" method="post" th:object="${shareAccount}">
+                            <div class="col-md-12">
+                                <label for="shareAccount">Choose a Share:</label>
+                                <select class="select" name="shareAccount" id="shareAccount">
+                                        <option value="31">Preference Share</option>
+                                        <option value="32">Debenture Share</option>
+                                </select>
+                                <br/>
+                                <br/>
+                                <input type="text" name="unitPrice" value th:field="*{unitPrice}" id="unitPrice"
+                                       placeholder="unitPrice" class="form-control" disabled>
+                                <br/>
+                                <br/>
+                                <input type="text" name="quantity" th:field="*{quantity}" id="quantity"
+                                       placeholder="quantity" class="form-control" required>
+                                <br/>
+                                <input type="submit" class="btn-block btn contact-btn" value="CREATE Share"/>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div th:insert="footer::navbar">  </div>
+</html>

@@ -15,7 +15,7 @@
                 </td>
             </tr>
         </table>
-        <table>
+        <table width="90%" class="center" border="0px">
             <tr>
                 <td>
                         <span th:if="${loan.accountStatus.name == 'PENDING_APPROVAL'}">
@@ -23,7 +23,7 @@
                         </span>
                 </td>
                 <td colspan="3">
-                    <font color="blue"> <span th:text="${loanDetailsInfo}"/></font>
+                    <font color="gray" size="4"> <span th:text="${loanDetailsInfo}"/></font>
                     <span th:if="${loan.accountStatus.name == 'PENDING_PAYOUT'}">
 
                             Transfer loan amount(<span

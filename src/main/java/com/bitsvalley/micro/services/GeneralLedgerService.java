@@ -47,10 +47,10 @@ public class GeneralLedgerService extends SuperService{
         return generalLedgerRepository.findByAccountNumber(accountNumber);
     }
 
-    public void updateSavingAccountTransaction(SavingAccountTransaction savingAccountTransaction) {
-        GeneralLedger generalLedger = savingAccountGLMapper(savingAccountTransaction);
-        generalLedgerRepository.save(generalLedger);
-    }
+//    public void updateSavingAccountTransaction(SavingAccountTransaction savingAccountTransaction) {
+//        GeneralLedger generalLedger = savingAccountGLMapper(savingAccountTransaction);
+//        generalLedgerRepository.save(generalLedger);
+//    }
 
     public void updateCurrentAccountTransaction(CurrentAccountTransaction currentAccountTransaction) {
         GeneralLedger generalLedger = currentAccountGLMapper(currentAccountTransaction);
@@ -62,7 +62,7 @@ public class GeneralLedgerService extends SuperService{
         generalLedgerRepository.save(generalLedger);
     }
 
-    public void updateGLAfterLoanAccountCASHRepayment(LoanAccountTransaction loanAccountTransaction, String gLType) {
+    public void updateGLAfterLoanAccountCASHRepayment(LoanAccountTransaction loanAccountTransaction) {
         GeneralLedger generalLedger = null;
 
         //DEBIT CASH RECEIVED
