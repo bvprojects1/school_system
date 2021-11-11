@@ -16,6 +16,7 @@ public class RuntimeSetting {
     private int noOfAccounts;
     private String address;
     private String vatPercent;
+    private String unitSharePrice;
 
 
     public String getFax() {
@@ -130,4 +131,7 @@ public class RuntimeSetting {
         this.vatPercent = vatPercent;
     }
 
+    public String getUnitSharePrice() { return unitSharePrice; }
+
+    public void setUnitSharePrice(String unitSharePrice) { this.unitSharePrice = unitSharePrice; }
 }

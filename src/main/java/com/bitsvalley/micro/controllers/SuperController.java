@@ -8,6 +8,7 @@ import com.bitsvalley.micro.utils.BVMicroUtils;
 import com.bitsvalley.micro.webdomain.CurrentBilanzList;
 import com.bitsvalley.micro.webdomain.LoanBilanzList;
 import com.bitsvalley.micro.webdomain.SavingBilanzList;
+import com.bitsvalley.micro.webdomain.ShareAccountBilanzList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -53,6 +54,9 @@ public class SuperController {
 
     @Autowired
     private PdfService pdfService;
+
+    @Autowired
+    private ShareAccountService shareAccountService;
 
 
     public String  findUserByUserName(User user, ModelMap model, HttpServletRequest request) {
@@ -107,12 +111,15 @@ public class SuperController {
         SavingBilanzList savingBilanzByUserList = savingAccountService.getSavingBilanzByUser(aUser, false);
         LoanBilanzList loanBilanzByUserList = loanAccountService.getLoanBilanzByUser(aUser, false);
         CurrentBilanzList currentBilanzByUserList = currentAccountService.getCurrentBilanzByUser(aUser, false);
+        ShareAccountBilanzList shareAccountBilanzList = shareAccountService.getShareAccountBilanzByUser(aUser);
 
             request.getSession().setAttribute("savingBilanzList",savingBilanzByUserList);
             request.getSession().setAttribute("loanBilanzList",loanBilanzByUserList);
             request.getSession().setAttribute("currentBilanzList",currentBilanzByUserList);
+            request.getSession().setAttribute("shareAccountBilanzList",shareAccountBilanzList);
 
-        if(aUser.getSavingAccount().size() == 0 && aUser.getLoanAccount().size() == 0 && aUser.getCurrentAccount().size() == 0){
+        if(aUser.getSavingAccount().size() == 0 && aUser.getLoanAccount().size() == 0 &&
+                aUser.getCurrentAccount().size() == 0){
             model.put("name", getLoggedInUserName());
             request.getSession().setAttribute("savingBilanzList", savingBilanzByUserList);
             request.getSession().setAttribute(BVMicroUtils.CUSTOMER_IN_USE, aUser);

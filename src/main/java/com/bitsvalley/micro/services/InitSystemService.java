@@ -90,6 +90,11 @@ public class InitSystemService {
             vatPercent.setPropertyValue("0.195");
             runtimePropertiesList.add(vatPercent);
 
+            RuntimeProperties unitSharePrice = new RuntimeProperties();
+            unitSharePrice.setPropertyName("unitSharePrice");
+            unitSharePrice.setPropertyValue("10000");
+            runtimePropertiesList.add(unitSharePrice);
+
             Iterable<RuntimeProperties> runtimePropertiesListIterable = runtimePropertiesList;
             runtimePropertiesRepository.saveAll(runtimePropertiesListIterable);
 
@@ -129,6 +134,8 @@ public class InitSystemService {
                 runtime.setThemeColor2(rp.getPropertyValue());
             }else if (rp.getPropertyName().equals("vatPercent")) {
                 runtime.setVatPercent(rp.getPropertyValue());
+            }else if(rp.getPropertyName().equals("unitSharePrice")){
+                runtime.setUnitSharePrice(rp.getPropertyValue());
             }
         }
         return runtime;

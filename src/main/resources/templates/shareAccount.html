@@ -31,21 +31,31 @@
                     <font color="blue"><b><div class="error" th:text="${error}"/></b></font>
                     <form action="#" th:action="@{/registerShareAccountForm}" method="post" th:object="${shareAccount}">
                             <div class="col-md-12">
-                                <label for="shareAccount">Choose a Share:</label>
-                                <select class="select" name="shareAccount" id="shareAccount">
+                                <label for="productCode">Choose a Share:</label>
+                                <select class="select" name="productCode" id="productCode">
                                         <option value="31">Preference Share</option>
                                         <option value="32">Debenture Share</option>
                                 </select>
                                 <br/>
                                 <br/>
-                                <input type="text" name="unitPrice" value th:field="*{unitPrice}" id="unitPrice"
-                                       placeholder="unitPrice" class="form-control" disabled>
+                                <label> Unit Price:</label>
                                 <br/>
+                                <input type="text" name="unitSharePrice" value th:field="*{unitSharePrice}" id="unitSharePrice"
+                                       placeholder="unitSharePrice" class="form-control">
+                                <br/>
+                                <br/>
+                                <label>Quantity:</label>
                                 <br/>
                                 <input type="text" name="quantity" th:field="*{quantity}" id="quantity"
                                        placeholder="quantity" class="form-control" required>
                                 <br/>
-                                <input type="submit" class="btn-block btn contact-btn" value="CREATE Share"/>
+
+                                <label> Notes:</label>
+                                <br/>
+                                <textarea id="notes" rows="3" cols="30" th:field="*{notes}">
+                                </textarea>
+
+                                <input type="submit" class="btn-block btn contact-btn" value="NEXT APPLICATION"/>
                         </div>
                     </form>
                 </div>

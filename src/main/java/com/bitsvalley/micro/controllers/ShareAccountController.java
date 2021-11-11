@@ -8,8 +8,10 @@ import com.bitsvalley.micro.repositories.BranchRepository;
 import com.bitsvalley.micro.repositories.ShareAccountRepository;
 import com.bitsvalley.micro.repositories.UserRepository;
 import com.bitsvalley.micro.services.BranchService;
+import com.bitsvalley.micro.services.InitSystemService;
 import com.bitsvalley.micro.services.ShareAccountService;
 import com.bitsvalley.micro.utils.BVMicroUtils;
+import com.bitsvalley.micro.webdomain.RuntimeSetting;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -42,6 +44,9 @@ public class ShareAccountController extends SuperController {
     @Autowired
     BranchService branchService;
 
+    @Autowired
+    InitSystemService initSystemService;
+
 //    @PostMapping(value = "/registerShareAccountForm")
 //    public String registerSavingForm(@ModelAttribute("shareAccount") ShareAccount shareAccount,
 //                                     ModelMap model, HttpServletRequest request) {
@@ -58,13 +63,15 @@ public class ShareAccountController extends SuperController {
         Branch branchInfo = branchService.getBranchInfo(getLoggedInUserName());//TODO Create branch repo
         shareAccount.setBranchCode(branchInfo.getCode());
         shareAccount.setCountry(branchInfo.getCountry());
-//        shareAccountService.createShareAccount(shareAccount, user);
+        shareAccountService.createShareAccount(shareAccount, user);
         return findUserByUserName(user, model, request);
     }
 
     @GetMapping(value = "/registerShareAccount")
     public String registerBranch(ModelMap model, HttpServletRequest request) {
         ShareAccount shareAccount = new ShareAccount();
+        String byPropertyName = initSystemService.findByPropertyName(BVMicroUtils.UNIT_SHARE_VALUE);
+        shareAccount.setUnitSharePrice(new Double(byPropertyName));
         model.put("shareAccount", shareAccount);
         return "shareAccount";
     }

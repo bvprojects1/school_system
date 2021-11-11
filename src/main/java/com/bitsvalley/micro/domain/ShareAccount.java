@@ -22,13 +22,19 @@ public class ShareAccount {
     private String lastUpdatedBy;
     private String branchCode;
     private String country;
-
+    private String productCode;
     @Column(unique = true)
     private String accountNumber;
-
+    private AccountStatus accountStatus;
     private int quantity;
-    private double unitPrice;
+    private double unitSharePrice;
     private double accountBalance;
+    private Date createdDate;
+    private Date lastUpdatedDate;
+    private String notes;
+
+    @OneToMany(cascade = CascadeType.ALL)
+    private List<ShareAccountTransaction> shareAccountTransaction = new ArrayList<ShareAccountTransaction>();
 
     @OneToOne
     private User user;
@@ -73,12 +79,12 @@ public class ShareAccount {
         this.quantity = quantity;
     }
 
-    public double getUnitPrice() {
-        return unitPrice;
+    public double getUnitSharePrice() {
+        return unitSharePrice;
     }
 
-    public void setUnitPrice(double unitPrice) {
-        this.unitPrice = unitPrice;
+    public void setUnitSharePrice(double unitSharePrice) {
+        this.unitSharePrice = unitSharePrice;
     }
 
     public double getAccountBalance() {
@@ -111,6 +117,54 @@ public class ShareAccount {
 
     public void setCountry(String country) {
         this.country = country;
+    }
+
+    public String getProductCode() {
+        return productCode;
+    }
+
+    public void setProductCode(String productCode) {
+        this.productCode = productCode;
+    }
+
+    public AccountStatus getAccountStatus() {
+        return accountStatus;
+    }
+
+    public void setAccountStatus(AccountStatus accountStatus) {
+        this.accountStatus = accountStatus;
+    }
+
+    public Date getCreatedDate() {
+        return createdDate;
+    }
+
+    public void setCreatedDate(Date createdDate) {
+        this.createdDate = createdDate;
+    }
+
+    public Date getLastUpdatedDate() {
+        return lastUpdatedDate;
+    }
+
+    public void setLastUpdatedDate(Date lastUpdatedDate) {
+        this.lastUpdatedDate = lastUpdatedDate;
+    }
+
+    public String getNotes() {
+        return notes;
+    }
+
+    public void setNotes(String notes) {
+        this.notes = notes;
+    }
+
+    public List<ShareAccountTransaction> getShareAccountTransaction() {
+        return shareAccountTransaction;
+    }
+
+    public void setShareAccountTransaction(List<ShareAccountTransaction> shareAccountTransaction) {
+        this.shareAccountTransaction = shareAccountTransaction;
     }
 
 }

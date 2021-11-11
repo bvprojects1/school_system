@@ -37,7 +37,7 @@
                         <div th:text="${session.loanBilanzList.currentLoanBalance}"/>
                     </font></td>
                 <td> Current<br/> <font size="4px" color="gray"> <span th:text="${session.currentBilanzList.totalCurrent}"/></font></td>
-                <td>Retirement saving <br/> <font size="4px" color="gray">0</font></b></td>
+                <td>Shares <br/> <font size="4px" color="gray">0</font></b></td>
             </tr>
         </table>
         <!-- END -->
@@ -351,17 +351,15 @@
                     </a>
                 </td>
                 <td th:text="${#numbers.formatDecimal(shareAccount.accountBalance, 0, 'COMMA', 0, 'POINT')}"/>
-                <td th:text="${#numbers.formatDecimal(shareAccount.unitPrice, 0, 'COMMA', 0, 'POINT')}"/>
+                <td th:text="${#numbers.formatDecimal(shareAccount.unitSharePrice, 0, 'COMMA', 0, 'POINT')}"/>
                 <td th:text="${shareAccount.quantity}"/>
-                <td th:text="${shareAccount.created}"/>
-                <td th:text="${shareAccount.creator}"/>
+                <td th:text="${shareAccount.createdDate}"/>
+                <td th:text="${shareAccount.createdBy}"/>
                 <td>
                     <a href="#" th:href="@{/registerShareAccountTransaction/{id}(id=${shareAccount.id})}">
                         <img width="30px" th:src="@{/assets/images/aLens.png}"/>
                     </a>
-                    <a href="#" th:href="@{/showShareAccountBilanz/{accountId}(accountId=${shareAccount.id})}">
-                        <img width="30px" th:src="@{/assets/images/aPercent.png}"/>
-                    </a>
+
                 </td>
             </tr>
         </table>

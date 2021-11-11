@@ -1,7 +1,19 @@
 package com.bitsvalley.micro.services;
 
+import com.bitsvalley.micro.domain.*;
+import com.bitsvalley.micro.repositories.ShareAccountRepository;
+import com.bitsvalley.micro.repositories.UserRepository;
+import com.bitsvalley.micro.utils.AccountStatus;
+import com.bitsvalley.micro.utils.BVMicroUtils;
+import com.bitsvalley.micro.webdomain.ShareAccountBilanz;
+import com.bitsvalley.micro.webdomain.ShareAccountBilanzList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
+import java.util.List;
 
 /**
  * @author Fru Chifen
@@ -12,5 +24,67 @@ public class ShareAccountService extends SuperService{
 
     @Autowired
     private CallCenterService callCenterService;
+
+    @Autowired
+    private ShareAccountRepository shareAccountRepository;
+
+    @Autowired
+    private UserRepository userRepository;
+
+    public void createShareAccount(ShareAccount shareAccount, User user) {
+
+        long count = shareAccountRepository.count();
+        shareAccount.setAccountNumber(BVMicroUtils.getCobacSavingsAccountNumber(shareAccount.getCountry(),
+                shareAccount.getProductCode(), shareAccount.getBranchCode(), count));
+        shareAccount.setAccountStatus(AccountStatus.ACTIVE);
+        shareAccount.setCreatedBy(getLoggedInUserName());
+        Date date = new Date(System.currentTimeMillis());
+        shareAccount.setLastUpdatedDate(date);
+        shareAccount.setCreatedDate(date);
+        shareAccount.setLastUpdatedBy(getLoggedInUserName());
+        shareAccount.setAccountBalance(shareAccount.getUnitSharePrice() * shareAccount.getQuantity());
+        shareAccount.setCountry(user.getBranch().getCountry());
+        shareAccount.setBranchCode(user.getBranch().getCode());
+
+        shareAccount.setUser(user);
+        shareAccountRepository.save(shareAccount);
+
+        user = userRepository.findById(user.getId()).get();
+        user.getShareAccount().add(shareAccount);
+        userRepository.save(user);
+    }
+
+    public ShareAccountBilanzList getShareAccountBilanzByUser(User user) {
+        User aUser = null;
+        if (null != user.getUserName()) {
+            aUser = userRepository.findByUserName(user.getUserName());
+        } else {
+            aUser = userRepository.findById(user.getId()).get();
+        }
+        ArrayList<User> userList = new ArrayList<User>();
+        userList.add(aUser);
+        return calculateUsersInterest(userList);
+    }
+
+    private ShareAccountBilanzList calculateUsersInterest(ArrayList<User> users) {
+        double totalSaved = 0.0;
+        ShareAccountBilanzList shareAccountBilanzList = new ShareAccountBilanzList();
+        for (int i = 0; i < users.size(); i++) {
+            List<ShareAccount> shareAccounts = users.get(i).getShareAccount();
+            List<ShareAccountTransaction> shareAccountTransactions = new ArrayList<ShareAccountTransaction>();
+            ShareAccountBilanz shareAccountBilanz = new ShareAccountBilanz();
+            for (int j = 0; j < shareAccounts.size(); j++) {
+                ShareAccount shareAccount = shareAccounts.get(j);
+                List<ShareAccountTransaction> shareAccountTransaction = shareAccount.getShareAccountTransaction();
+                double accountTotalSaved = 0.0;
+                shareAccountRepository.save(shareAccount);
+//                shareAccountBilanz.
+            }
+        }
+
+        shareAccountBilanzList.setTotalCurrent(BVMicroUtils.formatCurrency(totalSaved));
+        Collections.reverse(shareAccountBilanzList.getShareAccountBilanz());
+        return shareAccountBilanzList;
+    }
 
 }
