@@ -49,8 +49,8 @@ public class User {
     @OneToMany(cascade = CascadeType.ALL)
     private List<LoanAccount> loanAccount = new ArrayList<LoanAccount>();
 
-//    @OneToMany(cascade = CascadeType.ALL)
-//    private List<ShareAccount> loanAccount = new ArrayList<LoanAccount>();
+    @OneToMany(cascade = CascadeType.ALL)
+    private List<ShareAccount> shareAccount = new ArrayList<ShareAccount>();
 
     private LocalDateTime accountExpiredDate;
     private boolean accountLocked;
@@ -276,5 +276,13 @@ public class User {
 
     public void setCurrentAccount(List<CurrentAccount> currentAccount) {
         this.currentAccount = currentAccount;
+    }
+
+    public List<ShareAccount> getShareAccount() {
+        return shareAccount;
+    }
+
+    public void setShareAccount(List<ShareAccount> shareAccount) {
+        this.shareAccount = shareAccount;
     }
 }

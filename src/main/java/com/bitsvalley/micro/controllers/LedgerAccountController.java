@@ -75,7 +75,7 @@ public class LedgerAccountController extends SuperController{
 
             ledgerAccount = new LedgerAccount();
             ledgerAccount.setName(BVMicroUtils.LOAN_INTEREST_7001);
-            ledgerAccount.setCategory("7001 – 7999");
+            ledgerAccount.setCategory("7000 – 7999");
             ledgerAccount.setCode(BVMicroUtils.LOAN_INTEREST_7001);
             ledgerAccount.setStatus(BVMicroUtils.ACTIVE);
             ledgerAccountList.add(ledgerAccount);
@@ -83,9 +83,18 @@ public class LedgerAccountController extends SuperController{
             ledgerAccount = new LedgerAccount();
             ledgerAccount.setName(BVMicroUtils.VAT_4002);
             ledgerAccount.setCode(BVMicroUtils.VAT_4002);
-            ledgerAccount.setCategory("VAT 4000 – 4999");
+            ledgerAccount.setCategory("4000 – 4999");
             ledgerAccount.setStatus(BVMicroUtils.ACTIVE);
             ledgerAccountList.add(ledgerAccount);
+
+            ledgerAccount = new LedgerAccount();
+            ledgerAccount.setName(BVMicroUtils.CURRENT_3004);
+            ledgerAccount.setCode(BVMicroUtils.CURRENT_3004);
+            ledgerAccount.setCategory("3000 – 3999");
+            ledgerAccount.setStatus(BVMicroUtils.ACTIVE);
+            ledgerAccountList.add(ledgerAccount);
+
+
 //
 //            ledgerAccount = new LedgerAccount();
 //            ledgerAccount.setName(BVMicroUtils.REVENUE);

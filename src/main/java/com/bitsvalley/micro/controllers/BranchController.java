@@ -48,9 +48,9 @@ public class BranchController extends SuperController {
     public String branches(ModelMap model, HttpServletRequest request) {
         Iterable<Branch> branches = branchRepository.findAll();
         Iterator<Branch> iterator = branches.iterator();
-        ArrayList<Branch> branchList = new ArrayList<>();
-        iterator.forEachRemaining(branchList::add);
-        model.put("branchList", branchList);
+//        ArrayList<Branch> branchList = new ArrayList<>();
+//        iterator.forEachRemaining(branchList::add);
+        model.put("branchList", iterator);
         return "branches";
     }
 

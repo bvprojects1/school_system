@@ -47,22 +47,24 @@ public class GeneralLedgerService extends SuperService{
         return generalLedgerRepository.findByAccountNumber(accountNumber);
     }
 
-    public void updateSavingAccountTransaction(SavingAccountTransaction savingAccountTransaction) {
-        GeneralLedger generalLedger = savingAccountGLMapper(savingAccountTransaction);
-        generalLedgerRepository.save(generalLedger);
-    }
+//    public void updateSavingAccountTransaction(SavingAccountTransaction savingAccountTransaction) {
+//        GeneralLedger generalLedger = savingAccountGLMapper(savingAccountTransaction);
+//        generalLedgerRepository.save(generalLedger);
+//    }
 
-    public void updateCurrentAccountTransaction(CurrentAccountTransaction currentAccountTransaction) {
-        GeneralLedger generalLedger = currentAccountGLMapper(currentAccountTransaction);
-        generalLedgerRepository.save(generalLedger);
-    }
+//    public void updateCurrentAccountTransaction(CurrentAccountTransaction currentAccountTransaction) {
+//        GeneralLedger generalLedger = currentAccountGLMapper(currentAccountTransaction);
+//        generalLedgerRepository.save(generalLedger);
+//    }
 
     public void updateGLWithLoanAccountTransaction(LoanAccountTransaction loanAccountTransaction) {
-        GeneralLedger generalLedger = loanAccountGLMapper(loanAccountTransaction);
-        generalLedgerRepository.save(generalLedger);
+        updateGeneralLedger(loanAccountTransaction,BVMicroUtils.LOAN_3001, BVMicroUtils.DEBIT, loanAccountTransaction.getLoanAmount(), 3);
+        updateGeneralLedger(loanAccountTransaction,BVMicroUtils.CURRENT_3004, BVMicroUtils.CREDIT, loanAccountTransaction.getLoanAmount(), 3);
+//        GeneralLedger generalLedger = loanAccountGLMapper(loanAccountTransaction);
+//        generalLedgerRepository.save(generalLedger);
     }
 
-    public void updateGLAfterLoanAccountCASHRepayment(LoanAccountTransaction loanAccountTransaction, String gLType) {
+    public void updateGLAfterLoanAccountCASHRepayment(LoanAccountTransaction loanAccountTransaction) {
         GeneralLedger generalLedger = null;
 
         //DEBIT CASH RECEIVED

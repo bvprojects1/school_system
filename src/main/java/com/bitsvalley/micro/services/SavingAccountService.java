@@ -116,7 +116,7 @@ public class SavingAccountService extends SuperService {
         savingAccountTransaction.setCreatedBy(getLoggedInUserName());
         savingAccountTransaction.setCreatedDate(LocalDateTime.now());
         savingAccountTransactionRepository.save(savingAccountTransaction);
-        generalLedgerService.updateSavingAccountTransaction(savingAccountTransaction);
+//        generalLedgerService.updateSavingAccountTransaction(savingAccountTransaction);
 
     }
 

@@ -54,15 +54,15 @@ public class BVMicroUtils {
 
     public static final String CASH_1001 = "CASH 1001";
     public static final String CASH_5001 = "CASH 5001";
+    public static final String CURRENT_3004 = "CURRENT 3004";
     public static final String VAT_4002 = "VAT 4002";
     public static final String LOAN_INTEREST_7001 = "LOAN INTEREST 7001";
     public static final String LOAN_3001 = "LOAN 3001";
     public static final String SAVINGS_3004 = "SAVINGS_3004";
     public static final String SAVINGS_3003 = "SAVINGS_3003";
 
-
     public static final String EQUITY = "EQUITY";
-
+    public static final String UNIT_SHARE_VALUE = "unitSharePrice";
 
     public static  String getSaltString() {
         String SALTCHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890"; //TODO: avoid collision

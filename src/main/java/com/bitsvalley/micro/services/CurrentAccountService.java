@@ -124,7 +124,7 @@ public class CurrentAccountService extends SuperService {
 
         currentAccountTransactionRepository.save(currentAccountTransaction);
 
-        generalLedgerService.updateCurrentAccountTransaction(currentAccountTransaction);
+//        generalLedgerService.updateCurrentAccountTransaction(currentAccountTransaction);
     }
 
     @Transactional
@@ -153,7 +153,7 @@ public class CurrentAccountService extends SuperService {
         currentAccount.getCurrentAccountTransaction().add(currentAccountTransaction);
         currentAccountRepository.save(currentAccount);
 
-        generalLedgerService.updateCurrentAccountTransaction(currentAccountTransaction);
+//        generalLedgerService.updateCurrentAccountTransaction(currentAccountTransaction);?
 
     }
 
