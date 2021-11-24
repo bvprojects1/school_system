@@ -6,6 +6,7 @@ import com.bitsvalley.micro.utils.AccountStatus;
 import com.bitsvalley.micro.utils.BVMicroUtils;
 import com.bitsvalley.micro.webdomain.SavingBilanz;
 import com.bitsvalley.micro.webdomain.SavingBilanzList;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -177,7 +178,7 @@ public class SavingAccountService extends SuperService {
         }
         savingBilanzsList.setTotalSaving(BVMicroUtils.formatCurrency(totalSaved));
 
-        Collections.reverse(savingBilanzsList.getSavingBilanzList());
+//        Collections.reverse(savingBilanzsList.getSavingBilanzList());
         return savingBilanzsList;
     }
 
@@ -356,15 +357,7 @@ public class SavingAccountService extends SuperService {
         Branch branchInfo = branchService.getBranchInfo(loggedInUserName);
 
         SavingAccount savingAccount = findByAccountNumber(fromAccountNumber);
-        SavingAccountTransaction savingAccountTransaction = new SavingAccountTransaction();
-        savingAccountTransaction.setNotes(notes);
-        savingAccountTransaction.setSavingAccount(savingAccount);
-        savingAccountTransaction.setSavingAmount(transferAmount*-1);
-        savingAccountTransaction.setModeOfPayment(BVMicroUtils.TRANSFER);
-        savingAccountTransaction.setBranch(branchInfo.getId());
-        savingAccountTransaction.setBranchCode(branchInfo.getCode());
-        savingAccountTransaction.setBranchCountry(branchInfo.getCountry());
-        createSavingAccountTransaction(savingAccountTransaction);
+        SavingAccountTransaction savingAccountTransaction = getSavingAccountTransaction(notes, branchInfo, savingAccount, transferAmount * -1);
 
         LoanAccount loanAccount = loanAccountService.findByAccountNumber(toAccountNumber);
         LoanAccountTransaction loanAccountTransaction = new LoanAccountTransaction();
@@ -397,6 +390,20 @@ public class SavingAccountService extends SuperService {
 
     }
 
+    @NotNull
+    public SavingAccountTransaction getSavingAccountTransaction(String notes, Branch branchInfo, SavingAccount savingAccount, double v) {
+        SavingAccountTransaction savingAccountTransaction = new SavingAccountTransaction();
+        savingAccountTransaction.setNotes(notes);
+        savingAccountTransaction.setSavingAccount(savingAccount);
+        savingAccountTransaction.setSavingAmount(v);
+        savingAccountTransaction.setModeOfPayment(BVMicroUtils.TRANSFER);
+        savingAccountTransaction.setBranch(branchInfo.getId());
+        savingAccountTransaction.setBranchCode(branchInfo.getCode());
+        savingAccountTransaction.setBranchCountry(branchInfo.getCountry());
+        createSavingAccountTransaction(savingAccountTransaction);
+        return savingAccountTransaction;
+    }
+
     public SavingAccount transferFromDebitToDebit(String fromAccountNumber,
                                          String toAccountNumber,
                                          double transferAmount,
@@ -412,27 +419,11 @@ public class SavingAccountService extends SuperService {
         Branch branchInfo = branchService.getBranchInfo(loggedInUserName);
 
         SavingAccount savingAccount = findByAccountNumber(fromAccountNumber);
-        SavingAccountTransaction savingAccountTransaction = new SavingAccountTransaction();
-        savingAccountTransaction.setNotes(notes);
-        savingAccountTransaction.setSavingAccount(savingAccount);
-        savingAccountTransaction.setSavingAmount(transferAmount*-1);
-        savingAccountTransaction.setModeOfPayment(BVMicroUtils.TRANSFER);
-        savingAccountTransaction.setBranch(branchInfo.getId());
-        savingAccountTransaction.setBranchCode(branchInfo.getCode());
-        savingAccountTransaction.setBranchCountry(branchInfo.getCountry());
-        createSavingAccountTransaction(savingAccountTransaction);
+        SavingAccountTransaction savingAccountTransaction = getSavingAccountTransaction(notes, branchInfo, savingAccount, transferAmount * -1);
         savingAccount.getSavingAccountTransaction().add(savingAccountTransaction);
         savingAccountRepository.save(savingAccount);
 
-        SavingAccountTransaction toSavingAccountTransaction = new SavingAccountTransaction();
-        toSavingAccountTransaction.setNotes(notes);
-        toSavingAccountTransaction.setSavingAccount(toSavingAccount);
-        toSavingAccountTransaction.setSavingAmount(transferAmount);
-        toSavingAccountTransaction.setModeOfPayment(BVMicroUtils.TRANSFER);
-        toSavingAccountTransaction.setBranch(branchInfo.getId());
-        toSavingAccountTransaction.setBranchCode(branchInfo.getCode());
-        toSavingAccountTransaction.setBranchCountry(branchInfo.getCountry());
-        createSavingAccountTransaction(toSavingAccountTransaction);
+        SavingAccountTransaction toSavingAccountTransaction = getSavingAccountTransaction(notes, branchInfo, toSavingAccount, transferAmount);
         toSavingAccount.getSavingAccountTransaction().add(toSavingAccountTransaction);
         savingAccountRepository.save(toSavingAccount);
 

@@ -213,7 +213,7 @@ public class CurrentAccountService extends SuperService {
         }
         currentBilanzsList.setTotalCurrent(BVMicroUtils.formatCurrency(totalSaved));
 
-        Collections.reverse(currentBilanzsList.getCurrentBilanzList());
+//        Collections.reverse(currentBilanzsList.getCurrentBilanzList());
         return currentBilanzsList;
     }
 
@@ -262,7 +262,7 @@ public class CurrentAccountService extends SuperService {
 
         currentBilanzList.setTotalCurrent(BVMicroUtils.formatCurrency(totalSaved));
         currentBilanzList.setTotalCurrentInterest(BVMicroUtils.formatCurrency(currentAccountTransactionInterest));
-        Collections.reverse(currentBilanzList.getCurrentBilanzList());
+//        Collections.reverse(currentBilanzList.getCurrentBilanzList());
         return currentBilanzList;
     }
 

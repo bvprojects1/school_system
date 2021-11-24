@@ -63,30 +63,38 @@ public class GeneralAccountController extends SuperController{
                             glSearchDTO.getCreditOrDebit(), glSearchDTO.getAccountNumber(), glSearchDTO.getAllLedgerAccount().get(0).getId());
         }
 
+        LedgerAccount ledgerAccount = glSearchDTO.getAllLedgerAccount().get(0);
+        model.put("accountNameHeader", ledgerAccount.getName());
         model.put("generalLedgerBilanz",generalLedgerBilanz);
         GLSearchDTO glSearchDTO1 = new GLSearchDTO();
         model.put("allLedgerAccount",ledgerAccountRepository.findAll());
         model.put("glSearchDTO", glSearchDTO1);
+
         return "gls";
     }
 
-    @GetMapping(value = "/gl/{reference}")
+    @GetMapping(value = "/gl/reference/{reference}")
     public String showGlReference(@PathVariable("reference") String reference, ModelMap model, HttpServletRequest request) {
-        List<GeneralLedger> glList = generalLedgerService.findByAccountNumber(reference);
-        Collections.reverse(glList);
-        model.put("glSearchDTO",new GLSearchDTO());
-        model.put("glList", glList);
-        model.put("reference",reference );
+        GeneralLedgerBilanz glList = generalLedgerService.findByReference(reference);
+
+        LedgerAccount ledgerAccount = glList.getGeneralLedgerWeb().get(0).getLedgerAccount();
+        model.put("accountNameHeader", ledgerAccount.getName());
         model.put("allLedgerAccount",ledgerAccountRepository.findAll());
+        model.put("generalLedgerBilanz",glList);
+        model.put("glSearchDTO",new GLSearchDTO());
+
+//        model.put("accountNameHeader",reference);
+//        LedgerAccount ledgerAccount = glSearchDTO.getAllLedgerAccount().get(0);
+//        model.put("accountNameHeader", ledgerAccount.getName());
+
         return "gls";
     }
 
 
     @GetMapping(value = "/gl")
     public String showAllGL( ModelMap model, HttpServletRequest request) {
-
         GeneralLedgerBilanz generalLedgerBilanz = generalLedgerService.findAll();
-
+        model.put("accountNameHeader","GENERAL LEDGER TRANSACTIONS");
         model.put("allLedgerAccount",ledgerAccountRepository.findAll());
         model.put("generalLedgerBilanz",generalLedgerBilanz);
         model.put("glSearchDTO",new GLSearchDTO());

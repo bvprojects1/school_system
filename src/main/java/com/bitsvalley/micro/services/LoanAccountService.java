@@ -264,7 +264,7 @@ public class LoanAccountService extends SuperService {
         loanBilanzsList.setTotalLoanInterest(BVMicroUtils.formatCurrency(totalLoanAccountTransactionInterest)); //TODO set total interest
         loanBilanzsList.setTotalLoan(BVMicroUtils.formatCurrency(totalLoan));
         loanBilanzsList.setCurrentLoanBalance(currentLoanBalance);
-        Collections.reverse(loanBilanzsList.getLoanBilanzList());
+//        Collections.reverse(loanBilanzsList.getLoanBilanzList());
         return loanBilanzsList;
     }
 
@@ -311,7 +311,7 @@ public class LoanAccountService extends SuperService {
         loanBilanzsList.setTotalLoan(BVMicroUtils.formatCurrency(totalLoanAmount));
 //        loanBilanzsList.setCurrentLoanBalanceAllUserLoans(BVMicroUtils.formatCurrency(currentLoanBalanceAllUserLoans));
         loanBilanzsList.setTotalLoanInterest(BVMicroUtils.formatCurrency(loanAccountTransactionInterest));
-        Collections.reverse(loanBilanzsList.getLoanBilanzList());
+//        Collections.reverse(loanBilanzsList.getLoanBilanzList());
         return loanBilanzsList;
     }
 

@@ -34,15 +34,16 @@
         <th>Notes</th>
         <th>Days</th>
         <th>
-            Interest
-            <div th:if="${#authorization.expression('hasAnyAuthority(''ROLE_MANAGER'')')}">
+            Interest(
+            <span th:if="${#authorization.expression('hasAnyAuthority(''ROLE_MANAGER'')')}">
                 <font color="green" size="4px">
                     <div th:text="${loanBilanzList.totalLoanInterest}"/>
                 </font>
-            </div>
+            </span>)
         </th>
         <th>VAT</th>
-        <th>Amount</th>
+        <th>Debit</th>
+        <th>Credit</th>
         <th><font color="green" size="6px">
             <div th:text="${loanBilanzList.totalLoan}"/>
         </font></th>
@@ -55,7 +56,6 @@
                 <input name="dateChange" type="date"/>
                 <input type="submit" value="Submit">
             </form>
-
         </td>
         <td th:text="${bilanz.modeOfPayment}"></td>
         <td th:text="${bilanz.agent}"></td>
@@ -67,11 +67,10 @@
         <td th:text="${bilanz.interestAccrued}"></td>
         <td th:text="${bilanz.vatPercent}"></td>
         <td th:text="${bilanz.loanAmount}"></td>
+        <td th:text="${bilanz.amountReceived}"></td>
         <td th:text="${bilanz.currentBalance}"></td>
     </tr>
-
 </table>
-
 <br/> <br/>
 
 <div th:insert="footer::navbar"></div>

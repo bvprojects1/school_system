@@ -22,6 +22,7 @@ public class BVMicroUtils {
 
     public static final String TRANSFER = "TRANSFER";
     public static final String DEBIT_LOAN_TRANSFER = "DEBIT_LOAN_TRANSFER";
+    public static final String SAVING_SHARE_TRANSFER = "SAVING_SHARE_TRANSFER";
     public static final String DEBIT_DEBIT_TRANSFER = "DEBIT_DEBIT_TRANSFER";
 
     public static final String SAVINGS_MINIMUM_BALANCE_ADDED_BY = "Savings minimum balance added by: ";
@@ -52,14 +53,14 @@ public class BVMicroUtils {
     public static final String VAT = "VAT";
     public static final String LOAN_INTEREST = "LOAN INTEREST";
 
-    public static final String CASH_1001 = "CASH 1001";
-    public static final String CASH_5001 = "CASH 5001";
-    public static final String CURRENT_3004 = "CURRENT 3004";
-    public static final String VAT_4002 = "VAT 4002";
-    public static final String LOAN_INTEREST_7001 = "LOAN INTEREST 7001";
-    public static final String LOAN_3001 = "LOAN 3001";
+    public static final String CASH_1001 = "CASH GL 1001";
+    public static final String CASH_5001 = "CASH GL 5001";
+    public static final String CURRENT_3004 = "CURRENT GL 3004";
+    public static final String VAT_4002 = "VAT GL 4002";
+    public static final String LOAN_INTEREST_7001 = "LOAN INTEREST GL 7001";
+    public static final String LOAN_3001 = "LOAN GL 3001";
     public static final String SAVINGS_3004 = "SAVINGS_3004";
-    public static final String SAVINGS_3003 = "SAVINGS_3003";
+    public static final String SAVINGS_3003 = "SAVINGS GL 3003";
 
     public static final String EQUITY = "EQUITY";
     public static final String UNIT_SHARE_VALUE = "unitSharePrice";

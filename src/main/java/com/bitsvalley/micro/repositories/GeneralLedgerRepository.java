@@ -11,6 +11,8 @@ public interface GeneralLedgerRepository extends CrudRepository<GeneralLedger, L
 
     List<GeneralLedger> findByAccountNumber(String accountNumber);
 
+    List<GeneralLedger> findByReference(String reference);
+
     List<GeneralLedger> findGLByType(String type);
 
     @Query(value = "SELECT * FROM GENERALLEGDER gl WHERE gl.created_date BETWEEN :startDate AND :endDate", nativeQuery = true)

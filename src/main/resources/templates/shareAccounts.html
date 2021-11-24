@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<div th:insert="header::navbar"></div>
+<br/>
+<br/>
+
+<section class="contact-form-area-start space df-bg">
+<br/>
+    <table width="90%" class="center" border="0px">
+        <tr>
+            <td align="center">
+                <font color="#BF360C;" size="4">
+                    <h4>SHARE ACCOUNTS IN PROCESS
+<!--                        <a href="/registerBranch">-->
+<!--                            <img width="30px" th:src="@{/assets/images/add.png}"/>-->
+<!--                        </a>-->
+                    </h4>
+                </font>
+            </td>
+        </tr>
+    </table>
+    <table width="90%" class="center" border="0px">
+
+        <tr>
+            <th>
+                Owner
+            </th>
+            <th>
+                Account Number
+            </th>
+            <th>
+                Total Value
+            </th>
+            <th>
+                Unit Value
+            </th>
+            <th>
+                Quantity
+            </th>
+            <th>
+                Created
+            </th>
+            <th>
+                Creator
+            </th>
+            <th>
+                Share
+            </th>
+        </tr>
+        <tr th:each="share : ${shareAccountsList}">
+            <td th:text="${share.user.gender}  + ${share.user.firstName} + ${share.user.lastName}"></td>
+            <td th:text="${share.accountNumber}"></td>
+            <td><span th:text="${#numbers.formatDecimal(share.unitSharePrice*share.quantity, 0, 'COMMA', 0, 'POINT')}"/></td>
+            <td><span th:text="${#numbers.formatDecimal(share.unitSharePrice, 0, 'COMMA', 0, 'POINT')}"/></td>
+            <td><span th:text="${#numbers.formatDecimal(share.quantity, 0, 'COMMA', 0, 'POINT')}"/></td>
+            <td th:text="${#dates.format(share.createdDate, 'dd-MMM-yyyy HH:mm')}"></td>
+
+            <td th:text="${share.createdBy}"></td>
+            <td>
+                <span th:text="${share.branchCode}"/>,<span th:text="${share.country}"/>
+            </td>
+            <td>
+                <span th:if="${share.accountStatus.name == 'PENDING_APPROVAL'}">
+                    <img width="75px" th:src="@{/assets/images/pendingApproval.png}"/>
+                </span>
+                <span th:if="${share.accountStatus.name == 'PENDING_PAYOUT'}">
+                    <font size="2"> <span th:text="${share.approvedBy}"></span></font><br/>
+                    <img width="75px" th:src="@{/assets/images/approvedIcon.png}"/><br/>
+                    <font size="2"> <span th:text="${#dates.format(share.approvedDate, 'dd-MMM-yyyy HH:mm')}"></span></font>
+                </span>
+            </td>
+            <td>
+                <a href="#" th:href="@{/shareDetails/{id}(id=${share.id})}">See more ...</a>
+            </td>
+        </tr>
+    </table>
+</section>
+<div th:insert="footer::navbar"></div>
+</html>

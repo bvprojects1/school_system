@@ -21,7 +21,9 @@
                     </ul>
                 </table>
                 <br/>
-                <font color="gray;" size="4"> GENERAL LEDGER TRANSACTIONS </font></div>
+                </div>
+            <font color="gray;" size="4"> <span th:text="${accountNameHeader}"/> </font>
+            <br/>
             <form action="#" th:action="@{/filterGenaralLedger}" method="post" th:object="${glSearchDTO}">
                 <table border="0" width="80%" class="center">
                     <tr>
@@ -119,7 +121,11 @@
                 <div th:text="${#dates.format(gl.createdDate, 'dd-MMM-yyyy HH:mm')}"></div>
             </td>
             <td th:text="${gl.glClass}"></td>
-            <td th:text="${gl.reference}"></td>
+            <td>
+                <a href="#" th:href="@{/gl/reference/{code}(code=${gl.reference})}">
+                    <span th:text="${gl.reference}"/>
+                </a>
+            </td>
             <td th:text="${gl?.ledgerAccount?.name}"></td>
             <td th:text="${gl.accountNumber}"></td>
             <td th:text="${gl.notes}"></td>

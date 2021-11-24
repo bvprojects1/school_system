@@ -32,6 +32,8 @@ public class ShareAccount {
     private Date createdDate;
     private Date lastUpdatedDate;
     private String notes;
+    private String approvedBy;
+    private Date approvedDate;
 
     @OneToMany(cascade = CascadeType.ALL)
     private List<ShareAccountTransaction> shareAccountTransaction = new ArrayList<ShareAccountTransaction>();
@@ -167,4 +169,19 @@ public class ShareAccount {
         this.shareAccountTransaction = shareAccountTransaction;
     }
 
+    public String getApprovedBy() {
+        return approvedBy;
+    }
+
+    public void setApprovedBy(String approvedBy) {
+        this.approvedBy = approvedBy;
+    }
+
+    public Date getApprovedDate() {
+        return approvedDate;
+    }
+
+    public void setApprovedDate(Date approvedDate) {
+        this.approvedDate = approvedDate;
+    }
 }
