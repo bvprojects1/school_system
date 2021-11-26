@@ -8,6 +8,7 @@ import com.bitsvalley.micro.services.GeneralLedgerService;
 import com.bitsvalley.micro.utils.BVMicroUtils;
 import com.bitsvalley.micro.webdomain.GLSearchDTO;
 import com.bitsvalley.micro.webdomain.GeneralLedgerBilanz;
+import com.bitsvalley.micro.webdomain.GeneralLedgerWeb;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -76,16 +77,16 @@ public class GeneralAccountController extends SuperController{
     @GetMapping(value = "/gl/reference/{reference}")
     public String showGlReference(@PathVariable("reference") String reference, ModelMap model, HttpServletRequest request) {
         GeneralLedgerBilanz glList = generalLedgerService.findByReference(reference);
-
-        LedgerAccount ledgerAccount = glList.getGeneralLedgerWeb().get(0).getLedgerAccount();
-        model.put("accountNameHeader", ledgerAccount.getName());
-        model.put("allLedgerAccount",ledgerAccountRepository.findAll());
+        String accountsInvolved = "";
+        for (GeneralLedgerWeb generalLedgerWeb: glList.getGeneralLedgerWeb() ) {
+            if(generalLedgerWeb.getLedgerAccount() != null ){
+                accountsInvolved = accountsInvolved + generalLedgerWeb.getLedgerAccount().getName() + ", ";
+            }
+        }
+        model.put("accountNameHeader", accountsInvolved.substring(0,accountsInvolved.length()-2) );
+        model.put("allLedgerAccount",ledgerAccountRepository.findAll() );
         model.put("generalLedgerBilanz",glList);
         model.put("glSearchDTO",new GLSearchDTO());
-
-//        model.put("accountNameHeader",reference);
-//        LedgerAccount ledgerAccount = glSearchDTO.getAllLedgerAccount().get(0);
-//        model.put("accountNameHeader", ledgerAccount.getName());
 
         return "gls";
     }

@@ -181,8 +181,12 @@
 
                     <br/> <br/>
                     <label for="true">Account Owner:</label>
-                    True<input style="width:8px" th:field="*{accountOwner}" type="checkbox" id="true" name="accountOwner" value="true"
+                    <input style="width:14px" th:field="*{accountOwner}" type="checkbox" id="true" name="accountOwner" value="true"
                                checked>
+                    <label for="true">Increase Guarantor Minimum:</label>
+                    <input style="width:14px" th:field="*{increaseGuarantorMinimum}" type="checkbox" id="increaseGuarantorMinimum" name="increaseGuarantorMinimum" value="true"
+                           checked>
+
                     <button type="submit" class="btn btn-success">SUBMIT PAYMENT TRANSACTION</button>
                     <br/><br/>
                 </td>

@@ -178,11 +178,15 @@ public class LoanAccountController extends SuperController {
     @GetMapping(value = "/approveLoan/{id}")
     public String approveLoan(@PathVariable("id") long id, ModelMap model) {
         LoanAccount byId = loanAccountService.findById(id).get();
-        byId.setAccountStatus(AccountStatus.PENDING_PAYOUT);
-        byId.setApprovedBy(getLoggedInUserName());
-        byId.setApprovedDate(new Date());
-        callCenterService.saveCallCenterLog("PENDING PAYOUT", getLoggedInUserName(), byId.getAccountNumber(),"LOAN ACCOUNT APPROVED"); //TODO ADD DATE
-        loanAccountService.save(byId);
+        if(byId.getCreatedBy().equals(getLoggedInUserName())){
+            model.put("loanInfo","Get another authorized Person to approve loan");
+        }else{
+            byId.setAccountStatus(AccountStatus.PENDING_PAYOUT);
+            byId.setApprovedBy(getLoggedInUserName());
+            byId.setApprovedDate(new Date());
+            callCenterService.saveCallCenterLog("PENDING PAYOUT", getLoggedInUserName(), byId.getAccountNumber(),"LOAN ACCOUNT APPROVED"); //TODO ADD DATE
+            loanAccountService.save(byId);
+        }
         model.put("loan",byId);
         return "loanDetails";
     }

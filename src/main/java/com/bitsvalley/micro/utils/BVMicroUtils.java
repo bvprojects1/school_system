@@ -53,14 +53,14 @@ public class BVMicroUtils {
     public static final String VAT = "VAT";
     public static final String LOAN_INTEREST = "LOAN INTEREST";
 
-    public static final String CASH_1001 = "CASH GL 1001";
-    public static final String CASH_5001 = "CASH GL 5001";
-    public static final String CURRENT_3004 = "CURRENT GL 3004";
-    public static final String VAT_4002 = "VAT GL 4002";
-    public static final String LOAN_INTEREST_7001 = "LOAN INTEREST GL 7001";
-    public static final String LOAN_3001 = "LOAN GL 3001";
+    public static final String CASH_GL_1001 = "CASH GL 1001";
+    public static final String CASH_GL_5001 = "CASH GL 5001";
+    public static final String CURRENT_GL_3004 = "CURRENT GL 3004";
+    public static final String VAT_GL_4002 = "VAT GL 4002";
+    public static final String LOAN_INTEREST_GL_7001 = "LOAN INTEREST GL 7001";
+    public static final String LOAN_GL_3001 = "LOAN GL 3001";
     public static final String SAVINGS_3004 = "SAVINGS_3004";
-    public static final String SAVINGS_3003 = "SAVINGS GL 3003";
+    public static final String SAVINGS_GL_3003 = "SAVINGS GL 3003";
 
     public static final String EQUITY = "EQUITY";
     public static final String UNIT_SHARE_VALUE = "unitSharePrice";

@@ -46,9 +46,9 @@ public class LedgerAccountController extends SuperController{
 //            ledgerAccountList.add(ledgerAccount);
 
             ledgerAccount = new LedgerAccount();
-            ledgerAccount.setName(BVMicroUtils.SAVINGS_3003);
+            ledgerAccount.setName(BVMicroUtils.SAVINGS_GL_3003);
             ledgerAccount.setCategory("3000 – 3999");
-            ledgerAccount.setCode(BVMicroUtils.SAVINGS_3003);
+            ledgerAccount.setCode(BVMicroUtils.SAVINGS_GL_3003);
             ledgerAccount.setStatus(BVMicroUtils.ACTIVE);
             ledgerAccountList.add(ledgerAccount);
 
@@ -60,36 +60,36 @@ public class LedgerAccountController extends SuperController{
 //            ledgerAccountList.add(ledgerAccount);
 
             ledgerAccount = new LedgerAccount();
-            ledgerAccount.setName(BVMicroUtils.LOAN_3001);
+            ledgerAccount.setName(BVMicroUtils.LOAN_GL_3001);
             ledgerAccount.setCategory("3000 – 3999");
-            ledgerAccount.setCode(BVMicroUtils.LOAN_3001);
+            ledgerAccount.setCode(BVMicroUtils.LOAN_GL_3001);
             ledgerAccount.setStatus(BVMicroUtils.ACTIVE);
             ledgerAccountList.add(ledgerAccount);
 
             ledgerAccount = new LedgerAccount();
-            ledgerAccount.setName(BVMicroUtils.CASH_5001);
+            ledgerAccount.setName(BVMicroUtils.CASH_GL_5001);
             ledgerAccount.setCategory("5000 – 5999");
-            ledgerAccount.setCode(BVMicroUtils.CASH_5001);
+            ledgerAccount.setCode(BVMicroUtils.CASH_GL_5001);
             ledgerAccount.setStatus(BVMicroUtils.ACTIVE);
             ledgerAccountList.add(ledgerAccount);
 
             ledgerAccount = new LedgerAccount();
-            ledgerAccount.setName(BVMicroUtils.LOAN_INTEREST_7001);
+            ledgerAccount.setName(BVMicroUtils.LOAN_INTEREST_GL_7001);
             ledgerAccount.setCategory("7000 – 7999");
-            ledgerAccount.setCode(BVMicroUtils.LOAN_INTEREST_7001);
+            ledgerAccount.setCode(BVMicroUtils.LOAN_INTEREST_GL_7001);
             ledgerAccount.setStatus(BVMicroUtils.ACTIVE);
             ledgerAccountList.add(ledgerAccount);
 
             ledgerAccount = new LedgerAccount();
-            ledgerAccount.setName(BVMicroUtils.VAT_4002);
-            ledgerAccount.setCode(BVMicroUtils.VAT_4002);
+            ledgerAccount.setName(BVMicroUtils.VAT_GL_4002);
+            ledgerAccount.setCode(BVMicroUtils.VAT_GL_4002);
             ledgerAccount.setCategory("4000 – 4999");
             ledgerAccount.setStatus(BVMicroUtils.ACTIVE);
             ledgerAccountList.add(ledgerAccount);
 
             ledgerAccount = new LedgerAccount();
-            ledgerAccount.setName(BVMicroUtils.CURRENT_3004);
-            ledgerAccount.setCode(BVMicroUtils.CURRENT_3004);
+            ledgerAccount.setName(BVMicroUtils.CURRENT_GL_3004);
+            ledgerAccount.setCode(BVMicroUtils.CURRENT_GL_3004);
             ledgerAccount.setCategory("3000 – 3999");
             ledgerAccount.setStatus(BVMicroUtils.ACTIVE);
             ledgerAccountList.add(ledgerAccount);
