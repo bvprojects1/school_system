@@ -269,7 +269,7 @@ public class PdfService {
                 "</style>" +
                 "</head><body><br/><br/>" +
                 "    <table border=\"0\" width=\"100%\">" +
-                "        <tr><td align=\"center\"> <img width=\"125px\" src=\""+ logoPath+"\"/><br/>TBC MFI PLC <br/> Together each achieves more</td>" +
+                "        <tr><td align=\"center\"> <img width=\"125px\" src=\""+ logoPath+"\"/><br/>bitsvalley <br/> Together each achieves more</td>" +
                 "       <td colspan=\"2\"><b><font size=\"4\" color=\""+rt.getThemeColor()+"\">ACCOUNT STATEMENT</font></b></td>" +
                 "       <td align=\"right\"><font size=\"4\">"+ BVMicroUtils.formatDate(new Date(System.currentTimeMillis())) +"</font></td></tr>" +
                 "        <tr><td> </td><td> </td>" +
@@ -354,7 +354,7 @@ public class PdfService {
                 "</style>" +
                 "</head><body><br/><br/>" +
                 "    <table border=\"0\" width=\"100%\">" +
-                "        <tr><td align=\"center\"> <img width=\"125px\" src=\""+ logoPath+"\"/><br/>TBC MFI PLC <br/> Together each achieves more</td>" +
+                "        <tr><td align=\"center\"> <img width=\"125px\" src=\""+ logoPath+"\"/><br/>bitsvalley <br/> Together each achieves more</td>" +
                 "       <td colspan=\"2\"><b><font size=\"4\" color=\""+rt.getThemeColor()+"\">ACCOUNT STATEMENT</font></b></td>" +
                 "       <td align=\"right\"><font size=\"4\">"+ BVMicroUtils.formatDate(new Date(System.currentTimeMillis())) +"</font></td></tr>" +
                 "        <tr><td> </td><td> </td>" +
@@ -438,7 +438,7 @@ public class PdfService {
                 "</style>" +
                 "</head><body><br/><br/>" +
                 "    <table border=\"0\" width=\"100%\">" +
-                "        <tr><td align=\"center\"> <img width=\"125px\" src=\""+ logoPath+"\"/><br/>TBC MFI PLC <br/> Together each achieves more</td>" +
+                "        <tr><td align=\"center\"> <img width=\"125px\" src=\""+ logoPath+"\"/><br/>bitsvalley <br/> Together each achieves more</td>" +
                 "       <td colspan=\"2\"><b><font size=\"4\" color=\"green\">LOAN ACCOUNT STATEMENT</font></b></td>" +
                 "       <td align=\"right\"><font size=\"4\">"+ BVMicroUtils.formatDate(new Date(System.currentTimeMillis())) +"</font></td></tr>" +
                 "        <tr><td> </td><td> </td>" +
