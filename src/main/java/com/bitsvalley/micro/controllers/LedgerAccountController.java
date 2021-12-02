@@ -94,6 +94,13 @@ public class LedgerAccountController extends SuperController{
             ledgerAccount.setStatus(BVMicroUtils.ACTIVE);
             ledgerAccountList.add(ledgerAccount);
 
+            ledgerAccount = new LedgerAccount();
+            ledgerAccount.setName(BVMicroUtils.SHARE_GL_5004);
+            ledgerAccount.setCode(BVMicroUtils.SHARE_GL_5004);
+            ledgerAccount.setCategory("5000 – 5999");
+            ledgerAccount.setStatus(BVMicroUtils.ACTIVE);
+            ledgerAccountList.add(ledgerAccount);
+
 
 //
 //            ledgerAccount = new LedgerAccount();

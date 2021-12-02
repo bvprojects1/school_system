@@ -46,7 +46,10 @@ public class ShareAccountService extends SuperService{
     private ShareAccountTransactionRepository shareAccountTransactionRepository;
 
     @Autowired
-    SavingAccountService savingAccountService;
+    private SavingAccountService savingAccountService;
+
+    @Autowired
+    private GeneralLedgerService generalLedgerService;
 
     public void createShareAccount(ShareAccount shareAccount, User user) {
 
@@ -116,6 +119,7 @@ public class ShareAccountService extends SuperService{
 //        ShareAccount shareAccount = shareAccountRepository.findByAccountNumber(toAccountNumber);
         ShareAccountTransaction shareAccountTransaction = getShareAccountTransaction(transferAmount, notes, branchInfo, shareAccount);
         shareAccount.getShareAccountTransaction().add( shareAccountTransaction );
+        shareAccount.setAccountStatus(AccountStatus.ACTIVE);
         shareAccountRepository.save(shareAccount);
 
 //        SavingAccount savingAccount = savingAccountService.findByAccountNumber(fromAccountNumber);
@@ -123,7 +127,7 @@ public class ShareAccountService extends SuperService{
         savingAccount.getSavingAccountTransaction().add(savingAccountTransaction);
         savingAccountRepository.save(savingAccount);
 
-//        generalLedgerService.updateGLAfterLoanAccountTransferRepayment(loanAccountTransaction);
+        generalLedgerService.updateGLAfterSharePurchaseFromSaving(shareAccountTransaction);
 
     }
 

@@ -123,15 +123,14 @@
                     <br/>
                     <br/>
                     <label> <b> Amount:</b></label>
-                    </select>
-                    <select th:field="*{transferToAccount}">
+                    <select th:field="*{transferAmount}">
                         <option
-                                th:value="${share.id}"
-                                th:text="${#numbers.formatDecimal(share.unitSharePrice*share.quantity, 0, 'COMMA', 0, 'POINT')}">
+                                th:value="${share.accountBalance}"
+                                th:text="${#numbers.formatDecimal(share.accountBalance, 0, 'COMMA', 0, 'POINT')}">
                         </option>
                     </select>
-                    <input th:field="*{transferAmount}" th:text="${share.unitSharePrice*share.quantity}" name="transferAmount"/>
-                    <br/>
+                    <input type="hidden" name="shareId" th:value="${share.id}">
+
                     <br/>
                     <textarea placeholder="Notes here ...." id="notes" rows="3" cols="30" th:field="*{notes}">
                     </textarea>

@@ -179,7 +179,7 @@ public class LoanAccountController extends SuperController {
     public String approveLoan(@PathVariable("id") long id, ModelMap model) {
         LoanAccount byId = loanAccountService.findById(id).get();
         if(byId.getCreatedBy().equals(getLoggedInUserName())){
-            model.put("loanInfo","Get another authorized Person to approve loan");
+            model.put("loanError","Get another authorized Person to approve loan");
         }else{
             byId.setAccountStatus(AccountStatus.PENDING_PAYOUT);
             byId.setApprovedBy(getLoggedInUserName());
@@ -277,7 +277,6 @@ public class LoanAccountController extends SuperController {
         Optional<LoanAccount> loanAccount = loanAccountService.findById(new Long(id));
         LoanAccount loanAccount1 = loanAccount.get();
         response.setHeader("Content-disposition","attachment;filename="+ "Loan_("+loanAccount1.getAccountNumber()+").pdf");
-
 
         LoanBilanzList loanBilanzByUserList = loanAccountService.
                 calculateAccountBilanz(loanAccount1.getLoanAccountTransaction(),true);

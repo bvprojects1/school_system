@@ -55,7 +55,11 @@ public class BVMicroUtils {
 
     public static final String CASH_GL_1001 = "CASH GL 1001";
     public static final String CASH_GL_5001 = "CASH GL 5001";
+    public static final String SHARE_GL_XXXX = "SHARE GL XXXX";
+
     public static final String CURRENT_GL_3004 = "CURRENT GL 3004";
+    public static final String SHARE_GL_5004 = "SHARE_GL_5004";
+
     public static final String VAT_GL_4002 = "VAT GL 4002";
     public static final String LOAN_INTEREST_GL_7001 = "LOAN INTEREST GL 7001";
     public static final String LOAN_GL_3001 = "LOAN GL 3001";

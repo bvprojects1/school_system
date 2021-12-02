@@ -30,6 +30,11 @@ public class InitSystemService {
             businessName.setPropertyValue("bitsvalley");
             runtimePropertiesList.add(businessName);
 
+            RuntimeProperties slogan = new RuntimeProperties();
+            slogan.setPropertyName("Slogan");
+            slogan.setPropertyValue("together we achieve more");
+            runtimePropertiesList.add(slogan);
+
             RuntimeProperties logo = new RuntimeProperties();
             logo.setPropertyName("logo");
             logo.setPropertyValue("/images/logo.png");
@@ -112,6 +117,8 @@ public class InitSystemService {
             RuntimeProperties rp = iterator.next();
             if (rp.getPropertyName().equals("Business Name")) {
                 runtime.setBusinessName(rp.getPropertyValue());
+            } else if (rp.getPropertyName().equals("slogan")) {
+                runtime.setSlogan(rp.getPropertyValue());
             } else if (rp.getPropertyName().equals("logo")) {
                 runtime.setLogo(rp.getPropertyValue());
             }else if (rp.getPropertyName().equals("unionLogo")) {

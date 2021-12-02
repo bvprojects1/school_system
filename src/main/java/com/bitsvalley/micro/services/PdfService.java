@@ -354,7 +354,7 @@ public class PdfService {
                 "</style>" +
                 "</head><body><br/><br/>" +
                 "    <table border=\"0\" width=\"100%\">" +
-                "        <tr><td align=\"center\"> <img width=\"125px\" src=\""+ logoPath+"\"/><br/>bitsvalley <br/> Together each achieves more</td>" +
+                "        <tr><td align=\"center\"> <img width=\"125px\" src=\""+ logoPath+"\"/><br/>"+rt.getBusinessName()+" <br/>"+rt.getSlogan()+"</td>" +
                 "       <td colspan=\"2\"><b><font size=\"4\" color=\""+rt.getThemeColor()+"\">ACCOUNT STATEMENT</font></b></td>" +
                 "       <td align=\"right\"><font size=\"4\">"+ BVMicroUtils.formatDate(new Date(System.currentTimeMillis())) +"</font></td></tr>" +
                 "        <tr><td> </td><td> </td>" +
@@ -426,13 +426,13 @@ public class PdfService {
                 "\n" +
                 "#transactions tr:nth-child(even){background-color: "+rt.getThemeColor2()+";}\n" +
                 "\n" +
-                "#transactions tr:hover {background-color: #ddd;}\n" +
+                "#transactions tr:hover {background-color: "+rt.getThemeColor2()+";}\n" +
                 "\n" +
                 "#transactions th {\n" +
                 "  padding-top: 6px;\n" +
                 "  padding-bottom: 6px;\n" +
                 "  text-align: left;\n" +
-                "  background-color: #cda893;\n" +
+                "  background-color: "+rt.getThemeColor()+";\n" +
                 "  color: white;\n" +
                 "}\n" +
                 "</style>" +
@@ -471,26 +471,18 @@ public class PdfService {
                 "                <th>Agent</th>\n" +
                 "                <th>Reference</th>\n" +
                 "                <th>Notes</th>\n" +
+                "                <th>VAT</th>\n" +
+                "                <th>Interest</th>\n" +
                 "                <th>Debit</th>\n" +
                 "                <th>Credit</th>\n" +
-                "                <th></th>\n" +
+                "                <th>Balance</th>\n" +
                 "            </tr>\n" + getTableList(loanBilanzList) +
-//                "            <tr>\n" +
-//                "                <td></td>\n" +
-//                "                <td></td>\n" +
-//                "                <td></td>\n" +
-//                "                <td></td>\n" +
-//                "                <td></td>\n" +
-//                "                <td></td>\n" +
-//                "                <td colspan=\"3\">Total Saved:<font size=\"10px\"><b>" +loanBilanzList.getTotalLoan()+"</b></font></td>\n" +
-//                "                \n" +
-//                "            </tr>"+
                 "        </table><br/>" +
-                "    <table id=\"transactions\" border=\"0\" width=\"100%\" class=\"center\">\n" +
-                "       <tr><th id=\"transactions\">Opening Balance</th><th>1000</th></tr>" +
-                "       <tr><td>Credit Sum</td> <td></td></tr>" +
-                "       <tr><td>Debit Sum</td> <td></td></tr></table>" +
-                "       <table><tr><th>Closing Balance</th><th>" +loanBilanzList.getTotalLoan()+ "</th></tr>" +
+//                "    <table id=\"transactions\" border=\"0\" width=\"100%\" class=\"center\">\n" +
+//                "       <tr><th id=\"transactions\">Opening Balance</th><th>1000</th></tr>" +
+//                "       <tr><td>Credit Sum</td> <td></td></tr>" +
+//                "       <tr><td>Debit Sum</td> <td></td></tr></table>" +
+                "       <table><tr><th>Closing Balance</th><th>" +loanBilanzList.getCurrentLoanBalance()+ "</th></tr>" +
 //              "       <tr><td>Bamenda Branch, N W Region</td><td>"+ BVMicroUtils.formatDate(new Date(System.currentTimeMillis())) +"</td></tr>" +
                 "       </table></body></html>";
         return savingBilanzNoInterest;
@@ -505,6 +497,8 @@ public class PdfService {
                     "<td>"+bilanz.getAgent()+"</td>" +
                     "<td>"+bilanz.getReference()+"</td>" +
                     "<td>"+bilanz.getNotes()+"</td>" +
+                    "<td>"+bilanz.getVatPercent()+"</td>" +
+                    "<td>"+bilanz.getInterestAccrued()+"</td>" +
                     "<td>" + getLoanDebitBalance(bilanz)+"</td>" +
                     "<td>" + getLoanCreditBalance(bilanz)+"</td>" +
                     "<td>"+bilanz.getCurrentBalance()+"</td>" +

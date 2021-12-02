@@ -67,10 +67,10 @@
             </tr>
             <tr>
                 <td>
-                    Account Type
+                    Account Number
                 </td>
                 <td>
-                    Account Number
+                    Account Type
                 </td>
                 <td>
                     Account Balance
@@ -98,9 +98,6 @@
             </tr>
 
             <tr th:each="savingAccount : ${session.customerInUse.savingAccount}">
-
-                <td th:text="${savingAccount.accountType.name}"/>
-
                 <td>
                     <a th:href="@{/callcenter/{id}(id=${savingAccount.accountNumber})}" href="/callcenter">
 
@@ -114,6 +111,7 @@
                     </span>
                     </a>
                 </td>
+                <td th:text="${savingAccount.accountType.name}"/>
                 <td th:text="${#numbers.formatDecimal(savingAccount.accountBalance, 0, 'COMMA', 0, 'POINT')}"/>
 
                 <td th:text="${#numbers.formatDecimal(savingAccount.accountMinBalance, 0, 'COMMA', 0, 'POINT')}"/>
@@ -161,10 +159,10 @@
             </tr>
             <tr>
                 <td>
-                    Account Type
+                    Account Number
                 </td>
                 <td>
-                    Account Number
+                    Account Type
                 </td>
                 <td>
                     Original Amount
@@ -190,15 +188,13 @@
             </tr>
 
             <tr th:each="loanAccount : ${session.customerInUse.loanAccount}">
-
-                <td>
-                    <p th:text="${loanAccount.accountType.name}"/>
-                </td>
                 <td>
                     <a th:href="@{/callcenter/{id}(id=${loanAccount.accountNumber})}" href="/callcenter">
-
                         <div th:text="${loanAccount.accountNumber}"/>
                     </a>
+                </td>
+                <td>
+                    <p th:text="${loanAccount.accountType.name}"/>
                 </td>
                 <td th:text="${#numbers.formatDecimal(loanAccount.loanAmount, 0, 'COMMA', 0, 'POINT')}"/>
 
@@ -344,7 +340,7 @@
             </tr>
             <tr th:each="shareAccount : ${session.customerInUse.shareAccount}">
                 <td>
-                    <a th:href="@{/callcenter/{id}(id=${shareAccount.accountNumber})}" href="/callcenter">
+                    <a th:href="@{/shareDetailsAccNumber/{id}(id=${shareAccount.accountNumber})}" href="/shareDetails">
                         <font size="4">
                             <span th:text="${shareAccount.accountNumber}"/>
                         </font>
@@ -356,9 +352,6 @@
                 <td th:text="${shareAccount.createdDate}"/>
                 <td th:text="${shareAccount.createdBy}"/>
                 <td>
-                    <a href="#" th:href="@{/registerShareAccountTransaction/{id}(id=${shareAccount.id})}">
-                        <img width="30px" th:src="@{/assets/images/aLens.png}"/>
-                    </a>
 
                 </td>
             </tr>

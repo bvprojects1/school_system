@@ -55,6 +55,14 @@ public class SettingController extends SuperController{
         business_name.setPropertyValue(runtimeSetting.getBusinessName());
         list.add(business_name);
 
+        RuntimeProperties slogan = runtimePropertiesRepository.findByPropertyName("slogan");
+        if(slogan == null){
+            slogan = new RuntimeProperties();
+            slogan.setPropertyName("slogan");
+        }
+        slogan.setPropertyValue(runtimeSetting.getSlogan());
+        list.add(slogan);
+
         RuntimeProperties address = runtimePropertiesRepository.findByPropertyName("address");
 //        if(address == null){
 //            address = new RuntimeProperties();

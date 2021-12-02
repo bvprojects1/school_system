@@ -221,7 +221,8 @@
             <th>Agent</th>
             <th>Owner</th>
             <th>Notes</th>
-            <th>Received</th>
+            <th>Debit</th>
+            <th>Credit</th>
             <th>Interest</th>
             <th>VAT</th>
             <th>
@@ -237,7 +238,10 @@
             <td th:text="${bilanz.agent}"></td>
             <td th:text="${bilanz.accountOwner}"></td>
             <td th:text="${bilanz.notes}"></td>
+
+            <td th:text="${bilanz.loanAmount}"></td>
             <td th:text="${bilanz.amountReceived}"></td>
+
             <td th:text="${bilanz.interestAccrued}"></td>
             <td th:text="${bilanz.vatPercent}"></td>
             <td th:text="${bilanz.currentBalance}"></td>

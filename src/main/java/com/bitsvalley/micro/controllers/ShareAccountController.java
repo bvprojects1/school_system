@@ -60,7 +60,29 @@ public class ShareAccountController extends SuperController {
         request.getSession().setAttribute(BVMicroUtils.CUSTOMER_IN_USE, user);
         model.put("transferBilanz", new TransferBilanz() );
         model.put("share", byId);
-        model.put("showTransferBilanzSection", true );
+        if(byId.getAccountStatus().equals(AccountStatus.PENDING_PAYOUT)){
+            model.put("showTransferBilanzSection", true );
+        }else{
+            model.put("showTransferBilanzSection", false );
+        }
+        return "shareDetails";
+    }
+
+    @GetMapping(value = "/shareDetailsAccNumber/{accountNumber}")
+    public String shareDetailAccNumber( @PathVariable("accountNumber") String accountNumber, ModelMap model, HttpServletRequest request ) {
+        ShareAccount byId = shareAccountRepository.findByAccountNumber(accountNumber);
+
+        User user = byId.getUser();
+        request.getSession().setAttribute(BVMicroUtils.CUSTOMER_IN_USE, user);
+        model.put("transferBilanz", new TransferBilanz() );
+        model.put("share", byId);
+
+        if(byId.getAccountStatus().equals(AccountStatus.PENDING_PAYOUT)){
+            model.put("showTransferBilanzSection", true );
+        }else{
+            model.put("showTransferBilanzSection", false );
+        }
+
         return "shareDetails";
     }
 
@@ -87,10 +109,12 @@ public class ShareAccountController extends SuperController {
 
     @PostMapping(value = "/transferFromSavingToShareAccountsFormReview")
     public String transferFromSavingToLoanAccountsFormReview(ModelMap model,
-                                                             @ModelAttribute("transferBilanz") TransferBilanz transferBilanz) {
+                                                             @ModelAttribute("transferBilanz") TransferBilanz transferBilanz
+                                                            ,HttpServletRequest request) {
         model.put("transferBilanz", transferBilanz);
+        String shareId = request.getParameter("shareId");
         SavingAccount fromAccount= savingAccountService.findByAccountNumber(transferBilanz.getTransferFromAccount());
-        ShareAccount toAccount = shareAccountRepository.findById(new Long(transferBilanz.getTransferToAccount())).get();
+        ShareAccount toAccount = shareAccountRepository.findById(new Long(shareId)).get();
 
         shareAccountService.transferFromSavingToShareAccount(
                 fromAccount,
@@ -141,4 +165,4 @@ public class ShareAccountController extends SuperController {
         return "shareAccounts";
     }
 
-    }
+}

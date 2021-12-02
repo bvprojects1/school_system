@@ -8,8 +8,12 @@
 <br/><br/><br/><br/><br/><br/>
 <table width="90%" class="center">
     <tr>
-        <td><font size="1.5">Account Owner</font><br/><font size="4"> <span style
-                                                                          th:text="${session.customerInUse.userName}"/>'s
+        <td><font size="1.5">Account Owner</font><br/><font size="4">
+
+            <a href="#" th:href="@{/showCustomer/{id}(id=${session.customerInUse.id})}">
+                <span style th:text="${session.customerInUse.userName}"/>
+            </a>
+
         </font>
             <button type="submit"><a href="#" th:href="@{/file/{userName}(userName=${session.customerInUse.userName})}">Upload
                 I.D</a></button>
@@ -27,26 +31,31 @@
 <br/><br/>
 <table width="90%" class="center">
     <tr>
-        <th><font color="green" size="4px">LOAN INTEREST</font><br/>DOP</th>
-        <th>MOP</th>
+        <th><font color="green" size="4px">LOAN INTEREST</font><br/>Date Of Payment</th>
+        <th>Method Of Payment</th>
         <th>Agent</th>
         <th>%</th>
         <th>Notes</th>
         <th>Days</th>
         <th>
-            Interest(
-            <span th:if="${#authorization.expression('hasAnyAuthority(''ROLE_MANAGER'')')}">
-                <font color="green" size="4px">
-                    <div th:text="${loanBilanzList.totalLoanInterest}"/>
-                </font>
-            </span>)
+            Interest
         </th>
         <th>VAT</th>
         <th>Debit</th>
         <th>Credit</th>
-        <th><font color="green" size="6px">
-            <div th:text="${loanBilanzList.totalLoan}"/>
-        </font></th>
+        <th>
+            <span th:if="${#authorization.expression('hasAnyAuthority(''ROLE_MANAGER'')')}">
+                <font color="green" size="6px">
+                    <div th:text="${loanBilanzList.totalLoan}"/>
+                </font>
+
+                <font color="green" size="2px">
+                   Interest: <span th:text="${loanBilanzList.totalLoanInterest}"/>
+                </font>
+            </span>
+
+
+        </th>
     </tr>
     <tr th:each="bilanz : ${loanBilanzList.loanBilanzList}">
         <td>
