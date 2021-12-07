@@ -303,7 +303,7 @@ public class PdfService {
                 "                <th>Reference</th>\n" +
                 "                <th>Notes</th>\n" +
                 "                <th>Debit</th>\n" +
-                "                <th>Withdrawal</th>\n" +
+                "                <th>Credit</th>\n" +
                 "                <th></th>\n" +
                 "            </tr>\n" + getTableList(savingBilanzList) +
                     "            <tr>\n" +
@@ -521,18 +521,18 @@ public class PdfService {
         return "";
     }
 
-    private String getSavingDebitBalance(SavingBilanz savingBilanz){
-        if( !savingBilanz.getSavingAmount().startsWith("-")){
+    private double getSavingDebitBalance(SavingBilanz savingBilanz){
+        if( savingBilanz.getSavingAmount() < 0){
             return savingBilanz.getSavingAmount();
         }
-        return "";
+        return 0;
     }
 
-    private String getSavingCreditBalance(SavingBilanz savingBilanz){
-        if(savingBilanz.getSavingAmount().startsWith("-")){
+    private double getSavingCreditBalance(SavingBilanz savingBilanz){
+        if(savingBilanz.getSavingAmount() > 0){
             return savingBilanz.getSavingAmount();
         }
-        return "";
+        return 0;
     }
 
     private String getTableList(CurrentBilanzList currentBilanzList) {
@@ -563,8 +563,8 @@ public class PdfService {
 
                             "<td>"+bilanz.getReference()+"</td>" +
                             "<td>"+bilanz.getNotes()+"</td>" +
-                    "<td>" + getSavingDebitBalance(bilanz)+"</td>" +
-                    "<td>" + getSavingCreditBalance(bilanz)+"</td>" +
+                    "<td>" + BVMicroUtils.formatCurrency(getSavingDebitBalance(bilanz))+"</td>" +
+                    "<td>" + BVMicroUtils.formatCurrency(getSavingCreditBalance(bilanz))+"</td>" +
                             "<td>"+bilanz.getCurrentBalance()+"</td>" +
                     "</tr>";
         }

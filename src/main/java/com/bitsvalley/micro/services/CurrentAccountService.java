@@ -64,10 +64,14 @@ public class CurrentAccountService extends SuperService {
     @Autowired
     private BranchService branchService;
 
+    @Autowired
+    private
+    CurrentAccountService currentAccountService;
+
     private double minimumSaving;
 
-    public SavingAccount findByAccountNumber(String accountNumber) {
-        return savingAccountRepository.findByAccountNumber(accountNumber);
+    public CurrentAccount findByAccountNumber(String accountNumber) {
+        return currentAccountRepository.findByAccountNumber(accountNumber);
     }
 
     public int findAllSavingAccountCount() {
@@ -116,13 +120,17 @@ public class CurrentAccountService extends SuperService {
     }
 
     @Transactional
-    public void createCurrentAccountTransaction(CurrentAccountTransaction currentAccountTransaction) {
+    public void createCurrentAccountTransaction(CurrentAccountTransaction currentAccountTransaction, CurrentAccount currentAccount) {
 
         currentAccountTransaction.setCreatedBy(getLoggedInUserName());
         currentAccountTransaction.setCreatedDate(LocalDateTime.now());
         currentAccountTransaction.setReference(BVMicroUtils.getSaltString());
 
         currentAccountTransactionRepository.save(currentAccountTransaction);
+
+        currentAccountService.save(currentAccount);
+
+        generalLedgerService.updateGLAfterCurrentAccountTransaction(currentAccountTransaction);
 
 //        generalLedgerService.updateCurrentAccountTransaction(currentAccountTransaction);
     }
@@ -284,7 +292,7 @@ public class CurrentAccountService extends SuperService {
         currentBilanz.setReference(currentAccountTransaction.getReference());
         currentBilanz.setAgent(currentAccountTransaction.getCreatedBy());
         currentBilanz.setInterestRate("" + currentAccountTransaction.getCurrentAccount().getInterestRate());
-        currentBilanz.setCurrentAmount(BVMicroUtils.formatCurrency(currentAccountTransaction.getCurrentAmount()));
+        currentBilanz.setCurrentAmount(currentAccountTransaction.getCurrentAmount());
         currentBilanz.setCreatedDate(BVMicroUtils.formatDateTime(currentAccountTransaction.getCreatedDate()));
         currentBilanz.setNotes(currentAccountTransaction.getNotes());
         currentBilanz.setAccountNumber(currentAccountTransaction.getCurrentAccount().getAccountNumber());

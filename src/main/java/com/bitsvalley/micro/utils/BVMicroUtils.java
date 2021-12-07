@@ -24,6 +24,11 @@ public class BVMicroUtils {
     public static final String DEBIT_LOAN_TRANSFER = "DEBIT_LOAN_TRANSFER";
     public static final String SAVING_SHARE_TRANSFER = "SAVING_SHARE_TRANSFER";
     public static final String DEBIT_DEBIT_TRANSFER = "DEBIT_DEBIT_TRANSFER";
+    public static final String DEBIT_CURRENT_TRANSFER = "DEBIT_CURRENT_TRANSFER";
+
+    public static final String CURRENT_DEBIT_TRANSFER = "CURRENT_DEBIT_TRANSFER";
+
+    public static final String CURRENT_CURRENT_TRANSFER = "CURRENT_CURRENT_TRANSFER";
 
     public static final String SAVINGS_MINIMUM_BALANCE_ADDED_BY = "Savings minimum balance added by: ";
     public static final String SAVING_ACCOUNT_CREATED = "Saving account created ";
@@ -53,7 +58,7 @@ public class BVMicroUtils {
     public static final String VAT = "VAT";
     public static final String LOAN_INTEREST = "LOAN INTEREST";
 
-    public static final String CASH_GL_1001 = "CASH GL 1001";
+//    public static final String CASH_GL_1001 = "CASH GL 1001";
     public static final String CASH_GL_5001 = "CASH GL 5001";
     public static final String SHARE_GL_XXXX = "SHARE GL XXXX";
 
@@ -120,6 +125,9 @@ public class BVMicroUtils {
     }
 
     public static String formatCurrency(double totalSaved) {
+        if(totalSaved==0){
+            return "";
+        }
         Locale locale = new Locale("en", "CM");
         NumberFormat fmt = NumberFormat.getCurrencyInstance(locale);
         String total = fmt.format(totalSaved);

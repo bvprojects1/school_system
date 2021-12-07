@@ -10,11 +10,18 @@
     <table class="center" width="100%" border="0">
         <tr>
             <td align="center">
-                <font size="2px">Username</font> <br/> <font size="6">
-                <span style th:text="${session.customerInUse.userName}"/> </font>
+                <font size="2px">Username</font> <br/>
+
+                <font size="4">
+                    <a href="#" th:href="@{/showCustomer/{id}(id=${session.customerInUse.id})}">
+                        <span style th:text="${session.customerInUse.userName}"/>
+                    </a>
+                </font>
+
                 <button style="font-face: 'Comic Sans MS'; font-size: larger; color: teal; background-color: #FFFFC0; border: 3pt ridge lightgrey"
                         type="submit">
-                    <a href="#" th:href="@{/file/{userName}(userName=${session.customerInUse.userName})}"><font size="2px">Upload I.D</font></a>
+                    <a href="#" th:href="@{/file/{userName}(userName=${session.customerInUse.userName})}"><font
+                            size="2px">Upload I.D</font></a>
                 </button>
                 <a href="#" th:href="@{/reloadUser}"><img width="40px" th:src="@{/getImage}"/> </a>
             </td>
@@ -76,7 +83,7 @@
             </td>
         </tr>
     </table>
-    <br/> <br/> <br/> <br/>
+    <br/> <br/>
     <form action="#" th:action="@{/registerSavingAccountTransactionForm}" method="post"
           th:object="${savingAccountTransaction}">
 
@@ -86,7 +93,7 @@
                 </th>
                 <th>
                     <div class="error" th:text="${billSelectionError}"/>
-                    <font size="6" color="gray"><span  th:text="${billSelectionInfo}"/></font>
+                    <font size="6" color="gray"><span th:text="${billSelectionInfo}"/></font>
                 </th>
             </tr>
             <tr>
@@ -112,7 +119,7 @@
                                                value="${savingAccountTransaction.savingAmount}"/>
 
                     <span
-                        th:text="${#numbers.formatDecimal(savingAccountTransaction.savingAccount.minimumPayment, 0, 'COMMA', 0, 'POINT')}"/>(Minimum)
+                            th:text="${#numbers.formatDecimal(savingAccountTransaction.savingAccount.minimumPayment, 0, 'COMMA', 0, 'POINT')}"/>(Minimum)
                     <textarea placeholder="Enter Amount in letters ..." id="savingAmountInLetters" rows="1" cols="90"
                               th:field="*{savingAmountInLetters}" maxlength="255">
                     </textarea>
@@ -147,7 +154,8 @@
 
                     <br/> <br/>
                     <label for="true">Account Owner:</label>
-                    True<input size="8" th:field="*{accountOwner}" type="checkbox" id="true" name="accountOwner" value="true"
+                    True<input size="8" th:field="*{accountOwner}" type="checkbox" id="true" name="accountOwner"
+                               value="true"
                                checked>
 
                     <button type="submit" class="btn btn-success">SUBMIT TRANSACTION</button>
@@ -168,7 +176,7 @@
             </th>
         </tr>
     </table>
-    <table border="0" width="100%" class="center">
+    <table cellpadding="5px" border="0" width="100%" class="center">
         <tr>
             <td>Payment Date</td>
             <td>MOP</td>
@@ -176,7 +184,8 @@
             <td>Agent</td>
             <td>Owner</td>
             <td>Notes</td>
-            <td>Amount</td>
+            <td>Debit</td>
+            <td>Credit</td>
             <td><font color="green" size="6px">
                 <div th:text="${savingBilanzList.totalSaving}"/>
             </font></td>
@@ -190,7 +199,12 @@
             <td th:text="${bilanz.agent}"></td>
             <td th:text="${bilanz.accountOwner}"></td>
             <td th:text="${bilanz.notes}"></td>
-            <td th:text="${bilanz.savingAmount}"></td>
+            <td>
+                <span th:if="${bilanz.savingAmount} > 0" th:text="${#numbers.formatDecimal(bilanz.savingAmount, 0, 'COMMA', 0, 'POINT')}"/>
+            </td>
+            <td>
+                <span th:if="${bilanz.savingAmount} < 0" th:text="${#numbers.formatDecimal(bilanz.savingAmount, 0, 'COMMA', 0, 'POINT')}"/>
+            </td>
             <td th:text="${bilanz.currentBalance}"></td>
             <td>
                 <a href="#" th:href="@{/createSavingAccountReceiptPdf/{id}(id=${bilanz.id})}">

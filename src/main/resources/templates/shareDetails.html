@@ -25,7 +25,7 @@
                 </td>
                 <td colspan="3">
                     <font color="gray" size="4"> <span th:text="${shareDetailsInfo}"/></font>
-                    <span th:if="${share.accountStatus.name == 'PENDING_PAYOUT'}">
+                    <span th:if="${share.accountStatus.name == 'PENDING_APPROVAL'}">
                         Make share payment(<span
                             th:text="${#numbers.formatDecimal(share.quantity*share.unitSharePrice, 0, 'COMMA', 0, 'POINT')}"/>) to <span
                             th:text="${share.user.lastName}"/>'s share account<br/>

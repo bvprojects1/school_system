@@ -12,9 +12,12 @@
     <table width="100%" border="0">
         <tr>
             <td align="center">
-                <font size="2px">Username</font> <br/>
-                <font color="#2d363f" size="4px"> <span th:text="${session.customerInUse.userName}"/>
-            </font>
+                <font size="2px">Username</font>
+                <br/>
+                <a href="#" th:href="@{/showCustomer/{id}(id=${session.customerInUse.id})}">
+                    <font color="#2d363f" size="4px"> <span th:text="${session.customerInUse.userName}"/>
+                    </font>
+                </a>
             </td>
             <td align="center"><font size="2px">Monthly Payment</font> <br/>
                 <font color="#2d363f" size="4px">

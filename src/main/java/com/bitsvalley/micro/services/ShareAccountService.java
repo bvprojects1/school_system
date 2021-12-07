@@ -83,26 +83,29 @@ public class ShareAccountService extends SuperService{
         }
         ArrayList<User> userList = new ArrayList<User>();
         userList.add(aUser);
-        return calculateUsersInterest(userList);
+        return calculateTotalShares(userList);
     }
 
-    private ShareAccountBilanzList calculateUsersInterest(ArrayList<User> users) {
+    private ShareAccountBilanzList calculateTotalShares(ArrayList<User> users) {
         double totalSaved = 0.0;
         ShareAccountBilanzList shareAccountBilanzList = new ShareAccountBilanzList();
         for (int i = 0; i < users.size(); i++) {
             List<ShareAccount> shareAccounts = users.get(i).getShareAccount();
             List<ShareAccountTransaction> shareAccountTransactions = new ArrayList<ShareAccountTransaction>();
             ShareAccountBilanz shareAccountBilanz = new ShareAccountBilanz();
+            double accountTotalSaved = 0.0;
             for (int j = 0; j < shareAccounts.size(); j++) {
                 ShareAccount shareAccount = shareAccounts.get(j);
-                List<ShareAccountTransaction> shareAccountTransaction = shareAccount.getShareAccountTransaction();
-                double accountTotalSaved = 0.0;
+//                List<ShareAccountTransaction> shareAccountTransaction = shareAccount.getShareAccountTransaction();
+                if(shareAccount.getAccountStatus().equals(AccountStatus.ACTIVE)){
+                    accountTotalSaved = accountTotalSaved + shareAccount.getAccountBalance();
+                }
                 shareAccountRepository.save(shareAccount);
 //                shareAccountBilanz.
             }
+            shareAccountBilanzList.setTotalShare(BVMicroUtils.formatCurrency(accountTotalSaved));
         }
 
-        shareAccountBilanzList.setTotalCurrent(BVMicroUtils.formatCurrency(totalSaved));
         Collections.reverse(shareAccountBilanzList.getShareAccountBilanz());
         return shareAccountBilanzList;
     }

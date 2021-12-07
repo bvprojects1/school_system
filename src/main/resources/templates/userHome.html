@@ -37,7 +37,7 @@
                         <div th:text="${session.loanBilanzList.currentLoanBalance}"/>
                     </font></td>
                 <td> Current<br/> <font size="4px" color="gray"> <span th:text="${session.currentBilanzList.totalCurrent}"/></font></td>
-                <td>Shares <br/> <font size="4px" color="gray">0</font></b></td>
+                <td> Shares<br/> <font size="4px" color="gray"> <span th:text="${session.shareAccountBilanzList.totalShare}"/></font></td>
             </tr>
         </table>
         <!-- END -->
@@ -54,14 +54,19 @@
                         </a>
                     </span>
                 </td>
-                <td colspan="3">
+                <td colspan="2">
                     <a href="#" th:href="@{/transferFromDebitToDebitForm}">
-                        Transfer to another account <img width="25px" th:src="@{/assets/images/depositIcon.png}"/>
+                        Saving to Saving <img width="35px" th:src="@{/assets/images/transfer.png}"/>
                     </a>
                 </td>
-                <td colspan="3">
+                <td colspan="2">
+                    <a href="#" th:href="@{/transferFromDebitToCurrentForm}">
+                        Saving to Current <img width="35px" th:src="@{/assets/images/transfer.png}"/>
+                    </a>
+                </td>
+                <td colspan="2">
                     <a href="#" th:href="@{/transferFromSavingToLoanAccountsForm}">
-                        Loan re-payment <img width="25px" th:src="@{/assets/images/depositIcon.png}"/>
+                        Loan re-payment <img width="35px" th:src="@{/assets/images/transfer3.png}"/>
                     </a>
                 </td>
             </tr>
@@ -156,6 +161,7 @@
                         </a>
                     </span>
                 </td>
+
             </tr>
             <tr>
                 <td>
@@ -229,13 +235,28 @@
 
         <table border="0" class="center" width="100%" cellpadding="5">
             <tr>
-                <td colspan="9">
+                <td colspan="3">
                     <font size="5px" color="#738980">
                         <b>CURRENT ACCOUNT</b>
                     </font>
                     <a href="#" th:href="@{/registerCurrentAccount}">
                         <img width="25px" th:src="@{/assets/images/add.png}"/>
                     </a><br/>
+                </td>
+                <td colspan="2">
+                    <a href="#" th:href="@{/transferFromCurrentToDebitForm}">
+                        Current to Saving <img width="35px" th:src="@{/assets/images/transfer.png}"/>
+                    </a>
+                </td>
+                <td colspan="2">
+                    <a href="#" th:href="@{/transferFromCurrentToCurrentForm}">
+                        Current to Current <img width="35px" th:src="@{/assets/images/transfer.png}"/>
+                    </a>
+                </td>
+                <td colspan="2">
+                    <a href="#" th:href="@{/transferFromCurrentToLoanAccountsForm}">
+                        Loan re-payment <img width="35px" th:src="@{/assets/images/transfer3.png}"/>
+                    </a>
                 </td>
             </tr>
             <tr>
@@ -332,10 +353,13 @@
                     Quantity
                 </td>
                 <td>
-                    Created
+                    Bought
                 </td>
                 <td>
                     Creator
+                </td>
+                <td>
+
                 </td>
             </tr>
             <tr th:each="shareAccount : ${session.customerInUse.shareAccount}">
@@ -352,7 +376,9 @@
                 <td th:text="${shareAccount.createdDate}"/>
                 <td th:text="${shareAccount.createdBy}"/>
                 <td>
-
+                    <a href="#" th:href="@{/shareDetailsAccNumber/{id}(id=${shareAccount.accountNumber})}">
+                        <img width="30px" th:src="@{/assets/images/aLens.png}"/>
+                    </a>
                 </td>
             </tr>
         </table>

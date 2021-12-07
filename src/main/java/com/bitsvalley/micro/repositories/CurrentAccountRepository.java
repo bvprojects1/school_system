@@ -7,7 +7,7 @@ import org.springframework.data.repository.CrudRepository;
 
 public interface CurrentAccountRepository extends CrudRepository<CurrentAccount, Long> {
 
-    SavingAccount findByAccountNumber(String accountNumber);
+    CurrentAccount findByAccountNumber(String accountNumber);
 
     @Query("SELECT COUNT(*) AS numberOfSavingAccount FROM SavingAccount")
     int findAllCount();

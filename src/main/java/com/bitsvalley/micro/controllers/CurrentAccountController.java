@@ -238,23 +238,17 @@ public class CurrentAccountController extends SuperController {
     @PostMapping(value = "/registerCurrentAccountTransactionForm")
     public String registerCurrentAccountTransactionForm(ModelMap model, @ModelAttribute("currentAccountTransaction") CurrentAccountTransaction currentAccountTransaction, HttpServletRequest request) {
         String currentAccountId = request.getParameter("currentAccountId");
-        Optional<CurrentAccount> currentAccount = currentAccountService.findById(new Long(currentAccountId));
-        currentAccountTransaction.setCurrentAccount(currentAccount.get());
+        CurrentAccount currentAccount = currentAccountService.findById(new Long(currentAccountId)).get();
+        currentAccountTransaction.setCurrentAccount(currentAccount);
         User user = (User) request.getSession().getAttribute(BVMicroUtils.CUSTOMER_IN_USE);
 
-//        if(currentAccountTransaction.getCurrentAmount() < currentAccountTransaction.getCurrentAmount().getMinimumPayment()){
-//            model.put("billSelectionError", "Please make minimum payment of "+ BVMicroUtils.formatCurrency(currentAccountTransaction.getCurrentAccount().getMinimumPayment()));
-//            currentAccountTransaction.setNotes(currentAccountTransaction.getNotes());
-//            return displaySavingBilanzNoInterest(new Long(savingAccountId), model, currentAccountTransaction);
-//        }
-
-//        if ("CASH".equals(currentAccountTransaction.getModeOfPayment())) {
-//            if (!checkBillSelectionMatchesEnteredAmount(currentAccountTransaction)) {
-//                model.put("billSelectionError", "Bills Selection does not match entered amount");
-//                currentAccountTransaction.setNotes(currentAccountTransaction.getNotes());
-//                return displayCurrentBilanzNoInterest(new Long(currentAccountId), model, currentAccountTransaction);
-//            }
-//        }
+        if ("CASH".equals(currentAccountTransaction.getModeOfPayment())) {
+            if (!checkBillSelectionMatchesEnteredAmount(currentAccountTransaction)) {
+                model.put("billSelectionError", "Bills Selection does not match entered amount");
+                currentAccountTransaction.setNotes(currentAccountTransaction.getNotes());
+                return displayCurrentBilanzNoInterest(new Long(currentAccountId), model, currentAccountTransaction);
+            }
+        }
 
         if (request.getParameter("deposit_withdrawal").equals("WITHDRAWAL")) {
             currentAccountTransaction.setCurrentAmount(currentAccountTransaction.getCurrentAmount() * -1);
@@ -274,27 +268,30 @@ public class CurrentAccountController extends SuperController {
         currentAccountTransaction.setBranchCode(branchInfo.getCode());
         currentAccountTransaction.setBranchCountry(branchInfo.getCountry());
 
-        currentAccountService.createCurrentAccountTransaction(currentAccountTransaction);
-        if (currentAccount.get().getCurrentAccountTransaction() != null) {
-            currentAccount.get().getCurrentAccountTransaction().add(currentAccountTransaction);
+        currentAccountService.createCurrentAccountTransaction(currentAccountTransaction, currentAccount);
+        if (currentAccount.getCurrentAccountTransaction() != null) {
+            currentAccount.getCurrentAccountTransaction().add(currentAccountTransaction);
         } else {
-            currentAccount.get().setCurrentAccountTransaction(new ArrayList<CurrentAccountTransaction>());
-            currentAccount.get().getCurrentAccountTransaction().add(currentAccountTransaction);
+            currentAccount.setCurrentAccountTransaction(new ArrayList<CurrentAccountTransaction>());
+            currentAccount.getCurrentAccountTransaction().add(currentAccountTransaction);
         }
-        currentAccountService.save(currentAccount.get());
+
         String username = getLoggedInUserName();
+
+        CurrentBilanzList currentBilanzByUserList = currentAccountService.calculateAccountBilanz(currentAccount.getCurrentAccountTransaction(), false);
+
         callCenterService.saveCallCenterLog(currentAccountTransaction.getReference(),
-                username, currentAccount.get().getAccountNumber(),
+                username, currentAccount.getAccountNumber(),
                 "Current account transaction made "+ BVMicroUtils.formatCurrency(currentAccountTransaction.getCurrentAmount()));
 
-        CurrentBilanzList currentBilanzByUserList = currentAccountService.calculateAccountBilanz(currentAccount.get().getCurrentAccountTransaction(), false);
+
         model.put("name", username );
         model.put("billSelectionInfo", BVMicroUtils.formatCurrency(currentAccountTransaction.getCurrentAmount()) + " ---- PAYMENT HAS REGISTERED ----- ");
         model.put("currentBilanzList", currentBilanzByUserList);
         request.getSession().setAttribute("currentBilanzList", currentBilanzByUserList);
         Optional<User> byId = userRepository.findById(user.getId());
         request.getSession().setAttribute(BVMicroUtils.CUSTOMER_IN_USE, byId.get());
-        currentAccountTransaction.setCurrentAccount(currentAccount.get());
+        currentAccountTransaction.setCurrentAccount(currentAccount);
         resetCurrentAccountTransaction(currentAccountTransaction); //reset BillSelection and amount
         currentAccountTransaction.setNotes("");
         model.put("currentAccountTransaction", currentAccountTransaction);
@@ -333,42 +330,42 @@ public class CurrentAccountController extends SuperController {
         sat.setTwentyFive(0);
         sat.setTwoThousand(0);
     }
-//
-//    private boolean checkBillSelectionMatchesEnteredAmount(SavingAccountTransaction sat) {
-//        boolean match = (sat.getSavingAmount() == (sat.getTenThousand() * 10000) +
-//                (sat.getFiveThousand() * 5000) +
-//                (sat.getTwoThousand() * 2000) +
-//                (sat.getOneThousand() * 1000) +
-//                (sat.getFiveHundred() * 500) +
-//                (sat.getOneHundred() * 100) +
-//                (sat.getFifty() * 50) +
-//                (sat.getTwentyFive() * 25));
-//        if (match) {
-//            sat.setNotes(sat.getNotes()
-//                    + addBillSelection(sat));
-//        }
-//        return match;
-//    }
-//
-//    private String addBillSelection(SavingAccountTransaction sat) {
-//        String billSelection = " BS \n";
-//        billSelection = billSelection + concatBillSelection(" 10 000x", sat.getTenThousand()) + "\n";
-//        billSelection = billSelection + concatBillSelection(" 5 000x", sat.getFiveThousand()) + "\n";
-//        billSelection = billSelection + concatBillSelection(" 2 000x", sat.getTwoThousand()) + "\n";
-//        billSelection = billSelection + concatBillSelection(" 1 000x", sat.getOneThousand()) + "\n";
-//        billSelection = billSelection + concatBillSelection(" 500x", sat.getFiveHundred()) + "\n";
-//        billSelection = billSelection + concatBillSelection(" 100x", sat.getOneHundred()) + "\n";
-//        billSelection = billSelection + concatBillSelection(" 50x", sat.getFifty());
-//        return billSelection;
-//    }
-//
-//    private String concatBillSelection(String s, int qty) {
-//        if (qty == 0) {
-//            return "";
-//        }
-//        s = s + qty;
-//        return s;
-//    }
+
+    private boolean checkBillSelectionMatchesEnteredAmount(CurrentAccountTransaction sat) {
+        boolean match = (sat.getCurrentAmount() == (sat.getTenThousand() * 10000) +
+                (sat.getFiveThousand() * 5000) +
+                (sat.getTwoThousand() * 2000) +
+                (sat.getOneThousand() * 1000) +
+                (sat.getFiveHundred() * 500) +
+                (sat.getOneHundred() * 100) +
+                (sat.getFifty() * 50) +
+                (sat.getTwentyFive() * 25));
+        if (match) {
+            sat.setNotes(sat.getNotes()
+                    + addBillSelection(sat));
+        }
+        return match;
+    }
+
+    private String addBillSelection(CurrentAccountTransaction sat) {
+        String billSelection = " BS \n";
+        billSelection = billSelection + concatBillSelection(" 10 000x", sat.getTenThousand()) + "\n";
+        billSelection = billSelection + concatBillSelection(" 5 000x", sat.getFiveThousand()) + "\n";
+        billSelection = billSelection + concatBillSelection(" 2 000x", sat.getTwoThousand()) + "\n";
+        billSelection = billSelection + concatBillSelection(" 1 000x", sat.getOneThousand()) + "\n";
+        billSelection = billSelection + concatBillSelection(" 500x", sat.getFiveHundred()) + "\n";
+        billSelection = billSelection + concatBillSelection(" 100x", sat.getOneHundred()) + "\n";
+        billSelection = billSelection + concatBillSelection(" 50x", sat.getFifty());
+        return billSelection;
+    }
+
+    private String concatBillSelection(String s, int qty) {
+        if (qty == 0) {
+            return "";
+        }
+        s = s + qty;
+        return s;
+    }
 
 
 

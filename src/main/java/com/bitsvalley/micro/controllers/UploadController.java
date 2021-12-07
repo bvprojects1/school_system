@@ -46,7 +46,8 @@ public class UploadController extends SuperController{
     RuntimePropertiesRepository runtimePropertiesRepository;
 
 
-    private final String UPLOAD_DIR = "assets/images/";
+//    private final String UPLOAD_DIR = "assets/images/";
+    private final String UPLOAD_DIR = "/Users/frusamachifen/";
 
     @GetMapping("/file")
     public String uploadFile(){
@@ -80,7 +81,8 @@ public class UploadController extends SuperController{
         // normalize the file path
         String fileName = StringUtils.cleanPath(file.getOriginalFilename());
 
-        String rpath = request.getRealPath("/");
+//        String rpath = request.getRealPath("/");
+        String rpath = "";
 //        rpath = rpath + "/assets/images/" + imageId; // whatever path you used for storing the file
 
         String completePAth = rpath + UPLOAD_DIR +"_"+ userName +"_id_"+fileName;

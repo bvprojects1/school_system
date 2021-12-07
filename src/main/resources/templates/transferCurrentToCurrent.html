@@ -10,7 +10,7 @@
     <!-- Contact form area start -->
     <section class="contact-form-area-start space df-bg">
 
-        <form action="#" th:action="@{/transferFromDebitToDebitFormReview}" method="post" th:object="${transferBilanz}">
+        <form action="#" th:action="@{/transferFromCurrentToCurrentFormReview}" method="post" th:object="${transferBilanz}">
             <table class="center" width="100%" border="1">
                 <tr>
                     <td align="center">
@@ -30,9 +30,9 @@
                         <br/><br/>
                         <label> From Account:</label>
                         <select th:field="*{transferFromAccount}">
-                            <option th:each="i : ${session.customerInUse.savingAccount}"
+                            <option th:each="i : ${session.customerInUse.currentAccount}"
                                     th:value="${i.accountNumber}"
-                                    th:text="${i.accountType.name}+ ----Balance + ${#numbers.formatDecimal(i.accountBalance, 0, 'COMMA', 0, 'POINT')} + ----MinimumBalance + ${#numbers.formatDecimal(i.accountMinBalance, 0, 'COMMA', 0, 'POINT')}">
+                                    th:text="${i.accountNumber} + ----Balance + ${#numbers.formatDecimal(i.accountBalance, 0, 'COMMA', 0, 'POINT')}">
                             </option>
                         </select>
                         <br/>

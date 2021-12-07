@@ -89,18 +89,18 @@ public class ShareAccountController extends SuperController {
     @GetMapping(value = "/approveShareAccount/{id}")
     public String approveShare(@PathVariable("id") long id, ModelMap model) {
         ShareAccount byId = shareAccountRepository.findById(id).get();
-
+        model.put("transferBilanz", new TransferBilanz() );
         if( byId.getCreatedBy().equals(getLoggedInUserName())){
             model.put("shareError", "A different authorized user should approve this purchase" );
+            model.put("showTransferBilanzSection", false );
         }else{
             byId.setAccountStatus(AccountStatus.PENDING_PAYOUT);
             byId.setApprovedBy(getLoggedInUserName());
             byId.setApprovedDate(new Date());
-            callCenterService.saveCallCenterLog("PENDING PAYOUT", getLoggedInUserName(), byId.getAccountNumber(),"Share ACCOUNT APPROVED now pending payout"); //TODO ADD DATE
             shareAccountRepository.save(byId);
+            callCenterService.saveCallCenterLog("PENDING PAYOUT", getLoggedInUserName(), byId.getAccountNumber(),"Share ACCOUNT APPROVED now pending payout"); //TODO ADD DATE
+            model.put("showTransferBilanzSection", true );
         }
-        model.put("transferBilanz", new TransferBilanz() );
-        model.put("showTransferBilanzSection", true );
         model.put("share",byId);
         return "shareDetails";
 

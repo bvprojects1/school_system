@@ -10,12 +10,12 @@
     <!-- Contact form area start -->
     <section class="contact-form-area-start space df-bg">
 
-        <form action="#" th:action="@{/transferFromDebitToDebitFormReview}" method="post" th:object="${transferBilanz}">
+        <form action="#" th:action="@{/transferFromCurrentToDebitFormReview}" method="post" th:object="${transferBilanz}">
             <table class="center" width="100%" border="1">
                 <tr>
                     <td align="center">
                         <div class="project-title-content">
-                            <h4>TRANSFER BETWEEN ACCOUNTS</h4>
+                            <h4>TRANSFER FROM CURRENT ACCOUNT TO SAVING ACCOUNT</h4>
                             <span><i class="fas fa-crosshairs"></i></span>
                         </div>
                     </td>
@@ -25,19 +25,19 @@
 
                         <font size="1.5">Account Owner</font><br/>
                         <font size="6">
-                            <span style th:text="${session.customerInUse.userName}"/>
+                            <span style th:text="${session.customerInUse.gender}"/> <span style th:text="${session.customerInUse.lastName}"/>
                         </font>
                         <br/><br/>
                         <label> From Account:</label>
                         <select th:field="*{transferFromAccount}">
-                            <option th:each="i : ${session.customerInUse.savingAccount}"
+                            <option th:each="i : ${session.customerInUse.currentAccount}"
                                     th:value="${i.accountNumber}"
-                                    th:text="${i.accountType.name}+ ----Balance + ${#numbers.formatDecimal(i.accountBalance, 0, 'COMMA', 0, 'POINT')} + ----MinimumBalance + ${#numbers.formatDecimal(i.accountMinBalance, 0, 'COMMA', 0, 'POINT')}">
+                                    th:text="${i.accountNumber} + ----Balance + ${#numbers.formatDecimal(i.accountBalance, 0, 'COMMA', 0, 'POINT')}">
                             </option>
                         </select>
                         <br/>
                         <font size="4"> <div class="error" th:text="${invalidToAccount}"/> </font>
-                        <label> To Account:</label>
+                        <label>To Saving Account:</label>
                         <input type="number" size="12" th:field="*{transferToAccount}">
                         <br/>
                         <br/>
