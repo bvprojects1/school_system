@@ -176,10 +176,10 @@ public class GeneralLedgerService extends SuperService{
         generalLedgerRepository.save(generalLedger);
     }
 
-    public void updateLoanAccountCreation(LoanAccount loanAccount) {
-        GeneralLedger generalLedger = loanAccountGLMapper(loanAccount);
-        generalLedgerRepository.save(generalLedger);
-    }
+//    public void updateLoanAccountCreation(LoanAccount loanAccount) {
+//        GeneralLedger generalLedger = loanAccountGLMapper(loanAccount);
+//        generalLedgerRepository.save(generalLedger);
+//    }
 
     private GeneralLedger loanAccountGLMapper(LoanAccount loanAccount) {
         GeneralLedger gl = new GeneralLedger();
@@ -279,10 +279,10 @@ public class GeneralLedgerService extends SuperService{
         gl.setType(savingAccountTransaction.getSavingAmount()>=0?"CREDIT":"DEBIT");
         return gl;
     }
-
-    private String getGeneralLedgerType(double amount) {
-            return amount>0?GeneralLedgerType.DEBIT.name():GeneralLedgerType.CREDIT.name();
-    }
+//
+//    private String getGeneralLedgerType(double amount) {
+//            return amount>0?GeneralLedgerType.DEBIT.name():GeneralLedgerType.CREDIT.name();
+//    }
 
     public GeneralLedgerBilanz findAll() {
             Iterable<GeneralLedger> glIterable = generalLedgerRepository.findAll();
@@ -487,4 +487,49 @@ public class GeneralLedgerService extends SuperService{
                 updateGeneralLedger(currentAccountTransaction,BVMicroUtils.CASH_GL_5001,currentAccountTransaction.getCurrentAmount() > 0?"DEBIT":"CREDIT", currentAccountTransaction.getCurrentAmount(),3,true);
             }
         }
+
+    public void updateGLAfterCurrentCurrentTransfer(CurrentAccountTransaction currentAccountTransaction) {
+
+        currentAccountTransaction.getNotes();
+        if(currentAccountTransaction.getModeOfPayment().equals(BVMicroUtils.CURRENT_CURRENT_TRANSFER)){
+            currentAccountTransaction.setNotes(BVMicroUtils.CURRENT_GL_3004 +" "+ currentAccountTransaction.getNotes());
+            updateGeneralLedger(currentAccountTransaction,BVMicroUtils.CURRENT_GL_3004,"DEBIT", currentAccountTransaction.getCurrentAmount(),3,true);
+            currentAccountTransaction.setNotes(BVMicroUtils.CURRENT_GL_3004 +" "+ currentAccountTransaction.getNotes());
+            updateGeneralLedger(currentAccountTransaction,BVMicroUtils.CURRENT_GL_3004,"CREDIT", currentAccountTransaction.getCurrentAmount(),3,true);
+        }
+    }
+
+    public void updateGLAfterCurrentDebitTransfer(CurrentAccountTransaction currentAccountTransaction) {
+
+        currentAccountTransaction.getNotes();
+        if(currentAccountTransaction.getModeOfPayment().equals(BVMicroUtils.CURRENT_DEBIT_TRANSFER)){
+            currentAccountTransaction.setNotes(BVMicroUtils.SAVINGS_GL_3003 +" "+ currentAccountTransaction.getNotes());
+            updateGeneralLedger(currentAccountTransaction,BVMicroUtils.CURRENT_GL_3004,"DEBIT", currentAccountTransaction.getCurrentAmount(),3,true);
+            currentAccountTransaction.setNotes(BVMicroUtils.CURRENT_GL_3004 +" "+ currentAccountTransaction.getNotes());
+            updateGeneralLedger(currentAccountTransaction,BVMicroUtils.SAVINGS_GL_3003,"CREDIT", currentAccountTransaction.getCurrentAmount(),3,true);
+        }
+    }
+
+    public void updateGLAfterDebitDebitTransfer(SavingAccountTransaction savingAccountTransaction) {
+
+        savingAccountTransaction.getNotes();
+        if(savingAccountTransaction.getModeOfPayment().equals(BVMicroUtils.DEBIT_DEBIT_TRANSFER)){
+            savingAccountTransaction.setNotes(BVMicroUtils.SAVINGS_GL_3003 +" "+ savingAccountTransaction.getNotes());
+            updateGeneralLedger(savingAccountTransaction,BVMicroUtils.SAVINGS_GL_3003,"DEBIT", savingAccountTransaction.getSavingAmount(),3,true);
+            savingAccountTransaction.setNotes(BVMicroUtils.SAVINGS_GL_3003 +" "+ savingAccountTransaction.getNotes());
+            updateGeneralLedger(savingAccountTransaction,BVMicroUtils.SAVINGS_GL_3003,"CREDIT", savingAccountTransaction.getSavingAmount(),3,true);
+        }
+    }
+
+    public void updateGLAfterDebitCurrentTransfer(SavingAccountTransaction savingAccountTransaction) {
+
+        savingAccountTransaction.getNotes();
+        if(savingAccountTransaction.getModeOfPayment().equals(BVMicroUtils.DEBIT_CURRENT_TRANSFER)){
+            savingAccountTransaction.setNotes(BVMicroUtils.SAVINGS_GL_3003 +" "+ savingAccountTransaction.getNotes());
+            updateGeneralLedger(savingAccountTransaction,BVMicroUtils.CURRENT_GL_3004,"DEBIT", savingAccountTransaction.getSavingAmount(),3,true);
+            savingAccountTransaction.setNotes(BVMicroUtils.CURRENT_GL_3004 +" "+ savingAccountTransaction.getNotes());
+            updateGeneralLedger(savingAccountTransaction,BVMicroUtils.SAVINGS_GL_3003,"CREDIT", savingAccountTransaction.getSavingAmount(),3,true);
+        }
+    }
+
 }

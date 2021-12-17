@@ -92,11 +92,11 @@
                     <!--Single service area end-->
                     <div th:if="${#authorization.expression('hasAnyAuthority(''ROLE_MANAGER'')')} OR ${#authorization.expression('hasAnyAuthority(''ROLE_AUDITOR'')')}" class="col-md-6 col-lg-4">
                         <div class="single-choosen-content text-center single-service-content box-pad">
-                            <i class="fas fa-ethernet"></i>
+                            <i class="fas fa-book"></i>
                             <h4>GENERAL LEDGER</h4>
-                            <p>General Ledger records all bank transactions </p>
+                            <p>Records all account transactions </p>
                             <a href="/gl">See More ...</a>
-                            <span class="fas fa-ethernet"></span>
+                            <span class="fas fa-book"></span>
                         </div>
                     </div>
                     <!--Single service area end-->
@@ -115,11 +115,11 @@
                     <!--Single service area end-->
                     <div th:if="${#authorization.expression('hasAnyAuthority(''ROLE_MANAGER'')')} OR ${#authorization.expression('hasAnyAuthority(''ROLE_AUDITOR'')')}" class="col-md-6 col-lg-4">
                         <div class="single-choosen-content text-center single-service-content box-pad">
-                            <i class="fas fa-ethernet"></i>
-                            <h4>NONE</h4>
-                            <p>General Ledger records all bank transactions </p>
+                            <i class="fas fa-balance-scale"></i>
+                            <h4>TRIAL BALANCE</h4>
+                            <p>Journal entries and ledger balances</p>
                             <a href="/gl">See More ...</a>
-                            <span class="fas fa-ethernet"></span>
+                            <span class="fas fa-balance-scale"></span>
                         </div>
                     </div>
 

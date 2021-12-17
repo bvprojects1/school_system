@@ -126,7 +126,7 @@ public class ShareAccountService extends SuperService{
         shareAccountRepository.save(shareAccount);
 
 //        SavingAccount savingAccount = savingAccountService.findByAccountNumber(fromAccountNumber);
-        SavingAccountTransaction savingAccountTransaction = savingAccountService.getSavingAccountTransaction(notes, branchInfo, savingAccount, transferAmount * -1);
+        SavingAccountTransaction savingAccountTransaction = savingAccountService.getSavingAccountTransaction(notes, branchInfo, savingAccount, transferAmount * -1, BVMicroUtils.SAVING_SHARE_TRANSFER);
         savingAccount.getSavingAccountTransaction().add(savingAccountTransaction);
         savingAccountRepository.save(savingAccount);
 

@@ -181,8 +181,7 @@ public class LoanAccountService extends SuperService {
         callCenterService.saveCallCenterLog(loanAccountTransaction.getReference(), aLoanAccount.getUser().getUserName(), aLoanAccount.getAccountNumber(),
                 "Loan account Payment received Amount: "+ loanAccountTransaction.getAmountReceived());
 
-        generalLedgerService.updateGLAfterLoanAccountCASHRepayment(loanAccountTransaction);
-//        generalLedgerService.updateLoanRepayment();
+//        generalLedgerService.updateGLAfterLoanAccountCASHRepayment(loanAccountTransaction);
 
     }
 
