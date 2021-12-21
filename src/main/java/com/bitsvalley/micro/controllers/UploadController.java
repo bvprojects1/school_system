@@ -116,8 +116,8 @@ public class UploadController extends SuperController{
             return "redirect:/";
         }
         String fileName = StringUtils.cleanPath(file.getOriginalFilename());
-        String rpath = request.getRealPath("/");
-        String completePath = rpath + UPLOAD_DIR +fileName;
+//        String rpath = request.getRealPath("/");
+        String completePath = UPLOAD_DIR +fileName;
         RuntimeProperties logo = runtimePropertiesRepository.findByPropertyName("logo");
         if(logo == null){
             logo = new RuntimeProperties();
@@ -147,8 +147,8 @@ public class UploadController extends SuperController{
             return "redirect:/";
         }
         String fileName = StringUtils.cleanPath(file.getOriginalFilename());
-        String rpath = request.getRealPath("/");
-        String completePath = rpath + UPLOAD_DIR +fileName;
+//        String rpath = request.getRealPath("/");
+        String completePath =  UPLOAD_DIR +fileName;
         RuntimeProperties unionLogo = runtimePropertiesRepository.findByPropertyName("unionLogo");
         unionLogo.setPropertyValue(completePath);
         Path path = null;

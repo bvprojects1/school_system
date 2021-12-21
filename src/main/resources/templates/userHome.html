@@ -53,11 +53,18 @@
                         <img width="25px" th:src="@{/assets/images/add.png}"/>
                     </a><br/>
                 </td>
+
+<!--                <div th:if="${#authorization.expression('hasAnyAuthority(''ROLE_VIEW_CUSTOMER_ACCOUNT_BALANCES'')')}">-->
+
                 <td colspan="2">
-                    <a href="#" th:href="@{/transferFromCurrentToCurrentForm}">
+                    <a th:if="${#authorization.expression('hasAnyAuthority(''ROLE_CUSTOMER_ACCOUNT_TYPE_TRANSFERS'')')}" href="#" th:href="@{/transferFromCurrentToCurrentForm}">
                         Current to Current <img width="30px" th:src="@{/assets/images/transfer.png}"/>
                     </a>
+                    <div th:unless="${#authorization.expression('hasAnyAuthority(''ROLE_CUSTOMER_ACCOUNT_TYPE_TRANSFERS'')')}" href="">
+                        Current to Current <img width="30px" th:src="@{/assets/images/transfer.png}"/> <label title="Requires ROLE_CUSTOMER_ACCOUNT_TYPE_TRANSFERS"> <img width="30px" th:src="@{/assets/images/toolTip.png}"/> </label>
+                    </div>
                 </td>
+
                 <td colspan="2">
                     <a href="#" th:href="@{/transferFromCurrentToDebitForm}">
                         Current to Saving <img width="35px" th:src="@{/assets/images/transfer3.png}"/>

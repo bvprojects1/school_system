@@ -15,7 +15,7 @@
                 <tr>
                     <td align="center">
                         <div class="project-title-content">
-                            <h4>TRANSFER BETWEEN ACCOUNTS</h4>
+                            <h4>TRANSFER BETWEEN SAVING ACCOUNTS</h4>
                             <span><i class="fas fa-crosshairs"></i></span>
                         </div>
                     </td>
@@ -23,7 +23,7 @@
                 <tr>
                     <td align="center" colspan="2">
 
-                        <font size="1.5">Account Owner</font><br/>
+                        <font size="2">Account Owner</font><br/>
                         <font size="6">
                             <span style th:text="${session.customerInUse.userName}"/>
                         </font>
@@ -42,7 +42,7 @@
                         <br/>
                         <br/>
                         <label> <b>Enter Amount:</b></label>
-                        <input size="6" name="transferAmount" type="number" value="${transferAmount}" />
+                        <input style="font-size: 200%;" size="6" name="transferAmount" type="number" value="${transferAmount}" />
                         <input type="hidden"  id="transferType" th:field="*{transferType}" value="${transferType}">
                         <br/>
                         <br/>

@@ -8,7 +8,7 @@ public class LoanBilanzList {
     List<LoanBilanz> loanBilanzList = new ArrayList<LoanBilanz>();
     String totalLoanInterest = "0";
     String totalLoan = "0";
-    String currentLoanBalance = "";
+    String currentLoanBalance = "0";
     String numberOfLoanAccounts = "0";
     String numberOfRetirementLoans = "0";
 

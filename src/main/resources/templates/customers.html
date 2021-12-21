@@ -53,15 +53,26 @@
                 </div>
                 <td th:text="${user.createdBy}"></td>
                 <td>
-                    <a href="#" th:href="@{/showCustomer/{id}(id=${user.id})}">
-                        See more ...
-                    </a>
+                    <div th:if="${#authorization.expression('hasAnyAuthority(''ROLE_VIEW_CUSTOMER_ACCOUNT_BALANCES'')')}">
+                        <a href="#" th:href="@{/showCustomer/{id}(id=${user.id})}">
+                            See more ...
+                        </a>
+                    </div>
+                    <div th:unless="${#authorization.expression('hasAnyAuthority(''ROLE_VIEW_CUSTOMER_ACCOUNT_BALANCES'')')}">
+                            See more ...<label title="Requires ROLE_VIEW_CUSTOMER_ACCOUNT_BALANCES"><img width="25px" th:src="@{/assets/images/toolTip.png}"/></label>
+                    </div>
                 </td>
                 <td>
-                    <span th:if="${#authorization.expression('hasAnyAuthority(''ROLE_MANAGER'')')}">
+                    <span th:if="${#authorization.expression('hasAnyAuthority(''ROLE_MANAGER'')')} OR ${#authorization.expression('hasAnyAuthority(''ROLE_EDIT_USER_ACCOUNT'')')}">
                         <a  th:href="@{/editUserRole/{id}(id=${user.id})}">
                             <i class="fas fa-pencil-alt" style='font-size:16px;color:gray'></i>
                         </a>
+                    </span>
+                    <span th:unless="${#authorization.expression('hasAnyAuthority(''ROLE_MANAGER'')')} OR ${#authorization.expression('hasAnyAuthority(''ROLE_EDIT_USER_ACCOUNT'')')}">
+                            <a href="">
+                                <i class="fas fa-pencil-alt" style='font-size:16px;color:gray'></i>
+                            </a>
+                        <label title="Requires ROLE_EDIT_USER_ACCOUNT"><img width="25px" th:src="@{/assets/images/toolTip.png}"/></label>
                     </span>
                 </td>
             </tr>

@@ -90,7 +90,7 @@ public class CurrentAccountService extends SuperService {
         currentAccount.setLastUpdatedBy(getLoggedInUserName());
         currentAccount.setAccountLocked(false);
         currentAccount.setLastUpdatedDate(new Date(System.currentTimeMillis()));
-
+        currentAccount.setAccountMinBalance(0);
         AccountType savingAccountType = accountTypeRepository.findByNumber(currentAccount.getProductCode());
         currentAccount.setAccountType(savingAccountType);
 

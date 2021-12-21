@@ -23,26 +23,32 @@
                 <tr>
                     <td align="center" colspan="2">
 
-                        <font size="1.5">Account Owner</font><br/>
+                        <font size="2">Account Owner</font><br/>
                         <font size="6">
                             <span style th:text="${session.customerInUse.gender}"/> <span style th:text="${session.customerInUse.lastName}"/>
                         </font>
                         <br/><br/>
                         <label> From Account:</label>
+                        <br/>
                         <select th:field="*{transferFromAccount}">
                             <option th:each="i : ${session.customerInUse.currentAccount}"
                                     th:value="${i.accountNumber}"
                                     th:text="${i.accountNumber} + ----Balance + ${#numbers.formatDecimal(i.accountBalance, 0, 'COMMA', 0, 'POINT')}">
                             </option>
                         </select>
+
                         <br/>
                         <font size="4"> <div class="error" th:text="${invalidToAccount}"/> </font>
                         <label>To Saving Account:</label>
+                        <br/>
+
                         <input type="number" size="12" th:field="*{transferToAccount}">
                         <br/>
                         <br/>
                         <label> <b>Enter Amount:</b></label>
-                        <input size="6" name="transferAmount" type="number" value="${transferAmount}" />
+                        <br/>
+
+                        <input style="font-size: 200%;" size="6" name="transferAmount" type="number" value="${transferAmount}" />
                         <input type="hidden"  id="transferType" th:field="*{transferType}" value="${transferType}">
                         <br/>
                         <br/>
@@ -50,6 +56,8 @@
                         </textarea>
 
                         <br/>
+                        <br/>
+
                         <button type="submit" class="btn btn-success">
                             Next - Review Transfer
                         </button>

@@ -17,18 +17,26 @@
             <div class="container">
                 <div class="row">
 <!--                   <div class="col-md-6 col-lg-4">-->
-                    <div th:if="${#authorization.expression('hasAnyAuthority(''ROLE_CUSTOMER'')')} OR ${#authorization.expression('hasAnyAuthority(''ROLE_MANAGER'')')} OR ${#authorization.expression('hasAnyAuthority(''ROLE_ADMIN'')')} OR ${#authorization.expression('hasAnyAuthority(''ROLE_AGENT'')')} " class="col-md-6 col-lg-4">
+                    <div th:if="${#authorization.expression('hasAnyAuthority(''ROLE_MAIN_USERS'')')} OR ${#authorization.expression('hasAnyAuthority(''ROLE_MANAGER'')')}" class="col-md-6 col-lg-4">
                        <div class="single-choosen-content text-center single-service-content box-pad">
-                            <a href="/findAllCustomers"><i class="far fa-user"></i></a>
-
+                            <i class="far fa-user"></i>
                             <h4> USERS</h4>
                             <p>Create & View existing Users</p>
-                           <div th:if="${#authorization.expression('hasAnyAuthority(''ROLE_MANAGER'')')}OR ${#authorization.expression('hasAnyAuthority(''ROLE_ADMIN'')')}">
+                           <div th:if="${#authorization.expression('hasAnyAuthority(''ROLE_CREATE_USER_ACCOUNT'')')} OR ${#authorization.expression('hasAnyAuthority(''ROLE_MANAGER'')')} OR ${#authorization.expression('hasAnyAuthority(''ROLE_ADMIN'')')}">
                             <a href="/registerUser"> <img width="5px" th:src="@{/assets/images/add.png}"/> </a>
-                            <a href="/findAllCustomers">See More ...</a>
                            </div>
-                           <div th:if="${#authorization.expression('hasAnyAuthority(''ROLE_AGENT'')')}">
-                               <a href="/registerCustomer"> <img width="5px" th:src="@{/assets/images/add.png}"/> </a>
+                           <div th:unless="${#authorization.expression('hasAnyAuthority(''ROLE_CREATE_USER_ACCOUNT'')')} OR ${#authorization.expression('hasAnyAuthority(''ROLE_MANAGER'')')} OR ${#authorization.expression('hasAnyAuthority(''ROLE_ADMIN'')')}">
+                               <a href=""> <img alt="Requires ROLE_CREATE_USER_ACCOUNT" width="5px" th:src="@{/assets/images/add.png}"/> </a>
+                               <span class="far fa-user"></span>
+                           </div>
+
+                           <div th:if="${#authorization.expression('hasAnyAuthority(''ROLE_VIEW_ALL_ACCOUNTS'')')} OR ${#authorization.expression('hasAnyAuthority(''ROLE_MANAGER'')')}">
+                               <a href="/findAllCustomers">See More ...</a>
+                               <span class="far fa-user"></span>
+                           </div>
+                           <div th:unless="${#authorization.expression('hasAnyAuthority(''ROLE_VIEW_ALL_ACCOUNTS'')')} OR ${#authorization.expression('hasAnyAuthority(''ROLE_MANAGER'')')}">
+                               See More ...
+                               <label title="Requires ROLE_VIEW_ALL_ACCOUNTS"><img th:src="@{/assets/images/toolTip.png}"/></label>
                                <span class="far fa-user"></span>
                            </div>
 
@@ -46,7 +54,7 @@
                         </div>
                     </div>
                     <!--Single service area end-->
-                    <div th:if="${#authorization.expression('hasAnyAuthority(''ROLE_MANAGER'')')} OR ${#authorization.expression('hasAnyAuthority(''ROLE_AGENT'')')}" class="col-md-6 col-lg-4">
+                    <div th:if="${#authorization.expression('hasAnyAuthority(''ROLE_MANAGER'')')} OR ${#authorization.expression('hasAnyAuthority(''ROLE_LOAN_APPLY'')')}" class="col-md-6 col-lg-4">
                         <div class="single-choosen-content text-center single-service-content box-pad">
                             <i class="fas fa-hand-holding-usd"></i>
                             <h4>LOANS</h4>
