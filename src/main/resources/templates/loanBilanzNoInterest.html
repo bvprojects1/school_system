@@ -21,14 +21,14 @@
             </td>
             <td align="center"><font size="2px">Monthly Payment</font> <br/>
                 <font color="#2d363f" size="4px">
-                <span th:text="${#numbers.formatDecimal(loanAccountTransaction.loanAccount.monthlyPayment, 0, 'COMMA', 0, 'POINT')}"/>
+                    <span th:text="${#numbers.formatDecimal(loanAccountTransaction.loanAccount.monthlyPayment, 0, 'COMMA', 0, 'POINT')}"/>
                 </font>
             </td>
             <td align="center">
                 <font color="#2d363f" size="2px">Loan Term</font>
                 <br/>
                 <font color="#2d363f" size="4px">
-                <span th:text="${loanBilanzList.loanBilanzList[0].monthYearOfLastPayment}"/></font></td>
+                    <span th:text="${loanBilanzList.loanBilanzList[0].monthYearOfLastPayment}"/></font></td>
             <td align="center"><font size="2px">Initial Loan Amount</font> <br/>
                 <font color="#2d363f" size="4px">
                     <span th:text="${loanAccountTransaction.loanAmount}"/>
@@ -89,9 +89,16 @@
                 <font size="2px"> Loan Status</font><br/>
                 <font color="#2d363f" size="3px">
                     <span th:if="${loanAccountTransaction.loanAccount.accountStatus.name == 'PENDING_APPROVAL'} AND ${#authorization.expression('hasAnyAuthority(''ROLE_MANAGER'')')}">
+
+                        <div th:if="${#authorization.expression('hasAnyAuthority(''ROLE_LOAN_APPROVE'')')}">
                         <a th:href="@{/approveLoan/{id}(id=${loanAccountTransaction.loanAccount.id})}">
                              APPROVE THIS LOAN
                         </a>
+                        </div>
+                       <div th:unless="${#authorization.expression('hasAnyAuthority(''ROLE_LOAN_APPROVE'')')}">
+                        <label title="Requires ROLE_APPROVE_LOAN">APPROVE THIS LOAN<img width="25px"
+                                                                                        th:src="@{/assets/images/toolTip.png}"/></label>
+                        </div>
                     </span>
                     <span th:text="${loanAccountTransaction.loanAccount.accountStatus}"/>
                 </font>
@@ -106,8 +113,8 @@
 
             <td align="center" colspan="2">
                 <font size="2px"> Notes</font><font color="#2d363f" size="3px">
-                    <div th:text="${loanAccountTransaction.loanAccount.notes}"/>
-                </font>
+                <div th:text="${loanAccountTransaction.loanAccount.notes}"/>
+            </font>
             </td>
 
         </tr>
@@ -132,10 +139,11 @@
                     <font size="5" color="green"><b> MAKE A LOAN PAYMENT</b></font>
                     <br/>
                     <select name="deposit_withdrawal">
-<!--                        <option value="DEPOSIT">LOAN</option>-->
+                        <!--                        <option value="DEPOSIT">LOAN</option>-->
                         <option value="LOAN PAYMENT">LOAN PAYMENT</option>
                     </select>
                     <select name="modeOfPayment" id="modeOfPayment">
+                        <option value="">Select A Method Of Payment</option>
                         <option value="CASH">CASH</option>
                         <option value="MOMO">MOMO</option>
                         <option value="ORANGE MONEY">ORANGE MONEY</option>
@@ -144,11 +152,12 @@
                         <option value="OTHER">OTHER</option>
                     </select>
                     <b>Enter Amount:</b>
-                    <input placeholder="Enter Amount" size="6" type="number" th:field="*{amountReceived}"
+                    <input placeholder="Enter Amount" style="font-size: 200%;" size="6" type="number"
+                           th:field="*{amountReceived}"
                            value="${loanAccountTransaction.amountReceived}"/>
                     <font size="2">
                         <span
-                        th:text="${#numbers.formatDecimal(loanAccountTransaction.loanAccount.minimumPayment, 0, 'COMMA', 0, 'POINT')}"/>
+                                th:text="${#numbers.formatDecimal(loanAccountTransaction.loanAccount.minimumPayment, 0, 'COMMA', 0, 'POINT')}"/>
                         (Minimum)
                     </font>
                     <textarea placeholder="Enter Amount in letters ..." id="loanAmountInLetters" rows="1" cols="90"
@@ -184,10 +193,12 @@
 
                     <br/> <br/>
                     <label for="true">Account Owner:</label>
-                    <input style="width:14px" th:field="*{accountOwner}" type="checkbox" id="true" name="accountOwner" value="true"
-                               checked>
+                    <input style="width:14px" th:field="*{accountOwner}" type="checkbox" id="true" name="accountOwner"
+                           value="true"
+                           checked>
                     <label for="true">Increase Guarantor Minimum:</label>
-                    <input style="width:14px" th:field="*{increaseGuarantorMinimum}" type="checkbox" id="increaseGuarantorMinimum" name="increaseGuarantorMinimum" value="true"
+                    <input style="width:14px" th:field="*{increaseGuarantorMinimum}" type="checkbox"
+                           id="increaseGuarantorMinimum" name="increaseGuarantorMinimum" value="true"
                            checked>
 
                     <button type="submit" class="btn btn-success">SUBMIT PAYMENT TRANSACTION</button>
@@ -256,15 +267,15 @@
         </tr>
     </table>
 
-<!--    <table border="0" width="100%" class="center">-->
-<!--        <tr>-->
-<!--            <td>-->
-<!--                <a href="">Update shortee minimum Block</a>-->
-<!--            </td>-->
-<!--            <td>-->
-<!--            </td>-->
-<!--        </tr>-->
-<!--    </table>-->
+    <!--    <table border="0" width="100%" class="center">-->
+    <!--        <tr>-->
+    <!--            <td>-->
+    <!--                <a href="">Update shortee minimum Block</a>-->
+    <!--            </td>-->
+    <!--            <td>-->
+    <!--            </td>-->
+    <!--        </tr>-->
+    <!--    </table>-->
 
     <br/> <br/>
 

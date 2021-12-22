@@ -13,7 +13,7 @@
             <div class="row">
                 <div class="col-md-12">
                     <div class="project-title-content">
-                        <h3>UPDATE USER ROLE</h3>
+                        <h3>UPDATE USER ROLES</h3>
                         <span><i class="fas fa-crosshairs"></i></span>
                         <!-- <p>Cross-agency coordination clean water rural, promising development turmoil
                              inclusive education transformative community.</p>
@@ -29,19 +29,14 @@
 <!--        <div class="container">-->
             <div class="row">
                 <div class="offset-md-2 col-md-8">
-                    <font color="blue"> <span th:text="${updatedInfo}"/></font>
+                    <font size="6px" color="gray"> <span th:text="${updatedInfo}"/></font>
                     <form action="#" th:action="@{/editUserRoleForm}" method="post" th:object="${user}">
                         <div class="col-md-12">
-                            <table border="0" class="center" width="100%" cellpadding="5">
-                                <tr>
-                                    <td>
-                                        Username:<span th:text="${user.userName}"/>: <span th:text="${user.gender}"/> &nbsp;<span th:text="${user.firstName}"/>&nbsp; <span th:text="${user.lastName}"/><br/>
-                                    </td>
 
-                                </tr>
-                            </table>
-                            <table> <tr><td>
-                                <font size="3"> Current Role </font><br/>
+                            <table border="0" class="center" width="100%" cellpadding="5">
+                                <tr><td>
+                                    <b><span th:text="${user.gender}"/>. &nbsp;<span th:text="${user.firstName}"/>&nbsp; <span th:text="${user.lastName}"/></b> (<span th:text="${user.userName}"/>) <br/>
+                                <font size="3"> Current Roles </font><br/>
                                 <font color="#803e59">
                                     <div th:each="userRole : ${user.userRole}">
                                         <span th:text="${userRole.name}"></span>
@@ -50,7 +45,7 @@
                                 </font>
                             </td><td>
 
-                                <span th:if="${#authorization.expression('hasAnyAuthority(''ROLE_MANAGER'')')} OR ${#authorization.expression('hasAnyAuthority(''ROLE_EDIT_USER_ACCOUNT'')')}">
+                                <span th:if="${#authorization.expression('hasAnyAuthority(''ROLE_ADMIN'')')} OR ${#authorization.expression('hasAnyAuthority(''ROLE_EDIT_USER_ACCOUNT'')')}">
                                     <select class="select" style="width:400px" name="aUserRole" id="aUserRole" multiple>
 
                                         <option value="ROLE_MAIN_USERS">MAIN USERS</option>

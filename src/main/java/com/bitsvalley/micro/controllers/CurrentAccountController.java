@@ -8,6 +8,7 @@ import com.bitsvalley.micro.webdomain.CurrentBilanzList;
 import com.bitsvalley.micro.webdomain.RuntimeSetting;
 import com.bitsvalley.micro.webdomain.SavingBilanzList;
 import com.bitsvalley.micro.webdomain.TransferBilanz;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -241,6 +242,7 @@ public class CurrentAccountController extends SuperController {
         CurrentAccount currentAccount = currentAccountService.findById(new Long(currentAccountId)).get();
         currentAccountTransaction.setCurrentAccount(currentAccount);
         User user = (User) request.getSession().getAttribute(BVMicroUtils.CUSTOMER_IN_USE);
+        String error = "";
 
         if ("CASH".equals(currentAccountTransaction.getModeOfPayment())) {
             if (!checkBillSelectionMatchesEnteredAmount(currentAccountTransaction)) {
@@ -249,16 +251,23 @@ public class CurrentAccountController extends SuperController {
                 return displayCurrentBilanzNoInterest(new Long(currentAccountId), model, currentAccountTransaction);
             }
         }
+        String deposit_withdrawal = request.getParameter("deposit_withdrawal");
+        if(StringUtils.isEmpty( currentAccountTransaction.getModeOfPayment()) ){
+            error = "Select Method of Payment - MOP";
+        }
+        else if(StringUtils.isEmpty(deposit_withdrawal)){
+            error = "Select Transaction Type";
+        }
 
-        if (request.getParameter("deposit_withdrawal").equals("WITHDRAWAL")) {
+        if (deposit_withdrawal.equals("WITHDRAWAL")) {
             currentAccountTransaction.setCurrentAmount(currentAccountTransaction.getCurrentAmount() * -1);
-            String error = currentAccountService.withdrawalAllowed(currentAccountTransaction);
+            error = currentAccountService.withdrawalAllowed(currentAccountTransaction);
             //Make sure min amount is not violated at withdrawal
-            if (!(error == null)) {
-                model.put("billSelectionError", error);
-                currentAccountTransaction.setNotes(currentAccountTransaction.getNotes());
-                return displayCurrentBilanzNoInterest(new Long(currentAccountId), model, currentAccountTransaction);
-            }
+        }
+        if (!StringUtils.isEmpty(error)) {
+            model.put("billSelectionError", error);
+            currentAccountTransaction.setNotes(currentAccountTransaction.getNotes());
+            return displayCurrentBilanzNoInterest(new Long(currentAccountId), model, currentAccountTransaction);
         }
         String modeOfPayment = request.getParameter("modeOfPayment");
         currentAccountTransaction.setModeOfPayment(modeOfPayment);

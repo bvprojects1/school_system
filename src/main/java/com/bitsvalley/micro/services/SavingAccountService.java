@@ -6,6 +6,7 @@ import com.bitsvalley.micro.utils.AccountStatus;
 import com.bitsvalley.micro.utils.BVMicroUtils;
 import com.bitsvalley.micro.webdomain.SavingBilanz;
 import com.bitsvalley.micro.webdomain.SavingBilanzList;
+import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -368,7 +369,7 @@ public class SavingAccountService extends SuperService {
         return total;
     }
 
-    public void transferFromSavingToLoan(String fromAccountNumber,
+    public String transferFromSavingToLoan(String fromAccountNumber,
                                          String toAccountNumber,
                                          double transferAmount,
                                          String notes) {
@@ -380,6 +381,9 @@ public class SavingAccountService extends SuperService {
         SavingAccountTransaction savingAccountTransaction = getSavingAccountTransaction(notes, branchInfo, savingAccount, transferAmount * -1, BVMicroUtils.DEBIT_LOAN_TRANSFER);
 
         LoanAccount loanAccount = loanAccountService.findByAccountNumber(toAccountNumber);
+        if(!StringUtils.equals(loanAccount.getAccountStatus().name(),AccountStatus.ACTIVE.name())){
+            return BVMicroUtils.LOAN_MUST_BE_IN_ACTIVE_STATE;
+        }
         LoanAccountTransaction loanAccountTransaction = new LoanAccountTransaction();
         loanAccountTransaction.setLoanAccount(loanAccount);
 
@@ -407,7 +411,7 @@ public class SavingAccountService extends SuperService {
         savingAccountRepository.save(shorteeSavingAccount);
 
         generalLedgerService.updateGLAfterLoanAccountTransferRepayment(loanAccountTransaction);
-
+        return "true";
     }
 
     @NotNull

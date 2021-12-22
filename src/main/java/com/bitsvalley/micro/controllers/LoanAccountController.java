@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
+import sun.jvm.hotspot.utilities.CStringUtilities;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -145,8 +146,16 @@ public class LoanAccountController extends SuperController {
         AccountType accountType = accountTypeService.getAccountTypeByProductCode(loanAccount.getProductCode());
         loanAccount.setAccountType(accountType);
 
+        String error = "";
+
         if(!StringUtils.isEmpty(loanAccount.getGuarantorAccountNumber1())){
             SavingAccount byAccountNumber1 = savingAccountService.findByAccountNumber(loanAccount.getGuarantorAccountNumber1());
+            if(null == byAccountNumber1){
+                error = "Guarantor account number not valid";
+                model.put("loanAccount", loanAccount);
+                model.put("error", error );
+                return "loanAccount";
+            }
             request.getSession().setAttribute("guarantor1",byAccountNumber1);
         }
         if(!StringUtils.isEmpty(loanAccount.getGuarantorAccountNumber2())){
@@ -302,6 +311,14 @@ public class LoanAccountController extends SuperController {
                 aLoanAccount.getUser().getLastName());
         loanAccountTransaction.setReference(BVMicroUtils.getSaltString());
         User user = (User) request.getSession().getAttribute(BVMicroUtils.CUSTOMER_IN_USE);
+        String error = "";
+
+        if(StringUtils.isEmpty(loanAccountTransaction.getModeOfPayment() ) ){
+            error = "Select Method of Payment - MOP";
+            model.put("billSelectionError", error);
+            loanAccountTransaction.setNotes(loanAccountTransaction.getNotes());
+            return displayLoanBilanzNoInterest(new Long(loanAccountId), model, loanAccountTransaction);
+        }
 
         if(loanAccountTransaction.getLoanAmount()<loanAccountTransaction.getLoanAccount().getMinimumPayment()){
             model.put("billSelectionError", "Please make minimum payment of "+ BVMicroUtils.formatCurrency(loanAccountTransaction.getLoanAccount().getMinimumPayment()));

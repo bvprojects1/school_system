@@ -29,7 +29,7 @@
                     <tr>
                         <td>
                             Ledger
-                            <select class="select" th:field="*{allLedgerAccount}">
+                            <select class="selectNormal" th:field="*{allLedgerAccount}">
                                 <option value="-1">
                                     ALL
                                 </option>
@@ -58,7 +58,7 @@
                         </td>
                         <td width="5"></td>
                         <td>
-                            Type<select class="select" name="creditOrDebit" id="creditOrDebit" th:field="*{creditOrDebit}">
+                            Type<select class="selectNormal" name="creditOrDebit" id="creditOrDebit" th:field="*{creditOrDebit}">
                             <option value="ALL">ALL</option>
                             <option value="CREDIT">CREDIT</option>
                             <option value="DEBIT">DEBIT</option>

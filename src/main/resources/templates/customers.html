@@ -13,6 +13,7 @@
                     <font th:attr="color=${session.runtimeSettings.themeColor}" size="4">USERS LIST
                         <a href="/registerUser"> <img width="30px" th:src="@{/assets/images/add.png}"/> </a>
                     </font>
+                    <span class="error" th:text="${error}"/>
                 </td>
             </tr>
         </table>
@@ -63,12 +64,13 @@
                     </div>
                 </td>
                 <td>
-                    <span th:if="${#authorization.expression('hasAnyAuthority(''ROLE_MANAGER'')')} OR ${#authorization.expression('hasAnyAuthority(''ROLE_EDIT_USER_ACCOUNT'')')}">
+                    <span th:if="${#authorization.expression('hasAnyAuthority(''ROLE_ADMIN'')')} OR ${#authorization.expression('hasAnyAuthority(''ROLE_EDIT_USER_ACCOUNT'')')} ">
+
                         <a  th:href="@{/editUserRole/{id}(id=${user.id})}">
                             <i class="fas fa-pencil-alt" style='font-size:16px;color:gray'></i>
                         </a>
                     </span>
-                    <span th:unless="${#authorization.expression('hasAnyAuthority(''ROLE_MANAGER'')')} OR ${#authorization.expression('hasAnyAuthority(''ROLE_EDIT_USER_ACCOUNT'')')}">
+                    <span th:unless="${#authorization.expression('hasAnyAuthority(''ROLE_ADMIN'')')} OR ${#authorization.expression('hasAnyAuthority(''ROLE_EDIT_USER_ACCOUNT'')')}">
                             <a href="">
                                 <i class="fas fa-pencil-alt" style='font-size:16px;color:gray'></i>
                             </a>

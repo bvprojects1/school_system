@@ -345,7 +345,7 @@ public class GeneralLedgerService extends SuperService{
                     debitTotal = debitTotal + current.getAmount();
                     currentTotal = currentTotal + current.getAmount();
                 }
-            current.setCurrentTotal(currentTotal);
+            current.setCurrentTotal(debitTotal-creditTotal);
         }
 
         bilanz.setTotal(debitTotal - creditTotal);
@@ -471,8 +471,22 @@ public class GeneralLedgerService extends SuperService{
 //        }
             if(savingAccountTransaction.getModeOfPayment().equals(BVMicroUtils.CASH)){
                 savingAccountTransaction.setNotes(BVMicroUtils.CASH_GL_5001 +" "+ savingAccountTransaction.getNotes());
-                updateGeneralLedger(savingAccountTransaction,BVMicroUtils.SAVINGS_GL_3003,savingAccountTransaction.getSavingAmount() > 0?"CREDIT":"DEBIT", savingAccountTransaction.getSavingAmount(),3,true);
-                savingAccountTransaction.setNotes(BVMicroUtils.SAVINGS_GL_3003 +" "+ savingAccountTransaction.getNotes());
+
+                if(StringUtils.equals(
+                        savingAccountTransaction.getSavingAccount().getAccountSavingType().getNumber(),"11")){
+                    updateGeneralLedger(savingAccountTransaction,BVMicroUtils.SAVINGS_GL_3003,savingAccountTransaction.getSavingAmount() > 0?"CREDIT":"DEBIT", savingAccountTransaction.getSavingAmount(),3,true);
+                    savingAccountTransaction.setNotes(BVMicroUtils.SAVINGS_GL_3003 +" "+ savingAccountTransaction.getNotes());
+
+                }else if(StringUtils.equals(
+                        savingAccountTransaction.getSavingAccount().getAccountSavingType().getNumber(),"12")){
+                    updateGeneralLedger(savingAccountTransaction,BVMicroUtils.RETIREMENT_SAVINGS_GL_3005,savingAccountTransaction.getSavingAmount() > 0?"CREDIT":"DEBIT", savingAccountTransaction.getSavingAmount(),3,true);
+                    savingAccountTransaction.setNotes(BVMicroUtils.RETIREMENT_SAVINGS_GL_3005 +" "+ savingAccountTransaction.getNotes());
+                }else if(StringUtils.equals(
+                        savingAccountTransaction.getSavingAccount().getAccountSavingType().getNumber(),"13")){
+                    updateGeneralLedger(savingAccountTransaction,BVMicroUtils.DAILY_SAVINGS_GL_3006,savingAccountTransaction.getSavingAmount() > 0?"CREDIT":"DEBIT", savingAccountTransaction.getSavingAmount(),3,true);
+                    savingAccountTransaction.setNotes(BVMicroUtils.DAILY_SAVINGS_GL_3006 +" "+ savingAccountTransaction.getNotes());
+                }
+
                 updateGeneralLedger(savingAccountTransaction,BVMicroUtils.CASH_GL_5001,savingAccountTransaction.getSavingAmount() > 0?"DEBIT":"CREDIT", savingAccountTransaction.getSavingAmount(),3,true);
             }
     }

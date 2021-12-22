@@ -16,8 +16,8 @@
                 <tr>
                     <td align="center">
 
-                            <h3>LOAN CENTER</h3>
-                            <span><i class="fas fa-crosshairs"></i></span>
+                        <h3>LOAN CENTER</h3>
+                        <span><i class="fas fa-crosshairs"></i></span>
 
                     </td>
                 </tr>
@@ -25,8 +25,9 @@
                     <td align="center" colspan="2">
                         <br/>
                         <br/>
+                        <div class="error" th:text="${error}"/>
                         <label> Loan Type:</label>
-                        <select name="productCode" id="productCode" th:field="*{productCode}">
+                        <select class="selectNormal" name="productCode" id="productCode" th:field="*{productCode}">
                             <option value="41">SHORT TERM LOAN - 41</option>
                             <option value="42">CONSUMPTION LOAN - 42</option>
                             <option value="43">AGRICULTURE LOAN - 43</option>
@@ -36,26 +37,21 @@
                             <option value="47">OVERDRAFT LOAN - 47</option>
                             <option value="48">NJANGI FINANCING - 48</option>
                         </select>
-                        Loan Amount:<input type="number" th:field="*{loanAmount}" max="9000000" maxlength="10"/>
+                        Loan Amount:<input class="selectAmount" type="number" th:field="*{loanAmount}" max="9000000"
+                                           maxlength="10"/>
 
-                        Interest Rate:<input type="number" th:field="*{interestRate}" max="100" maxlength="2"/>
                         <br/>
                         <br/>
 
-
-                        Term of Loan:<input type="number" th:field="*{termOfLoan}"/>
-
-                        Payment Interval:
-                        <select name="intervalOfLoanPayment" th:field="*{intervalOfLoanPayment}"
-                                id="intervalOfLoanPayment">
-                            <option value="01 DAY">01 DAY</option>
-                            <option value="15 DAY">15 DAY</option>
-                            <option value="OTHER">OTHER</option>
-                        </select>
+                        Interest Rate:<input class="selectSmall" type="number" th:field="*{interestRate}" max="100"
+                                             maxlength="2"/>
 
 
-                        Loan Guarantor 1 - Account No:<input required type="text" th:field="*{guarantorAccountNumber1}"
-                                                   maxlength="15"/>
+                        Term of Loan:<input class="selectSmall" type="number" th:field="*{termOfLoan}"/>
+
+                        Loan Guarantor 1 - Account No:<input class="selectNormal" required type="text"
+                                                             th:field="*{guarantorAccountNumber1}"
+                                                             maxlength="15"/>
                         <br/>
                         <br/>
                         <!--                    Guarantor 2 - Acc #:<input type="text" th:field="*{guarantorAccountNumber2}"-->
@@ -63,15 +59,26 @@
                         <!--                    Guarantor 3 - Acc: #:<input type="text" th:field="*{guarantorAccountNumber3}"-->
                         <!--                                                maxlength="15"/>-->
 
-
                         Notes:
-                        <textarea id="notes" rows="3" cols="30" th:field="*{notes}">
+                        <textarea id="notes" class="selectNormal" rows="3" cols="70" th:field="*{notes}">
                         </textarea>
+
+
+<!--                        <input class="selectSmall" th:field="*{accountOwner}" type="checkbox" id="true" name="block" value="true"-->
+<!--                               checked>-->
+<!--                        <label for="true">Block Guarantor Account</label>-->
+                        <!--                        Payment Interval:-->
+                        <select hidden name="intervalOfLoanPayment" th:field="*{intervalOfLoanPayment}"
+                                id="intervalOfLoanPayment">
+                            <option value="01 DAY">01 DAY</option>
+                            <option value="15 DAY">15 DAY</option>
+                            <option value="OTHER">OTHER</option>
+                        </select>
 
                         <br/>
                         <br/>
                         <button type="submit" class="btn btn-success">
-                           Next - Show Loan Guarantor Details
+                            Next - Show Loan Guarantor Details
                         </button>
                         <br/>
                         <br/>

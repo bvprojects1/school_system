@@ -6,6 +6,7 @@ import com.bitsvalley.micro.repositories.UserRepository;
 import com.bitsvalley.micro.services.*;
 import com.bitsvalley.micro.utils.BVMicroUtils;
 import com.bitsvalley.micro.webdomain.*;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -190,7 +191,7 @@ public class SavingAccountController extends SuperController {
 
 
     @PostMapping(value = "/transferFromSavingToLoanAccountsForm")
-    public String transferFromSavingToLoanAccountsForm(ModelMap model,
+    public String transferFromAccountToAccount(ModelMap model,
                                                        @ModelAttribute("transferBilanz") TransferBilanz transferBilanz) {
         //Validate transfer amount is available
 
@@ -200,9 +201,14 @@ public class SavingAccountController extends SuperController {
         model.put("notes", transferBilanz.getNotes());
 
         if(transferBilanz.getTransferType().equals(BVMicroUtils.DEBIT_LOAN_TRANSFER)) {
-            savingAccountService.transferFromSavingToLoan(transferBilanz.getTransferFromAccount(),
+            String result = savingAccountService.transferFromSavingToLoan(transferBilanz.getTransferFromAccount(),
                     transferBilanz.getTransferToAccount(),
                     transferBilanz.getTransferAmount(), transferBilanz.getNotes());
+            if(!StringUtils.equals("true", result)){
+                model.put("error", result);
+                model.put("transferBilanz",transferBilanz);
+                return "transfer";
+            }
         }else if(transferBilanz.getTransferType().equals(BVMicroUtils.DEBIT_DEBIT_TRANSFER)) {
             savingAccountService.transferFromDebitToDebit(transferBilanz.getTransferFromAccount(),
                     transferBilanz.getTransferToAccount(),
@@ -330,16 +336,25 @@ public class SavingAccountController extends SuperController {
         SavingAccount savingAccount = savingAccountService.findById(new Long(savingAccountId)).get();
         savingAccountTransaction.setSavingAccount(savingAccount);
         User user = (User) request.getSession().getAttribute(BVMicroUtils.CUSTOMER_IN_USE);
+        String deposit_withdrawal = request.getParameter("deposit_withdrawal");
+        String error = "";
+        if(StringUtils.isEmpty( savingAccountTransaction.getModeOfPayment() ) ){
+            error = "Select Method of Payment - MOP";
+        }
+        else if(StringUtils.isEmpty(deposit_withdrawal)){
+            error = "Select Transaction Type";
+        }
 
-        if (request.getParameter("deposit_withdrawal").equals("WITHDRAWAL")) {
+        if (deposit_withdrawal.equals("WITHDRAWAL")) {
             savingAccountTransaction.setSavingAmount(savingAccountTransaction.getSavingAmount() * -1);
-            String error = savingAccountService.withdrawalAllowed(savingAccountTransaction);
+            error = savingAccountService.withdrawalAllowed(savingAccountTransaction);
             //Make sure min amount is not violated at withdrawal
-            if (!(error == null)) {
-                model.put("billSelectionError", error);
-                savingAccountTransaction.setNotes(savingAccountTransaction.getNotes());
-                return displaySavingBilanzNoInterest(new Long(savingAccountId), model, savingAccountTransaction);
-            }
+        }
+
+        if (!StringUtils.isEmpty(error)) {
+            model.put("billSelectionError", error);
+            savingAccountTransaction.setNotes(savingAccountTransaction.getNotes());
+            return displaySavingBilanzNoInterest(new Long(savingAccountId), model, savingAccountTransaction);
         }
 
         if((savingAccountTransaction.getSavingAmount() + savingAccountTransaction.getSavingAccount().getAccountBalance() ) < savingAccountTransaction.getSavingAccount().getMinimumPayment()){

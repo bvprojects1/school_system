@@ -70,6 +70,9 @@ public class BVMicroUtils {
     public static final String LOAN_GL_3001 = "LOAN GL 3001";
     public static final String SAVINGS_3004 = "SAVINGS_3004";
     public static final String SAVINGS_GL_3003 = "SAVINGS GL 3003";
+    public static final String RETIREMENT_SAVINGS_GL_3005 = "RETIREMENT SAVINGS GL 3005";
+    public static final String DAILY_SAVINGS_GL_3006 = "DAILY_SAVINGS_GL_3006";
+
 
     public static final String EQUITY = "EQUITY";
     public static final String UNIT_SHARE_VALUE = "unitSharePrice";

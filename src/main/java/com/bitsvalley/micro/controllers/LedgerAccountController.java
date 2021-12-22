@@ -52,6 +52,20 @@ public class LedgerAccountController extends SuperController{
             ledgerAccount.setStatus(BVMicroUtils.ACTIVE);
             ledgerAccountList.add(ledgerAccount);
 
+            ledgerAccount = new LedgerAccount();
+            ledgerAccount.setName(BVMicroUtils.RETIREMENT_SAVINGS_GL_3005);
+            ledgerAccount.setCategory("3000 – 3999");
+            ledgerAccount.setCode(BVMicroUtils.RETIREMENT_SAVINGS_GL_3005);
+            ledgerAccount.setStatus(BVMicroUtils.ACTIVE);
+            ledgerAccountList.add(ledgerAccount);
+
+            ledgerAccount = new LedgerAccount();
+            ledgerAccount.setName(BVMicroUtils.DAILY_SAVINGS_GL_3006);
+            ledgerAccount.setCategory("3000 – 3999");
+            ledgerAccount.setCode(BVMicroUtils.DAILY_SAVINGS_GL_3006);
+            ledgerAccount.setStatus(BVMicroUtils.ACTIVE);
+            ledgerAccountList.add(ledgerAccount);
+
 //            ledgerAccount = new LedgerAccount();
 //            ledgerAccount.setName(BVMicroUtils.SAVINGS);
 //            ledgerAccount.setCategory("3000 – 3999");

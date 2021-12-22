@@ -178,8 +178,14 @@ public class UserController extends SuperController{
     @GetMapping(value = "/editUserRole/{id}")
     public String editUserRole(@PathVariable("id") long id, ModelMap model,
                                    HttpServletRequest request) {
-        Optional<User> userById = userRepository.findById(id);
-        User user = userById.get();
+        User user = userRepository.findById(id).get();
+        UserRole role_customer = userRoleService.findUserRoleByName("ROLE_CUSTOMER");
+        if(user.getUserRole().contains(role_customer)){
+            model.put("error", "Cannot Edit A Customer Role");
+            model.put("userList", getAllUsers() );
+            model.put("name", getLoggedInUserName());
+            return "customers";
+        }
         model.put("user", user);
         return "editUserRole";
     }

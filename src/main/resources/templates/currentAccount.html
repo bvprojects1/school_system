@@ -32,14 +32,13 @@
                 <td align="center">
                     <br/>
                 <label> Account Type:</label>
-                <select name="currentType" id="currentType" th:field="*{productCode}">
+                <select class="selectNormal" name="currentType" id="currentType" th:field="*{productCode}">
                     <option value="20">Current - 20</option>
                 </select>
                     <br/>
 <!--                <label> Notes:</label>-->
-                <textarea placeholder="Notes..." id="notes" rows="3" cols="30" th:field="*{notes}">
+                <textarea class="selectNormal" placeholder="Notes..." id="notes" rows="3" cols="30" th:field="*{notes}">
                 </textarea>
-                    <br/>
                     <br/>
                     <br/>
                     <button type="submit" class="btn btn-success">Create Current Account</button>

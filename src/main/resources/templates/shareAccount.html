@@ -1,26 +1,26 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-<div th:insert="header::navbar">  </div>
+<div th:insert="header::navbar"></div>
 <br/>
 <br/>
 
 <!-- Contact form area start -->
 <section class="contact-form-area-start space df-bg">
     <!--Project title area start-->
-    <div class="project-title-area text-center">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="project-title-content">
-                        <h3> PURCHASE SHARES</h3>
-                        <span><i class="fas fa-crosshairs"></i></span>
-                        <!--  <p>Cross-agency coordination clean water rural, promising development turmoil inclusive education transformative community.</p>-->
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+    <!--    <div class="project-title-area text-center">-->
+    <!--        <div class="container">-->
+    <!--            <div class="row">-->
+    <!--                <div class="col-md-12">-->
+    <!--                    <div class="project-title-content">-->
+    <!--                        <h3> PURCHASE SHARES</h3>-->
+    <!--                        <span><i class="fas fa-crosshairs"></i></span>-->
+    <!--                        &lt;!&ndash;  <p>Cross-agency coordination clean water rural, promising development turmoil inclusive education transformative community.</p>&ndash;&gt;-->
+    <!--                    </div>-->
+    <!--                </div>-->
+    <!--            </div>-->
+    <!--        </div>-->
+    <!--    </div>-->
     <!--Project title area end-->
 
     <div class="contact-from-area">
@@ -28,36 +28,60 @@
             <div class="row">
                 <div class="offset-md-2 col-md-8">
                     <font size="6" color="gray"><span th:text="${ShareAccountInfo}"/> </font>
-                    <font color="blue"><b><div class="error" th:text="${error}"/></b></font>
+                    <font color="blue"><b>
+                        <div class="error" th:text="${error}"/>
+                    </b></font>
                     <form action="#" th:action="@{/registerShareAccountForm}" method="post" th:object="${shareAccount}">
-                            <div class="col-md-12">
-                                <label for="productCode">Choose a Share:</label>
-                                <select class="select" name="productCode" id="productCode">
-                                        <option value="30">Ordinary Share</option>
-<!--                                        <option value="31">Preference Share</option>-->
-<!--                                        <option value="32">Debenture Share</option>-->
-                                </select>
-                                <br/>
-                                <br/>
-                                <label> Unit Price:</label>
-                                <br/>
-                                <input type="text" name="unitSharePrice" value th:field="*{unitSharePrice}" id="unitSharePrice"
-                                       placeholder="unitSharePrice" class="form-control"/>
-                                <br/>
-                                <br/>
-                                <label>Quantity:</label>
-                                <br/>
-                                <input type="text" name="quantity" th:field="*{quantity}" id="quantity"
-                                       placeholder="quantity" class="form-control" required>
-                                <br/>
 
-                                <label> Notes:</label>
-                                <br/>
-                                <textarea id="notes" rows="3" cols="30" th:field="*{notes}">
+                        <table class="center" width="100%" border="1">
+
+                            <tr>
+                                <td align="center">
+
+                                    <h3> PURCHASE SHARES</h3>
+                                    <span><i class="fas fa-crosshairs"></i></span>
+
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td align="center">
+
+                                    <div class="col-md-12">
+                                        <label for="productCode">Choose a Share:</label>
+                                        <select class="selectNormal" name="productCode" id="productCode">
+                                            <option value="30">Ordinary Share</option>
+                                            <!--                                        <option value="31">Preference Share</option>-->
+                                            <!--                                        <option value="32">Debenture Share</option>-->
+                                        </select>
+                                        <br/>
+                                        <br/>
+                                        <label> Unit Price:</label>
+                                        <br/>
+                                        <input class="selectAmount" type="text" name="unitSharePrice" value
+                                               th:field="*{unitSharePrice}" id="unitSharePrice"
+                                               placeholder="unitSharePrice"/>
+                                        <br/>
+                                        <br/>
+                                        <label>Quantity:</label>
+                                        <br/>
+                                        <input class="selectSmall" type="text" name="quantity" th:field="*{quantity}"
+                                               id="quantity"
+                                               placeholder="quantity" class="form-control" required>
+                                        <br/>
+
+                                        <label> Notes:</label>
+                                        <br/>
+                                        <textarea class="selectNormal" id="notes" rows="2" cols="70"
+                                                  th:field="*{notes}">
                                 </textarea>
 
-                                <input type="submit" class="btn-block btn contact-btn" value="NEXT APPLICATION"/>
-                        </div>
+                                        <input type="submit" class="btn-block btn contact-btn"
+                                               value="NEXT - SHARE APPLICATION"/>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
                     </form>
                 </div>
             </div>
@@ -65,5 +89,5 @@
     </div>
 </section>
 
-<div th:insert="footer::navbar">  </div>
+<div th:insert="footer::navbar"></div>
 </html>
