@@ -369,16 +369,17 @@ public class SavingAccountService extends SuperService {
         return total;
     }
 
-    public String transferFromSavingToLoan(String fromAccountNumber,
-                                         String toAccountNumber,
-                                         double transferAmount,
-                                         String notes) {
+
+    public String transferFromCurrentToLoan(String fromAccountNumber,
+                                           String toAccountNumber,
+                                           double transferAmount,
+                                           String notes) {
         LocalDateTime now = LocalDateTime.now();
         String loggedInUserName = getLoggedInUserName();
         Branch branchInfo = branchService.getBranchInfo(loggedInUserName);
 
-        SavingAccount savingAccount = findByAccountNumber(fromAccountNumber);
-        SavingAccountTransaction savingAccountTransaction = getSavingAccountTransaction(notes, branchInfo, savingAccount, transferAmount * -1, BVMicroUtils.DEBIT_LOAN_TRANSFER);
+        CurrentAccount fromCurrentAccount = currentAccountService.findByAccountNumber(fromAccountNumber);
+        CurrentAccountTransaction currentAccountTransaction = getCurrentAccountTransaction(notes, branchInfo, fromCurrentAccount, transferAmount * -1, BVMicroUtils.CURRENT_LOAN_TRANSFER);
 
         LoanAccount loanAccount = loanAccountService.findByAccountNumber(toAccountNumber);
         if(!StringUtils.equals(loanAccount.getAccountStatus().name(),AccountStatus.ACTIVE.name())){
@@ -400,19 +401,67 @@ public class SavingAccountService extends SuperService {
         loanAccountTransaction.setReference(BVMicroUtils.getSaltString());
         loanAccountService.createLoanAccountTransaction(loanAccountTransaction, loanAccount, BVMicroUtils.TRANSFER);
 
-        savingAccount.getSavingAccountTransaction().add(savingAccountTransaction);
-        savingAccountRepository.save(savingAccount);
+        loanAccount.getLoanAccountTransaction().add(loanAccountTransaction);
+        loanAccountService.save(loanAccount);
 
         //Update shortee accounts min balance
-        List<ShorteeAccount> shorteeAccounts = loanAccount.getShorteeAccounts();
-        ShorteeAccount shorteeAccount = shorteeAccounts.get(0);
-        SavingAccount shorteeSavingAccount = shorteeAccount.getSavingAccount();
-        shorteeSavingAccount.setAccountMinBalance(shorteeSavingAccount.getAccountMinBalance()-loanAccountTransaction.getAmountReceived());
-        savingAccountRepository.save(shorteeSavingAccount);
+        if( loanAccount.isBlockBalanceQuarantor()){
+            List<ShorteeAccount> shorteeAccounts = loanAccount.getShorteeAccounts();
+            ShorteeAccount shorteeAccount = shorteeAccounts.get(0);
+            SavingAccount shorteeSavingAccount = shorteeAccount.getSavingAccount();
+            shorteeSavingAccount.setAccountMinBalance(shorteeSavingAccount.getAccountMinBalance()-loanAccountTransaction.getAmountReceived());
+            savingAccountRepository.save(shorteeSavingAccount);
+        }
+
 
         generalLedgerService.updateGLAfterLoanAccountTransferRepayment(loanAccountTransaction);
         return "true";
     }
+
+//    public String transferFromSavingToLoan(String fromAccountNumber,
+//                                         String toAccountNumber,
+//                                         double transferAmount,
+//                                         String notes) {
+//        LocalDateTime now = LocalDateTime.now();
+//        String loggedInUserName = getLoggedInUserName();
+//        Branch branchInfo = branchService.getBranchInfo(loggedInUserName);
+//
+//        SavingAccount savingAccount = findByAccountNumber(fromAccountNumber);
+//        SavingAccountTransaction savingAccountTransaction = getSavingAccountTransaction(notes, branchInfo, savingAccount, transferAmount * -1, BVMicroUtils.DEBIT_LOAN_TRANSFER);
+//
+//        LoanAccount loanAccount = loanAccountService.findByAccountNumber(toAccountNumber);
+//        if(!StringUtils.equals(loanAccount.getAccountStatus().name(),AccountStatus.ACTIVE.name())){
+//            return BVMicroUtils.LOAN_MUST_BE_IN_ACTIVE_STATE;
+//        }
+//        LoanAccountTransaction loanAccountTransaction = new LoanAccountTransaction();
+//        loanAccountTransaction.setLoanAccount(loanAccount);
+//
+//        loanAccountTransaction.setCreatedDate(now);
+//        loanAccountTransaction.setCreatedBy(loggedInUserName);
+//        loanAccountTransaction.setNotes(notes);
+//
+//        loanAccountTransaction.setBranch(branchInfo.getId());
+//        loanAccountTransaction.setBranchCode(branchInfo.getCode());
+//        loanAccountTransaction.setBranchCountry(branchInfo.getCountry());
+//        loanAccountTransaction.setAmountReceived(transferAmount);
+//        loanAccountTransaction.setAccountOwner(loanAccount.getUser().getLastName() +", "+
+//                loanAccount.getUser().getLastName());
+//        loanAccountTransaction.setReference(BVMicroUtils.getSaltString());
+//        loanAccountService.createLoanAccountTransaction(loanAccountTransaction, loanAccount, BVMicroUtils.TRANSFER);
+//
+//        savingAccount.getSavingAccountTransaction().add(savingAccountTransaction);
+//        savingAccountRepository.save(savingAccount);
+//
+//        //Update shortee accounts min balance
+//        List<ShorteeAccount> shorteeAccounts = loanAccount.getShorteeAccounts();
+//        ShorteeAccount shorteeAccount = shorteeAccounts.get(0);
+//        SavingAccount shorteeSavingAccount = shorteeAccount.getSavingAccount();
+//        shorteeSavingAccount.setAccountMinBalance(shorteeSavingAccount.getAccountMinBalance()-loanAccountTransaction.getAmountReceived());
+//        savingAccountRepository.save(shorteeSavingAccount);
+//
+//        generalLedgerService.updateGLAfterLoanAccountTransferRepayment(loanAccountTransaction);
+//        return "true";
+//    }
 
     @NotNull
     public SavingAccountTransaction getSavingAccountTransaction(String notes, Branch branchInfo, SavingAccount savingAccount, double v, String modeOfPayment) {

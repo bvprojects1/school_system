@@ -11,6 +11,7 @@ import com.bitsvalley.micro.webdomain.RuntimeSetting;
 import com.bitsvalley.micro.webdomain.TransferBilanz;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -45,6 +46,10 @@ public class ShareAccountController extends SuperController {
 
     @Autowired
     InitSystemService initSystemService;
+
+    @Autowired
+    CurrentAccountService currentAccountService;
+
 
     @Autowired
     SavingAccountService savingAccountService;
@@ -86,12 +91,13 @@ public class ShareAccountController extends SuperController {
         return "shareDetails";
     }
 
+    @Transactional
     @GetMapping(value = "/approveShareAccount/{id}")
-    public String approveShare(@PathVariable("id") long id, ModelMap model) {
+    public String approveShare(@PathVariable("id") long id, ModelMap model, HttpServletRequest request) {
         ShareAccount byId = shareAccountRepository.findById(id).get();
         model.put("transferBilanz", new TransferBilanz() );
         if( byId.getCreatedBy().equals(getLoggedInUserName())){
-            model.put("shareError", "A different authorized user should approve this purchase" );
+            model.put("error", "A different authorized user should approve this purchase" );
             model.put("showTransferBilanzSection", false );
         }else{
             byId.setAccountStatus(AccountStatus.PENDING_PAYOUT);
@@ -101,37 +107,43 @@ public class ShareAccountController extends SuperController {
             callCenterService.saveCallCenterLog("PENDING PAYOUT", getLoggedInUserName(), byId.getAccountNumber(),"Share ACCOUNT APPROVED now pending payout"); //TODO ADD DATE
             model.put("showTransferBilanzSection", true );
         }
-        model.put("share",byId);
-        return "shareDetails";
+        return shareDetailAccNumber(byId.getAccountNumber(),model,request);
 
     }
 
-
-    @PostMapping(value = "/transferFromSavingToShareAccountsFormReview")
-    public String transferFromSavingToLoanAccountsFormReview(ModelMap model,
+    @Transactional
+    @PostMapping(value = "/transferFromCurrentToShareAccountsFormReview")
+    public String transferFromCurrentToLoanAccountsFormReview(ModelMap model,
                                                              @ModelAttribute("transferBilanz") TransferBilanz transferBilanz
                                                             ,HttpServletRequest request) {
         model.put("transferBilanz", transferBilanz);
         String shareId = request.getParameter("shareId");
-        SavingAccount fromAccount= savingAccountService.findByAccountNumber(transferBilanz.getTransferFromAccount());
+        CurrentAccount fromAccount= currentAccountService.findByAccountNumber(transferBilanz.getTransferFromAccount());
         ShareAccount toAccount = shareAccountRepository.findById(new Long(shareId)).get();
 
-        shareAccountService.transferFromSavingToShareAccount(
-                fromAccount,
-                toAccount,
-                transferBilanz.getTransferAmount(),
-                transferBilanz.getNotes());
+        if(fromAccount.getAccountBalance() < toAccount.getAccountBalance() ){
+            model.put("error", "NOT ENOUGH FUNDS AVAILABLE TO MAKE PURCHASE");
+            model.put("transferBilanz", new TransferBilanz() );
+            model.put("share", toAccount);
+            return "shareDetails";
+        }else{
+            shareAccountService.transferFromCurrentToShareAccount(
+                    fromAccount,
+                    toAccount,
+                    transferBilanz.getTransferAmount(),
+                    transferBilanz.getNotes());
+            String value = BVMicroUtils.formatCurrency(transferBilanz.getTransferAmount());
 
-        String value = BVMicroUtils.formatCurrency(transferBilanz.getTransferAmount());
+            model.put("transferType", BVMicroUtils.CURRENT_SHARE_TRANSFER);
+            model.put("fromTransferText", " Balance: " + BVMicroUtils.formatCurrency(fromAccount.getAccountBalance()) +"  Minimum Balance:"+ BVMicroUtils.formatCurrency(fromAccount.getAccountMinBalance()) );
+            model.put("toTransferText", toAccount.getAccountStatus().name() +"   Balance: " + value );
 
-        model.put("transferType", BVMicroUtils.SAVING_SHARE_TRANSFER);
-        model.put("fromTransferText", fromAccount.getAccountType().getName() +" --- Balance " + BVMicroUtils.formatCurrency(fromAccount.getAccountBalance()) +"--- Minimum Balance "+ BVMicroUtils.formatCurrency(fromAccount.getAccountMinBalance()) );
-        model.put("toTransferText", toAccount.getAccountStatus().name() +" --- Balance: " + value );
+            model.put("transferAmount", value);
+            model.put("notes", transferBilanz.getNotes());
+            return "transferConfirm";
+        }
 
-        model.put("transferAmount", value);
-        model.put("notes", transferBilanz.getNotes());
 
-        return "transferConfirm";
     }
 
 

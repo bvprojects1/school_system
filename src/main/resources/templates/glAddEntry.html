@@ -13,27 +13,28 @@
                 <tr>
                     <td align="center">
                         <div class="project-title-content">
-                            <h4>CREATE A LEDGER ENTRY</h4>
+                            Transfer From:<h3><div th:text="${glAddEntryTitle}"/></h3>
+
                             <span><i class="fas fa-crosshairs"></i></span>
                         </div>
                     </td>
                 </tr>
                 <tr>
                     <td align="center" colspan="2">
-                        <br/>
+                        <b><font size="4" color="red"><span  th:text="${error}"/></font></b><br/>
                         <font size="6"> <span th:text="${originLedgerAccount.name}"/>
-                            <span th:text="${originLedgerAccount.code}"/>
                         </font>
 <!--                        <input type="hidden" th:value="${originLedgerAccount.id}"-->
 <!--                               th:attr="name='originLedgerAccountId'" th:field="*{originLedgerAccount}"/>-->
 
                         <select hidden name="originLedgerAccount" id="origin" th:field="*{originLedgerAccount}">
                             <option th:value="${originLedgerAccount.id}">
-                                <span th:text="${originLedgerAccount.name} + -- +${originLedgerAccount.id}"/>
+                                <span th:text="${originLedgerAccount.name}"/>
                             </option>
                         </select>
 
-                        <select name="creditOrDebit" id="creditOrDebit" th:field="*{creditOrDebit}">
+                        <select class="selectNormal" name="creditOrDebit" id="creditOrDebit" th:field="*{creditOrDebit}">
+                            <option value="">Select A Type </option>
                             <option value="CREDIT">CREDIT</option>
                             <option value="DEBIT">DEBIT</option>
                         </select>
@@ -41,20 +42,20 @@
                             <!--<input type="hidden"  id="transferType" th:field="*{transferType}" value="${transferType}">-->
                         <br/>
                         <br/>
-                        <b><label> DOUBLE ENTRY</label></b>
-                            <select th:field="*{destinationLedgerAccount}">
+                        <label> Double Entry To:</label>
+                            <select class="selectNormal" th:field="*{destinationLedgerAccount}">
                                 <option th:each="i : ${destinationLedgerAccounts}"
                                         th:value="${i.id}">
-                                    <span th:text="${i.name} + -- +${i.code}"/>
+                                    <span th:text="${i.name}"/>
                                 </option>
-                            </select>
+                            </select>(Opposite booking Type happens here)
                         <br/>
                         <br/>
-                        <label> <b>Amount:</b></label>
-                        <input size="6" name="ledgerAmount" type="number" th:field="*{ledgerAmount}"/>
+                        <label> Amount:</label>
+                        <input class="selectAmount" size="6" name="ledgerAmount" type="number" th:field="*{ledgerAmount}"/>
                         <br/>
                         <br/>
-                        <input size="50" type="text" placeholder="Notes here ...." id="notes" th:field="*{notes}">
+                        <input size="50" class="selectNormal" type="text" placeholder="Notes here ...." id="notes" th:field="*{notes}">
                         </input>
                         <br/>
                         <br/>

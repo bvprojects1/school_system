@@ -195,4 +195,7 @@ public class UserService {
         return userRepository.findAllByUserRoleIn(userRole);
     }
 
+    public ArrayList<User> findAllByUserNotRoleIn(ArrayList<UserRole> userRole) {
+        return userRepository.findDistintAllByUserRoleNotIn(userRole);
+    }
 }

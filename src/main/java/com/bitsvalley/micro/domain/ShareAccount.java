@@ -34,6 +34,15 @@ public class ShareAccount {
     private String notes;
     private String approvedBy;
     private Date approvedDate;
+    private boolean active;
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
+    }
 
     @OneToMany(cascade = CascadeType.ALL)
     private List<ShareAccountTransaction> shareAccountTransaction = new ArrayList<ShareAccountTransaction>();

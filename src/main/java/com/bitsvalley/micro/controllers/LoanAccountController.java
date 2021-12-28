@@ -423,25 +423,20 @@ public class LoanAccountController extends SuperController {
         loanAccount.setApprovedBy(getLoggedInUserName());
         loanAccount.setApprovedDate(new Date());
 
-        //Create a initial loan transaction of borrowed amount
-        LoanAccountTransaction loanAccountTransaction =
-                loanAccountTransactionService.createLoanAccountTransaction(loanAccount);
+        List<CurrentAccount> currentAccounts = loanAccount.
+                getUser().getCurrentAccount();
+        CurrentAccount currentAccount = null;
+        if(null == currentAccounts || currentAccounts.size() == 0){
 
-//        currentAccountService.getCurrentAccountByUser();
-        currentAccountService.createCurrentAccountTransaction(loanAccountTransaction);//
-
-        // Update new loan account transaction
-        loanAccountTransaction.setAmountReceived(loanAccount.getLoanAmount());
-        generalLedgerService.updateGLWithLoanAccountTransaction(loanAccountTransaction);//TODO: NO Accountledger set Amount missing in GL
-        loanAccountTransaction.setAmountReceived(0); // Reset loanAmount
-        callCenterService.saveCallCenterLog("ACTIVE", getLoggedInUserName(), loanAccount.getAccountNumber(),"LOAN FUNDS TRANSFERRED TO CURRENT"); //TODO ADD DATE
-        loanAccountService.save(loanAccount);
-
+            model.put("error","PLEASE CREATE A CURRENT ACCOUNT FOR THIS CUSTOMER");
+        }else{
+            currentAccount = currentAccounts.get(0);
+            currentAccountService.createCurrentAccountTransactionFromLoan(currentAccount, loanAccount);
+            model.put("loanDetailsInfo","THIS LOAN ACCOUNT IS NOW ACTIVE. SUCCESSFULLY  TRANSFERRED FUNDS to CURRENT ACCOUNT. ");
+        }
         model.put("loan",loanAccount);
-        model.put("loanDetailsInfo","FUNDS TRANSFERRED to CURRENT ACCOUNT IS NOW ACTIVE");
         return "loanDetails";
     }
-
 
 
 

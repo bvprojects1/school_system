@@ -83,13 +83,15 @@ public class LoanAccountService extends SuperService {
                 savingAccountGuarantor.getAccountNumber());
         shorteeAccount.setSavingAccount(shorteeSavingAccount);
 
-        shorteeSavingAccount.setAccountMinBalance(
-                shorteeSavingAccount.getAccountMinBalance() + loanAccount.getGuarantor1Amount1());
-        shorteeSavingAccount.setLastUpdatedDate(createdDate);
-        shorteeSavingAccount.setLastUpdatedBy(loggedInUserName);
-        shorteeSavingAccount.setAccountStatus(AccountStatus.SHORTEE_ACCOUNT);
-        shorteeSavingAccount.setAccountLocked(true);
-        savingAccountService.save(shorteeSavingAccount);
+        if( loanAccount.isBlockBalanceQuarantor()){
+            shorteeSavingAccount.setAccountMinBalance(
+                    shorteeSavingAccount.getAccountMinBalance() + loanAccount.getGuarantor1Amount1());
+            shorteeSavingAccount.setLastUpdatedDate(createdDate);
+            shorteeSavingAccount.setLastUpdatedBy(loggedInUserName);
+            shorteeSavingAccount.setAccountStatus(AccountStatus.SHORTEE_ACCOUNT);
+            shorteeSavingAccount.setAccountLocked(true);
+            savingAccountService.save(shorteeSavingAccount);
+        }
 
         callCenterService.callCenterShorteeUpdate(shorteeSavingAccount, loanAccount.getGuarantor1Amount1());
 

@@ -80,7 +80,6 @@
                             <h4>SETINGS</h4>
                             <p>Init settings</p>
                             <a href="#" th:href="@{/initsettings}"> init settings </a>
-                            <a href="#" th:href="@{/newLedgerAccount}">View Ledger Accounts</a>
                             <span class="fas fa-cogs"></span>
                         </div>
                     </div>
@@ -134,11 +133,11 @@
                     <!--Single service area end-->
                     <div th:if="${#authorization.expression('hasAnyAuthority(''ROLE_MANAGER'')')} OR ${#authorization.expression('hasAnyAuthority(''ROLE_AUDITOR'')')}" class="col-md-6 col-lg-4">
                         <div class="single-choosen-content text-center single-service-content box-pad">
-                            <i class="fas fa-ethernet"></i>
-                            <h4>NONE</h4>
-                            <p>General Ledger records all bank transactions </p>
-                            <a href="/gl">See More ...</a>
-                            <span class="fas fa-ethernet"></span>
+                            <i class="fas fa-clipboard"></i>
+                            <h4>GL ACCOUNTS</h4>
+                            <p>General Ledger Accounts</p>
+                            <a href="/newLedgerAccount">See More ...</a>
+                            <span class="fas fa-clipboard"></span>
                         </div>
                     </div>
 

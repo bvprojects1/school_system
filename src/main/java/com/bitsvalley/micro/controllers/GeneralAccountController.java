@@ -2,8 +2,12 @@ package com.bitsvalley.micro.controllers;
 
 import com.bitsvalley.micro.domain.GeneralLedger;
 import com.bitsvalley.micro.domain.LedgerAccount;
+import com.bitsvalley.micro.domain.User;
+import com.bitsvalley.micro.domain.UserRole;
 import com.bitsvalley.micro.repositories.GeneralLedgerRepository;
 import com.bitsvalley.micro.repositories.LedgerAccountRepository;
+import com.bitsvalley.micro.repositories.UserRepository;
+import com.bitsvalley.micro.repositories.UserRoleRepository;
 import com.bitsvalley.micro.services.GeneralLedgerService;
 import com.bitsvalley.micro.utils.BVMicroUtils;
 import com.bitsvalley.micro.webdomain.GLSearchDTO;
@@ -36,6 +40,13 @@ public class GeneralAccountController extends SuperController{
     GeneralLedgerRepository generalLedgerRepository;
 
     @Autowired
+    UserRepository userRepository;
+
+
+    @Autowired
+    UserRoleRepository userRoleRepository;
+
+    @Autowired
     LedgerAccountRepository ledgerAccountRepository;
 
 //    @GetMapping(value = "/gl/{accountNumber}")
@@ -54,22 +65,20 @@ public class GeneralAccountController extends SuperController{
                                   @ModelAttribute("glSearchDTO") GLSearchDTO glSearchDTO){
 
         GeneralLedgerBilanz generalLedgerBilanz = null;
-        if(glSearchDTO.getAllLedgerAccount().get(0) == null ){
-            generalLedgerBilanz =
-                    generalLedgerService.searchCriteria(glSearchDTO.getStartDate()+" 00:00:00.000", glSearchDTO.getEndDate()+" 23:59:59.999",
-                            glSearchDTO.getCreditOrDebit(), glSearchDTO.getAccountNumber(), -1);
-        }else{
-            generalLedgerBilanz =
-                    generalLedgerService.searchCriteria(glSearchDTO.getStartDate()+" 00:00:00.000", glSearchDTO.getEndDate()+" 23:59:59.999",
-                            glSearchDTO.getCreditOrDebit(), glSearchDTO.getAccountNumber(), glSearchDTO.getAllLedgerAccount().get(0).getId());
-        }
+        List<Integer> allLedgerAccount = glSearchDTO.getAllLedgerAccount();
 
-        LedgerAccount ledgerAccount = glSearchDTO.getAllLedgerAccount().get(0);
-        model.put("accountNameHeader", ledgerAccount.getName());
+            generalLedgerBilanz =
+                    generalLedgerService.searchCriteria(glSearchDTO.getStartDate()+" 00:00:00.000", glSearchDTO.getEndDate()+" 23:59:59.999",
+                            glSearchDTO.getAllGLEntryUsers().get(0), glSearchDTO.getAllLedgerAccount().get(0));
+
         model.put("generalLedgerBilanz",generalLedgerBilanz);
-        GLSearchDTO glSearchDTO1 = new GLSearchDTO();
+
+        ArrayList<String> allGlEntryUserNames = getAllNonCustomers();
+        glSearchDTO.setAllGLEntryUsers(allGlEntryUserNames);
+
+        model.put("allGLEntryUsers",allGlEntryUserNames);
         model.put("allLedgerAccount",ledgerAccountRepository.findAll());
-        model.put("glSearchDTO", glSearchDTO1);
+        model.put("glSearchDTO", glSearchDTO);
 
         return "gls";
     }
@@ -98,8 +107,18 @@ public class GeneralAccountController extends SuperController{
         model.put("accountNameHeader","GENERAL LEDGER TRANSACTIONS");
         model.put("allLedgerAccount",ledgerAccountRepository.findAll());
         model.put("generalLedgerBilanz",generalLedgerBilanz);
-        model.put("glSearchDTO",new GLSearchDTO());
 
+//        ArrayList<User> allNonCustomer = userRepository.findAllByUserRoleNotIn();
+//
+//      userRepository.findAllByUserRoleIn(allNonCustomer);
+
+        GLSearchDTO glSearchDTO = new GLSearchDTO();
+//        glSearchDTO.setAllNonCustomers(allNonCustomer);
+
+        ArrayList<String> allGLEntryUsers = getAllNonCustomers();
+        glSearchDTO.setAllGLEntryUsers(allGLEntryUsers);
+        model.put("allGLEntryUsers",allGLEntryUsers);
+        model.put("glSearchDTO",glSearchDTO);
         return "gls";
     }
 

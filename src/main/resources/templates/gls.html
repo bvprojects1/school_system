@@ -22,14 +22,14 @@
                 </table>
                 <br/>
                 </div>
-            <font color="gray;" size="4"> <span th:text="${accountNameHeader}"/> </font>
+            <font color="gray;" size="4"> <b><span th:text="${accountNameHeader}"/></b> </font>
             <br/>
             <form action="#" th:action="@{/filterGenaralLedger}" method="post" th:object="${glSearchDTO}">
                 <table border="0" width="80%" class="center">
                     <tr>
                         <td>
-                            Ledger
-                            <select class="selectNormal" th:field="*{allLedgerAccount}">
+                            Ledger<br/>
+                            <select name="allLedgerAccount" class="selectMedium" th:field="*{allLedgerAccount}">
                                 <option value="-1">
                                     ALL
                                 </option>
@@ -51,31 +51,26 @@
                                             placeholder="End Date:" class="form-control" required>
                         </td>
                         <td width="5"></td>
-
-                        <td>
-                            Account No<input type="accountNumber" name="accountNumber" th:field="*{accountNumber}" id="accountNumber"
-                                   placeholder="accountNumber" class="form-control"/>
-                        </td>
                         <td width="5"></td>
                         <td>
-                            Type<select class="selectNormal" name="creditOrDebit" id="creditOrDebit" th:field="*{creditOrDebit}">
-                            <option value="ALL">ALL</option>
-                            <option value="CREDIT">CREDIT</option>
-                            <option value="DEBIT">DEBIT</option>
+                        User<br/>
+                        <select class="selectMedium" name="allGLEntryUsers" id="allGLEntryUsers" th:field="*{allGLEntryUsers}">
+                            <option value="-1">ALL</option>
+                            <option th:each="username : ${allGLEntryUsers}"
+                                    th:value="${username}">
+                                <span th:text="${username}"/>
+                            </option>
                         </select>
                         </td>
                         <td width="5"></td>
                         <td>
-
                             <br/>
                             <button type="submit" class="btn btn-success">SEARCH</button>
                         </td>
                     </tr>
                 </table>
             </form>
-
-            <br/>
-
+            
             <table border="0" width="80%" class="center">
                 <tr>
                     <td>

@@ -14,7 +14,7 @@
                 <div class="col-md-12">
                     <div class="project-title-content">
                         <h3>SYSTEM SETTINGS</h3>
-                        <font color="orange"><div th:text="${notify}"/></font>
+
                         <span><i class="fas fa-crosshairs"></i></span>
                         <!--                            <p>Cross-agency coordination clean water rural, promising development turmoil inclusive education transformative community.</p>-->
                     </div>
@@ -28,7 +28,7 @@
         <div class="container">
             <div class="row">
                 <div class="offset-md-2 col-md-8">
-
+                    <font size="6" color="gray"><span th:text="${notify}"/></font>
                     <form action="#" method="post" th:action="@{/uploadLogo}" enctype="multipart/form-data">
                         <div class="form-group">
                             <input type="file" name="file" class="form-control-file">

@@ -69,8 +69,9 @@
                             <td th:text="${aLedgerAccount.category}"> </td>
                             <td th:text="${aLedgerAccount.status}"> </td>
                             <td>
-                                <a href="#" th:href="@{/addGeneralLedgerEntry/{id}(id=${aLedgerAccount.id})}"> <img width="30px" th:src="@{/assets/images/add.png}"/> </a>
-                                <a href="#" th:href="@{/viewLedgerAccount/{id}(id=${aLedgerAccount.id})}">See more ...</a>
+                                <a href="#" th:href="@{/viewLedgerAccount/{id}(id=${aLedgerAccount.id})}">From Cash Account ...</a>
+                                <a href="#" th:href="@{/addGeneralLedgerEntry/{id}(id=${aLedgerAccount.id})}"> <img width="30px" th:src="@{/assets/images/transfer2.png}"/> </a>
+                                <a href="#" th:href="@{/viewLedgerAccount/{id}(id=${aLedgerAccount.id})}">To Cash Account ...</a>
                             </td>
                         </tr>
                     </table>

@@ -21,12 +21,14 @@ import java.util.Random;
 public class BVMicroUtils {
 
     public static final String TRANSFER = "TRANSFER";
-    public static final String DEBIT_LOAN_TRANSFER = "DEBIT_LOAN_TRANSFER";
+    public static final String CURRENT_LOAN_TRANSFER = "CURRENT_LOAN_TRANSFER";
     public static final String SAVING_SHARE_TRANSFER = "SAVING_SHARE_TRANSFER";
     public static final String DEBIT_DEBIT_TRANSFER = "DEBIT_DEBIT_TRANSFER";
     public static final String DEBIT_CURRENT_TRANSFER = "DEBIT_CURRENT_TRANSFER";
 
     public static final String CURRENT_DEBIT_TRANSFER = "CURRENT_DEBIT_TRANSFER";
+
+    public static final String CURRENT_SHARE_TRANSFER =  "CURRENT_SHARE_TRANSFER";
 
     public static final String CURRENT_CURRENT_TRANSFER = "CURRENT_CURRENT_TRANSFER";
 
@@ -36,7 +38,7 @@ public class BVMicroUtils {
     public static final String CUSTOMER_IN_USE = "customerInUse";
     public static final String DATE_FORMATTER= "dd-MM-yyyy HH:mm";
     public static final String DATE_ONLY_FORMATTER= "dd-MM-yyyy";
-    public static final String SYSTEM = "SYSTEM";
+//    public static final String SYSTEM = "SYSTEM";
     public static final String REGULAR_MONTHLY_PAYMENT_MISSING = "Regular Monthly payment not on schedule might be missing payment for some months. " +
             "Please check the account statement";
     public static final String PENDING_APPROVAL = "PENDING_APPROVAL";

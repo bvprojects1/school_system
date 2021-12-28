@@ -32,7 +32,7 @@ public class SavingAccount {
     private int interestRate;
     private String country;
     private String productCode;
-
+    private boolean active;
     @Column(unique = true)
     private String accountNumber;
 
@@ -239,4 +239,11 @@ public class SavingAccount {
         this.branchCode = branchCode;
     }
 
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
+    }
 }

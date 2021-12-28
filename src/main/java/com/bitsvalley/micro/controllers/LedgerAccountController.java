@@ -5,6 +5,7 @@ import com.bitsvalley.micro.repositories.LedgerAccountRepository;
 import com.bitsvalley.micro.services.GeneralLedgerService;
 import com.bitsvalley.micro.utils.BVMicroUtils;
 import com.bitsvalley.micro.webdomain.LedgerEntryDTO;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * @author Fru Chifen
@@ -163,7 +165,31 @@ public class LedgerAccountController extends SuperController{
         model.put("ledgerEntryDTO", new LedgerEntryDTO());
         model.put("destinationLedgerAccounts", destinationLedgerAccount);
         model.put("originLedgerAccount", originLedgerAccount);
+        model.put("glAddEntryTitle", "Transfer Between GL Account");
+        return "glAddEntry";
+    }
 
+    @GetMapping(value = "/cashToLedgerAccount/{id}")
+    public String cashToLedgerAccount(@PathVariable("id") long id, ModelMap model, HttpServletRequest request) {
+        LedgerAccount fromLedgerAccount = ledgerAccountRepository.findById(id).get();
+        LedgerAccount cashAccount = ledgerAccountRepository.findByName(BVMicroUtils.CASH_GL_5001);
+
+        model.put("ledgerEntryDTO", new LedgerEntryDTO());
+        model.put("destinationLedgerAccounts", cashAccount);
+        model.put("originLedgerAccount", fromLedgerAccount);
+        model.put("glAddEntryTitle", " "+ fromLedgerAccount.getName() + " To " +BVMicroUtils.CASH_GL_5001 );
+        return "glAddEntry";
+    }
+
+    @GetMapping(value = "/cashFromLedgerAccount/{id}")
+    public String cashFromLedgerAccount(@PathVariable("id") long id, ModelMap model, HttpServletRequest request) {
+        LedgerAccount toLedgerAccount = ledgerAccountRepository.findById(id).get();
+        LedgerAccount cashAccount = ledgerAccountRepository.findByName(BVMicroUtils.CASH_GL_5001);
+
+        model.put("ledgerEntryDTO", new LedgerEntryDTO());
+        model.put("destinationLedgerAccounts", toLedgerAccount);
+        model.put("originLedgerAccount", cashAccount);
+        model.put("glAddEntryTitle", " "+ BVMicroUtils.CASH_GL_5001 + " To "+ toLedgerAccount.getName());
         return "glAddEntry";
     }
 
@@ -171,13 +197,21 @@ public class LedgerAccountController extends SuperController{
     @PostMapping(value = "/addLedgerEntryFormReviewForm")
     public String addLedgerEntryFormReviewForm(@ModelAttribute("ledgerEntryDTO") LedgerEntryDTO ledgerEntryDTO,
                                         ModelMap model, HttpServletRequest request ) {
+        LedgerAccount toAccount = ledgerAccountRepository.findById(ledgerEntryDTO.getDestinationLedgerAccount()).get();
+        LedgerAccount fromAccount = ledgerAccountRepository.findById(ledgerEntryDTO.getOriginLedgerAccount()).get();
 
+        model.put("ledgerAccount", ledgerEntryDTO);
+        model.put("destinationLedgerAccounts", toAccount );
+        model.put("originLedgerAccount", fromAccount );
+        model.put("glAddEntryTitle", " "+ fromAccount.getName() + " To "+ toAccount.getName());
+
+        if( StringUtils.isEmpty( ledgerEntryDTO.getCreditOrDebit() )){
+            model.put("error", "PLEASE SELECT A TRANSACTION TYPE" );
+            return "glAddEntry";
+        }
         generalLedgerService.updateManualAccountTransaction(ledgerEntryDTO);
 
-//        model.put("ledgerAccountList", ledgerAccountRepository.findAll());
-//        model.put("ledgerAccountInfo", "Created "+ledgerAccount.getName()+ " successfully ");
-
-        return "ledgeraccount";
+        return "ledgerConfirm";
     }
 
 }

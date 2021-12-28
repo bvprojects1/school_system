@@ -1,8 +1,10 @@
 package com.bitsvalley.micro.controllers;
 
 import com.bitsvalley.micro.domain.*;
+import com.bitsvalley.micro.repositories.GeneralLedgerRepository;
 import com.bitsvalley.micro.repositories.SavingAccountTransactionRepository;
 import com.bitsvalley.micro.repositories.UserRepository;
+import com.bitsvalley.micro.repositories.UserRoleRepository;
 import com.bitsvalley.micro.services.*;
 import com.bitsvalley.micro.utils.BVMicroUtils;
 import com.bitsvalley.micro.webdomain.CurrentBilanzList;
@@ -35,6 +37,9 @@ public class SuperController {
     private UserRepository userRepository;
 
     @Autowired
+    private UserRoleRepository userRoleRepository;
+
+    @Autowired
     private SavingAccountTransactionRepository savingAccountTransactionRepository;
 
     @Autowired
@@ -57,6 +62,9 @@ public class SuperController {
 
     @Autowired
     private ShareAccountService shareAccountService;
+
+    @Autowired
+    private GeneralLedgerRepository generalLedgerRepository;
 
 
     public String  findUserByUserName(User user, ModelMap model, HttpServletRequest request) {
@@ -129,7 +137,29 @@ public class SuperController {
     }
 
 
+    public ArrayList<String> getAllNonCustomers() {
 
+//        ArrayList<UserRole> userRoleList = new ArrayList<UserRole>();
+//        UserRole customer = userRoleService.findUserRoleByName("ROLE_CUSTOMER");
+//        userRoleList.add(customer);
+        ArrayList<String> customerList = generalLedgerRepository.findAllDistinctByCreatedBy();
+//        ArrayList<User> customerList = userService.findAllByUserNotRoleIn(userRoleList);
+        return customerList;
+
+    }
+
+    public ArrayList<String> getGLEntryUsers() {
+
+//        ArrayList<String> roles = new ArrayList<String>();
+//        roles.add("ROLE_CUSTOMER");
+//        ArrayList<UserRole> userRoleList = userRoleRepository.findByNameNotIn(roles);
+
+//        ArrayList<User> nonCustomerList = userService.findDistinctByUserRoleIn(userRoleList);
+
+        ArrayList<String> distinctByUser = generalLedgerRepository.findAllDistinctByCreatedBy();
+
+        return distinctByUser;
+    }
 
     public ArrayList<User> getAllCustomers() {
         ArrayList<UserRole> userRoleList = new ArrayList<UserRole>();
@@ -138,6 +168,7 @@ public class SuperController {
         ArrayList<User> customerList = userService.findAllByUserRoleIn(userRoleList);
         return customerList;
     }
+
 
     public ArrayList<User> getAllManager() {
         ArrayList<UserRole> userRoleList = new ArrayList<UserRole>();

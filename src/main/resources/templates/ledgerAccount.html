@@ -30,7 +30,7 @@
                     <font size="6" color="gray"><span  th:text="${ledgerAccountInfo}"/></font>
                     <form action="#" th:action="@{/saveLedgerAccountForm}" method="post" th:object="${ledgerAccount}">
 
-                            <div class="col-md-12">
+
 
                                 <select class="selectNormal" name="Category" id="category">
                                     <option value="Assets">Assets (1000 – 1999)</option>
@@ -62,7 +62,7 @@
                                 <input type="submit" class="btn-block btn contact-btn"
                                        value="CREATE LEDGER ACCOUNT"/>
                                 <br/>
-                        </div>
+
                     </form>
 
                     <br/><br/>
@@ -74,8 +74,9 @@
                             <td th:text="${aLedgerAccount.category}"> </td>
                             <td th:text="${aLedgerAccount.status}"> </td>
                             <td>
-                                <a href="#" th:href="@{/addGeneralLedgerEntry/{id}(id=${aLedgerAccount.id})}"> <img width="30px" th:src="@{/assets/images/add.png}"/> </a>
-                                <a href="#" th:href="@{/viewLedgerAccount/{id}(id=${aLedgerAccount.id})}">See more ...</a>
+                                <a href="#" th:href="@{/cashToLedgerAccount/{id}(id=${aLedgerAccount.id})}">To Cash Account</a>
+                                <a href="#" th:href="@{/addGeneralLedgerEntry/{id}(id=${aLedgerAccount.id})}"> <img width="50px" th:src="@{/assets/images/transfer2.png}"/> </a>
+                                <a href="#" th:href="@{/cashFromLedgerAccount/{id}(id=${aLedgerAccount.id})}">From Cash Account</a>
                             </td>
                         </tr>
                     </table>

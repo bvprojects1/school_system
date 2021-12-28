@@ -6,8 +6,6 @@ import com.bitsvalley.micro.utils.AccountStatus;
 import com.bitsvalley.micro.utils.BVMicroUtils;
 import com.bitsvalley.micro.webdomain.CurrentBilanz;
 import com.bitsvalley.micro.webdomain.CurrentBilanzList;
-import com.bitsvalley.micro.webdomain.SavingBilanz;
-import com.bitsvalley.micro.webdomain.SavingBilanzList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -60,6 +58,9 @@ public class CurrentAccountService extends SuperService {
 
     @Autowired
     private LoanAccountService loanAccountService;
+
+    @Autowired
+    private LoanAccountTransactionService loanAccountTransactionService;
 
     @Autowired
     private BranchService branchService;
@@ -136,14 +137,11 @@ public class CurrentAccountService extends SuperService {
     }
 
     @Transactional
-    public void createCurrentAccountTransaction(LoanAccountTransaction loanAccountTransaction) {
+    public void createCurrentAccountTransaction(CurrentAccount currentAccount, LoanAccountTransaction loanAccountTransaction) {
 
         String loggedInUserName = getLoggedInUserName();
         Branch branchInfo = branchService.getBranchInfo(loggedInUserName);
 
-        List<CurrentAccount> currentAccounts = loanAccountTransaction.getLoanAccount().
-                getUser().getCurrentAccount();
-        CurrentAccount currentAccount = currentAccounts.get(0);
 
         CurrentAccountTransaction currentAccountTransaction = new CurrentAccountTransaction();
         currentAccountTransaction.setCurrentAmount(loanAccountTransaction.getLoanAmount());
@@ -388,6 +386,23 @@ public class CurrentAccountService extends SuperService {
         }
         return total;
     }
+
+    public void createCurrentAccountTransactionFromLoan(CurrentAccount currentAccount, LoanAccount loanAccount) {
+        //Create a initial loan transaction of borrowed amount
+        LoanAccountTransaction loanAccountTransaction =
+                loanAccountTransactionService.createLoanAccountTransaction(loanAccount);
+
+//        currentAccountService.getCurrentAccountByUser();
+        currentAccountService.createCurrentAccountTransaction(currentAccount, loanAccountTransaction);//
+
+        // Update new loan account transaction
+        loanAccountTransaction.setAmountReceived(loanAccount.getLoanAmount());
+        generalLedgerService.updateGLWithLoanAccountTransaction(loanAccountTransaction);//TODO: NO Accountledger set Amount missing in GL
+        loanAccountTransaction.setAmountReceived(0); // Reset loanAmount
+        callCenterService.saveCallCenterLog("ACTIVE", getLoggedInUserName(), loanAccount.getAccountNumber(),"LOAN FUNDS TRANSFERRED TO CURRENT"); //TODO ADD DATE
+        loanAccountService.save(loanAccount);
+    }
+
 
 //    public void transferFromSavingToLoan(String fromAccountNumber,
 //                                         String toAccountNumber,

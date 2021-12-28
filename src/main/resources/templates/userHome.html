@@ -65,7 +65,7 @@
                     </div>
                 </td>
 
-                <td colspan="3">
+                <td colspan="1">
                     <a th:if="${#authorization.expression('hasAnyAuthority(''ROLE_CUSTOMER_ACCOUNT_TYPE_TRANSFERS'')')}" href="#" th:href="@{/transferFromCurrentToDebitForm}">
                         Current to Saving <img width="35px" th:src="@{/assets/images/transfer3.png}"/>
                     </a>
@@ -76,13 +76,19 @@
 
                 </td>
                 <td colspan="1">
-<!--                    <a href="#" th:href="@{/transferFromCurrentToLoanAccountsForm}">-->
-<!--                        Loan re-payment <img width="40px" th:src="@{/assets/images/transferLoan.png}"/>-->
-<!--                    </a>-->
+                    <a th:if="${#authorization.expression('hasAnyAuthority(''ROLE_CUSTOMER_ACCOUNT_TYPE_TRANSFERS'')')}" href="#" th:href="@{/transferFromCurrentToLoanAccountsForm}">
+                        Loan re-payment <img width="40px" th:src="@{/assets/images/transferLoan.png}"/>
+                    </a>
+
+                    <div th:unless="${#authorization.expression('hasAnyAuthority(''ROLE_CUSTOMER_ACCOUNT_TYPE_TRANSFERS'')')}" href="">
+                        Loan re-payment <img width="40px" th:src="@{/assets/images/transferLoan.png}"/> <label title="Requires ROLE_CUSTOMER_ACCOUNT_TYPE_TRANSFERS"> <img width="30px" th:src="@{/assets/images/toolTip.png}"/> </label>
+                    </div>
                 </td>
             </tr>
             <tr>
-
+                <td>
+                    Account Type
+                </td>
                 <td>
                     Account Number
                 </td>
@@ -90,10 +96,7 @@
                     Account Balance
                 </td>
                 <td>
-                    Minimum
-                </td>
-                <td>
-                    Locked
+                    Active
                 </td>
                 <td>
                     Description
@@ -104,9 +107,7 @@
                 <td>
                     Creator
                 </td>
-                <td>
-                    Annual Rate
-                </td>
+
                 <td>
                 </td>
             </tr>
@@ -124,20 +125,17 @@
                     </span>
                     </a>
                 </td>
+                <td> CURRENT ACCOUNT</td>
                 <td th:text="${#numbers.formatDecimal(currentAccount.accountBalance, 0, 'COMMA', 0, 'POINT')}"/>
 
-                <td th:text="${#numbers.formatDecimal(currentAccount.accountMinBalance, 0, 'COMMA', 0, 'POINT')}"/>
-
-                <td th:text="${currentAccount.accountMinBalanceLocked}"/>
+                <td th:text="${currentAccount.active}"/>
 
                 <td th:text="${currentAccount.notes}"/>
 
                 <td th:text="${#dates.format(currentAccount.createdDate, 'dd-MMM-yyyy HH:mm')}"/>
 
                 <td th:text="${currentAccount.createdBy}"/>
-                <td>
-                    <span th:text="${currentAccount.interestRate}"/>%
-                </td>
+
                 <td>
                     <a href="#" th:href="@{/registerCurrentAccountTransaction/{id}(id=${currentAccount.id})}">
                         <img width="30px" th:src="@{/assets/images/aLens.png}"/>
@@ -171,7 +169,7 @@
                     </div>
 
                 </td>
-                <td colspan="2">
+                <td colspan="3">
                     <a th:if="${#authorization.expression('hasAnyAuthority(''ROLE_CUSTOMER_ACCOUNT_TYPE_TRANSFERS'')')}" href="#" th:href="@{/transferFromDebitToCurrentForm}">
                         Saving to Current <img width="35px" th:src="@{/assets/images/transfer3.png}"/>
                     </a>
@@ -181,13 +179,7 @@
                     </div>
                 </td>
                 <td colspan="4">
-                    <a th:if="${#authorization.expression('hasAnyAuthority(''ROLE_CUSTOMER_ACCOUNT_TYPE_TRANSFERS'')')}" href="#" th:href="@{/transferFromSavingToLoanAccountsForm}">
-                        Loan re-payment <img width="40px" th:src="@{/assets/images/transferLoan.png}"/>
-                    </a>
 
-                    <div th:unless="${#authorization.expression('hasAnyAuthority(''ROLE_CUSTOMER_ACCOUNT_TYPE_TRANSFERS'')')}" href="">
-                        Loan re-payment <img width="40px" th:src="@{/assets/images/transferLoan.png}"/> <label title="Requires ROLE_CUSTOMER_ACCOUNT_TYPE_TRANSFERS"> <img width="30px" th:src="@{/assets/images/toolTip.png}"/> </label>
-                    </div>
 
                 </td>
             </tr>
@@ -211,14 +203,9 @@
                     Description
                 </td>
                 <td>
-                    Created
-                </td>
-                <td>
                     Creator
                 </td>
-                <td>
-                    Annual Rate
-                </td>
+
                 <td>
                 </td>
             </tr>
@@ -246,20 +233,14 @@
 
                 <td th:text="${savingAccount.notes}"/>
 
-                <td th:text="${#dates.format(savingAccount.createdDate, 'dd-MMM-yyyy HH:mm')}"/>
-
                 <td th:text="${savingAccount.createdBy}"/>
 
-                <td>
-                    <span th:text="${savingAccount.interestRate}"/>%
-                </td>
 
                 <td>
                     <a href="#" th:href="@{/registerSavingAccountTransaction/{id}(id=${savingAccount.id})}">
                         <img width="30px" th:src="@{/assets/images/aLens.png}"/>
                     </a>
-                </td>
-                <td>
+
                     <a href="#" th:href="@{/showSavingAccountBilanz/{accountId}(accountId=${savingAccount.id})}">
                         <img width="30px" th:src="@{/assets/images/aPercent.png}"/>
                     </a>
@@ -299,10 +280,10 @@
                     Current Balance
                 </td>
                 <td>
-                    Guarantor
+                    Locked
                 </td>
                 <td>
-                    Created
+                    Guarantor
                 </td>
 
                 <td>
@@ -334,8 +315,6 @@
                     <span th:text="${loanAccount.shorteeAccounts[0].savingAccount.user.lastName}"/>,
                     <span th:text="${loanAccount.shorteeAccounts[0].savingAccount.user.firstName}"/>
                 </td>
-
-                <td th:text="${#dates.format(loanAccount.createdDate, 'dd-MMM-yyyy HH:mm')}"/>
 
                 <td th:text="${loanAccount.createdBy}"/>
 

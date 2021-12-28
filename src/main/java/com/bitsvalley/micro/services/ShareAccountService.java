@@ -1,10 +1,7 @@
 package com.bitsvalley.micro.services;
 
 import com.bitsvalley.micro.domain.*;
-import com.bitsvalley.micro.repositories.SavingAccountRepository;
-import com.bitsvalley.micro.repositories.ShareAccountRepository;
-import com.bitsvalley.micro.repositories.ShareAccountTransactionRepository;
-import com.bitsvalley.micro.repositories.UserRepository;
+import com.bitsvalley.micro.repositories.*;
 import com.bitsvalley.micro.utils.AccountStatus;
 import com.bitsvalley.micro.utils.BVMicroUtils;
 import com.bitsvalley.micro.webdomain.ShareAccountBilanz;
@@ -49,7 +46,13 @@ public class ShareAccountService extends SuperService{
     private SavingAccountService savingAccountService;
 
     @Autowired
+    private CurrentAccountService currentAccountService;
+
+    @Autowired
     private GeneralLedgerService generalLedgerService;
+
+    @Autowired
+    private CurrentAccountRepository currentAccountRepository;
 
     public void createShareAccount(ShareAccount shareAccount, User user) {
 
@@ -111,7 +114,7 @@ public class ShareAccountService extends SuperService{
     }
 
 
-    public void transferFromSavingToShareAccount(SavingAccount savingAccount,
+    public void transferFromCurrentToShareAccount(CurrentAccount currentAccount,
                                         ShareAccount shareAccount,
                                         double transferAmount,
                                         String notes) {
@@ -126,11 +129,11 @@ public class ShareAccountService extends SuperService{
         shareAccountRepository.save(shareAccount);
 
 //        SavingAccount savingAccount = savingAccountService.findByAccountNumber(fromAccountNumber);
-        SavingAccountTransaction savingAccountTransaction = savingAccountService.getSavingAccountTransaction(notes, branchInfo, savingAccount, transferAmount * -1, BVMicroUtils.SAVING_SHARE_TRANSFER);
-        savingAccount.getSavingAccountTransaction().add(savingAccountTransaction);
-        savingAccountRepository.save(savingAccount);
+        CurrentAccountTransaction currentAccountTransaction = savingAccountService.getCurrentAccountTransaction(notes, branchInfo, currentAccount, transferAmount * -1, BVMicroUtils.SAVING_SHARE_TRANSFER);
+        currentAccount.getCurrentAccountTransaction().add(currentAccountTransaction);
+        currentAccountRepository.save(currentAccount);
 
-        generalLedgerService.updateGLAfterSharePurchaseFromSaving(shareAccountTransaction);
+        generalLedgerService.updateGLAfterSharePurchaseFromCurrent(shareAccountTransaction);
 
     }
 

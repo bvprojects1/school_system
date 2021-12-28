@@ -1,6 +1,7 @@
 package com.bitsvalley.micro.domain;
 
 import javax.persistence.*;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -23,6 +24,10 @@ public class LedgerAccount {
     private String code;
     private String category;
     private String status;
+    private String cashAccountTransfer;
+    private String createdBy;
+    private Date createdDate;
+//    private String cashTransaction;
 
     public long getId() {
         return id;
@@ -70,5 +75,29 @@ public class LedgerAccount {
 
     public void setGeneralLedger(List<GeneralLedger> generalLedger) {
         this.generalLedger = generalLedger;
+    }
+
+    public String getCashAccountTransfer() {
+        return cashAccountTransfer;
+    }
+
+    public void setCashAccountTransfer(String cashAccountTransfer) {
+        this.cashAccountTransfer = cashAccountTransfer;
+    }
+
+    public String getCreatedBy() {
+        return createdBy;
+    }
+
+    public void setCreatedBy(String createdBy) {
+        this.createdBy = createdBy;
+    }
+
+    public Date getCreatedDate() {
+        return createdDate;
+    }
+
+    public void setCreatedDate(Date createdDate) {
+        this.createdDate = createdDate;
     }
 }

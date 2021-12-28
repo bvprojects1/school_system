@@ -73,12 +73,11 @@ public class GeneralLedgerService extends SuperService{
     }
 
 
-
-    public void updateGLAfterSharePurchaseFromSaving(ShareAccountTransaction shareAccountTransaction) {
-        shareAccountTransaction.setNotes(BVMicroUtils.SAVINGS_GL_3003);
+    public void updateGLAfterSharePurchaseFromCurrent(ShareAccountTransaction shareAccountTransaction) {
+        shareAccountTransaction.setNotes(BVMicroUtils.CURRENT_GL_3004);
         updateGeneralLedger(shareAccountTransaction, BVMicroUtils.SHARE_GL_5004,BVMicroUtils.CREDIT,shareAccountTransaction.getShareAmount(),5,true);
         shareAccountTransaction.setNotes(BVMicroUtils.SHARE_GL_5004);
-        updateGeneralLedger(shareAccountTransaction, BVMicroUtils.SAVINGS_GL_3003, BVMicroUtils.DEBIT,shareAccountTransaction.getShareAmount(),3,true);
+        updateGeneralLedger(shareAccountTransaction, BVMicroUtils.CURRENT_GL_3004, BVMicroUtils.DEBIT,shareAccountTransaction.getShareAmount(),3,true);
     }
 
 
@@ -214,8 +213,8 @@ public class GeneralLedgerService extends SuperService{
         gl.setLastUpdatedDate(new Date(System.currentTimeMillis()));
         gl.setNotes(loanAccountTransaction.getNotes());
         gl.setReference(loanAccountTransaction.getReference());
-        gl.setLastUpdatedBy(BVMicroUtils.SYSTEM);
-        gl.setCreatedBy(BVMicroUtils.SYSTEM);
+        gl.setLastUpdatedBy(loanAccountTransaction.getCreatedBy());
+        gl.setCreatedBy(loanAccountTransaction.getCreatedBy());
         return gl;
     }
 
@@ -234,8 +233,8 @@ public class GeneralLedgerService extends SuperService{
         gl.setLastUpdatedDate(new Date(System.currentTimeMillis()));
         gl.setNotes(shareAccountTransaction.getNotes());
         gl.setReference(shareAccountTransaction.getReference());
-        gl.setLastUpdatedBy(BVMicroUtils.SYSTEM);
-        gl.setCreatedBy(BVMicroUtils.SYSTEM);
+        gl.setLastUpdatedBy(shareAccountTransaction.getCreatedBy());
+        gl.setCreatedBy(shareAccountTransaction.getCreatedBy());
         return gl;
     }
 
@@ -256,8 +255,8 @@ public class GeneralLedgerService extends SuperService{
         gl.setLastUpdatedDate(new Date(System.currentTimeMillis()));
         gl.setNotes(savingAccountTransaction.getNotes());
         gl.setReference(savingAccountTransaction.getReference());
-        gl.setLastUpdatedBy(BVMicroUtils.SYSTEM);
-        gl.setCreatedBy(BVMicroUtils.SYSTEM);
+        gl.setLastUpdatedBy(savingAccountTransaction.getCreatedBy());
+        gl.setCreatedBy(savingAccountTransaction.getCreatedBy());
         gl.setGlClass(3); //TODO Saving which class in GL ?
         gl.setType(savingAccountTransaction.getCurrentAmount()<=0?"CREDIT":"DEBIT");
         return gl;
@@ -273,8 +272,8 @@ public class GeneralLedgerService extends SuperService{
         gl.setLastUpdatedDate(date);
         gl.setNotes(savingAccountTransaction.getNotes());
         gl.setReference(savingAccountTransaction.getReference());
-        gl.setLastUpdatedBy(BVMicroUtils.SYSTEM);
-        gl.setCreatedBy(BVMicroUtils.SYSTEM);
+        gl.setLastUpdatedBy(savingAccountTransaction.getCreatedBy());
+        gl.setCreatedBy(savingAccountTransaction.getCreatedBy());
         gl.setGlClass(3); //TODO Saving which class in GL ?
         gl.setType(savingAccountTransaction.getSavingAmount()>=0?"CREDIT":"DEBIT");
         return gl;
@@ -379,34 +378,18 @@ public class GeneralLedgerService extends SuperService{
 //        return getGeneralLedgerBilanz( generalLedgerWebList );
 //    }
 
-    public GeneralLedgerBilanz searchCriteria(String startDate, String endDate, String type, String accountNumber, long ledgerAccount) {
+    public GeneralLedgerBilanz searchCriteria(String startDate, String endDate, String agentUsername, long ledgerAccount) {
         List<GeneralLedger> glList = null;
-    if(ledgerAccount!=-1) {
-
-        if (StringUtils.isNotEmpty(type) && StringUtils.isNotEmpty(accountNumber)) {
-            if (type.equals("ALL")) {
-                glList = generalLedgerRepository.searchCriteriaWithAccountNumberLedger(startDate, endDate, accountNumber, ledgerAccount);
-            } else {
-                glList = generalLedgerRepository.searchCriteriaWithAccountNumberAndTypeLedger(type, startDate, endDate, accountNumber, ledgerAccount);
-            }
-        } else if ("ALL".equals(type) && StringUtils.isEmpty(accountNumber)) {
+        if (ledgerAccount == -1 && agentUsername.equals("-1")) {
+            glList = generalLedgerRepository.searchCriteriaStartEndDate(startDate, endDate);
+        } else if (ledgerAccount != -1 && agentUsername.equals("-1")) {
             glList = generalLedgerRepository.searchCriteriaLedger(startDate, endDate, ledgerAccount);
-        } else if (StringUtils.isNotEmpty(accountNumber)) {
-            glList = generalLedgerRepository.searchCriteriaWithAccountNumberLedger(startDate, endDate, accountNumber, ledgerAccount);
+        } else if (ledgerAccount == -1 && !agentUsername.equals("-1")) {
+            glList = generalLedgerRepository.searchCriteriaWithCreatedBy(startDate, endDate, agentUsername);
+        } else if (ledgerAccount != -1 && !agentUsername.equals("-1")) {
+            glList = generalLedgerRepository.searchCriteriaWithCreatedByAndLedgerAccount(startDate, endDate, agentUsername, ledgerAccount);
         }
-    }else{
-        if (StringUtils.isNotEmpty(type) && StringUtils.isNotEmpty(accountNumber)) {
-            if (type.equals("ALL")) {
-                glList = generalLedgerRepository.searchCriteriaWithAccountNumber(startDate, endDate, accountNumber);
-            } else {
-                glList = generalLedgerRepository.searchCriteriaWithAccountNumberAndType(type, startDate, endDate, accountNumber);
-            }
-        } else if ("ALL".equals(type) && StringUtils.isEmpty(accountNumber)) {
-            glList = generalLedgerRepository.searchCriteria(startDate, endDate);
-        } else if (accountNumber != null) {
-            glList = generalLedgerRepository.searchCriteriaWithAccountNumber(startDate, endDate, accountNumber);
-        }
-    }
+
         List<GeneralLedgerWeb> generalLedgerWebs = mapperGeneralLedger(glList);
         GeneralLedgerBilanz generalLedgerBilanz = getGeneralLedgerBilanz(generalLedgerWebs);
         return generalLedgerBilanz;
