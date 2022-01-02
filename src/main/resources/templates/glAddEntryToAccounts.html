@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<div th:insert="header::navbar"></div>
+<br/>
+<br/>
+
+<div class="container">
+    <section class="choosen-area-start space">
+        <table style="border:0px" class="center" width="100%" cellpadding="5">
+            <tr>
+                <td width="25%"></td>
+                <td>
+                    <font size="3">Account Owner</font>
+                    <br/>
+                    <font size="4">
+                        <a href="#" th:href="@{/showCustomer/{id}(id=${session.customerInUse.id})}">
+                            <span style th:text="${session.customerInUse.userName}"/>
+                        </a>
+                    </font>
+                    <button type="submit">
+                        <a href="#" th:href="@{/file/{userName}(userName=${session.customerInUse.userName})}">
+                            <font color="gray" size="2px">Upload I.D</font></a>
+                    </button>
+                    <a href="#" th:href="@{/reloadUser}">
+                        <img width="40px" th:src="@{/getImage}"/>
+                    </a>
+                    <br/>
+                <td></td>
+                <td> Saving <br/>
+                    <font color="gray" size="4px">
+                        <div th:text="${session.savingBilanzList.totalSaving}"/>
+                    </font>
+                </td>
+                <td> Loan<br/>
+                    <font size="4px" color="gray">
+                        <div th:text="${session.loanBilanzList.currentLoanBalance}"/>
+                    </font></td>
+                <td> Current<br/> <font size="4px" color="gray"> <span
+                        th:text="${session.currentBilanzList.totalCurrent}"/></font></td>
+                <td> Shares<br/> <font size="4px" color="gray"> <span
+                        th:text="${session.shareAccountBilanzList.totalShare}"/></font></td>
+            </tr>
+        </table>
+        <!-- END -->
+        <br/>
+        <form action="#" th:action="@{/userHomeLedgerEntryForm}" method="post">
+            <table border="0" class="center" width="100%" cellpadding="5">
+                <tr>
+                    <td width="25%"></td>
+                    <td>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td width="10%"></td>
+                    <td width="10%">Select From:</td>
+                    <td>
+                        <label> <b></b></label><br/>
+                        <select class="selectNormal" >
+                            <option th:each="i : ${originLedgerAccounts}"
+                                    th:value="${i.id}">
+                                <span th:text="${i.name}"/>
+                            </option>
+                        </select>
+
+                        <b></b><input required class="selectAmount" name="glAccountAmount" type="text"/>Enter Amount
+                        <br/>(Opposite booking Type happens in various customer accounts)<br/>
+                    </td>
+                </tr>
+            </table>
+            <br/>
+            <table border="0" class="center" width="100%" cellpadding="5">
+                <tr>
+                    <td width="10%"><font size="5px">CUSTOMER ACCOUNTS</font></td>
+                    <td colspan="3">
+                        <b>CURRENT ACCOUNTS</b>
+                    </td>
+                    <td colspan="1">
+                        <br>
+                        <font color="gray" size="3">Total Sum of amount entered for individual accounts must add
+                            up</font>
+                    </td>
+                </tr>
+                <tr th:each="currentAccount : ${session.customerInUse.currentAccount}">
+                    <td width="10%"></td>
+                    <td colspan="4">
+                        <br/>
+                        Account Number:<font size="4"><span th:text="${currentAccount.accountNumber}"/>
+                        </font>
+                        <input class="selectAmount" required type="text" th:name="${currentAccount.accountNumber}">
+                        <span th:text="' Balance: '+${#numbers.formatDecimal(currentAccount.accountBalance, 0, 'COMMA', 0, 'POINT')}"/>
+                        <br><br>
+                    </td>
+                </tr>
+                <tr>
+                    <br><br>
+                    <td width="10%"></td>
+                    <td colspan="4">
+                        <br/>
+                        <b>SAVING ACCOUNTS</b>
+                    </td>
+                </tr>
+                <tr th:each="savingAccount : ${session.customerInUse.savingAccount}">
+                    <td width="10%"></td>
+                    <td colspan="4">
+                        <br/>
+                        Account Number:<font size="4"><span th:text="${savingAccount.accountNumber}"/>
+                        </font>
+
+                        <input class="selectAmount" required type="text" th:name="${savingAccount.accountNumber}">
+
+                        <span th:text="' Balance: '+${#numbers.formatDecimal(savingAccount.accountBalance, 0, 'COMMA', 0, 'POINT')}"/>
+                        <br><br>
+                    </td>
+                </tr>
+                <tr>
+                    <td width="10%"></td>
+                    <td colspan="4">
+                        <br>
+                        <b>LOAN ACCOUNTS</b>
+                    </td>
+                </tr>
+                <tr th:each="loanAccount : ${session.customerInUse.loanAccount}">
+                    <td width="25%"></td>
+                    <td colspan="6">
+                        <br/>
+                        <font size="4">
+                            Account Number:<span th:text="${loanAccount.accountNumber}"/>
+                        </font>
+                        <input class="selectAmount" required type="text" th:name="${loanAccount.accountNumber}">
+                        <span th:text="' Balance: '+${#numbers.formatDecimal(loanAccount.loanAmount, 0, 'COMMA', 0, 'POINT')}"/>
+                        <br><br>
+                    </td>
+                </tr>
+            </table>
+
+            <br/>
+            <br/>
+            <input type="submit" class="btn-block btn contact-btn"
+                   value="SUBMIT LEDGER TRANSFER"/>
+
+        </form>
+        <br/><br/><br/>
+        <div th:insert="blog::navbar">
+
+        </div>
+        <br/>
+    </section>
+</div>
+<div th:insert="footer::navbar"></div>
+</html>

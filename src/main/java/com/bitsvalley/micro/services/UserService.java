@@ -5,6 +5,7 @@ import com.bitsvalley.micro.domain.User;
 import com.bitsvalley.micro.domain.UserRole;
 import com.bitsvalley.micro.repositories.AccountTypeRepository;
 import com.bitsvalley.micro.repositories.UserRepository;
+import com.bitsvalley.micro.utils.BVMicroUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +21,7 @@ import java.util.Optional;
  */
 @Service
 public class UserService {
+
 
     @Autowired
     private UserRepository userRepository;
@@ -62,9 +64,9 @@ public class UserService {
     }
 
     private void insureAccountExists(){ // init system
-        AccountType general_saving = accountTypeRepository.findByName("GENERAL SAVINGS");
+        Iterable<AccountType> all = accountTypeRepository.findAll();
 //        Iterable<UserRole> all = userRoleService.findAll();
-        if (general_saving == null) {
+        if (!all.iterator().hasNext()) {
 //
 ////            role = new UserRole();
 ////            role.setName(name);
@@ -99,88 +101,86 @@ public class UserService {
             List<AccountType> savingAccountTypeList = new ArrayList<AccountType>();
             AccountType schoolSavingAccountType = new AccountType();
             schoolSavingAccountType.setNumber("11");
-            schoolSavingAccountType.setName("GENERAL SAVINGS");
+            schoolSavingAccountType.setName(BVMicroUtils.GENERAL_SAVINGS);
             savingAccountTypeList.add(schoolSavingAccountType);
 
             AccountType autoSavingAccountType = new AccountType();
-            autoSavingAccountType.setName("RETIREMENT SAVINGS");
+            autoSavingAccountType.setName(BVMicroUtils.RETIREMENT_SAVINGS);
             autoSavingAccountType.setNumber("12");
             savingAccountTypeList.add(autoSavingAccountType);
 
             AccountType vacationSavingAccountType = new AccountType();
-            vacationSavingAccountType.setName("DAILY SAVINGS");
+            vacationSavingAccountType.setName(BVMicroUtils.DAILY_SAVINGS);
             vacationSavingAccountType.setNumber("13");
             savingAccountTypeList.add(vacationSavingAccountType);
 
             AccountType constructionSavingAccountType = new AccountType();
-            constructionSavingAccountType.setName("MEDICAL SAVINGS");
+            constructionSavingAccountType.setName(BVMicroUtils.MEDICAL_SAVINGS);
             constructionSavingAccountType.setNumber("14");
             savingAccountTypeList.add(constructionSavingAccountType);
 
             AccountType familySavingAccountType = new AccountType();
-            familySavingAccountType.setName("SOCIAL SAVINGS");
+            familySavingAccountType.setName(BVMicroUtils.SOCIAL_SAVINGS);
             familySavingAccountType.setNumber("15");
             savingAccountTypeList.add(familySavingAccountType);
 
             AccountType otherSavingAccountType = new AccountType();
-            otherSavingAccountType.setName("BUSINESS SAVINGS");
+            otherSavingAccountType.setName(BVMicroUtils.BUSINESS_SAVINGS);
             otherSavingAccountType.setNumber("16");
             savingAccountTypeList.add(otherSavingAccountType);
 
             AccountType yearlySavingAccountType = new AccountType();
-            yearlySavingAccountType.setName("CHILDREN SAVINGS");
+            yearlySavingAccountType.setName(BVMicroUtils.CHILDREN_SAVINGS);
             yearlySavingAccountType.setNumber("17");
             savingAccountTypeList.add(yearlySavingAccountType);
 
             AccountType monthlSavingAccountType = new AccountType();
-            monthlSavingAccountType.setName("REAL ESTATE SAVINGS");
+            monthlSavingAccountType.setName(BVMicroUtils.REAL_ESTATE_SAVINGS);
             monthlSavingAccountType.setNumber("18");
             savingAccountTypeList.add(monthlSavingAccountType);
 
             AccountType dailySavingAccountType = new AccountType();
-            dailySavingAccountType.setName("EDUCATION SAVINGS");
+            dailySavingAccountType.setName(BVMicroUtils.EDUCATION_SAVINGS);
             dailySavingAccountType.setNumber("19");
             savingAccountTypeList.add(dailySavingAccountType);
 
-
-
             AccountType shortTermLoanType = new AccountType();
-            shortTermLoanType.setName("SHORT TERM LOAN");
+            shortTermLoanType.setName(BVMicroUtils.SHORT_TERM_LOAN);
             shortTermLoanType.setNumber("41");
             savingAccountTypeList.add(shortTermLoanType);
 
             AccountType consumptionType = new AccountType();
-            consumptionType.setName("CONSUMPTION LOAN");
+            consumptionType.setName(BVMicroUtils.CONSUMPTION_LOAN);
             consumptionType.setNumber("42");
             savingAccountTypeList.add(consumptionType);
 
             AccountType agricultureLoanType = new AccountType();
-            agricultureLoanType.setName("AGRICULTURE LOAN");
+            agricultureLoanType.setName(BVMicroUtils.AGRICULTURE_LOAN);
             agricultureLoanType.setNumber("43");
             savingAccountTypeList.add(agricultureLoanType);
 
             AccountType businessLoanType = new AccountType();
-            businessLoanType.setName("BUSINESS INVESTMENT LOAN");
+            businessLoanType.setName(BVMicroUtils.BUSINESS_INVESTMENT_LOAN);
             businessLoanType.setNumber("44");
             savingAccountTypeList.add(businessLoanType);
 
             AccountType schoolFeesType = new AccountType();
-            schoolFeesType.setName("SCHOOL FEES LOAN");
+            schoolFeesType.setName(BVMicroUtils.SCHOOL_FEES_LOAN);
             schoolFeesType.setNumber("45");
             savingAccountTypeList.add(schoolFeesType);
 
             AccountType realEstateType = new AccountType();
-            realEstateType.setName("REAL INVESTMENT LOAN");
+            realEstateType.setName(BVMicroUtils.REAL_ESTATE_LOAN);
             realEstateType.setNumber("46");
             savingAccountTypeList.add(realEstateType);
 
             AccountType overdraftType = new AccountType();
-            overdraftType.setName("OVER DRAFT LOAN");
+            overdraftType.setName(BVMicroUtils.OVERDRAFT_LOAN);
             overdraftType.setNumber("47");
             savingAccountTypeList.add(overdraftType);
 
             AccountType njangiType = new AccountType();
-            njangiType.setName("NJANGI FINANCING LOAN");
+            njangiType.setName(BVMicroUtils.NJANGI_FINANCING);
             njangiType.setNumber("48");
             savingAccountTypeList.add(njangiType);
 
@@ -188,8 +188,6 @@ public class UserService {
             accountTypeRepository.saveAll(savingAccountTypeListIterable);
         }
     }
-
-
 
     public ArrayList<User> findAllByUserRoleIn(ArrayList<UserRole> userRole) {
         return userRepository.findAllByUserRoleIn(userRole);

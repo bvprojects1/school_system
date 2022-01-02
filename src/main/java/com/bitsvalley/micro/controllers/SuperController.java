@@ -90,6 +90,7 @@ public class SuperController {
             if(aUser == null){ //LoanReference
                 Optional<LoanAccountTransaction> byReference = loanAccountTransactionService.
                         findByReference(user.getUserName());
+                if(byReference.isPresent()){
                     LoanAccountTransaction loanAccountTransaction = byReference.get();
                     if(loanAccountTransaction != null) { //TODO: Identical code in loanAccountController
                         LoanAccount aLoanAccount = loanAccountTransaction.getLoanAccount();
@@ -101,9 +102,12 @@ public class SuperController {
                         model.put("loanAccountTransaction", loanAccountTransaction);
                         return "loanBilanzNoInterest";
                     }
+                }
+
             }
         }
-        if("ROLE_CUSTOMER".equals(aUser.getUserRole().get(0).getName())){
+
+        if(aUser != null && "ROLE_CUSTOMER".equals(aUser.getUserRole().get(0).getName())){
             model.put("createSavingAccountEligible", true);
             model.put("createLoanAccountEligible", true);
             model.put("createCurrentAccountEligible", true);
@@ -115,7 +119,7 @@ public class SuperController {
         if(null != aUser){
             model.put("user", aUser); //TODO: stay consitent session or model
             request.getSession().setAttribute(BVMicroUtils.CUSTOMER_IN_USE, aUser);
-        }
+
         SavingBilanzList savingBilanzByUserList = savingAccountService.getSavingBilanzByUser(aUser, false);
         LoanBilanzList loanBilanzByUserList = loanAccountService.getLoanBilanzByUser(aUser, false);
         CurrentBilanzList currentBilanzByUserList = currentAccountService.getCurrentBilanzByUser(aUser, false);
@@ -132,8 +136,14 @@ public class SuperController {
             request.getSession().setAttribute("savingBilanzList", savingBilanzByUserList);
             request.getSession().setAttribute(BVMicroUtils.CUSTOMER_IN_USE, aUser);
             return "userHomeNoAccount";
-    }
-        return "userHome";
+        }
+        }
+        if(aUser==null){
+            model.put("error","No records found");
+            return "welcome";
+        }else{
+            return "userHome";
+        }
     }
 
 

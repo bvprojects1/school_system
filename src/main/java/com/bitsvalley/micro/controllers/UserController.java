@@ -132,7 +132,7 @@ public class UserController extends SuperController{
 
     @PostMapping(value = "/findUserByUserName")
     public String findUserByUsername(@ModelAttribute("user") User user, ModelMap model, HttpServletRequest request){
-        return findUserByUserName(user,model,request);
+        return findUserByUserName(user, model, request);
     }
 
     @GetMapping(value = "/findAllCustomers")

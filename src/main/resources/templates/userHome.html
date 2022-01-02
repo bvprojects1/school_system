@@ -13,11 +13,13 @@
                 <td>
                     <font size="3">Account Owner</font>
                     <br/>
-                    <font size="4">
+
                         <a href="#" th:href="@{/showCustomer/{id}(id=${session.customerInUse.id})}">
-                            <span style th:text="${session.customerInUse.userName}"/>
+                            <font color="gray" size="5">
+                                <b><span style th:text="${session.customerInUse.userName}"/></b>
+                            </font>
                         </a>
-                    </font>
+
                     <button type="submit">
                         <a href="#" th:href="@{/file/{userName}(userName=${session.customerInUse.userName})}">
                             <font color="gray" size="2px">Upload I.D</font></a>
@@ -43,7 +45,7 @@
         <!-- END -->
         <br/>
 
-        <table border="0" class="center" width="100%" cellpadding="5">
+        <table border="1" class="center" width="100%" cellpadding="5">
             <tr>
                 <td colspan="2">
                     <font size="5px" color="#738980">
@@ -87,10 +89,11 @@
             </tr>
             <tr>
                 <td>
-                    Account Type
+                    Account Number<br/>
+                    <font size="2.5">Date Created</font>
                 </td>
                 <td>
-                    Account Number
+                    Account Type
                 </td>
                 <td>
                     Account Balance
@@ -123,7 +126,8 @@
                                 **
                             </font>
                     </span>
-                    </a>
+                    </a><br/>
+                    <font size="2"> <span th:text="${#dates.format(currentAccount.createdDate, 'dd-MMM-yyyy HH:mm')}"/></font>
                 </td>
                 <td> CURRENT ACCOUNT</td>
                 <td th:text="${#numbers.formatDecimal(currentAccount.accountBalance, 0, 'COMMA', 0, 'POINT')}"/>
@@ -149,7 +153,7 @@
         </table>
         <br/> <br/>
         &nbsp;
-        <table border="0" class="center" width="100%" cellpadding="5">
+        <table border="1" class="center" width="100%" cellpadding="5">
             <tr>
                 <td colspan="2">
                     <font size="5px" color="#738980"> <b>SAVING ACCOUNTS</b> </font>
@@ -159,7 +163,7 @@
                         </a>
                     </span>
                 </td>
-                <td colspan="3">
+                <td colspan="2">
                     <a th:if="${#authorization.expression('hasAnyAuthority(''ROLE_CUSTOMER_ACCOUNT_TYPE_TRANSFERS'')')}" href="#" th:href="@{/transferFromDebitToDebitForm}">
                         Saving to Saving <img width="30px" th:src="@{/assets/images/transfer.png}"/>
                     </a>
@@ -169,7 +173,7 @@
                     </div>
 
                 </td>
-                <td colspan="3">
+                <td colspan="2">
                     <a th:if="${#authorization.expression('hasAnyAuthority(''ROLE_CUSTOMER_ACCOUNT_TYPE_TRANSFERS'')')}" href="#" th:href="@{/transferFromDebitToCurrentForm}">
                         Saving to Current <img width="35px" th:src="@{/assets/images/transfer3.png}"/>
                     </a>
@@ -178,14 +182,16 @@
                         Saving to Current <img width="30px" th:src="@{/assets/images/transfer3.png}"/> <label title="Requires ROLE_CUSTOMER_ACCOUNT_TYPE_TRANSFERS"> <img width="30px" th:src="@{/assets/images/toolTip.png}"/> </label>
                     </div>
                 </td>
-                <td colspan="4">
-
-
+                <td colspan="2">
+                    <a th:if="${#authorization.expression('hasAnyAuthority(''ROLE_CUSTOMER_ACCOUNT_TYPE_TRANSFERS'')')}" href="#" th:href="@{/userHomeLedgerEntry}">
+                        Account Ledger Transfers <img width="35px" th:src="@{/assets/images/transfer3.png}"/>
+                    </a>
                 </td>
             </tr>
             <tr>
                 <td>
-                    Account Number
+                    Account Number<br/>
+                    <font size="2.5">Date Created</font>
                 </td>
                 <td>
                     Account Type
@@ -223,6 +229,8 @@
                             </font>
                     </span>
                     </a>
+                        <br/>
+                    <font size="2"><span th:text="${#dates.format(savingAccount.createdDate, 'dd-MMM-yyyy HH:mm')}"/></font>
                 </td>
                 <td th:text="${savingAccount.accountType.name}"/>
                 <td th:text="${#numbers.formatDecimal(savingAccount.accountBalance, 0, 'COMMA', 0, 'POINT')}"/>
@@ -251,7 +259,7 @@
 
         <br/> <br/>
 
-        <table border="0" class="center" width="100%" cellpadding="5">
+        <table border="1" class="center" width="100%" cellpadding="5">
             <tr>
                 <td colspan="8">
                     <font size="5px" color="#738980">
@@ -268,7 +276,8 @@
             </tr>
             <tr>
                 <td>
-                    Account Number
+                    Account Number<br/>
+                    <font size="2.5">Date Created</font>
                 </td>
                 <td>
                     Account Type
@@ -279,9 +288,7 @@
                 <td>
                     Current Balance
                 </td>
-                <td>
-                    Locked
-                </td>
+
                 <td>
                     Guarantor
                 </td>
@@ -291,6 +298,8 @@
                 </td>
                 <td>
                     Annual Rate
+                    <br/>
+                    <font size="2.5">VAT</font>
                 </td>
                 <td>
                 </td>
@@ -299,8 +308,11 @@
             <tr th:each="loanAccount : ${session.customerInUse.loanAccount}">
                 <td>
                     <a th:href="@{/callcenter/{id}(id=${loanAccount.accountNumber})}" href="/callcenter">
-                        <div th:text="${loanAccount.accountNumber}"/>
+                        <div th:text="${loanAccount.accountNumber}"/><br/>
+
                     </a>
+                    <br/>
+                    <font size="2"><span th:text="${#dates.format(loanAccount.createdDate, 'dd-MMM-yyyy HH:mm')}"/></font>
                 </td>
                 <td>
                     <p th:text="${loanAccount.accountType.name}"/>
@@ -320,6 +332,8 @@
 
                 <td>
                     <span th:text="${loanAccount.interestRate}"/>%
+                    <br/>
+                    <font size="2.5"><span th:text="${loanAccount.vatOption}"/></font>
                 </td>
                 <td>
                     <a href="#" th:href="@{/registerLoanAccountTransaction/{id}(id=${loanAccount.id})}">

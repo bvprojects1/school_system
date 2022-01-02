@@ -201,8 +201,21 @@ public class SavingAccountController extends SuperController {
         model.put("notes", transferBilanz.getNotes());
 
         if(transferBilanz.getTransferType().equals(BVMicroUtils.CURRENT_LOAN_TRANSFER)) {
-            String result = savingAccountService.transferFromCurrentToLoan(transferBilanz.getTransferFromAccount(),
-                    transferBilanz.getTransferToAccount(),
+
+            CurrentAccount currentAccount = currentAccountService.findByAccountNumber(transferBilanz.getTransferFromAccount());
+            LoanAccount byAccountNumber = loanAccountService.findByAccountNumber(transferBilanz.getTransferToAccount());
+            if( transferBilanz.getTransferAmount() < 1){
+                model.put("error", "Transfer amount not valid");
+                model.put("transferBilanz",transferBilanz);
+                return "transfer";
+            }
+            if(currentAccount.getAccountBalance() < transferBilanz.getTransferAmount()){
+                model.put("error", "Account Balance cannot be lower than transfer amount");
+                model.put("transferBilanz",transferBilanz);
+                return "transfer";
+            }
+            String result = savingAccountService.transferFromCurrentToLoan(currentAccount,
+                    byAccountNumber,
                     transferBilanz.getTransferAmount(), transferBilanz.getNotes());
             if(!StringUtils.equals("true", result)){
                 model.put("error", result);
@@ -320,8 +333,8 @@ public class SavingAccountController extends SuperController {
         LoanAccount toAccount = loanAccountService.findByAccountNumber(transferBilanz.getTransferToAccount());
 
         model.put("transferType", BVMicroUtils.CURRENT_LOAN_TRANSFER);
-        model.put("fromTransferText", fromAccount.getAccountType().getName() +" --- Balance " + BVMicroUtils.formatCurrency(fromAccount.getAccountBalance()) +"--- Minimum Balance "+ BVMicroUtils.formatCurrency(fromAccount.getAccountMinBalance()) );
-        model.put("toTransferText", toAccount.getAccountType().getName() +" --- Balance " + BVMicroUtils.formatCurrency(toAccount.getCurrentLoanAmount()) +"--- Initial Loan "+ BVMicroUtils.formatCurrency(toAccount.getLoanAmount()) );
+        model.put("fromTransferText", "Balance " + BVMicroUtils.formatCurrency(fromAccount.getAccountBalance()) +" --- Minimum Balance: "+ BVMicroUtils.formatCurrency(fromAccount.getAccountMinBalance()) );
+        model.put("toTransferText", toAccount.getAccountType().getName() +" --- Balance: " + BVMicroUtils.formatCurrency(toAccount.getCurrentLoanAmount()) +" --- Initial Loan: "+ BVMicroUtils.formatCurrency(toAccount.getLoanAmount()) );
         model.put("transferAmount", BVMicroUtils.formatCurrency(transferBilanz.getTransferAmount()) );
         model.put("notes", transferBilanz.getNotes());
 

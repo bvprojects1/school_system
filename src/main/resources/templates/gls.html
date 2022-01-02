@@ -15,7 +15,7 @@
                         <li th:text="${accountLedger.code}"></li>
                         <li>
                             <a href="#" th:href="@{/accountLedger/{id}(id=${accountLedger.id})}">
-                                <span th:text="${accountLedger.name}"/>
+                                <span th:text="${accountLedger.code}"/>
                             </a>
                         </li>
                     </ul>
@@ -35,7 +35,7 @@
                                 </option>
                                 <option th:each="i : ${allLedgerAccount}"
                                         th:value="${i.id}">
-                                    <span th:text="${i.name}"/>
+                                    <span th:text="${i.code}"/>
                                 </option>
                             </select>
                         </td>
@@ -70,7 +70,7 @@
                     </tr>
                 </table>
             </form>
-            
+
             <table border="0" width="80%" class="center">
                 <tr>
                     <td>
@@ -103,8 +103,8 @@
             <th>Class</th>
             <th>Reference</th>
             <th>Ledger</th>
-            <th>Account</th>
             <th>Notes</th>
+            <th>Creator</th>
             <th><a href="#" th:href="@{/findGlByType/{type}(type='DEBIT')}">DEBIT</a></th>
             <th width="5"></th>
             <th><a href="#" th:href="@{/findGlByType/{type}(type='CREDIT')}">CREDIT</a></th>
@@ -121,9 +121,9 @@
                     <span th:text="${gl.reference}"/>
                 </a>
             </td>
-            <td th:text="${gl?.ledgerAccount?.name}"></td>
-            <td th:text="${gl.accountNumber}"></td>
+            <td th:text="${gl?.ledgerAccount?.code}"></td>
             <td th:text="${gl.notes}"></td>
+            <td th:text="${gl.createdBy}"></td>
             <td>
                 <div th:if="${gl.type == 'DEBIT'}">
                     <span th:text="${#numbers.formatDecimal(gl.amount, 0, 'COMMA', 0, 'POINT')}"></span>

@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.YearMonth;
+import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
 
@@ -314,18 +315,15 @@ public class SavingAccountService extends SuperService {
 //        if(savingAccount.getAccountSavingType().getName().equals("GENERAL SAVINGS")){
         List<SavingAccountTransaction> savingAccountTransactionList = savingAccount.getSavingAccountTransaction();
 
-        Date createdDate = savingAccount.getCreatedDate();
-        Date currentDate = new Date(System.currentTimeMillis());
+        LocalDateTime currentDateCal = LocalDateTime.now();
 
-        Calendar currentDateCal = GregorianCalendar.getInstance();
-        currentDateCal.setTime(currentDate);
+        Date input = savingAccount.getCreatedDate();
+        LocalDate createdLocalDate = input.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
 
-        Calendar createdCalenderCal = GregorianCalendar.getInstance();
-        createdCalenderCal.setTime(createdDate);
 
         long monthsBetween = ChronoUnit.MONTHS.between(
-                YearMonth.from(LocalDate.parse(createdCalenderCal.get(GregorianCalendar.YEAR) + "-" + padding(createdCalenderCal.get(GregorianCalendar.MONTH)) + "-" + padding(createdCalenderCal.get(GregorianCalendar.DAY_OF_MONTH)))),
-                YearMonth.from(LocalDate.parse(currentDateCal.get(GregorianCalendar.YEAR) + "-" + padding(currentDateCal.get(GregorianCalendar.MONTH)) + "-" + padding(currentDateCal.get(GregorianCalendar.DAY_OF_MONTH)))));
+                YearMonth.from(LocalDate.of(createdLocalDate.getYear(), createdLocalDate.getMonth(), createdLocalDate.getDayOfMonth())),
+                YearMonth.from(LocalDate.of(currentDateCal.getYear(), currentDateCal.getMonth(), currentDateCal.getDayOfMonth())));
 
         if (monthsBetween >= savingAccountTransactionList.size()) {
             CallCenter callCenter = new CallCenter();
@@ -369,19 +367,17 @@ public class SavingAccountService extends SuperService {
         return total;
     }
 
-
-    public String transferFromCurrentToLoan(String fromAccountNumber,
-                                           String toAccountNumber,
+    @Transactional
+    public String transferFromCurrentToLoan(CurrentAccount fromCurrentAccount,
+                                           LoanAccount loanAccount,
                                            double transferAmount,
                                            String notes) {
         LocalDateTime now = LocalDateTime.now();
         String loggedInUserName = getLoggedInUserName();
         Branch branchInfo = branchService.getBranchInfo(loggedInUserName);
 
-        CurrentAccount fromCurrentAccount = currentAccountService.findByAccountNumber(fromAccountNumber);
         CurrentAccountTransaction currentAccountTransaction = getCurrentAccountTransaction(notes, branchInfo, fromCurrentAccount, transferAmount * -1, BVMicroUtils.CURRENT_LOAN_TRANSFER);
 
-        LoanAccount loanAccount = loanAccountService.findByAccountNumber(toAccountNumber);
         if(!StringUtils.equals(loanAccount.getAccountStatus().name(),AccountStatus.ACTIVE.name())){
             return BVMicroUtils.LOAN_MUST_BE_IN_ACTIVE_STATE;
         }
@@ -399,10 +395,9 @@ public class SavingAccountService extends SuperService {
         loanAccountTransaction.setAccountOwner(loanAccount.getUser().getLastName() +", "+
                 loanAccount.getUser().getLastName());
         loanAccountTransaction.setReference(BVMicroUtils.getSaltString());
-        loanAccountService.createLoanAccountTransaction(loanAccountTransaction, loanAccount, BVMicroUtils.TRANSFER);
+        loanAccount = loanAccountService.createLoanAccountTransaction(loanAccountTransaction, loanAccount, BVMicroUtils.TRANSFER);
 
-        loanAccount.getLoanAccountTransaction().add(loanAccountTransaction);
-        loanAccountService.save(loanAccount);
+//
 
         //Update shortee accounts min balance
         if( loanAccount.isBlockBalanceQuarantor()){

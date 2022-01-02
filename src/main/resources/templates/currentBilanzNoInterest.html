@@ -91,8 +91,10 @@
                 <th width="10%">
                 </th>
                 <th>
-                    <div class="error" th:text="${billSelectionError}"/>
-                    <span th:text="${billSelectionInfo}"/>
+                    <font size="6" color="gray"><div class="error" th:text="${billSelectionError}"/>
+                        <span th:text="${billSelectionInfo}"/>
+                        <span th:text="${error}"/>
+                    </font>
                 </th>
             </tr>
             <tr>
@@ -102,10 +104,12 @@
                     <font size="5" color="green"><b> MAKE A CURRENT ACCOUNT TRANSACTION</b></font>
                     <br/><br/>
                     <select class="selectNormal" name="deposit_withdrawal">
+                        <option value="">Select A Transaction Type</option>
                         <option value="DEPOSIT">DEPOSIT</option>
                         <option value="WITHDRAWAL">WITHDRAWAL</option>
                     </select>
                     <select class="selectNormal" name="modeOfPayment" id="modeOfPayment">
+                        <option value="">Select MOP</option>
                         <option value="CASH">CASH</option>
                         <option value="MOMO">MOMO</option>
                         <option value="ORANGE MONEY">ORANGE MONEY</option>
@@ -173,7 +177,7 @@
         <tr>
             <th>
                 <font size="5" color="green"> CURRENT PAYMENTS PROCESSED </font>
-                <a href="#" th:href="@{/statementPDF/{id}(id=${currentAccountTransaction.currentAccount.id})}"><img
+                <a href="#" th:href="@{/statementCurrentPDF/{id}(id=${currentAccountTransaction.currentAccount.id})}"><img
                         width="40px" th:src="@{/assets/images/pdfIcon.png}"/> </a>
             </th>
         </tr>

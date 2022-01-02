@@ -19,9 +19,9 @@
         <table width="90%" class="center" border="0px">
             <tr>
                 <td>
-                    <font size="3"> <div class="error" th:text="${error}"/> </font><br/>
                         <span th:if="${loan.accountStatus.name == 'PENDING_APPROVAL'}">
                             <a href="#" th:href="@{/approveLoan/{id}(id=${loan.id})}">APPROVE THIS LOAN</a>
+                            <span class="error" th:text="${error}"/>
                         </span>
                 </td>
                 <td colspan="3">

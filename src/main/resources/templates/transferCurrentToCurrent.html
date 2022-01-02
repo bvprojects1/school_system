@@ -23,28 +23,28 @@
                 <tr>
                     <td align="center" colspan="2">
 
-                        <font size="4px"> Account Owner</font> <br/>
+                        <font size="4px"> <b>Account Owner</b></font> <br/>
                         <font size="6">
                             <span style th:text="${session.customerInUse.userName}"/>
                         </font>
                         <br/><br/>
-                            <font size="4px"> From Account:</font><br/>
+                            <font size="4px"><b> From Account:</b></font><br/>
                         <select class="selectNormal" th:field="*{transferFromAccount}">
                             <option th:each="i : ${session.customerInUse.currentAccount}"
                                     th:value="${i.accountNumber}"
-                                    th:text="'AccountNumber: ' + ${i.accountNumber} + ' Balance:' + ${#numbers.formatDecimal(i.accountBalance, 0, 'COMMA', 0, 'POINT')} ">
+                                    th:text="'AccountNumber: ' + ${i.accountNumber} + ' Balance: ' + ${#numbers.formatDecimal(i.accountBalance, 0, 'COMMA', 0, 'POINT')} ">
                             </option>
                         </select>
 
                         <br/><br/>
 
                         <font size="4"> <div class="error" th:text="${invalidToAccount}"/> </font>
-                            <font size="4px"> To Account:</font><br/>
+                            <font size="4px"><b> To Account:</b></font><br/>
                         <input class="selectNormal" type="number" size="12" th:field="*{transferToAccount}">
 
                         <br/><br/>
 
-                       <font size="4px"> Enter Amount:</font><br/>
+                       <font size="4px"> <b>Enter Amount:</b></font><br/>
                         <input class="selectAmount" size="6" name="transferAmount" type="number" value="${transferAmount}" />
                         <input type="hidden"  id="transferType" th:field="*{transferType}" value="${transferType}">
 

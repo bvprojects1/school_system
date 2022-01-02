@@ -32,9 +32,9 @@
                                 <span th:text="${originLedgerAccount.name}"/>
                             </option>
                         </select>
-
+                        <br/>
                         <select class="selectNormal" name="creditOrDebit" id="creditOrDebit" th:field="*{creditOrDebit}">
-                            <option value="">Select A Type </option>
+                            <option value="">Select A Type </option><br/>
                             <option value="CREDIT">CREDIT</option>
                             <option value="DEBIT">DEBIT</option>
                         </select>
@@ -42,16 +42,16 @@
                             <!--<input type="hidden"  id="transferType" th:field="*{transferType}" value="${transferType}">-->
                         <br/>
                         <br/>
-                        <label> Double Entry To:</label>
+                        <label> <b>Double Entry To:</b></label><br/>
                             <select class="selectNormal" th:field="*{destinationLedgerAccount}">
                                 <option th:each="i : ${destinationLedgerAccounts}"
                                         th:value="${i.id}">
                                     <span th:text="${i.name}"/>
                                 </option>
-                            </select>(Opposite booking Type happens here)
+                            </select><br/>(Opposite booking Type happens here)
                         <br/>
                         <br/>
-                        <label> Amount:</label>
+                        <label> <b>Amount:</b></label><br/>
                         <input class="selectAmount" size="6" name="ledgerAmount" type="number" th:field="*{ledgerAmount}"/>
                         <br/>
                         <br/>

@@ -24,7 +24,7 @@ public class LedgerAccount {
     private String code;
     private String category;
     private String status;
-    private String cashAccountTransfer;
+//    private String cashAccountTransfer;
     private String createdBy;
     private Date createdDate;
 //    private String cashTransaction;
@@ -77,13 +77,13 @@ public class LedgerAccount {
         this.generalLedger = generalLedger;
     }
 
-    public String getCashAccountTransfer() {
-        return cashAccountTransfer;
-    }
-
-    public void setCashAccountTransfer(String cashAccountTransfer) {
-        this.cashAccountTransfer = cashAccountTransfer;
-    }
+//    public String getCashAccountTransfer() {
+//        return cashAccountTransfer;
+//    }
+//
+//    public void setCashAccountTransfer(String cashAccountTransfer) {
+//        this.cashAccountTransfer = cashAccountTransfer;
+//    }
 
     public String getCreatedBy() {
         return createdBy;

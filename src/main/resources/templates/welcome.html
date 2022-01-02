@@ -97,13 +97,13 @@
                     <!--Single service area end-->
 
                     <!--Single service area end-->
-                    <div th:if="${#authorization.expression('hasAnyAuthority(''ROLE_MAIN_GENERAL_LEDGER'')')}" class="col-md-6 col-lg-4">
+                    <div th:if="${#authorization.expression('hasAnyAuthority(''ROLE_MANAGER'')')} OR ${#authorization.expression('hasAnyAuthority(''ROLE_AUDITOR'')')}" class="col-md-6 col-lg-4">
                         <div class="single-choosen-content text-center single-service-content box-pad">
-                            <i class="fas fa-book"></i>
-                            <h4>GENERAL LEDGER</h4>
-                            <p>Records all account transactions </p>
-                            <a href="/gl">See More ...</a>
-                            <span class="fas fa-book"></span>
+                            <i class="fas fa-clipboard"></i>
+                            <h4>GL ACCOUNTS</h4>
+                            <p>General Ledger Accounts</p>
+                            <a href="/newLedgerAccount">See More ...</a>
+                            <span class="fas fa-clipboard"></span>
                         </div>
                     </div>
                     <!--Single service area end-->
@@ -131,16 +131,15 @@
                     </div>
 
                     <!--Single service area end-->
-                    <div th:if="${#authorization.expression('hasAnyAuthority(''ROLE_MANAGER'')')} OR ${#authorization.expression('hasAnyAuthority(''ROLE_AUDITOR'')')}" class="col-md-6 col-lg-4">
+                    <div th:if="${#authorization.expression('hasAnyAuthority(''ROLE_MAIN_GENERAL_LEDGER'')')}" class="col-md-6 col-lg-4">
                         <div class="single-choosen-content text-center single-service-content box-pad">
-                            <i class="fas fa-clipboard"></i>
-                            <h4>GL ACCOUNTS</h4>
-                            <p>General Ledger Accounts</p>
-                            <a href="/newLedgerAccount">See More ...</a>
-                            <span class="fas fa-clipboard"></span>
+                            <i class="fas fa-book"></i>
+                            <h4>GENERAL LEDGER</h4>
+                            <p>Records all account transactions </p>
+                            <a href="/gl">See More ...</a>
+                            <span class="fas fa-book"></span>
                         </div>
                     </div>
-
                 </div>
 
             </div>

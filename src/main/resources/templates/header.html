@@ -96,9 +96,15 @@
 <!--  padding: 10px;-->
 }
 
-.selectNormal {
-  height: 40px;
+.selectLarge50 {
+  height: 100px;
   font-size: 150%;
+  padding: 10px;
+}
+
+.selectNormal {
+  height: 60px;
+  font-size: 125%;
   padding: 10px;
 }
 
@@ -164,7 +170,7 @@
                                 <li><a th:href="@{/welcomeGlobal}">Home</a></li>
                                 <li th:if="${#authorization.expression('hasAnyAuthority(''ROLE_AGENT'')')} OR ${#authorization.expression('hasAnyAuthority(''ROLE_MANAGER'')')}">
                                     <form action="#" th:action="@{/findUserByUserName}" method="post">
-
+                                        <font color="brown" size="3px"> <span th:text="${error}"/></font><br/>
                                         <input class="selectSearch" id="filter" name="userName" type="text" placeholder="Search..." />
                                         <i id="filtersubmit" class="fa fa-search"></i>
 

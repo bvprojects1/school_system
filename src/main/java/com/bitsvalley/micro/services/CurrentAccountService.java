@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.YearMonth;
+import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
 
@@ -321,18 +322,14 @@ public class CurrentAccountService extends SuperService {
 //        if(savingAccount.getAccountSavingType().getName().equals("GENERAL SAVINGS")){
         List<SavingAccountTransaction> savingAccountTransactionList = savingAccount.getSavingAccountTransaction();
 
-        Date createdDate = savingAccount.getCreatedDate();
-        Date currentDate = new Date(System.currentTimeMillis());
+        LocalDateTime currentDateCal = LocalDateTime.now();
+        Date input = savingAccount.getCreatedDate();
+        LocalDate createdLocalDate = input.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
 
-        Calendar currentDateCal = GregorianCalendar.getInstance();
-        currentDateCal.setTime(currentDate);
-
-        Calendar createdCalenderCal = GregorianCalendar.getInstance();
-        createdCalenderCal.setTime(createdDate);
 
         long monthsBetween = ChronoUnit.MONTHS.between(
-                YearMonth.from(LocalDate.parse(createdCalenderCal.get(GregorianCalendar.YEAR) + "-" + padding(createdCalenderCal.get(GregorianCalendar.MONTH)) + "-" + padding(createdCalenderCal.get(GregorianCalendar.DAY_OF_MONTH)))),
-                YearMonth.from(LocalDate.parse(currentDateCal.get(GregorianCalendar.YEAR) + "-" + padding(currentDateCal.get(GregorianCalendar.MONTH)) + "-" + padding(currentDateCal.get(GregorianCalendar.DAY_OF_MONTH)))));
+                YearMonth.from(LocalDate.of(createdLocalDate.getYear(), createdLocalDate.getMonth(),createdLocalDate.getDayOfMonth())),
+                YearMonth.from(LocalDate.of(currentDateCal.getYear() , currentDateCal.getMonth(),currentDateCal.getYear())));
 
         if (monthsBetween >= savingAccountTransactionList.size()) {
             CallCenter callCenter = new CallCenter();
@@ -397,7 +394,9 @@ public class CurrentAccountService extends SuperService {
 
         // Update new loan account transaction
         loanAccountTransaction.setAmountReceived(loanAccount.getLoanAmount());
-        generalLedgerService.updateGLWithLoanAccountTransaction(loanAccountTransaction);//TODO: NO Accountledger set Amount missing in GL
+        generalLedgerService.updateGLWithCurrentLoanAccountTransaction(loanAccountTransaction);//TODO: NO Accountledger set Amount missing in GL
+
+//      generalLedgerService.updateGLAfterLoanAccountTransferRepayment(loanAccountTransaction);
         loanAccountTransaction.setAmountReceived(0); // Reset loanAmount
         callCenterService.saveCallCenterLog("ACTIVE", getLoggedInUserName(), loanAccount.getAccountNumber(),"LOAN FUNDS TRANSFERRED TO CURRENT"); //TODO ADD DATE
         loanAccountService.save(loanAccount);

@@ -188,7 +188,7 @@ public class LoanAccountController extends SuperController {
     public String approveLoan(@PathVariable("id") long id, ModelMap model) {
         LoanAccount byId = loanAccountService.findById(id).get();
         if(byId.getCreatedBy().equals(getLoggedInUserName())){
-            model.put("loanError","Get another authorized Person to approve loan");
+            model.put("error","Get another authorized Person to approve loan");
         }else{
             byId.setAccountStatus(AccountStatus.PENDING_PAYOUT);
             byId.setApprovedBy(getLoggedInUserName());
