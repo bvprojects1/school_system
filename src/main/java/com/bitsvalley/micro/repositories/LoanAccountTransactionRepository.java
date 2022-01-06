@@ -1,7 +1,6 @@
 package com.bitsvalley.micro.repositories;
 
 import com.bitsvalley.micro.domain.LoanAccountTransaction;
-import com.bitsvalley.micro.domain.SavingAccountTransaction;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 

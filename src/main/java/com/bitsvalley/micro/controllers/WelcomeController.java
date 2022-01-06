@@ -1,7 +1,6 @@
 package com.bitsvalley.micro.controllers;
 
 import com.bitsvalley.micro.domain.User;
-import com.bitsvalley.micro.repositories.BranchRepository;
 import com.bitsvalley.micro.repositories.UserRepository;
 import com.bitsvalley.micro.repositories.UserRoleRepository;
 import com.bitsvalley.micro.services.*;
@@ -13,7 +12,6 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;

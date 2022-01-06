@@ -1,13 +1,14 @@
 package com.bitsvalley.micro.controllers;
 
-import com.bitsvalley.micro.domain.*;
-import com.bitsvalley.micro.repositories.BranchRepository;
+import com.bitsvalley.micro.domain.Branch;
+import com.bitsvalley.micro.domain.CurrentAccount;
+import com.bitsvalley.micro.domain.ShareAccount;
+import com.bitsvalley.micro.domain.User;
 import com.bitsvalley.micro.repositories.ShareAccountRepository;
 import com.bitsvalley.micro.repositories.UserRepository;
 import com.bitsvalley.micro.services.*;
 import com.bitsvalley.micro.utils.AccountStatus;
 import com.bitsvalley.micro.utils.BVMicroUtils;
-import com.bitsvalley.micro.webdomain.RuntimeSetting;
 import com.bitsvalley.micro.webdomain.TransferBilanz;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -19,11 +20,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
-import java.util.Optional;
 
 /**
  * @author Fru Chifen

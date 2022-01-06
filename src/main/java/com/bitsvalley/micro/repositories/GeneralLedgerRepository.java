@@ -1,9 +1,6 @@
 package com.bitsvalley.micro.repositories;
 
-import com.bitsvalley.micro.domain.CurrentAccountTransaction;
 import com.bitsvalley.micro.domain.GeneralLedger;
-import com.bitsvalley.micro.domain.LedgerAccount;
-import com.bitsvalley.micro.domain.User;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 

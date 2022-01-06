@@ -1,13 +1,14 @@
 package com.bitsvalley.micro.controllers;
 
-import com.bitsvalley.micro.domain.*;
+import com.bitsvalley.micro.domain.Branch;
+import com.bitsvalley.micro.domain.CurrentAccount;
+import com.bitsvalley.micro.domain.CurrentAccountTransaction;
+import com.bitsvalley.micro.domain.User;
 import com.bitsvalley.micro.repositories.UserRepository;
 import com.bitsvalley.micro.services.*;
 import com.bitsvalley.micro.utils.BVMicroUtils;
 import com.bitsvalley.micro.webdomain.CurrentBilanzList;
 import com.bitsvalley.micro.webdomain.RuntimeSetting;
-import com.bitsvalley.micro.webdomain.SavingBilanzList;
-import com.bitsvalley.micro.webdomain.TransferBilanz;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -23,7 +24,6 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;

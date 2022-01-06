@@ -1,6 +1,6 @@
 package com.bitsvalley.micro.repositories;
+
 import com.bitsvalley.micro.domain.LedgerAccount;
-import com.bitsvalley.micro.domain.LoanAccount;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
