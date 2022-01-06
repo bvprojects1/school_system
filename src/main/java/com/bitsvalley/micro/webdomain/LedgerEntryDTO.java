@@ -3,6 +3,7 @@ package com.bitsvalley.micro.webdomain;
 import com.bitsvalley.micro.domain.SavingAccount;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class LedgerEntryDTO {
@@ -11,6 +12,7 @@ public class LedgerEntryDTO {
     private long destinationLedgerAccount;
     private double ledgerAmount;
     private String creditOrDebit;
+    private Date recordDate;
     private String notes;
     private List<String> paramValueString = new ArrayList<String>();
     private List<SavingAccount> savingAccounts;
@@ -73,5 +75,13 @@ public class LedgerEntryDTO {
 
     public void setParamValueString(List<String> paramValueString) {
         this.paramValueString = paramValueString;
+    }
+
+    public Date getRecordDate() {
+        return recordDate;
+    }
+
+    public void setRecordDate(Date recordDate) {
+        this.recordDate = recordDate;
     }
 }

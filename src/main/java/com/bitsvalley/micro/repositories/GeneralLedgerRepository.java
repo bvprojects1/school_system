@@ -1,5 +1,6 @@
 package com.bitsvalley.micro.repositories;
 
+import com.bitsvalley.micro.domain.CurrentAccountTransaction;
 import com.bitsvalley.micro.domain.GeneralLedger;
 import com.bitsvalley.micro.domain.LedgerAccount;
 import com.bitsvalley.micro.domain.User;

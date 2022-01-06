@@ -1,12 +1,10 @@
 package com.bitsvalley.micro.services;
 
 import com.bitsvalley.micro.domain.*;
-import com.bitsvalley.micro.repositories.AccountTypeRepository;
-import com.bitsvalley.micro.repositories.GeneralLedgerRepository;
-import com.bitsvalley.micro.repositories.LedgerAccountRepository;
-import com.bitsvalley.micro.repositories.UserRepository;
+import com.bitsvalley.micro.repositories.*;
 import com.bitsvalley.micro.utils.BVMicroUtils;
 import com.bitsvalley.micro.utils.GeneralLedgerType;
+import com.bitsvalley.micro.webdomain.BillSelectionBilanz;
 import com.bitsvalley.micro.webdomain.GeneralLedgerBilanz;
 import com.bitsvalley.micro.webdomain.GeneralLedgerWeb;
 import com.bitsvalley.micro.webdomain.LedgerEntryDTO;
@@ -42,6 +40,15 @@ public class GeneralLedgerService extends SuperService {
 
     @Autowired
     private LedgerAccountRepository ledgerAccountRepository;
+
+    @Autowired
+    private LoanAccountTransactionRepository loanAccountTransactionRepository;
+
+    @Autowired
+    private SavingAccountTransactionRepository savingAccountTransactionRepository;
+
+    @Autowired
+    private CurrentAccountTransactionRepository currentAccountTransactionRepository;
 
     public List<GeneralLedger> findByAccountNumber(String accountNumber) {
         return generalLedgerRepository.findByAccountNumber(accountNumber);
@@ -149,7 +156,8 @@ public class GeneralLedgerService extends SuperService {
         }else{
             amount = loanAccountTransaction.getAmountReceived() - loanAccountTransaction.getInterestPaid();
         }
-        updateGeneralLedger(loanAccountTransaction, BVMicroUtils.LOAN, BVMicroUtils.CREDIT, amount, true);
+        LedgerAccount ledgerAccount = determineLedgerAccount(loanAccountTransaction.getLoanAccount().getProductCode());
+        updateGeneralLedger(loanAccountTransaction, ledgerAccount.getCode(), BVMicroUtils.CREDIT, amount, true);
     }
 
     private void updateGeneralLedger(ShareAccountTransaction shareAccountTransaction, String ledgerAccount, String creditDebit,
@@ -174,6 +182,9 @@ public class GeneralLedgerService extends SuperService {
         GeneralLedger generalLedger;//CREDIT INTEREST PAID
         generalLedger = savingAccountGLMapper(savingAccountTransaction);
         LedgerAccount ledgerAccount = ledgerAccountRepository.findByName(accountLedger);
+        if(ledgerAccount == null){
+            ledgerAccount = ledgerAccountRepository.findByCode(accountLedger);
+        }
         if (generalGL) {
             generalLedger.setLedgerAccount(ledgerAccount);
         }
@@ -191,6 +202,9 @@ public class GeneralLedgerService extends SuperService {
         LedgerAccount aLedgerAccount = null;
         if (generalGL) {
             aLedgerAccount = ledgerAccountRepository.findByName(ledgerAccount);
+            if(aLedgerAccount == null){
+                aLedgerAccount = ledgerAccountRepository.findByCode(ledgerAccount);
+            }
             generalLedger.setLedgerAccount(aLedgerAccount);
         }
         generalLedger.setType(creditDebit);
@@ -212,6 +226,9 @@ public class GeneralLedgerService extends SuperService {
         GeneralLedger generalLedger;//CREDIT INTEREST PAID
         generalLedger = currentAccountGLMapper(currentAccountTransaction, generalGL);
         LedgerAccount currentGL = ledgerAccountRepository.findByName(ledgerAccount);
+        if(currentGL == null){
+            currentGL = ledgerAccountRepository.findByCode(ledgerAccount);
+        }
         if (generalGL) {
             generalLedger.setLedgerAccount(currentGL);
         }
@@ -441,6 +458,177 @@ public class GeneralLedgerService extends SuperService {
         return generalLedgerBilanz;
     }
 
+    public BillSelectionBilanz searchCriteriaBillSelection(String startDate, String endDate, String userName) {
+        List<CurrentAccountTransaction> currentAccountTransactions = new ArrayList<CurrentAccountTransaction>();
+        List<SavingAccountTransaction> savingAccountTransactions = new ArrayList<SavingAccountTransaction>();
+        List<LoanAccountTransaction> loanAccountTransactions = new ArrayList<LoanAccountTransaction>();
+
+
+        if(userName.equals("-1")){
+            currentAccountTransactions = currentAccountTransactionRepository.searchStartEndDate(startDate, endDate);
+            savingAccountTransactions = savingAccountTransactionRepository.searchStartEndDate(startDate, endDate);
+            loanAccountTransactions = loanAccountTransactionRepository.searchStartEndDate(startDate, endDate);
+        }else{
+            currentAccountTransactions = currentAccountTransactionRepository.searchStartEndDate(startDate, endDate, userName);
+            savingAccountTransactions = savingAccountTransactionRepository.searchStartEndDate(startDate, endDate, userName);
+            loanAccountTransactions = loanAccountTransactionRepository.searchStartEndDate(startDate, endDate, userName);
+        }
+
+        BillSelectionBilanz billSelectionBilanz = new BillSelectionBilanz();
+
+        extractCurrentAccountTransactions(currentAccountTransactions, billSelectionBilanz);
+        extractSavingAccountTransactions(savingAccountTransactions, billSelectionBilanz);
+        extractLoanAccountTransactions(loanAccountTransactions, billSelectionBilanz);
+
+
+        billSelectionBilanz.setTotal(
+                (billSelectionBilanz.getTenThousand()*10000)+
+                        (billSelectionBilanz.getFiveThousand()*5000)+
+                            (billSelectionBilanz.getTwoThousand()*2000)+
+                                (billSelectionBilanz.getOneThousand()*1000)+
+                        (billSelectionBilanz.getFiveHundred()*500)+
+                        (billSelectionBilanz.getOneHundred()*100)+
+                        (billSelectionBilanz.getFifty()*50)+
+                        (billSelectionBilanz.getTwentyFive()*25)+
+                        (billSelectionBilanz.getTen()*10)+
+                        (billSelectionBilanz.getFive()*5));
+
+        return billSelectionBilanz;
+    }
+
+    private void extractLoanAccountTransactions(List<LoanAccountTransaction> loanAccountTransactions, BillSelectionBilanz billSelectionBilanz) {
+
+        int tenThousand = 0;
+        int fiveThousand = 0;
+        int twoThousand = 0;
+        int oneThousand = 0;
+        int fiveHundred = 0;
+        int oneHundred = 0;
+        int fifty = 0;
+        int twentyFive = 0;
+        int ten = 0;
+        int five = 0;
+
+        for ( LoanAccountTransaction aTransaction: loanAccountTransactions) {
+            if (aTransaction.getWithdrawalDeposit() == -1) {
+
+                billSelectionBilanz.setTenThousand(billSelectionBilanz.getTenThousand() - aTransaction.getTenThousand());
+                billSelectionBilanz.setFiveThousand(billSelectionBilanz.getFiveThousand() - aTransaction.getFiveThousand());
+                billSelectionBilanz.setTwoThousand(billSelectionBilanz.getTwoThousand() - aTransaction.getTwoThousand());
+                billSelectionBilanz.setOneThousand(billSelectionBilanz.getOneThousand() - aTransaction.getOneThousand());
+                billSelectionBilanz.setFiveHundred(billSelectionBilanz.getFiveHundred() - aTransaction.getFiveHundred());
+                billSelectionBilanz.setOneHundred(billSelectionBilanz.getOneHundred() - aTransaction.getOneHundred());
+                billSelectionBilanz.setFifty(billSelectionBilanz.getFifty() - aTransaction.getFifty());
+                billSelectionBilanz.setTwentyFive( billSelectionBilanz.getTwentyFive() - aTransaction.getTwentyFive() );
+
+//                    ten = ten - aTransaction.getTen();
+//                    five = five - aTransaction.getFiveFrancs();
+
+            } else if (aTransaction.getWithdrawalDeposit() == 1) {
+
+                billSelectionBilanz.setTenThousand(billSelectionBilanz.getTenThousand() + aTransaction.getTenThousand());
+                billSelectionBilanz.setFiveThousand(billSelectionBilanz.getFiveThousand() + aTransaction.getFiveThousand());
+                billSelectionBilanz.setTwoThousand(billSelectionBilanz.getTwoThousand() + aTransaction.getTwoThousand());
+                billSelectionBilanz.setOneThousand(billSelectionBilanz.getOneThousand() + aTransaction.getOneThousand());
+                billSelectionBilanz.setFiveHundred(billSelectionBilanz.getFiveHundred() + aTransaction.getFiveHundred());
+                billSelectionBilanz.setOneHundred(billSelectionBilanz.getOneHundred() + aTransaction.getOneHundred());
+                billSelectionBilanz.setFifty(billSelectionBilanz.getFifty() + aTransaction.getFifty());
+                billSelectionBilanz.setTwentyFive( billSelectionBilanz.getTwentyFive() + aTransaction.getTwentyFive() );
+
+//                    ten = ten + aTransaction.getTen();
+//                    five = five + aTransaction.getFiveFrancs();
+
+            }
+
+        }
+
+        billSelectionBilanz.setTenThousand( billSelectionBilanz.getTenThousand() + tenThousand);
+        billSelectionBilanz.setFiveThousand(billSelectionBilanz.getFiveThousand() + fiveThousand);
+        billSelectionBilanz.setTwoThousand(billSelectionBilanz.getTwoThousand() + twoThousand);
+        billSelectionBilanz.setOneThousand(billSelectionBilanz.getOneThousand() + oneThousand);
+        billSelectionBilanz.setFiveHundred(billSelectionBilanz.getFiveHundred() + fiveHundred);
+        billSelectionBilanz.setOneHundred(billSelectionBilanz.getOneHundred() + oneHundred);
+        billSelectionBilanz.setFifty(billSelectionBilanz.getFifty() + fifty);
+        billSelectionBilanz.setTwentyFive(billSelectionBilanz.getTwentyFive() + twentyFive);
+//        billSelectionBilanz.setTen(billSelectionBilanz.getTen() + ten);
+//        billSelectionBilanz.setFive(billSelectionBilanz.getFive() + five);
+
+    }
+
+
+    private void extractSavingAccountTransactions(List<SavingAccountTransaction> savingAccountTransactions, BillSelectionBilanz billSelectionBilanz) {
+
+        for ( SavingAccountTransaction aTransaction: savingAccountTransactions) {
+            if (aTransaction.getWithdrawalDeposit() == -1) {
+
+                billSelectionBilanz.setTenThousand(billSelectionBilanz.getTenThousand() - aTransaction.getTenThousand());
+                billSelectionBilanz.setFiveThousand(billSelectionBilanz.getFiveThousand() - aTransaction.getFiveThousand());
+                billSelectionBilanz.setTwoThousand(billSelectionBilanz.getTwoThousand() - aTransaction.getTwoThousand());
+                billSelectionBilanz.setOneThousand(billSelectionBilanz.getOneThousand() - aTransaction.getOneThousand());
+                billSelectionBilanz.setFiveHundred(billSelectionBilanz.getFiveHundred() - aTransaction.getFiveHundred());
+                billSelectionBilanz.setOneHundred(billSelectionBilanz.getOneHundred() - aTransaction.getOneHundred());
+                billSelectionBilanz.setFifty(billSelectionBilanz.getFifty() - aTransaction.getFifty());
+                billSelectionBilanz.setTwentyFive( billSelectionBilanz.getTwentyFive() - aTransaction.getTwentyFive() );
+
+//                    ten = ten - aTransaction.getTen();
+//                    five = five - aTransaction.getFiveFrancs();
+
+            } else if (aTransaction.getWithdrawalDeposit() == 1) {
+
+                billSelectionBilanz.setTenThousand(billSelectionBilanz.getTenThousand() + aTransaction.getTenThousand());
+                billSelectionBilanz.setFiveThousand(billSelectionBilanz.getFiveThousand() + aTransaction.getFiveThousand());
+                billSelectionBilanz.setTwoThousand(billSelectionBilanz.getTwoThousand() + aTransaction.getTwoThousand());
+                billSelectionBilanz.setOneThousand(billSelectionBilanz.getOneThousand() + aTransaction.getOneThousand());
+                billSelectionBilanz.setFiveHundred(billSelectionBilanz.getFiveHundred() + aTransaction.getFiveHundred());
+                billSelectionBilanz.setOneHundred(billSelectionBilanz.getOneHundred() + aTransaction.getOneHundred());
+                billSelectionBilanz.setFifty(billSelectionBilanz.getFifty() + aTransaction.getFifty());
+                billSelectionBilanz.setTwentyFive( billSelectionBilanz.getTwentyFive() + aTransaction.getTwentyFive() );
+
+//                    ten = ten + aTransaction.getTen();
+//                    five = five + aTransaction.getFiveFrancs();
+            }
+
+        }
+
+    }
+
+    private void extractCurrentAccountTransactions(List<CurrentAccountTransaction> currentAccountTransactions, BillSelectionBilanz billSelectionBilanz) {
+
+
+        for ( CurrentAccountTransaction aTransaction: currentAccountTransactions) {
+            if (aTransaction.getWithdrawalDeposit() == -1) {
+
+                billSelectionBilanz.setTenThousand(billSelectionBilanz.getTenThousand() - aTransaction.getTenThousand());
+                billSelectionBilanz.setFiveThousand(billSelectionBilanz.getFiveThousand() - aTransaction.getFiveThousand());
+                billSelectionBilanz.setTwoThousand(billSelectionBilanz.getTwoThousand() - aTransaction.getTwoThousand());
+                billSelectionBilanz.setOneThousand(billSelectionBilanz.getOneThousand() - aTransaction.getOneThousand());
+                billSelectionBilanz.setFiveHundred(billSelectionBilanz.getFiveHundred() - aTransaction.getFiveHundred());
+                billSelectionBilanz.setOneHundred(billSelectionBilanz.getOneHundred() - aTransaction.getOneHundred());
+                billSelectionBilanz.setFifty(billSelectionBilanz.getFifty() - aTransaction.getFifty());
+                billSelectionBilanz.setTwentyFive( billSelectionBilanz.getTwentyFive() - aTransaction.getTwentyFive() );
+
+//                    ten = ten - aTransaction.getTen();
+//                    five = five - aTransaction.getFiveFrancs();
+
+            } else if (aTransaction.getWithdrawalDeposit() == 1) {
+
+                billSelectionBilanz.setTenThousand(billSelectionBilanz.getTenThousand() + aTransaction.getTenThousand());
+                billSelectionBilanz.setFiveThousand(billSelectionBilanz.getFiveThousand() + aTransaction.getFiveThousand());
+                billSelectionBilanz.setTwoThousand(billSelectionBilanz.getTwoThousand() + aTransaction.getTwoThousand());
+                billSelectionBilanz.setOneThousand(billSelectionBilanz.getOneThousand() + aTransaction.getOneThousand());
+                billSelectionBilanz.setFiveHundred(billSelectionBilanz.getFiveHundred() + aTransaction.getFiveHundred());
+                billSelectionBilanz.setOneHundred(billSelectionBilanz.getOneHundred() + aTransaction.getOneHundred());
+                billSelectionBilanz.setFifty(billSelectionBilanz.getFifty() + aTransaction.getFifty());
+                billSelectionBilanz.setTwentyFive( billSelectionBilanz.getTwentyFive() + aTransaction.getTwentyFive() );
+
+//                    ten = ten + aTransaction.getTen();
+//                    five = five + aTransaction.getFiveFrancs();
+
+            }
+        }
+
+    }
+
     public GeneralLedgerBilanz findGLByLedgerAccount(long ledgerAccountId) {
 
         LedgerAccount ledgerAccount = ledgerAccountRepository.findById(ledgerAccountId).get();
@@ -503,6 +691,10 @@ public class GeneralLedgerService extends SuperService {
 //        }
         if (savingAccountTransaction.getModeOfPayment().equals(BVMicroUtils.CASH)) {
             savingAccountTransaction.setNotes(BVMicroUtils.CASH_GL_5001 + " " + savingAccountTransaction.getNotes());
+        }else if (savingAccountTransaction.getModeOfPayment().equals(BVMicroUtils.TRANSFER)) {
+            savingAccountTransaction.setNotes(BVMicroUtils.TRANSFER + " " + savingAccountTransaction.getNotes());
+
+        }
 
             if (StringUtils.equals(
                     savingAccountTransaction.getSavingAccount().getAccountSavingType().getNumber(), "11")) {
@@ -547,8 +739,10 @@ public class GeneralLedgerService extends SuperService {
             }
 
             updateGeneralLedger(savingAccountTransaction, BVMicroUtils.CASH, savingAccountTransaction.getSavingAmount() > 0 ? "DEBIT" : "CREDIT", savingAccountTransaction.getSavingAmount(), true);
-        }
+
     }
+
+
 
     public void updateGLAfterCurrentAccountTransaction(CurrentAccountTransaction currentAccountTransaction) {
 
@@ -557,51 +751,57 @@ public class GeneralLedgerService extends SuperService {
             currentAccountTransaction.setNotes(BVMicroUtils.CASH_GL_5001 + " " + currentAccountTransaction.getNotes());
             updateGeneralLedger(currentAccountTransaction, BVMicroUtils.CURRENT, currentAccountTransaction.getCurrentAmount() > 0 ? "CREDIT" : "DEBIT", currentAccountTransaction.getCurrentAmount(), 3, true);
             currentAccountTransaction.setNotes(BVMicroUtils.CURRENT_GL_3004 + " " + currentAccountTransaction.getNotes());
-            updateGeneralLedger(currentAccountTransaction, BVMicroUtils.CASH_GL_5001, currentAccountTransaction.getCurrentAmount() > 0 ? "DEBIT" : "CREDIT", currentAccountTransaction.getCurrentAmount(), 3, true);
+            updateGeneralLedger(currentAccountTransaction, BVMicroUtils.CASH, currentAccountTransaction.getCurrentAmount() > 0 ? "DEBIT" : "CREDIT", currentAccountTransaction.getCurrentAmount(), 3, true);
         }
     }
+
+
 
     public void updateGLAfterCurrentCurrentTransfer(CurrentAccountTransaction currentAccountTransaction) {
 
         currentAccountTransaction.getNotes();
         if (currentAccountTransaction.getModeOfPayment().equals(BVMicroUtils.CURRENT_CURRENT_TRANSFER)) {
             currentAccountTransaction.setNotes(BVMicroUtils.CURRENT_GL_3004 + " " + currentAccountTransaction.getNotes());
-            updateGeneralLedger(currentAccountTransaction, BVMicroUtils.CURRENT_GL_3004, "DEBIT", currentAccountTransaction.getCurrentAmount(), 3, true);
+            updateGeneralLedger(currentAccountTransaction, BVMicroUtils.CURRENT, "DEBIT", currentAccountTransaction.getCurrentAmount(), 3, true);
             currentAccountTransaction.setNotes(BVMicroUtils.CURRENT_GL_3004 + " " + currentAccountTransaction.getNotes());
-            updateGeneralLedger(currentAccountTransaction, BVMicroUtils.CURRENT_GL_3004, "CREDIT", currentAccountTransaction.getCurrentAmount(), 3, true);
+            updateGeneralLedger(currentAccountTransaction, BVMicroUtils.CURRENT, "CREDIT", currentAccountTransaction.getCurrentAmount(), 3, true);
         }
     }
 
-    public void updateGLAfterCurrentDebitTransfer(CurrentAccountTransaction currentAccountTransaction) {
+    public void updateGLAfterCurrentDebitTransfer(CurrentAccountTransaction currentAccountTransaction,String savingType) {
+
+        LedgerAccount ledgerAccount = determineLedgerAccount(savingType);
+        String ledgerCode = ledgerAccount.getCode();
 
         currentAccountTransaction.getNotes();
         if (currentAccountTransaction.getModeOfPayment().equals(BVMicroUtils.CURRENT_DEBIT_TRANSFER)) {
-            currentAccountTransaction.setNotes(BVMicroUtils.SAVINGS_GL_3003 + " " + currentAccountTransaction.getNotes());
-            updateGeneralLedger(currentAccountTransaction, BVMicroUtils.CURRENT_GL_3004, "DEBIT", currentAccountTransaction.getCurrentAmount(), 3, true);
+            currentAccountTransaction.setNotes(ledgerCode + " " + currentAccountTransaction.getNotes());
+            updateGeneralLedger(currentAccountTransaction, BVMicroUtils.CURRENT, "DEBIT", currentAccountTransaction.getCurrentAmount(), 3, true);
             currentAccountTransaction.setNotes(BVMicroUtils.CURRENT_GL_3004 + " " + currentAccountTransaction.getNotes());
-            updateGeneralLedger(currentAccountTransaction, BVMicroUtils.SAVINGS_GL_3003, "CREDIT", currentAccountTransaction.getCurrentAmount(), 3, true);
+            updateGeneralLedger(currentAccountTransaction, ledgerCode, "CREDIT", -1*currentAccountTransaction.getCurrentAmount(), 3, true);
         }
     }
 
-    public void updateGLAfterDebitDebitTransfer(SavingAccountTransaction savingAccountTransaction) {
-
-        savingAccountTransaction.getNotes();
-        if (savingAccountTransaction.getModeOfPayment().equals(BVMicroUtils.DEBIT_DEBIT_TRANSFER)) {
-            savingAccountTransaction.setNotes(BVMicroUtils.SAVINGS_GL_3003 + " " + savingAccountTransaction.getNotes());
-            updateGeneralLedger(savingAccountTransaction, BVMicroUtils.SAVINGS_GL_3003, "DEBIT", savingAccountTransaction.getSavingAmount(), true);
-            savingAccountTransaction.setNotes(BVMicroUtils.SAVINGS_GL_3003 + " " + savingAccountTransaction.getNotes());
-            updateGeneralLedger(savingAccountTransaction, BVMicroUtils.SAVINGS_GL_3003, "CREDIT", savingAccountTransaction.getSavingAmount(), true);
+    public void updateGLAfterDebitDebitTransfer(SavingAccountTransaction fromSavingAccountTransaction, SavingAccountTransaction toSavingAccountTransaction) {
+        LedgerAccount fromLedgerAccount = determineLedgerAccount(fromSavingAccountTransaction.getSavingAccount().getProductCode());
+        LedgerAccount toLedgerAccount = determineLedgerAccount(toSavingAccountTransaction.getSavingAccount().getProductCode());
+        fromSavingAccountTransaction.getNotes();
+        if (fromSavingAccountTransaction.getModeOfPayment().equals(BVMicroUtils.DEBIT_DEBIT_TRANSFER)) {
+            fromSavingAccountTransaction.setNotes(BVMicroUtils.SAVINGS_GL_3003 + " " + fromSavingAccountTransaction.getNotes());
+            updateGeneralLedger(fromSavingAccountTransaction,fromLedgerAccount.getCode() , "DEBIT", fromSavingAccountTransaction.getSavingAmount(), true);
+            toSavingAccountTransaction.setNotes(BVMicroUtils.SAVINGS_GL_3003 + " " + toSavingAccountTransaction.getNotes());
+            updateGeneralLedger(toSavingAccountTransaction, toLedgerAccount.getCode(), "CREDIT", toSavingAccountTransaction.getSavingAmount(), true);
         }
     }
 
     public void updateGLAfterDebitCurrentTransfer(SavingAccountTransaction savingAccountTransaction) {
-
+        LedgerAccount savingLedgerAccount = determineLedgerAccount(savingAccountTransaction.getSavingAccount().getProductCode());
         savingAccountTransaction.getNotes();
         if (savingAccountTransaction.getModeOfPayment().equals(BVMicroUtils.DEBIT_CURRENT_TRANSFER)) {
-            savingAccountTransaction.setNotes(BVMicroUtils.SAVINGS_GL_3003 + " " + savingAccountTransaction.getNotes());
+            savingAccountTransaction.setNotes(savingLedgerAccount.getCode() + " " + savingAccountTransaction.getNotes());
             updateGeneralLedger(savingAccountTransaction, BVMicroUtils.CURRENT_GL_3004, "DEBIT", savingAccountTransaction.getSavingAmount(), true);
-            savingAccountTransaction.setNotes(BVMicroUtils.CURRENT_GL_3004 + " " + savingAccountTransaction.getNotes());
-            updateGeneralLedger(savingAccountTransaction, BVMicroUtils.SAVINGS_GL_3003, "CREDIT", savingAccountTransaction.getSavingAmount(), true);
+            savingAccountTransaction.setNotes(BVMicroUtils.CURRENT + " " + savingAccountTransaction.getNotes());
+            updateGeneralLedger(savingAccountTransaction, savingLedgerAccount.getCode(), "CREDIT", savingAccountTransaction.getSavingAmount(), true);
         }
     }
 
@@ -623,7 +823,11 @@ public class GeneralLedgerService extends SuperService {
     }
 
     public LedgerAccount determineLedgerAccount(String accountNumber) {
-        String productCode = accountNumber.substring(2, 4);
+        String productCode = accountNumber;
+        if(StringUtils.isNotEmpty(accountNumber) && accountNumber.length()!=2){
+            productCode = accountNumber.substring(2, 4);
+        }
+
         if (productCode.equals("20")) {
             return ledgerAccountRepository.findByName(BVMicroUtils.CURRENT);
         } else if (productCode.equals("11")) {

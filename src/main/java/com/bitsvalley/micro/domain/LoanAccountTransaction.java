@@ -40,6 +40,7 @@ public class LoanAccountTransaction {
     private String loanAmountInLetters;
     private double vatPercent;
     private String increaseGuarantorMinimum;
+    private int withdrawalDeposit;
 
     @Column(unique = true)
     private String reference;
@@ -269,5 +270,13 @@ public class LoanAccountTransaction {
 
     public void setVatPercent(double vatPercent) {
         this.vatPercent = vatPercent;
+    }
+
+    public int getWithdrawalDeposit() {
+        return withdrawalDeposit;
+    }
+
+    public void setWithdrawalDeposit(int withdrawalDeposit) {
+        this.withdrawalDeposit = withdrawalDeposit;
     }
 }

@@ -20,6 +20,7 @@ public class CurrentAccountTransaction {
     private double currentAmount;
     private String notes;
     private String modeOfPayment;
+    private int withdrawalDeposit;
     private int tenThousand;
     private int fiveThousand;
     private int twoThousand;
@@ -205,5 +206,13 @@ public class CurrentAccountTransaction {
 
     public void setCurrentAccount(CurrentAccount currentAccount) {
         this.currentAccount = currentAccount;
+    }
+
+    public int getWithdrawalDeposit() {
+        return withdrawalDeposit;
+    }
+
+    public void setWithdrawalDeposit(int withdrawalDeposit) {
+        this.withdrawalDeposit = withdrawalDeposit;
     }
 }

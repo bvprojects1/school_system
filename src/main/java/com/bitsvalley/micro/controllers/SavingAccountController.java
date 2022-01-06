@@ -351,6 +351,7 @@ public class SavingAccountController extends SuperController {
         User user = (User) request.getSession().getAttribute(BVMicroUtils.CUSTOMER_IN_USE);
         String deposit_withdrawal = request.getParameter("deposit_withdrawal");
         String error = "";
+        savingAccountTransaction.setWithdrawalDeposit(1);
         if(StringUtils.isEmpty( savingAccountTransaction.getModeOfPayment() ) ){
             error = "Select Method of Payment - MOP";
         }
@@ -360,6 +361,7 @@ public class SavingAccountController extends SuperController {
 
         if (deposit_withdrawal.equals("WITHDRAWAL")) {
             savingAccountTransaction.setSavingAmount(savingAccountTransaction.getSavingAmount() * -1);
+            savingAccountTransaction.setWithdrawalDeposit(-1);
             error = savingAccountService.withdrawalAllowed(savingAccountTransaction);
             //Make sure min amount is not violated at withdrawal
         }

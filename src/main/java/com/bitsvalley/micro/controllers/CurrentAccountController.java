@@ -242,6 +242,7 @@ public class CurrentAccountController extends SuperController {
         CurrentAccount currentAccount = currentAccountService.findById(new Long(currentAccountId)).get();
         currentAccountTransaction.setCurrentAccount(currentAccount);
         User user = (User) request.getSession().getAttribute(BVMicroUtils.CUSTOMER_IN_USE);
+        currentAccountTransaction.setWithdrawalDeposit(1);
         String error = "";
 
         if ("CASH".equals(currentAccountTransaction.getModeOfPayment())) {
@@ -261,6 +262,7 @@ public class CurrentAccountController extends SuperController {
 
         if (deposit_withdrawal.equals("WITHDRAWAL")) {
             currentAccountTransaction.setCurrentAmount(currentAccountTransaction.getCurrentAmount() * -1);
+            currentAccountTransaction.setWithdrawalDeposit(-1);
             error = currentAccountService.withdrawalAllowed(currentAccountTransaction);
             //Make sure min amount is not violated at withdrawal
         }

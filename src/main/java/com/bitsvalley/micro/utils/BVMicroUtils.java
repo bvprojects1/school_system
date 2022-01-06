@@ -11,6 +11,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.text.NumberFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
@@ -198,6 +199,17 @@ public class BVMicroUtils {
         SimpleDateFormat formatter = new SimpleDateFormat("dd MMMM yyyy hh:mm");
         String format = formatter.format(date);
         return format;
+    }
+
+    public static Date formatDate(String date) {
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        Date parse = null;
+        try {
+            parse = formatter.parse(date);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return parse;
     }
 
 

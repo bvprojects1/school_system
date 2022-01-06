@@ -10,6 +10,7 @@ import com.bitsvalley.micro.repositories.UserRepository;
 import com.bitsvalley.micro.repositories.UserRoleRepository;
 import com.bitsvalley.micro.services.GeneralLedgerService;
 import com.bitsvalley.micro.utils.BVMicroUtils;
+import com.bitsvalley.micro.webdomain.BillSelectionBilanz;
 import com.bitsvalley.micro.webdomain.GLSearchDTO;
 import com.bitsvalley.micro.webdomain.GeneralLedgerBilanz;
 import com.bitsvalley.micro.webdomain.GeneralLedgerWeb;
@@ -49,23 +50,51 @@ public class GeneralAccountController extends SuperController{
     @Autowired
     LedgerAccountRepository ledgerAccountRepository;
 
-//    @GetMapping(value = "/gl/{accountNumber}")
-//    public String showCustomer(@PathVariable("accountNumber") String accountNumber, ModelMap model, HttpServletRequest request) {
-//        List<GeneralLedger> glList = generalLedgerService.findByAccountNumber(accountNumber);
-//        Collections.reverse(glList);
-//        model.put("glList", glList);
-//        model.put("accountNumber",accountNumber );
-//        return "gl";
-//    }
 
+    @GetMapping(value = "/billSelection")
+    public String billSelection( ModelMap model, HttpServletRequest request) {
 
+        GLSearchDTO glSearchDTO = new GLSearchDTO();
+
+        ArrayList<String> allGLEntryUsers = getAllNonCustomers();
+        glSearchDTO.setAllGLEntryUsers(allGLEntryUsers);
+
+        ArrayList<String> allGlEntryUserNames = getAllNonCustomers();
+        glSearchDTO.setAllGLEntryUsers(allGlEntryUserNames);
+        model.put("allGLEntryUsers",allGlEntryUserNames);
+
+        model.put("billSelectionBilanz", new BillSelectionBilanz());
+        model.put("showBillSelectionTable","true");
+        model.put("glSearchDTO",glSearchDTO);
+        return "billSelection";
+    }
+
+    @PostMapping(value = "/filterBillSelection")
+    public String filterBillSelection(ModelMap model, HttpServletRequest request,
+                                  @ModelAttribute("glSearchDTO") GLSearchDTO glSearchDTO){
+
+        glSearchDTO.setStartDate(glSearchDTO.getStartDate() + " 00:00:00.000");
+        glSearchDTO.setEndDate(glSearchDTO.getEndDate() + " 23:59:59.999");
+
+        BillSelectionBilanz billSelectionBilanz = generalLedgerService.searchCriteriaBillSelection(glSearchDTO.getStartDate(), glSearchDTO.getEndDate(),glSearchDTO.getAllGLEntryUsers().get(0));
+
+        model.put("billSelectionBilanz",billSelectionBilanz);
+        model.put("showBillSelectionTable","false");
+        model.put("headerText",glSearchDTO.getStartDate().substring(0,16) +" - "+ glSearchDTO.getEndDate().substring(0,16));
+        ArrayList<String> allGlEntryUserNames = getAllNonCustomers();
+        glSearchDTO.setAllGLEntryUsers(allGlEntryUserNames);
+        model.put("allGLEntryUsers",allGlEntryUserNames);
+        model.put("glSearchDTO", glSearchDTO);
+
+        return "billSelection";
+    }
 
     @PostMapping(value = "/filterGenaralLedger")
     public String showGlReference(ModelMap model, HttpServletRequest request,
                                   @ModelAttribute("glSearchDTO") GLSearchDTO glSearchDTO){
 
         GeneralLedgerBilanz generalLedgerBilanz = null;
-        List<Integer> allLedgerAccount = glSearchDTO.getAllLedgerAccount();
+//        List<Integer> allLedgerAccount = glSearchDTO.getAllLedgerAccount();
 
             generalLedgerBilanz =
                     generalLedgerService.searchCriteria(glSearchDTO.getStartDate()+" 00:00:00.000", glSearchDTO.getEndDate()+" 23:59:59.999",

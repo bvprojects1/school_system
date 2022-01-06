@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.servlet.http.HttpServletRequest;
+import java.time.LocalDate;
 import java.util.*;
 
 /**
@@ -322,31 +323,38 @@ public class LedgerAccountController extends SuperController{
 
 
     @PostMapping(value = "/userHomeLedgerEntryForm")
-    public String userHomeLedgerEntryForm( ModelMap model, HttpServletRequest request) {
-        LedgerEntryDTO newLedgerEntryDTO = new LedgerEntryDTO();
+    public String userHomeLedgerEntryForm( ModelMap model, HttpServletRequest request, @ModelAttribute("ledgerEntryDTO") LedgerEntryDTO ledgerEntryDTO) {
+//        LedgerEntryDTO newLedgerEntryDTO = new LedgerEntryDTO();
         double fromTotal = 0.0;
         double toTotal = 0.0;
+        Date recordDate = null;
 
         Enumeration<String> parameterNames = request.getParameterNames();
         while(parameterNames.hasMoreElements()) {
                 String parameterName = (String) parameterNames.nextElement();
                 String paramValue = request.getParameter(parameterName);
+                if(StringUtils.equals(parameterName, "recordDate")){
+                    recordDate = BVMicroUtils.formatDate(paramValue);
+                    ledgerEntryDTO.setRecordDate(recordDate);
+                    continue;
+                }
                 if(parameterName.equals("glAccountAmount")){
                     fromTotal = new Double(paramValue);
                     continue;
                 }
                 toTotal = toTotal + new Double(paramValue);
                 String pair = parameterName+"_"+paramValue;
-                newLedgerEntryDTO.getParamValueString().add(pair);
+
+            ledgerEntryDTO.getParamValueString().add(pair);
             }
             if(toTotal != fromTotal){
                 Iterable<LedgerAccount> originLedgerAccounts = ledgerAccountRepository.findAll();
                 model.put("error", "Amounts entered do not add up");
-                model.put("ledgerEntryDTO", newLedgerEntryDTO);
+                model.put("ledgerEntryDTO", ledgerEntryDTO);
                 model.put("originLedgerAccounts", originLedgerAccounts);
                 return "glAddEntryToAccounts";
             }else{
-                generalLedgerService.updateGLAfterLedgerAccountMultipleAccountEntry(newLedgerEntryDTO);
+                generalLedgerService.updateGLAfterLedgerAccountMultipleAccountEntry(ledgerEntryDTO);
             }
         return "glAddEntryToAccounts";
     }

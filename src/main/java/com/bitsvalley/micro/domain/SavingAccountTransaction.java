@@ -36,6 +36,7 @@ public class SavingAccountTransaction {
 
     @Column(unique = true)
     private String reference;
+    private int withdrawalDeposit;
 
     public String getAccountOwner() {
         return accountOwner;
@@ -203,5 +204,13 @@ public class SavingAccountTransaction {
 
     public void setBranchCountry(String branchCountry) {
         this.branchCountry = branchCountry;
+    }
+
+    public int getWithdrawalDeposit() {
+        return withdrawalDeposit;
+    }
+
+    public void setWithdrawalDeposit(int withdrawalDeposit) {
+        this.withdrawalDeposit = withdrawalDeposit;
     }
 }

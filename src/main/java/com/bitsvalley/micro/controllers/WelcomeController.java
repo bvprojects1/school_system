@@ -115,7 +115,6 @@ public class WelcomeController extends SuperController{
             request.getSession().setAttribute("shareAccountBilanzList",shareAccountBilanzList);
 
 
-
             request.getSession().setAttribute("savingBilanzList",savingBilanzByUserList);
             return "userHome";
         }else{

@@ -41,6 +41,8 @@ public class LoanAccount {
     private Date LastPaymentDate;
     private double monthlyPayment;
 
+    private double interestOwed;
+
     private String guarantorAccountNumber1;
     private String guarantorAccountNumber2;
     private String guarantorAccountNumber3;
@@ -402,5 +404,13 @@ public class LoanAccount {
 
     public void setBlockBalanceQuarantor(boolean blockBalanceQuarantor) {
         this.blockBalanceQuarantor = blockBalanceQuarantor;
+    }
+
+    public double getInterestOwed() {
+        return interestOwed;
+    }
+
+    public void setInterestOwed(double interestOwed) {
+        this.interestOwed = interestOwed;
     }
 }

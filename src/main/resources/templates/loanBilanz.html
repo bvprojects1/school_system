@@ -50,11 +50,10 @@
                 </font>
 
                 <font color="green" size="2px">
-                   Interest: <span th:text="${loanBilanzList.totalLoanInterest}"/>
+
+                   Total Interest Paid: <span th:text="${loanBilanzList.totalLoanInterest}"/>
                 </font>
             </span>
-
-
         </th>
     </tr>
     <tr th:each="bilanz : ${loanBilanzList.loanBilanzList}">
@@ -73,7 +72,8 @@
         </td>
         <td th:text="${bilanz.notes}"></td>
         <td th:text="${bilanz.noOfDays}"></td>
-        <td th:text="${bilanz.interestAccrued}"></td>
+<!--        <td th:text="${bilanz.interestAccrued}"></td>-->
+        <td th:text="${bilanz.interestDue}"></td>
         <td th:text="${bilanz.vatPercent}"></td>
         <td th:text="${bilanz.loanAmount}"></td>
         <td th:text="${bilanz.amountReceived}"></td>

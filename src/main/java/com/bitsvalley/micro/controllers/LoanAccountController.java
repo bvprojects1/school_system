@@ -299,7 +299,7 @@ public class LoanAccountController extends SuperController {
     @PostMapping(value = "/registerLoanAccountTransactionForm")
     public String registerLoanAccountTransactionForm(ModelMap model, @ModelAttribute("loanAccountTransaction")
             LoanAccountTransaction loanAccountTransaction, HttpServletRequest request) {
-
+        loanAccountTransaction.setWithdrawalDeposit(1);
         String loanAccountId = request.getParameter("loanAccountId");
         Optional<LoanAccount> loanAccount = loanAccountService.findById(new Long(loanAccountId));
         LoanAccount aLoanAccount = loanAccount.get();
@@ -326,12 +326,14 @@ public class LoanAccountController extends SuperController {
             return displayLoanBilanzNoInterest(new Long(loanAccountId), model, loanAccountTransaction);
         }
 
+
         if ("CASH".equals(loanAccountTransaction.getModeOfPayment())) {
 //            if (!checkBillSelectionMatchesEnteredAmount(loanAccountTransaction)) {
 //                model.put("billSelectionError", "Bills Selection does not match entered amount");
 //                loanAccountTransaction.setNotes(loanAccountTransaction.getNotes());
 //                return displayLoanBilanzNoInterest(new Long(savingAccountId), model, loanAccountTransaction);
 //            }
+
         }
 
         String modeOfPayment = request.getParameter("modeOfPayment");
