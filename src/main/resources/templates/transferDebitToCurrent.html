@@ -11,23 +11,29 @@
     <section class="contact-form-area-start space df-bg">
 
         <form action="#" th:action="@{/transferFromDebitToCurrentFormReview}" method="post" th:object="${transferBilanz}">
-            <table class="center" width="100%" border="1">
+            <table class="center" width="100%" border="0">
                 <tr>
                     <td align="center">
                         <div class="project-title-content">
-                            <h4>TRANSFER FROM SAVING TO CURRENT ACCOUNTS</h4>
+                            <h4>TRANSFER FROM SAVING TO CURRENT ACCOUNT</h4>
                             <span><i class="fas fa-crosshairs"></i></span>
                         </div>
+
+                        <font size="2px"> Account Owner</font> <br/>
+                        <font size="4">
+                            <a href="#" th:href="@{/showCustomer/{id}(id=${session.customerInUse.id})}">
+                                <span style th:text="${session.customerInUse.userName}"/>
+                            </a>
+                        </font>
+                        <br/><br/>
+
                     </td>
                 </tr>
                 <tr>
                     <td align="center" colspan="2">
 
-                        <font size="4">Account Owner</font><br/>
-                        <font size="6">
-                            <span style th:text="${session.customerInUse.userName}"/>
-                        </font>
-                        <br/><br/>
+
+                        <br/>
                         <label> <b>From Account:</b></label><br/>
                         <select class="selectNormal" th:field="*{transferFromAccount}">
                             <option th:each="i : ${session.customerInUse.savingAccount}"

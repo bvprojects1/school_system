@@ -20,7 +20,7 @@
                         </li>
                     </ul>
                 </table>
-                <br/>
+                <br/><br/>
                 </div>
             <font color="gray;" size="4"> <b><span th:text="${accountNameHeader}"/></b> </font>
             <br/>
@@ -113,7 +113,7 @@
         </tr>
         <tr th:each="gl : ${generalLedgerBilanz.generalLedgerWeb}">
             <td>
-                <div th:text="${#dates.format(gl.createdDate, 'dd-MMM-yyyy HH:mm')}"></div>
+                <font size="2"> <div th:text="${#dates.format(gl.createdDate, 'dd-MMM-yyyy HH:mm')}"></div></font>
             </td>
             <td th:text="${gl.glClass}"></td>
             <td>

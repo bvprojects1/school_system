@@ -18,13 +18,21 @@
                     </b></font>
                     <form action="#" th:action="@{/registerShareAccountForm}" method="post" th:object="${shareAccount}">
 
-                        <table class="center" width="100%" border="1">
-
+                        <table class="center" width="100%" border="0">
                             <tr>
                                 <td align="center">
+                                    <div class="project-title-content">
+                                        <h4>PURCHASE SHARES</h4>
+                                        <span><i class="fas fa-crosshairs"></i></span>
+                                    </div>
 
-                                    <h3> PURCHASE SHARES</h3>
-                                    <span><i class="fas fa-crosshairs"></i></span>
+                                    <font size="2px"> Account Owner</font> <br/>
+                                    <font size="4">
+                                        <a href="#" th:href="@{/showCustomer/{id}(id=${session.customerInUse.id})}">
+                                            <span style th:text="${session.customerInUse.userName}"/>
+                                        </a>
+                                    </font>
+                                    <br/><br/>
 
                                 </td>
                             </tr>
@@ -42,14 +50,12 @@
                                         <br/>
                                         <br/>
                                         <label> Unit Price</label>
-                                        <br/>
                                         <font size="4">
                                             <span class="selectAmount" th:text="${#numbers.formatDecimal(shareAccount.unitSharePrice, 0, 'COMMA', 0, 'POINT')}"/>
                                         </font>
 
                                         <br/>
                                         <label>Quantity</label>
-                                        <br/>
                                         <input class="selectSmall" type="text" name="quantity" th:field="*{quantity}"
                                                id="quantity"
                                                placeholder="quantity" required>
@@ -63,7 +69,7 @@
 
 <!--                                        <input type="submit" class="btn-block btn contact-btn"-->
 <!--                                               value="NEXT - SHARE APPLICATION"/>-->
-
+                                        <br/>
                                         <button type="submit" class="btn btn-success">
                                             NEXT - SHARE APPLICATION
                                         </button>

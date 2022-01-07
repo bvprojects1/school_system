@@ -335,11 +335,14 @@ public class LedgerAccountController extends SuperController{
                 String paramValue = request.getParameter(parameterName);
                 if(StringUtils.equals(parameterName, "recordDate")){
                     recordDate = BVMicroUtils.formatDate(paramValue);
-                    ledgerEntryDTO.setRecordDate(recordDate);
+                    ledgerEntryDTO.setRecordDate(paramValue);
                     continue;
                 }
-                if(parameterName.equals("glAccountAmount")){
+                if(parameterName.equals("ledgerAmount") || parameterName.equals("glAccountAmount") ){
                     fromTotal = new Double(paramValue);
+                    continue;
+                }
+                if(parameterName.equals("originLedgerAccount")){
                     continue;
                 }
                 toTotal = toTotal + new Double(paramValue);

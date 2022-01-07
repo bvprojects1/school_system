@@ -132,6 +132,7 @@ public class BVMicroUtils {
     public static final String GL_3003 = "GL_3003";
     public static final String GL_5001 = "GL_5001";
     public static final String GL_7001 = "GL_7001";
+    public static final String GL_TRANSFER = "GL_TRANSFER";
 
 
     public static  String getSaltString() {
@@ -209,7 +210,20 @@ public class BVMicroUtils {
         } catch (ParseException e) {
             e.printStackTrace();
         }
+
         return parse;
+    }
+
+    public static LocalDateTime formatLocaleDate(String date) {
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        Date parse = null;
+        try {
+            parse = formatter.parse(date);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        LocalDateTime localDateTime = convertToLocalDateTimeViaMilisecond(parse);
+        return localDateTime;
     }
 
 
@@ -226,6 +240,12 @@ public class BVMicroUtils {
         return Instant.ofEpochMilli(dateToConvert.getTime())
                 .atZone(ZoneId.systemDefault())
                 .toLocalDateTime();
+    }
+
+    public static LocalDate convertToLocalDate(Date dateToConvert) {
+        return Instant.ofEpochMilli(dateToConvert.getTime())
+                .atZone(ZoneId.systemDefault())
+                .toLocalDate();
     }
 
     public static Date convertToDate(LocalDateTime dateToConvert) {

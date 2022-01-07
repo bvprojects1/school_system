@@ -11,24 +11,29 @@
     <section class="contact-form-area-start space df-bg">
 
         <form action="#" th:action="@{/transferFromCurrentToCurrentFormReview}" method="post" th:object="${transferBilanz}">
-            <table class="center" width="100%" border="1">
+            <table class="center" width="100%" border="0">
                 <tr>
                     <td align="center">
                         <div class="project-title-content">
                             <h4>TRANSFER BETWEEN CURRENT ACCOUNTS</h4>
                             <span><i class="fas fa-crosshairs"></i></span>
                         </div>
+
+
+                        <font size="2px"> Account Owner</font> <br/>
+                        <font size="4">
+                            <a href="#" th:href="@{/showCustomer/{id}(id=${session.customerInUse.id})}">
+                                <span style th:text="${session.customerInUse.userName}"/>
+                            </a>
+                        </font>
+                        <br/><br/>
+
                     </td>
                 </tr>
                 <tr>
                     <td align="center" colspan="2">
 
-                        <font size="4px"> <b>Account Owner</b></font> <br/>
-                        <font size="6">
-                            <span style th:text="${session.customerInUse.userName}"/>
-                        </font>
-                        <br/><br/>
-                            <font size="4px"><b> From Account:</b></font><br/>
+                            <font size="4px">From Account:</font><br/>
                         <select class="selectNormal" th:field="*{transferFromAccount}">
                             <option th:each="i : ${session.customerInUse.currentAccount}"
                                     th:value="${i.accountNumber}"
@@ -39,12 +44,12 @@
                         <br/><br/>
 
                         <font size="4"> <div class="error" th:text="${invalidToAccount}"/> </font>
-                            <font size="4px"><b> To Account:</b></font><br/>
+                            <font size="4px"> To Account:</font><br/>
                         <input class="selectNormal" type="number" size="12" th:field="*{transferToAccount}">
 
                         <br/><br/>
 
-                       <font size="4px"> <b>Enter Amount:</b></font><br/>
+                       <font size="4px"> Enter Amount:</font><br/>
                         <input class="selectAmount" size="6" name="transferAmount" type="number" value="${transferAmount}" />
                         <input type="hidden"  id="transferType" th:field="*{transferType}" value="${transferType}">
 

@@ -10,43 +10,41 @@
     <table width="90%" class="center" border="0px">
         <tr>
             <td align="center">
-                <font color="#BF360C;" size="4">
-                    <h4>SHARE ACCOUNTS IN PROCESS
-<!--                        <a href="/registerBranch">-->
-<!--                            <img width="30px" th:src="@{/assets/images/add.png}"/>-->
-<!--                        </a>-->
-                    </h4>
-                </font>
+                <div class="project-title-content">
+                    <font color="green" size="4"><b>SHARE APPLICATIONS IN PROGRESS</b></font>
+<!--                    <span><i class="fas fa-crosshairs"></i></span>-->
+                </div>
+                <br/>
             </td>
         </tr>
     </table>
     <table width="90%" class="center" border="0px">
 
         <tr>
-            <th>
+            <td>
                 Owner
-            </th>
-            <th>
+            </td>
+            <td>
                 Account Number
-            </th>
-            <th>
+            </td>
+            <td>
                 Total Value
-            </th>
-            <th>
+            </td>
+            <td>
                 Unit Value
-            </th>
-            <th>
+            </td>
+            <td>
                 Quantity
-            </th>
-            <th>
+            </td>
+            <td>
                 Created
-            </th>
-            <th>
+            </td>
+            <td>
                 Creator
-            </th>
-            <th>
+            </td>
+            <td>
                 Share
-            </th>
+            </td>
         </tr>
         <tr th:each="share : ${shareAccountsList}">
             <td th:text="${share.user.gender}  + ${share.user.firstName} + ${share.user.lastName}"></td>

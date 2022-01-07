@@ -4,25 +4,32 @@
 <div th:insert="header::navbar">  </div>
 <br/>
 <br/>
+<br/>
+<br/>
+
 
 <!-- Contact form area start -->
 <section class="contact-form-area-start space df-bg">
     <!--Project title area start-->
     <div class="project-title-area text-center">
         <div class="container">
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="project-title-content">
-                        <font size="6">CREATE LEDGER ACCOUNT</font>
-                        <br/>
+
+
                         <div class="offset-md-2 col-md-8">
                         <!--  <p>Cross-agency coordination clean water rural, promising development turmoil inclusive education transformative community.</p>-->
 
+                            <table width="90%" class="center" border="0px">
+                                <tr>
+                                    <td align="center">
+                                            <font size="4" color="green"><b>CREATE LEDGER ACCOUNT</b></font><br/>
+                                            <span><i class="fas fa-crosshairs"></i></span>
+                                            <font color="gray;" size="4"> <b><span th:text="${ledgerAccountInfo}"/></b> </font>
+                                        <br/>
+                                    </td>
+                                </tr>
+                            </table>
 
-                        <font size="6" color="gray"><span  th:text="${ledgerAccountInfo}"/></font>
                         <form action="#" th:action="@{/saveLedgerAccountForm}" method="post" th:object="${ledgerAccount}">
-
-
 
                             <select class="selectMedium" name="Category" id="category" th:field="*{category}">
                                 <option value="1000 – 1999">Assets (1000 – 1999)</option>
@@ -38,12 +45,12 @@
                             <br/>
                             <label for="status"><font size="4px"> Name</font></label>
                             <input type="text" name="name" th:field="*{name}" id="name"
-                                   placeholder="name" class="form-control" required>
+                                   placeholder="Name" class="form-control" required>
 
                             <br/>
                             <label for="status"><font size="4px"> Code</font></label>
                             <input type="text" name="code" th:field="*{code}" id="code"
-                                   placeholder="code" class="form-control" required>
+                                   placeholder="Code" class="form-control" required>
                             <br/>
 
                             <label for="status"><font size="4px"> Active</font></label>
@@ -58,9 +65,8 @@
                         </form>
                         </div>
 
-                    </div>
-                </div>
-            </div>
+
+
         </div>
     </div>
     <!--Project title area end-->

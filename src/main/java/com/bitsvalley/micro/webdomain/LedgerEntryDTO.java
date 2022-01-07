@@ -12,7 +12,7 @@ public class LedgerEntryDTO {
     private long destinationLedgerAccount;
     private double ledgerAmount;
     private String creditOrDebit;
-    private Date recordDate;
+    private String recordDate;
     private String notes;
     private List<String> paramValueString = new ArrayList<String>();
     private List<SavingAccount> savingAccounts;
@@ -77,11 +77,11 @@ public class LedgerEntryDTO {
         this.paramValueString = paramValueString;
     }
 
-    public Date getRecordDate() {
+    public String getRecordDate() {
         return recordDate;
     }
 
-    public void setRecordDate(Date recordDate) {
+    public void setRecordDate(String recordDate) {
         this.recordDate = recordDate;
     }
 }

@@ -11,9 +11,8 @@
     <section class="choosen-area-start space">
         <table style="border:0px" class="center" width="100%" cellpadding="5">
             <tr>
-
                 <td>
-                    <font size="3">Account Owner</font>
+                    <font size="4">Account Owner</font>
                     <br/>
                     <font size="4">
                         <a href="#" th:href="@{/showCustomer/{id}(id=${session.customerInUse.id})}">
@@ -27,7 +26,7 @@
                     <a href="#" th:href="@{/reloadUser}">
                         <img width="40px" th:src="@{/getImage}"/>
                     </a>
-                    <br/>
+
                 <td></td>
                 <td> Saving <br/>
                     <font color="gray" size="4px">
@@ -47,12 +46,12 @@
         <!-- END -->
         <br/>
 
-        <form action="#" th:action="@{/userHomeLedgerEntryForm}" method="post" th:object="${destiantionLedgerAccounts}">
-            <table border="1" class="center" width="100%" cellpadding="5">
+        <form action="#" th:action="@{/userHomeLedgerEntryForm}" method="post" th:object="${ledgerEntryDTO}">
+            <table border="0" class="center" width="100%" cellpadding="5">
                 <tr>
                     <td>
                         <b>Select From:</b><br/>
-                        <select class="selectNormal" >
+                        <select class="selectNormal" th:field="*{originLedgerAccount}">
                             <option th:each="i : ${originLedgerAccounts}"
                                     th:value="${i.id}">
                                 <span th:text="${i.name}"/>
@@ -60,7 +59,7 @@
                         </select>
                     </td>
                     <td><b>Enter Amount</b><br/>
-                        <input required class="selectAmount" name="glAccountAmount" type="text"/>
+                        <input required class="selectAmount" name="glAccountAmount" type="text" th:field="*{ledgerAmount}"/>
                         <br/><font size="2"> (Opposite booking Type happens in various customer accounts)</font>
                     </td>
                     <td><b>Date</b><br/>
@@ -79,14 +78,14 @@
                     </td>
                     <td colspan="1">
                         <br>
-                        <font color="green" size="3"><b>Total Sum of amount entered for individual accounts must add
+                        <font size="2"><b>Total Sum of amount entered for individual accounts must add
                             up</b></font>
                     </td>
                 </tr>
-                <tr th:each="currentAccount : ${session.customerInUse.currentAccount}">
+                <tr>
                     <td width="10%"></td>
                     <td colspan="4">
-                        <br/>
+                        <div th:each="currentAccount : ${session.customerInUse.currentAccount}">
                         <font size="2">
                             Account Number:
                         </font>
@@ -94,48 +93,48 @@
                         </font>
                         <input class="selectAmount" required type="text" th:name="${currentAccount.accountNumber}">
                         <span th:text="' Balance: '+${#numbers.formatDecimal(currentAccount.accountBalance, 0, 'COMMA', 0, 'POINT')}"/>
-                        <br><br>
+                        </div>
                     </td>
                 </tr>
             </table>
             <table border="0" class="center" width="100%" cellpadding="5">
                 <tr>
-                    <br><br>
                     <td width="10%"></td>
                     <td colspan="4">
                         <br/>
                         <font color="green"><b>SAVING ACCOUNTS</b></font>
                     </td>
                 </tr>
-                <tr th:each="savingAccount : ${session.customerInUse.savingAccount}">
+                <tr>
                     <td width="10%"></td>
                     <td colspan="4">
-                        <br/>
-                        <font size="2">
-                            Account Number:
-                        </font>
-                        <font size="4"><span th:text="${savingAccount.accountNumber}"/>
-                        </font>
+                        <div th:each="savingAccount : ${session.customerInUse.savingAccount}">
+                            <font size="2">
+                                Account Number:
+                            </font>
+                            <font size="4"><span th:text="${savingAccount.accountNumber}"/>
+                            </font>
 
-                        <input class="selectAmount" required type="text" th:name="${savingAccount.accountNumber}">
+                            <input class="selectAmount" required type="text" th:name="${savingAccount.accountNumber}">
 
-                        <span th:text="' Balance: '+${#numbers.formatDecimal(savingAccount.accountBalance, 0, 'COMMA', 0, 'POINT')}"/>
-                        <br><br>
+                            <span th:text="' Balance: '+${#numbers.formatDecimal(savingAccount.accountBalance, 0, 'COMMA', 0, 'POINT')}"/>
+
+                        </div>
                     </td>
                 </tr>
             </table>
             <table border="0" class="center" width="100%" cellpadding="5">
                 <tr>
-                    <br><br>
                     <td width="10%"></td>
                     <td colspan="4">
                         <br/>
                         <font color="green"><b>LOAN ACCOUNTS</b></font>
                     </td>
                 </tr>
-                <tr th:each="loanAccount : ${session.customerInUse.loanAccount}">
-                    <td colspan="6">
-                        <br/>
+                <tr>
+                    <td width="10%"></td>
+                    <td colspan="4">
+                        <div th:each="loanAccount : ${session.customerInUse.loanAccount}">
                         <font size="2">
                             Account Number:
                         </font>
@@ -143,15 +142,26 @@
                         </font>
                         <input class="selectAmount" required type="text" th:name="${loanAccount.accountNumber}">
                         <span th:text="' Balance: '+${#numbers.formatDecimal(loanAccount.loanAmount, 0, 'COMMA', 0, 'POINT')}"/>
-                        <br><br>
+                        </div>
                     </td>
                 </tr>
             </table>
 
             <br/>
             <br/>
-            <input type="submit" class="btn-block btn contact-btn"
-                   value="SUBMIT LEDGER TRANSFER"/>
+
+            <table>
+                <tr>
+                    <td width="40%">
+                    </td>
+                    <td width="30%">
+                    <input type="submit" class="btn btn-success" value="SUBMIT LEDGER TRANSFER"/>
+                </td>
+                    <td width="30%">
+                    </td>
+                </tr>
+            </table>
+
 
         </form>
         <br/><br/><br/>

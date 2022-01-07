@@ -105,7 +105,7 @@
                                 </div>
                                 <br/>
                                 Username: <input type="text" name="userName" th:field="*{userName}" id="userName"
-                                       placeholder="Username" class="form-control" required>
+                                                 class="form-control" required>
                                 <br/>
                                 <label>
                                     Mr
@@ -123,61 +123,79 @@
                                 <br/>
 
                                 <br/>
+                                Firstname:
                                 <input type="text" name="firstName" th:field="*{firstName}" id="firstName"
-                                       placeholder="First Name" class="form-control" required>
+                                       class="form-control" required>
 
                                 <br/>
+                                Lastname:
                                 <input type="text" name="lastName" th:field="*{lastName}" id="lastName"
-                                       placeholder="Last Name" class="form-control" required>
+                                       class="form-control" required>
 
                                 <br/>
+                                Profession:
                                 <input type="text" name="profession" th:field="*{profession}" id="profession"
-                                       placeholder="Profession" class="form-control" required>
+                                       class="form-control" required>
 
                                 <br/>
+                                Telephone 1:
                                 <input type="text" name="telephone1" th:field="*{telephone1}" id="telephone1"
-                                       placeholder="Telephone 1" class="form-control" required>
+                                       class="form-control" required>
 
                                 <br/>
+                                Telephone 2:
                                 <input type="text" name="telephone2" th:field="*{telephone2}" id="telephone2"
-                                       placeholder="Telephone 2" class="form-control">
+                                       class="form-control">
 
                                 <br/>
+                                Address:
                                 <input type="text" name="address" th:field="*{address}" id="address"
-                                       placeholder="Address" class="form-control" required>
+                                       class="form-control" required>
 
                                 <br/>
-
+                                Date of Birth:
                                 <input type="date" name="dateOfBirth" th:field="*{dateOfBirth}" id="dateOfBirth"
-                                       placeholder="Date of Birth:" class="form-control" required>
+                                       class="form-control" required>
 
                                 <br/>
+                                Email:
                                 <input type="text" name="emailInput" th:field="*{email}" id="emailInout"
-                                       placeholder="Email" class="form-control" required>
+                                       class="form-control" required>
 
                                 <br/>
+                                Password:
                                 <input type="password" name="passwordInput" th:field="*{password}" id="passwordInput"
-                                       placeholder="Password" class="form-control" required>
+                                       class="form-control" required>
 
                                 <br/>
-                                <input type="text" name="beneficiary" th:field="*{beneficiary}" id="beneficiary"
-                                       placeholder="Beneficiary Username" class="form-control" required>
-                                <br/>
-
+                                Identity Card Number:
                                 <input type="text" name="identityCardNumber" th:field="*{identityCardNumber}" id="identityCardNumber"
-                                       placeholder="Identity Card No" class="form-control" required>
+                                       class="form-control" required>
                                 <br/>
-
-
                                 <label for="true">This new user will be able to login</label><br/>
-                                    False<input th:field="*{accountLocked}"  type="radio" id="true" name="accountLocked" value="true"
-                                           checked>
-                                    <br/>
-                                    True<input th:field="*{accountLocked}" type="radio" id="false" name="accountLocked" value="false">
+                                False<input th:field="*{accountLocked}"  type="radio" id="true" name="accountLocked" value="true"
+                                            checked>
+                                <br/>
+                                True<input th:field="*{accountLocked}" type="radio" id="false" name="accountLocked" value="false">
 
                                 <br/>
+                                Beneficiary:
+                                <input type="text" name="beneficiary1" th:field="*{beneficiary}" id="beneficiary1"
+                                       class="form-control" required>
+                                Beneficiary:
+                                <input type="text" name="beneficiary2" th:field="*{beneficiary}" id="beneficiary2"
+                                       class="form-control">
+                                Beneficiary:
+                                <input type="text" name="beneficiary3" th:field="*{beneficiary}" id="beneficiary3"
+                                       class="form-control">
+                                Beneficiary:
+                                <input type="text" name="beneficiary4" th:field="*{beneficiary}" id="beneficiary4"
+                                       class="form-control">
+                                Beneficiary:
+                                <input type="text" name="beneficiary5" th:field="*{beneficiary}" id="beneficiary5"
+                                       class="form-control">
                                 <br/>
-
+                                <br/>
                                 <input type="submit" class="btn-block btn contact-btn" value="CREATE USER"/>
                         </div>
                     </form>

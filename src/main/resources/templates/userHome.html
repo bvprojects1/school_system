@@ -11,9 +11,8 @@
         <table style="border:0px" class="center" width="100%" cellpadding="5">
             <tr>
                 <td>
-                    <font size="3">Account Owner</font>
+                    <font size="4">Account Owner</font>
                     <br/>
-
                         <a href="#" th:href="@{/showCustomer/{id}(id=${session.customerInUse.id})}">
                             <font color="gray" size="5">
                                 <b><span style th:text="${session.customerInUse.userName}"/></b>
@@ -45,7 +44,7 @@
         <!-- END -->
         <br/>
 
-        <table border="1" class="center" width="100%" cellpadding="5">
+        <table border="0" class="center" width="100%" cellpadding="5">
             <tr>
                 <td colspan="2">
                     <font size="5px" color="#738980">
@@ -153,7 +152,7 @@
         </table>
         <br/> <br/>
         &nbsp;
-        <table border="1" class="center" width="100%" cellpadding="5">
+        <table border="0" class="center" width="100%" cellpadding="5">
             <tr>
                 <td colspan="2">
                     <font size="5px" color="#738980"> <b>SAVING ACCOUNTS</b> </font>
@@ -259,7 +258,7 @@
 
         <br/> <br/>
 
-        <table border="1" class="center" width="100%" cellpadding="5">
+        <table border="0" class="center" width="100%" cellpadding="5">
             <tr>
                 <td colspan="8">
                     <font size="5px" color="#738980">
@@ -308,8 +307,7 @@
             <tr th:each="loanAccount : ${session.customerInUse.loanAccount}">
                 <td>
                     <a th:href="@{/callcenter/{id}(id=${loanAccount.accountNumber})}" href="/callcenter">
-                        <div th:text="${loanAccount.accountNumber}"/><br/>
-
+                        <div th:text="${loanAccount.accountNumber}"/>
                     </a>
                     <br/>
                     <font size="2"><span th:text="${#dates.format(loanAccount.createdDate, 'dd-MMM-yyyy HH:mm')}"/></font>
