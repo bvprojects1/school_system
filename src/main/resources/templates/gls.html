@@ -8,8 +8,20 @@
     <!--Project title area start-->
     <div class="project-title-area text-center">
         <div class="col-md-12">
-            <div class="project-title-content">
-                <br/>
+            <br/>
+            <br/>
+            <br/>
+                <table width="90%" class="center" border="0px">
+                    <tr>
+                        <td align="center">
+                            <div class="project-title-content">
+                                <font color="green" size="4"><b><div th:text="${accountNameHeader}"/></b></font>
+                                <span><i class="fas fa-crosshairs"></i></span>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+
                 <table width="90%" class="center" border="0px">
                     <ul th:each="accountLedger : ${accountLedgerList}">
                         <li th:text="${accountLedger.code}"></li>
@@ -22,7 +34,7 @@
                 </table>
                 <br/><br/>
                 </div>
-            <font color="gray;" size="4"> <b><span th:text="${accountNameHeader}"/></b> </font>
+
             <br/>
             <form action="#" th:action="@{/filterGenaralLedger}" method="post" th:object="${glSearchDTO}">
                 <table border="0" width="80%" class="center">
