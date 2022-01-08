@@ -111,10 +111,12 @@ public class SuperController {
             model.put("createSavingAccountEligible", true);
             model.put("createLoanAccountEligible", true);
             model.put("createCurrentAccountEligible", true);
+            model.put("createShareAccountEligible", true);
         }else{
             model.put("createSavingAccountEligible", false);
             model.put("createLoanAccountEligible", false);
             model.put("createCurrentAccountEligible", false);
+            model.put("createShareAccountEligible", false);
         }
         if(null != aUser){
             model.put("user", aUser); //TODO: stay consitent session or model

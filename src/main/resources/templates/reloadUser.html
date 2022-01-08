@@ -98,6 +98,11 @@
                                 <input type="text" name="identityCardNumber" th:field="*{identityCardNumber}" id="identityCardNumber"
                                        placeholder="Identity Card No" class="form-control" required>
                                 <br/>
+
+                                Notes:
+                                <textarea id="notes" class="selectNormal" rows="3" cols="70" th:field="*{notes}">
+                                </textarea>
+
                                 <label for="true">This new user CANNOT login</label><br/>
                                     False<input th:field="*{accountLocked}"  type="radio" id="false" name="accountLocked" value="false"
                                            checked>

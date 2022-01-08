@@ -48,20 +48,26 @@
     <!-- Contact form area start -->
     <section class="contact-form-area-start space df-bg">
 
+        <!--Project title area start-->
+        <div class="project-title-area text-center">
+            <div class="container">
+                        <div class="project-title-content">
+                            <font color="green" size="4"><b>LOAN CENTER</b></font><br/>
+                            <span><i class="fas fa-crosshairs"></i></span>
+                            <!--                            <p>Cross-agency coordination clean water rural, promising development turmoil inclusive education transformative community.</p>-->
+                        </div>
+            </div>
+        </div>
+
         <form action="#" th:action="@{/registerLoanAccountForm}" method="post" th:object="${loanAccount}">
             <table class="center" width="100%" border="0">
                 <tr>
                     <td align="center">
-
-                        <h3>LOAN CENTER</h3>
-                        <span><i class="fas fa-crosshairs"></i></span>
-
                     </td>
                 </tr>
                 <tr>
                     <td align="center" colspan="2">
-                        <br/>
-                        <br/>
+                <br/><br/>
                         <div class="error" th:text="${error}"/>
                         <label> Loan Type:</label>
                         <select class="selectNormal" name="productCode" id="productCode" th:field="*{productCode}">
@@ -76,13 +82,11 @@
                         </select>
                         Loan Amount:<input class="selectAmount" type="number" th:field="*{loanAmount}" max="9000000"
                                            maxlength="10"/>
-
                         <br/>
                         <br/>
 
                         Interest Rate:<input class="selectSmall" type="number" th:field="*{interestRate}" max="100"
                                              maxlength="2"/>
-
 
                         Term of Loan:<input class="selectSmall" type="number" th:field="*{termOfLoan}"/>
 
@@ -117,7 +121,6 @@
 
                         Block Amount Guarantor:<input class="selectSmall" type="checkbox"
                                                  th:field="*{blockBalanceQuarantor}"/>
-
 
                         Apply VAT:<input class="selectSmall" type="checkbox"
                                                th:field="*{vatOption}"/>

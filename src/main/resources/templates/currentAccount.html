@@ -7,7 +7,9 @@
 <br/>
 <div class="container">
 
-    <br/><br/><br/><br/>
+    <section class="contact-form-area-start space df-bg">
+
+    <br/><br/>
     <table style="border:0px" class="center" width="100%" cellpadding="5">
         <tr>
             <td>
@@ -43,21 +45,20 @@
         </tr>
     </table>
 
-<!-- Contact form area start -->
-    <section class="contact-form-area-start space df-bg">
-
-        <div class="project-title-area text-center">
-                <div class="row">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="project-title-content">
-                            <h3>CREATE A CURRENT ACCOUNT</h3>
-                            <span><i class="fas fa-crosshairs"></i></span>
-                            </div>
-                        </div>
+    <table width="100%" class="center" border="0px">
+        <tr>
+            <td align="center">
+                <div class="project-title-area text-center">
+                    <div class="project-title-content">
+                        <font size="4" color="green"><b>CREATE A CURRENT ACCOUNT</b></font><br/>
+                        <span><i class="fas fa-crosshairs"></i></span>
                     </div>
                 </div>
-        </div>
+                <span class="error" th:text="${error}"/>
+            </td>
+        </tr>
+    </table>
+
 
     <form action="#" th:action="@{/registerCurrentAccountForm}" method="post" th:object="${currentAccount}">
         <table class="center" width="100%">

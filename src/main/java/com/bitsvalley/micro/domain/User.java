@@ -28,7 +28,7 @@ public class User {
     private String telephone2;
     private String address;
     private String password;
-
+    private String notes;
     private String email;
     private String beneficiary;
     private String dateOfBirth;
@@ -284,5 +284,13 @@ public class User {
 
     public void setShareAccount(List<ShareAccount> shareAccount) {
         this.shareAccount = shareAccount;
+    }
+
+    public String getNotes() {
+        return notes;
+    }
+
+    public void setNotes(String notes) {
+        this.notes = notes;
     }
 }
