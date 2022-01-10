@@ -4,16 +4,14 @@ import com.bitsvalley.micro.domain.*;
 import com.bitsvalley.micro.repositories.*;
 import com.bitsvalley.micro.utils.BVMicroUtils;
 import com.bitsvalley.micro.utils.GeneralLedgerType;
-import com.bitsvalley.micro.webdomain.BillSelectionBilanz;
-import com.bitsvalley.micro.webdomain.GeneralLedgerBilanz;
-import com.bitsvalley.micro.webdomain.GeneralLedgerWeb;
-import com.bitsvalley.micro.webdomain.LedgerEntryDTO;
+import com.bitsvalley.micro.webdomain.*;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.*;
 
 /**
@@ -73,6 +71,8 @@ public class GeneralLedgerService extends SuperService {
         return generalLedgerBilanz;
 
     }
+
+
 
 //    public void updateSavingAccountTransaction(SavingAccountTransaction savingAccountTransaction) {
 //        GeneralLedger generalLedger = savingAccountGLMapper(savingAccountTransaction);
@@ -452,6 +452,57 @@ public class GeneralLedgerService extends SuperService {
 //        Collections.reverse( generalLedgerWebList );
 //        return getGeneralLedgerBilanz( generalLedgerWebList );
 //    }
+
+    public List<TrialBalanceWeb> getCurrentTrialBalance(LocalDate startDate, LocalDate endDate ){
+
+        String aStartDate = BVMicroUtils.formatUSDateOnly(startDate);
+        String aEndDate = BVMicroUtils.formatUSDateOnly(endDate);
+
+        List<TrialBalanceWeb> trialBalanceWebList = getTrialBalanceWebs(aStartDate, aEndDate);
+        return trialBalanceWebList;
+    }
+
+    @NotNull
+    public List<TrialBalanceWeb> getTrialBalanceWebs(String aStartDate, String aEndDate) {
+        List<TrialBalanceWeb> trialBalanceWebList = new ArrayList<TrialBalanceWeb>();
+        Iterable<LedgerAccount> all = ledgerAccountRepository.findAll();
+        TrialBalanceWeb trialBalanceWeb;
+
+        for (LedgerAccount aLedgerAccount: all) {
+            trialBalanceWeb = new TrialBalanceWeb();
+            Double debitTotal = 0.0;
+            Double creditTotal = 0.0;
+            Double total = 0.0;
+
+            debitTotal =
+                    generalLedgerRepository.searchCriteriaLedgerType(aStartDate, aEndDate, aLedgerAccount.getId(),BVMicroUtils.DEBIT);
+
+            creditTotal =
+                    generalLedgerRepository.searchCriteriaLedgerType(aStartDate, aEndDate, aLedgerAccount.getId(),BVMicroUtils.CREDIT);
+            creditTotal = creditTotal==null?new Double(0):creditTotal;
+            debitTotal = debitTotal==null?new Double(0):debitTotal;
+
+            trialBalanceWeb.setCreditTotal( creditTotal );
+            trialBalanceWeb.setDebitTotal( debitTotal );
+            trialBalanceWeb.setTotalDifference( creditTotal - debitTotal );
+            trialBalanceWeb.setCode( aLedgerAccount.getCode() );
+            trialBalanceWeb.setName( aLedgerAccount.getName() );
+            trialBalanceWebList.add(trialBalanceWeb);
+
+        }
+        TrialBalanceBilanz trialBalanceBilanz = new TrialBalanceBilanz();
+//        trialBalanceBilanz.setTotalDifference();
+        return trialBalanceWebList;
+    }
+
+    public List<GeneralLedger> searchCriteria(LocalDate startDateLocalDate, LocalDate endDateLocalDate) {
+
+        String startDate = BVMicroUtils.formatUSDateOnly(startDateLocalDate);
+        String endDate = BVMicroUtils.formatUSDateOnly(endDateLocalDate);
+        List<GeneralLedger> glList = generalLedgerRepository.searchCriteriaStartEndDate(startDate, endDate);
+
+        return glList;
+    }
 
     public GeneralLedgerBilanz searchCriteria(String startDate, String endDate, String agentUsername, long ledgerAccount) {
         List<GeneralLedger> glList = null;

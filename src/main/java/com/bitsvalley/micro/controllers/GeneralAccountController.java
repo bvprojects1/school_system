@@ -10,10 +10,7 @@ import com.bitsvalley.micro.repositories.UserRepository;
 import com.bitsvalley.micro.repositories.UserRoleRepository;
 import com.bitsvalley.micro.services.GeneralLedgerService;
 import com.bitsvalley.micro.utils.BVMicroUtils;
-import com.bitsvalley.micro.webdomain.BillSelectionBilanz;
-import com.bitsvalley.micro.webdomain.GLSearchDTO;
-import com.bitsvalley.micro.webdomain.GeneralLedgerBilanz;
-import com.bitsvalley.micro.webdomain.GeneralLedgerWeb;
+import com.bitsvalley.micro.webdomain.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -23,6 +20,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.servlet.http.HttpServletRequest;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -125,9 +123,57 @@ public class GeneralAccountController extends SuperController{
         model.put("allLedgerAccount",ledgerAccountRepository.findAll() );
         model.put("generalLedgerBilanz",glList);
         model.put("glSearchDTO",new GLSearchDTO());
-
         return "gls";
     }
+
+
+    @GetMapping(value = "/trialBalance")
+    public String trialBalance( ModelMap model, HttpServletRequest request) {
+        LocalDate now = LocalDate.now();
+        LocalDate localDateStart = now.minusDays(now.getDayOfMonth()-1);
+
+        List<TrialBalanceWeb> trialBalanceBilanz = generalLedgerService.getCurrentTrialBalance(localDateStart, now);
+
+//      model.put("allLedgerAccount", all);
+
+//      model.put("trialBalanceBilanz", generalLedgerBilanz );
+        GLSearchDTO glSearchDTO = new GLSearchDTO();
+
+        ArrayList<String> allGLEntryUsers = getAllNonCustomers();
+        glSearchDTO.setAllGLEntryUsers(allGLEntryUsers);
+
+        model.put("accountNameHeader", "TRIAL BALANCE");
+        model.put("trialBalanceBilanz",trialBalanceBilanz);
+        model.put("glSearchDTO",glSearchDTO);
+        model.put("startDate", BVMicroUtils.formatDateOnly(localDateStart) );
+        model.put("endDate", BVMicroUtils.formatDateOnly(now));
+
+        return "trialBalance";
+    }
+
+
+    @PostMapping(value = "/filterTrialBalance")
+    public String filterTrialBalance( ModelMap model, HttpServletRequest request,
+        @ModelAttribute("glSearchDTO") GLSearchDTO glSearchDTO){
+
+        String startDate = glSearchDTO.getStartDate();
+        String endDate = glSearchDTO.getEndDate();
+
+        List<TrialBalanceWeb> trialBalanceBilanz = generalLedgerService.getTrialBalanceWebs(startDate, endDate);
+
+        ArrayList<String> allGLEntryUsers = getAllNonCustomers();
+        glSearchDTO.setAllGLEntryUsers(allGLEntryUsers);
+
+        model.put("accountNameHeader", "TRIAL BALANCE");
+        model.put("trialBalanceBilanz",trialBalanceBilanz);
+        model.put("glSearchDTO",glSearchDTO);
+        model.put("startDate", startDate );
+        model.put("endDate", endDate );
+
+        return "trialBalance";
+
+    }
+
 
 
     @GetMapping(value = "/gl")
@@ -137,12 +183,11 @@ public class GeneralAccountController extends SuperController{
         model.put("allLedgerAccount",ledgerAccountRepository.findAll());
         model.put("generalLedgerBilanz",generalLedgerBilanz);
 
-//        ArrayList<User> allNonCustomer = userRepository.findAllByUserRoleNotIn();
-//
+//      ArrayList<User> allNonCustomer = userRepository.findAllByUserRoleNotIn();
 //      userRepository.findAllByUserRoleIn(allNonCustomer);
 
         GLSearchDTO glSearchDTO = new GLSearchDTO();
-//        glSearchDTO.setAllNonCustomers(allNonCustomer);
+//      glSearchDTO.setAllNonCustomers(allNonCustomer);
 
         ArrayList<String> allGLEntryUsers = getAllNonCustomers();
         glSearchDTO.setAllGLEntryUsers(allGLEntryUsers);

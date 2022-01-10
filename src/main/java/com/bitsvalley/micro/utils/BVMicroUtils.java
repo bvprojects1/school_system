@@ -61,6 +61,7 @@ public class BVMicroUtils {
     public static final String CUSTOMER_IN_USE = "customerInUse";
     public static final String DATE_FORMATTER= "dd-MM-yyyy HH:mm";
     public static final String DATE_ONLY_FORMATTER= "dd-MM-yyyy";
+    public static final String DATE_US_ONLY_FORMATTER= "yyyy-MM-dd";
 //    public static final String SYSTEM = "SYSTEM";
     public static final String REGULAR_MONTHLY_PAYMENT_MISSING = "Regular Monthly payment not on schedule might be missing payment for some months. " +
             "Please check the account statement";
@@ -180,6 +181,12 @@ public class BVMicroUtils {
 
     public  static String formatDateOnly(LocalDate localDate) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern(DATE_ONLY_FORMATTER);
+        String formatDateTime = localDate.format(formatter);
+        return formatDateTime;
+    }
+
+    public  static String formatUSDateOnly(LocalDate localDate) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(DATE_US_ONLY_FORMATTER);
         String formatDateTime = localDate.format(formatter);
         return formatDateTime;
     }
