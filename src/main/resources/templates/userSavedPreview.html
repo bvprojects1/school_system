@@ -59,6 +59,18 @@
                         <label><p>Beneficiary:</p></label>
                         <input type="text" th:field="*{beneficiary}" readonly/><br/>
 
+<!--                        <label><p>Beneficiary 2:</p></label>-->
+<!--                        <input type="text" th:field="*{beneficiary2}" readonly/><br/>-->
+
+<!--                        <label><p>Beneficiary 3:</p></label>-->
+<!--                        <input type="text" th:field="*{beneficiary3}" readonly/><br/>-->
+
+<!--                        <label><p>Beneficiary 4:</p></label>-->
+<!--                        <input type="text" th:field="*{beneficiary4}" readonly/><br/>-->
+
+<!--                        <label><p>Beneficiary 5:</p></label>-->
+<!--                        <input type="text" th:field="*{beneficiary5}" readonly/><br/>-->
+
                         <label><p>Email:</p></label>
                         <input type="text" size="10px" th:field="*{email}" readonly/><br/>
 
@@ -73,6 +85,11 @@
 
                         <label> <p>Account Locked:</p></label>
                         <input type="text" th:field="*{accountLocked}" readonly/><br/>
+
+                        <br/>
+                        <label><b> Notes:</b></label>
+                        <span th:text="${notes}"/>
+                        <input type="hidden"  id="notes" rows="3" cols="30" th:field="*{notes}"/>
 
                         <input type="hidden" th:field="*{idFilePath}" readonly/><br/>
 

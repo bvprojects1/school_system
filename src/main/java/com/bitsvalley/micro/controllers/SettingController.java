@@ -3,7 +3,6 @@ package com.bitsvalley.micro.controllers;
 import com.bitsvalley.micro.domain.RuntimeProperties;
 import com.bitsvalley.micro.repositories.RuntimePropertiesRepository;
 import com.bitsvalley.micro.services.InitSystemService;
-import com.bitsvalley.micro.services.SavingAccountService;
 import com.bitsvalley.micro.webdomain.RuntimeSetting;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -54,6 +53,14 @@ public class SettingController extends SuperController{
 //        }
         business_name.setPropertyValue(runtimeSetting.getBusinessName());
         list.add(business_name);
+
+        RuntimeProperties slogan = runtimePropertiesRepository.findByPropertyName("slogan");
+        if(slogan == null){
+            slogan = new RuntimeProperties();
+            slogan.setPropertyName("slogan");
+        }
+        slogan.setPropertyValue(runtimeSetting.getSlogan());
+        list.add(slogan);
 
         RuntimeProperties address = runtimePropertiesRepository.findByPropertyName("address");
 //        if(address == null){

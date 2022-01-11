@@ -10,42 +10,42 @@
     <!-- Contact form area start -->
     <section class="contact-form-area-start space df-bg">
         <form action="#" th:action="@{/transferFromSavingToLoanAccountsForm}" method="post" th:object="${transferBilanz}">
-            <table class="center" width="100%" border="1">
+            <table class="center" width="100%" border="0">
                 <tr>
                     <td align="center">
                         <div class="project-title-content">
-                            <h4>SUMMARY OF TRANSFER</h4>
+                            <h4>SUMMARY OF TRANSFER - REVIEW</h4>
                             <span><i class="fas fa-crosshairs"></i></span>
                         </div>
                     </td>
                 </tr>
                 <tr>
                     <td align="center" colspan="2">
-                        <font size="2">Account Owner</font><br/>
-                        <font size="4">
+                        <font size="4">Account Owner</font><br/>
+                        <font size="5">
                             <span style th:text="${session.customerInUse.userName}"/>'s
                         </font>
                         <br/><br/>
-                        <label> <b>From Account:</b></label>
-                        <span th:text="${fromTransferText}"/>
-                        <input type="hidden"  id="transferFromAccount" th:field="*{transferFromAccount}">
+                        <label> <b>From Account:</b></label><br/>
+                        <span class="selectNormal" th:text="${fromTransferText}"/>
+                        <input  type="hidden"  id="transferFromAccount" th:field="*{transferFromAccount}">
                         <br/>
                         <br/>
                         <br/>
-                        <label> <b>To Account:</b></label>
-                        <span th:text="${toTransferText}"/>
-                        <input type="hidden"  id="transferToAccount" th:field="*{transferToAccount}">
+                        <label> <b>To Account:</b></label><br/>
+                        <span class="selectNormal" th:text="${toTransferText}"/>
+                        <input  type="hidden"  id="transferToAccount" th:field="*{transferToAccount}">
                         <br/>
                         <br/>
-                        <label><b> Amount:</b></label>
-                        <span th:text="${transferAmount}"/>
+                        <label><b> Amount:</b></label><br/>
+                        <span class="selectNormal" th:text="${transferAmount}"/>
                         <input type="hidden"  id="amount" th:field="*{transferAmount}">
                         <input type="hidden"  id="transferType" th:field="*{transferType}" value="${transferType}">
                         <br/>
                         <br/>
-                        <label> Notes:</label>
-                        <span th:text="${notes}"/>
-                        <input type="hidden"  id="notes" rows="3" cols="30" th:field="*{notes}"/>
+                        <label> Notes:</label><br/>
+                        <span class="selectNormal" th:text="${notes}"/>
+                        <input type="hidden" class="selectNormal"  id="notes" rows="3" cols="30" th:field="*{notes}"/>
                         <br/>
                         <br/>
                         <button type="submit" class="btn btn-success">

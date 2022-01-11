@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<div th:insert="header::navbar"></div>
+<br/>
+<br/>
+<div class="container">
+    <!-- Contact form area start -->
+    <section class="contact-form-area-start space df-bg">
+            <table class="center" width="100%" border="0">
+                <tr>
+                    <td align="center">
+                        <div class="project-title-content">
+                            <h4><span th:text="${glAddEntryTitle}"/></h4>
+                            <span><i class="fas fa-crosshairs"></i></span>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td align="center" colspan="2">
+                        <br/>
+                        </font> <b>From:</b><span class="selectNormal" th:text="${originLedgerAccount.name}"/>
+                        <br/><br/>
+                        <span class="selectNormal" th:text="*{ledgerAccount.creditOrDebit}"/>
+                        <br/>
+                        <br/>
+                        <b>Destination:</b><span class="selectNormal" th:text="${destinationLedgerAccounts.name}"/>
+                        <br/>
+                        <br/>
+                        <b>Ledger Amount:</b><span class="selectAmount" th:text="${#numbers.formatDecimal(ledgerAccount.ledgerAmount, 0, 'COMMA', 0, 'POINT')}"/>
+                        <br/>
+                        <br/>
+                        <b>Notes:</b> <span class="selectNormal" th:text="*{ledgerAccount.notes}"/>
+                        <br/>
+                        <br/>
+                    </td>
+                </tr>
+            </table>
+        <br/><br/>
+    </section>
+</div>
+<div th:insert="footer::navbar"></div>
+</html>

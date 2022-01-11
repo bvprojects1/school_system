@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<div th:insert="header::navbar"></div>
+
+
+<section class="contact-form-area-start space df-bg">
+    <!--Project title area start-->
+    <div class="project-title-area text-center">
+        <div class="col-md-12">
+            <div class="project-title-content">
+                <br/><br/>
+                <table width="90%" class="center" border="0px">
+                    <tr>
+                        <td>
+                            <div class="project-title-content">
+                                <font size="4" color="green"><b>BILL SELECTION</b></font><br/>
+                                <span><i class="fas fa-crosshairs"></i></span>
+                            </div>
+                            <span th:if="${showBillSelectionTable == 'false'}">
+                                <font color="gray;" size="4">
+                                    <span th:text="${headerText}"/>
+                                </font>
+                            </span>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <font color="gray;" size="4"> <b><span th:text="${accountNameHeader}"/></b> </font>
+            <br/>
+            <form action="#" th:action="@{/filterBillSelection}" method="post" th:object="${glSearchDTO}">
+                <table border="0" width="80%" class="center">
+                    <tr>
+
+                        <td width="5"></td>
+                        <td>
+                            Start Date<input type="date" name="startDate" th:field="*{startDate}" id="startDate"
+                                             placeholder="Start Date:" class="form-control" required>
+                        </td>
+                        <td width="5"></td>
+                        <td>
+                            End Date<input type="date" name="endDate" th:field="*{endDate}" id="endDate"
+                                           placeholder="End Date:" class="form-control" required>
+                        </td>
+                        <td width="5"></td>
+                        <td width="5">
+
+                            User
+                            <select class="selectMedium" name="allGLEntryUsers" id="allGLEntryUsers"
+                                    th:field="*{allGLEntryUsers}">
+                                <option value="-1">ALL</option>
+                                <option th:each="username : ${allGLEntryUsers}"
+                                        th:value="${username}">
+                                    <span th:text="${username}"/>
+                                </option>
+                            </select>
+
+                        </td>
+
+                        <td>
+                            <!--                        User<br/>-->
+                            <!--                        <select class="selectMedium" name="allGLEntryUsers" id="allGLEntryUsers" th:field="*{allGLEntryUsers}">-->
+                            <!--                            <option value="-1">ALL</option>-->
+                            <!--                            <option th:each="username : ${allGLEntryUsers}"-->
+                            <!--                                    th:value="${username}">-->
+                            <!--                                <span th:text="${username}"/>-->
+                            <!--                            </option>-->
+                            <!--                        </select>-->
+                        </td>
+                        <td width="5"></td>
+                        <td>
+                            <br/>
+                            <button type="submit" class="btn btn-success">SEARCH</button>
+                        </td>
+                    </tr>
+                </table>
+            </form>
+
+        </div>
+    </div>
+
+    <span th:if="${showBillSelectionTable == 'false'}">
+    <table border="0" width="90%" class="center">
+        <tr>
+            <td align="center"><font color="#2d363f" size="2px"><img width="100px" th:src="@{/assets/images/tenThousand.png}"/> <br/></font></td>
+            <td align="center"><font color="#2d363f" size="2px"><img width="100px" th:src="@{/assets/images/fiveThousand.png}"/> <br/></font></td>
+            <td align="center"><font color="#2d363f" size="2px"><img width="100px" th:src="@{/assets/images/twoThousand.png}"/> <br/></font></td>
+            <td align="center"><font color="#2d363f" size="2px"><img width="100px" th:src="@{/assets/images/oneThousand.png}"/> <br/></font></td>
+            <td align="center"><font color="#2d363f" size="2px"><img width="100px" th:src="@{/assets/images/fiveHundred.png}"/></font></td>
+            <td align="center"><font color="#2d363f" size="2px"><img width="60px" th:src="@{/assets/images/oneHundred.png}"/></font></td>
+            <td align="center"><font color="#2d363f" size="2px"><img width="60px" th:src="@{/assets/images/fifty.png}"/></font></td>
+            <td align="center"><font color="#2d363f" size="2px"><img width="60px" th:src="@{/assets/images/twentyFive.png}"/></font></td>
+            <td align="center"><font color="#2d363f" size="2px"><img width="60px" th:src="@{/assets/images/ten.png}"/></font></td>
+            <td align="center"><font color="#2d363f" size="2px"><img width="60px" th:src="@{/assets/images/five.png}"/></font></td>
+        </tr>
+        <tr>
+
+            <td align="center"><b><span th:text="${billSelectionBilanz.tenThousand}"/> </b><br/>
+                (<span th:text="${billSelectionBilanz.tenThousand*10000}"/>)</td>
+            <td align="center"><b><span th:text="${billSelectionBilanz.fiveThousand}"/> </b> <br/> (<span
+                    th:text="${billSelectionBilanz.fiveThousand * 5000}"/>)</td>
+            <td align="center"><b><span th:text="${billSelectionBilanz.twoThousand}"/> </b> <br/> (<span
+                    th:text="${billSelectionBilanz.twoThousand*2000}"/>)</td>
+            <td align="center"><b><span th:text="${billSelectionBilanz.oneThousand}"/> </b><br/> (<span
+                    th:text="${billSelectionBilanz.oneThousand*1000}"/>)</td>
+            <td align="center"><b><span th:text="${billSelectionBilanz.fiveHundred}"/></b> <br/> (<span
+                    th:text="${billSelectionBilanz.fiveHundred * 500}"/>)</b></td>
+            <td align="center"><b><span th:text="${billSelectionBilanz.oneHundred}"/></b><br/> (<span
+                    th:text="${billSelectionBilanz.oneHundred * 100}"/>)</b></td>
+            <td align="center"><b><span th:text="${billSelectionBilanz.fifty}"/></b><br/> (<span
+                    th:text="${billSelectionBilanz.fifty * 50}"/>)</td>
+            <td align="center"><b><span th:text="${billSelectionBilanz.twentyFive}"/></b><br/> (<span
+                    th:text="${billSelectionBilanz.twentyFive * 25}"/>)</td>
+            <td align="center"><b><span th:text="${billSelectionBilanz.ten}"/></b><br/> (<span
+                    th:text="${billSelectionBilanz.ten * 10}"/>)</td>
+            <td align="center"><b><span th:text="${billSelectionBilanz.five}"/></b><br/> (<span
+                    th:text="${billSelectionBilanz.five * 5}"/>)</td>
+
+        </tr>
+    </table>
+
+        <!--Project title area end-->
+    <table border="0" width="90%" class="center">
+        <tr>
+            <td>
+                Total: <font color="#228b22" size="6px">
+                <span th:text="${#numbers.formatDecimal(billSelectionBilanz.total, 0, 'COMMA', 0, 'POINT')}"/>
+            </font>
+            </td>
+        </tr>
+    </table>
+    </span>
+</section>
+
+</body>
+<div th:insert="footer::navbar"></div>
+</html>

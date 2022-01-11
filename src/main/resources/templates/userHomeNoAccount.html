@@ -13,9 +13,10 @@
 
         <table style="border:0px" class="center" width="100%">
             <tr>
-                <td><font size="3">Account Owner</font><br/><font size="4">
-                    <span style th:text="${session.customerInUse.userName}"/>'s
-                </font>
+                <td><font size="3">Account Owner</font><br/>
+                    <font color="gray" size="5">
+                        <span style th:text="${session.customerInUse.userName}"/>'s
+                    </font>
                     <button type="submit">
                         <a href="#" th:href="@{/file/{userName}(userName=${session.customerInUse.userName})}">
                             Upload I.D
@@ -23,9 +24,9 @@
                     </button>
                     <br/>
                 <td>
-                    <font color="gray" size="4">
-                        <h4>View Accounts</h4>
-                    </font>
+                     <font size="4" color="green">
+                         View Accounts
+                     </font>
                 </td>
                 <td> Saving <br/>
                     <font color="gray" size="4px">
@@ -42,48 +43,39 @@
 
         <table border="0" class="center" width="100%">
             <tr>
+                <td colspan="8">
+                    <font size="5px" color="#738980"> <b>CURRENT ACCOUNT</b> </font>
+                    <span th:if="${createCurrentAccountEligible}">
+                        <a href="#" th:href="@{/registerCurrentAccount}">
+                            <img width="25px" th:src="@{/assets/images/add.png}"/>
+                        </a><br/>
+                    </span><br/>
+                    <font size="3">No Accounts exist for <i>
+                        <span style th:text="${session.customerInUse.userName}"/></i>
+                        Create an account
+                    </font>
+                </td>
+            </tr>
+        </table>
+        <br/> <br/>
+
+        <table border="0" class="center" width="100%">
+            <tr>
                 <td colspan="9"><font size="5px" color="#738980">
                     <b>SAVING ACCOUNT</b> </font>
 
-                    <div th:if="${createSavingAccountEligible}">
+                    <span th:if="${createSavingAccountEligible}">
                         <a href="#" th:href="@{/registerSavingAccount}">
                             <img width="25px" th:src="@{/assets/images/add.png}"/>
                         </a>
-                    </div>
+                    </span>
 
                     <br/>
                 </td>
             </tr>
             <tr>
-                <td>
-                    Account Type
-                </td>
-                <td>
-                    Account Number
-                </td>
-                <td>
-                    Description
-                </td>
-                <td>
-                    Minimum Balance
-                </td>
-                <td>
-                    %
-                </td>
-                <td>
-                    Locked
-                </td>
-                <td>
-                    Created
-                </td>
-                <td>
-                    Creator
-                </td>
-                <td>
-                </td>
-            <tr>
                 <td colspan="8">
-                    No Account exists
+
                 </td>
             </tr>
 
@@ -136,31 +128,29 @@
                     <font size="5px" color="#738980">
                         <b>LOAN ACCOUNT</b>
                     </font>
+                    <span th:if="${createLoanAccountEligible}">
                     <a href="#" th:href="@{/registerLoanAccount}">
                         <img width="25px" th:src="@{/assets/images/add.png}"/>
                     </a>
+                    </span>
                     <br/>
                 </td>
             </tr>
         </table>
         <br/> <br/>
 
-        <table border="0" class="center" width="100%">
-            <tr>
-                <td colspan="8"><font size="5px" color="#738980"> <b>CURRENT ACCOUNT</b> </font><a <a href="#" th:href="@{/registerCurrentAccount}"> <img
-                        width="25px" th:src="@{/assets/images/add.png}"/></a><br/></span></td>
-            </tr>
-        </table>
-
-        <br/> <br/>
 
         <table border="0" class="center" width="100%">
             <tr>
                 <td colspan="8">
                     <font size="5px" color="#738980">
                         <b>SHARE ACCOUNT</b>
-                    </font><a href="#" th:href="@{/registerShareAccount}">
-                    <img width="25px" th:src="@{/assets/images/add.png}"/></a><br/>
+                    </font>
+                    <span th:if="${createShareAccountEligible}">
+                        <a href="#" th:href="@{/registerShareAccount}">
+                            <img width="25px" th:src="@{/assets/images/add.png}"/>
+                        </a><br/>
+                    </span>
                 </td>
             </tr>
         </table>

@@ -26,11 +26,10 @@
     <div class="contact-from-area">
         <div class="container">
             <div class="row">
-                <div class="offset-md-2 col-md-8">
                     <font size="6" color="gray"><span  th:text="${ledgerAccountInfo}"/></font>
                     <form action="#" th:action="@{/saveLedgerAccountForm}" method="post" th:object="${destiantionLedgerAccounts}">
                             <div class="col-md-12">
-                                <select class="select" name="Category" id="category">
+                                <select class="selectNormal" name="Category" id="category">
                                     <option value="Assets">Assets (1000 – 1999)</option>
                                     <option value="Liabilities">Liabilities (2000 – 2999)</option>
                                 </select>
@@ -62,20 +61,20 @@
 
                     <br/><br/>
                     <h3>EXISTING LEDGER ACCOUNTS</h3>
-                    <table width="90%" class="center" border="0px">
+                    <table width="100%" class="center" border="0px">
                         <tr th:each="aLedgerAccount : ${ledgerAccountList}">
                             <td th:text="${aLedgerAccount.name}"></td>
                             <td th:text="${aLedgerAccount.code}"></td>
                             <td th:text="${aLedgerAccount.category}"> </td>
                             <td th:text="${aLedgerAccount.status}"> </td>
                             <td>
-                                <a href="#" th:href="@{/addGeneralLedgerEntry/{id}(id=${aLedgerAccount.id})}"> <img width="30px" th:src="@{/assets/images/add.png}"/> </a>
-                                <a href="#" th:href="@{/viewLedgerAccount/{id}(id=${aLedgerAccount.id})}">See more ...</a>
+                                <a href="#" th:href="@{/viewLedgerAccount/{id}(id=${aLedgerAccount.id})}">From Cash Account ...</a>
+                                <a href="#" th:href="@{/addGeneralLedgerEntry/{id}(id=${aLedgerAccount.id})}"> <img width="30px" th:src="@{/assets/images/transfer2.png}"/> </a>
+                                <a href="#" th:href="@{/viewLedgerAccount/{id}(id=${aLedgerAccount.id})}">To Cash Account ...</a>
                             </td>
                         </tr>
                     </table>
 
-                </div>
             </div>
         </div>
     </div>

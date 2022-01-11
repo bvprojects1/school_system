@@ -1,8 +1,10 @@
 package com.bitsvalley.micro.controllers;
 
 import com.bitsvalley.micro.domain.*;
+import com.bitsvalley.micro.repositories.GeneralLedgerRepository;
 import com.bitsvalley.micro.repositories.SavingAccountTransactionRepository;
 import com.bitsvalley.micro.repositories.UserRepository;
+import com.bitsvalley.micro.repositories.UserRoleRepository;
 import com.bitsvalley.micro.services.*;
 import com.bitsvalley.micro.utils.BVMicroUtils;
 import com.bitsvalley.micro.webdomain.CurrentBilanzList;
@@ -35,6 +37,9 @@ public class SuperController {
     private UserRepository userRepository;
 
     @Autowired
+    private UserRoleRepository userRoleRepository;
+
+    @Autowired
     private SavingAccountTransactionRepository savingAccountTransactionRepository;
 
     @Autowired
@@ -57,6 +62,9 @@ public class SuperController {
 
     @Autowired
     private ShareAccountService shareAccountService;
+
+    @Autowired
+    private GeneralLedgerRepository generalLedgerRepository;
 
 
     public String  findUserByUserName(User user, ModelMap model, HttpServletRequest request) {
@@ -82,6 +90,7 @@ public class SuperController {
             if(aUser == null){ //LoanReference
                 Optional<LoanAccountTransaction> byReference = loanAccountTransactionService.
                         findByReference(user.getUserName());
+                if(byReference.isPresent()){
                     LoanAccountTransaction loanAccountTransaction = byReference.get();
                     if(loanAccountTransaction != null) { //TODO: Identical code in loanAccountController
                         LoanAccount aLoanAccount = loanAccountTransaction.getLoanAccount();
@@ -93,21 +102,26 @@ public class SuperController {
                         model.put("loanAccountTransaction", loanAccountTransaction);
                         return "loanBilanzNoInterest";
                     }
+                }
+
             }
         }
-        if("ROLE_CUSTOMER".equals(aUser.getUserRole().get(0).getName())){
+
+        if(aUser != null && "ROLE_CUSTOMER".equals(aUser.getUserRole().get(0).getName())){
             model.put("createSavingAccountEligible", true);
             model.put("createLoanAccountEligible", true);
             model.put("createCurrentAccountEligible", true);
+            model.put("createShareAccountEligible", true);
         }else{
             model.put("createSavingAccountEligible", false);
             model.put("createLoanAccountEligible", false);
             model.put("createCurrentAccountEligible", false);
+            model.put("createShareAccountEligible", false);
         }
         if(null != aUser){
             model.put("user", aUser); //TODO: stay consitent session or model
             request.getSession().setAttribute(BVMicroUtils.CUSTOMER_IN_USE, aUser);
-        }
+
         SavingBilanzList savingBilanzByUserList = savingAccountService.getSavingBilanzByUser(aUser, false);
         LoanBilanzList loanBilanzByUserList = loanAccountService.getLoanBilanzByUser(aUser, false);
         CurrentBilanzList currentBilanzByUserList = currentAccountService.getCurrentBilanzByUser(aUser, false);
@@ -124,12 +138,40 @@ public class SuperController {
             request.getSession().setAttribute("savingBilanzList", savingBilanzByUserList);
             request.getSession().setAttribute(BVMicroUtils.CUSTOMER_IN_USE, aUser);
             return "userHomeNoAccount";
+        }
+        }
+        if(aUser==null){
+            model.put("error","No records found");
+            return "welcome";
+        }else{
+            return "userHome";
+        }
     }
-        return "userHome";
+
+
+    public ArrayList<String> getAllNonCustomers() {
+
+//        ArrayList<UserRole> userRoleList = new ArrayList<UserRole>();
+//        UserRole customer = userRoleService.findUserRoleByName("ROLE_CUSTOMER");
+//        userRoleList.add(customer);
+        ArrayList<String> customerList = generalLedgerRepository.findAllDistinctByCreatedBy();
+//        ArrayList<User> customerList = userService.findAllByUserNotRoleIn(userRoleList);
+        return customerList;
+
     }
 
+    public ArrayList<String> getGLEntryUsers() {
 
+//        ArrayList<String> roles = new ArrayList<String>();
+//        roles.add("ROLE_CUSTOMER");
+//        ArrayList<UserRole> userRoleList = userRoleRepository.findByNameNotIn(roles);
 
+//        ArrayList<User> nonCustomerList = userService.findDistinctByUserRoleIn(userRoleList);
+
+        ArrayList<String> distinctByUser = generalLedgerRepository.findAllDistinctByCreatedBy();
+
+        return distinctByUser;
+    }
 
     public ArrayList<User> getAllCustomers() {
         ArrayList<UserRole> userRoleList = new ArrayList<UserRole>();
@@ -138,6 +180,7 @@ public class SuperController {
         ArrayList<User> customerList = userService.findAllByUserRoleIn(userRoleList);
         return customerList;
     }
+
 
     public ArrayList<User> getAllManager() {
         ArrayList<UserRole> userRoleList = new ArrayList<UserRole>();

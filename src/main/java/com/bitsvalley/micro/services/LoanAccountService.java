@@ -6,6 +6,7 @@ import com.bitsvalley.micro.utils.AccountStatus;
 import com.bitsvalley.micro.utils.BVMicroUtils;
 import com.bitsvalley.micro.webdomain.LoanBilanz;
 import com.bitsvalley.micro.webdomain.LoanBilanzList;
+import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -83,13 +84,15 @@ public class LoanAccountService extends SuperService {
                 savingAccountGuarantor.getAccountNumber());
         shorteeAccount.setSavingAccount(shorteeSavingAccount);
 
-        shorteeSavingAccount.setAccountMinBalance(
-                shorteeSavingAccount.getAccountMinBalance() + loanAccount.getGuarantor1Amount1());
-        shorteeSavingAccount.setLastUpdatedDate(createdDate);
-        shorteeSavingAccount.setLastUpdatedBy(loggedInUserName);
-        shorteeSavingAccount.setAccountStatus(AccountStatus.SHORTEE_ACCOUNT);
-        shorteeSavingAccount.setAccountLocked(true);
-        savingAccountService.save(shorteeSavingAccount);
+//        if( loanAccount.isBlockBalanceQuarantor()){
+            shorteeSavingAccount.setAccountMinBalance(
+                    shorteeSavingAccount.getAccountMinBalance() + loanAccount.getGuarantor1Amount1());
+            shorteeSavingAccount.setLastUpdatedDate(createdDate);
+            shorteeSavingAccount.setLastUpdatedBy(loggedInUserName);
+            shorteeSavingAccount.setAccountStatus(AccountStatus.SHORTEE_ACCOUNT);
+            shorteeSavingAccount.setAccountLocked(true);
+            savingAccountService.save(shorteeSavingAccount);
+//        }
 
         callCenterService.callCenterShorteeUpdate(shorteeSavingAccount, loanAccount.getGuarantor1Amount1());
 
@@ -158,8 +161,8 @@ public class LoanAccountService extends SuperService {
                 loanAccount.getAccountNumber(), loanAccount.getAccountType().getName(), loanAccount.getLoanAmount() + "");
     }
 
-
-    public void createLoanAccountTransaction(LoanAccountTransaction loanAccountTransaction, LoanAccount aLoanAccount, String modeOfPayment) {
+    @Transactional
+    public LoanAccount createLoanAccountTransaction(LoanAccountTransaction loanAccountTransaction, LoanAccount aLoanAccount, String modeOfPayment) {
         loanAccountTransaction.setModeOfPayment(modeOfPayment);
         Branch branchInfo = branchService.getBranchInfo(getLoggedInUserName());
 
@@ -167,7 +170,7 @@ public class LoanAccountService extends SuperService {
         loanAccountTransaction.setBranchCode(branchInfo.getCode());
         loanAccountTransaction.setBranchCountry(branchInfo.getCountry());
 
-        loanAccountTransaction.setLoanAccount(aLoanAccount);
+//        loanAccountTransaction.setLoanAccount(aLoanAccount);
         if (aLoanAccount.getLoanAccountTransaction() != null) {
             aLoanAccount.getLoanAccountTransaction().add(loanAccountTransaction);
         } else {
@@ -177,13 +180,13 @@ public class LoanAccountService extends SuperService {
         updateInterestOwedPayment(aLoanAccount, loanAccountTransaction);
         // ro
         save(aLoanAccount);
-
+        if(!StringUtils.equals(loanAccountTransaction.getModeOfPayment(), BVMicroUtils.TRANSFER)){
+            generalLedgerService.updateGLAfterLoanAccountCASHRepayment(loanAccountTransaction);
+        }
         callCenterService.saveCallCenterLog(loanAccountTransaction.getReference(), aLoanAccount.getUser().getUserName(), aLoanAccount.getAccountNumber(),
                 "Loan account Payment received Amount: "+ loanAccountTransaction.getAmountReceived());
 
-        generalLedgerService.updateGLAfterLoanAccountCASHRepayment(loanAccountTransaction);
-//        generalLedgerService.updateLoanRepayment();
-
+        return aLoanAccount;
     }
 
     public LoanBilanzList getLoanBilanzByUser(User user, boolean calculateInterest) {
@@ -209,7 +212,7 @@ public class LoanAccountService extends SuperService {
     }
 
 
-    public LoanAccountTransaction updateInterestOwedPayment(LoanAccount loanAccount, LoanAccountTransaction loanAccountTransaction) {
+    public LoanAccount updateInterestOwedPayment(LoanAccount loanAccount, LoanAccountTransaction loanAccountTransaction) {
         LocalDateTime transactionDate = loanAccountTransaction.getCreatedDate();
         LocalDateTime date =
                 LocalDateTime.ofInstant(Instant.ofEpochMilli(loanAccount.getLastPaymentDate().getTime()), ZoneId.systemDefault());
@@ -220,14 +223,21 @@ public class LoanAccountService extends SuperService {
             loanAccountTransaction.setInterestPaid(interestOwed);
             loanAccountTransaction.setVatPercent( 0.195*interestOwed );
 
-            loanAccountTransaction.setCurrentLoanAmount(
-                    loanAccount.getCurrentLoanAmount() - (loanAccountTransaction.getAmountReceived() - interestOwed - loanAccountTransaction.getVatPercent()));
+            if(loanAccountTransaction.getLoanAccount().isVatOption()){
+                loanAccountTransaction.setCurrentLoanAmount(
+                        loanAccount.getCurrentLoanAmount() - (loanAccountTransaction.getAmountReceived() - interestOwed - loanAccountTransaction.getVatPercent()));
+            }else{
+                loanAccountTransaction.setCurrentLoanAmount(
+                        loanAccount.getCurrentLoanAmount() - (loanAccountTransaction.getAmountReceived() - interestOwed ));
+            }
 
             loanAccount.setCurrentLoanAmount(loanAccountTransaction.getCurrentLoanAmount());
             loanAccount.setTotalInterestOnLoan(loanAccount.getTotalInterestOnLoan() + interestOwed);
+            loanAccount.setInterestOwed(interestOwed);
             Date lastPaymentDate = new Date();
             loanAccount.setLastPaymentDate(lastPaymentDate);
             loanAccount.setLastUpdatedDate(lastPaymentDate);
+
         }
 //        else{ TODO: Negative scenario if amt paid is less than interest accrued
 //            loanAccountTransaction.setCurrentLoanAmount(
@@ -237,7 +247,7 @@ public class LoanAccountService extends SuperService {
         loanAccountTransactionRepository.save(loanAccountTransaction);
 
 
-        return loanAccountTransaction;
+        return loanAccount;
     }
 
 
@@ -247,6 +257,7 @@ public class LoanAccountService extends SuperService {
         double totalLoan = 0.0;
         String currentLoanBalance = "";
         double totalLoanAccountTransactionInterest = 0.0;
+        double totalLoanAccountTransactionInterestDue = 0.0;
 
         LoanBilanzList loanBilanzsList = new LoanBilanzList();
 
@@ -258,13 +269,18 @@ public class LoanAccountService extends SuperService {
             loanBilanzsList.getLoanBilanzList().add(loanBilanz);
             totalLoan = totalLoan + loanAccountTransaction.getLoanAmount();
             if (calculateInterest) {
+                totalLoanAccountTransactionInterestDue = totalLoanAccountTransactionInterest - loanAccountTransaction.getInterestPaid();
                 totalLoanAccountTransactionInterest = totalLoanAccountTransactionInterest + loanAccountTransaction.getInterestPaid();
             }
         }
+
+//        loanBilanzsList.setTotalLoanInterestDue(BVMicroUtils.formatCurrency(totalLoanAccountTransactionInterestDue)); //TODO set total interest
         loanBilanzsList.setTotalLoanInterest(BVMicroUtils.formatCurrency(totalLoanAccountTransactionInterest)); //TODO set total interest
         loanBilanzsList.setTotalLoan(BVMicroUtils.formatCurrency(totalLoan));
         loanBilanzsList.setCurrentLoanBalance(currentLoanBalance);
-        Collections.reverse(loanBilanzsList.getLoanBilanzList());
+
+//        ${bilanz.currentBalance*bilanz.noOfDays*bilanz.interestRate*.01 / 365}
+//        Collections.reverse(loanBilanzsList.getLoanBilanzList());
         return loanBilanzsList;
     }
 
@@ -311,7 +327,7 @@ public class LoanAccountService extends SuperService {
         loanBilanzsList.setTotalLoan(BVMicroUtils.formatCurrency(totalLoanAmount));
 //        loanBilanzsList.setCurrentLoanBalanceAllUserLoans(BVMicroUtils.formatCurrency(currentLoanBalanceAllUserLoans));
         loanBilanzsList.setTotalLoanInterest(BVMicroUtils.formatCurrency(loanAccountTransactionInterest));
-        Collections.reverse(loanBilanzsList.getLoanBilanzList());
+//        Collections.reverse(loanBilanzsList.getLoanBilanzList());
         return loanBilanzsList;
     }
 
@@ -346,13 +362,25 @@ public class LoanAccountService extends SuperService {
         loanBilanz.setNotes(loanAccountTransaction.getNotes());
         loanBilanz.setAccountNumber(loanAccount.getAccountNumber());
         loanBilanz.setNoOfDays(calculateNoOfDays(loanAccountTransaction.getCreatedDate()));
+//
+//        int days = new Integer(loanBilanz.getNoOfDays());
+//        double intRate = new Double(loanBilanz.getInterestRate());
+//        double v = (loanAccount.getCurrentLoanAmount() * days * intRate * 0.01)/365;
+
+//        loanBilanz.setInterestDue(BVMicroUtils.formatCurrency(v));
+
         loanBilanz.setModeOfPayment(loanAccountTransaction.getModeOfPayment());
         loanBilanz.setAccountOwner(loanAccountTransaction.getAccountOwner());
         loanBilanz.setBranch(loanAccount.getBranchCode());
         loanBilanz.setMonthYearOfLastPayment(calculateMonthOfLastPayment(loanAccount.getCreatedDate(),
                 loanAccount.getTermOfLoan()));
         loanBilanz.setInterestAccrued(BVMicroUtils.formatCurrency(loanAccountTransaction.getInterestPaid()));
-        loanBilanz.setVatPercent(BVMicroUtils.formatCurrency(loanAccountTransaction.getVatPercent()));// Configure
+        if(loanAccount.isVatOption()){
+            loanBilanz.setVatPercent(BVMicroUtils.formatCurrency(loanAccountTransaction.getVatPercent()));// Configure
+        }else{
+            loanBilanz.setVatPercent(BVMicroUtils.formatCurrency(0));// Configure
+        }
+
         loanBilanz.setCurrentBalance(BVMicroUtils.formatCurrency(loanAccountTransaction.getCurrentLoanAmount()));
         loanBilanz.setAmountReceived(BVMicroUtils.formatCurrency(loanAccountTransaction.getAmountReceived()));
         loanBilanz.setMonthlyPayment(loanAccount.getMonthlyPayment() + "");

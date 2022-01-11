@@ -1,12 +1,21 @@
 package com.bitsvalley.micro.webdomain;
 
+import com.bitsvalley.micro.domain.SavingAccount;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
 public class LedgerEntryDTO {
 
     private long originLedgerAccount;
     private long destinationLedgerAccount;
     private double ledgerAmount;
     private String creditOrDebit;
+    private String recordDate;
     private String notes;
+    private List<String> paramValueString = new ArrayList<String>();
+    private List<SavingAccount> savingAccounts;
 
     public long getOriginLedgerAccount() {
         return originLedgerAccount;
@@ -48,4 +57,31 @@ public class LedgerEntryDTO {
         this.notes = notes;
     }
 
+    public void setDestinationLedgerAccount(long destinationLedgerAccount) {
+        this.destinationLedgerAccount = destinationLedgerAccount;
+    }
+
+    public List<SavingAccount> getSavingAccounts() {
+        return savingAccounts;
+    }
+
+    public void setSavingAccounts(List<SavingAccount> savingAccounts) {
+        this.savingAccounts = savingAccounts;
+    }
+
+    public List<String> getParamValueString() {
+        return paramValueString;
+    }
+
+    public void setParamValueString(List<String> paramValueString) {
+        this.paramValueString = paramValueString;
+    }
+
+    public String getRecordDate() {
+        return recordDate;
+    }
+
+    public void setRecordDate(String recordDate) {
+        this.recordDate = recordDate;
+    }
 }

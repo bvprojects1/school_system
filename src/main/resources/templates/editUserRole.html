@@ -13,7 +13,7 @@
             <div class="row">
                 <div class="col-md-12">
                     <div class="project-title-content">
-                        <h3>UPDATE USER ROLE</h3>
+                        <font size="4" color="green"><b>UPDATE USER ROLES</b></font>
                         <span><i class="fas fa-crosshairs"></i></span>
                         <!-- <p>Cross-agency coordination clean water rural, promising development turmoil
                              inclusive education transformative community.</p>
@@ -26,58 +26,112 @@
     <!--Project title area end-->
 
     <div class="contact-from-area">
-        <div class="container">
+<!--        <div class="container">-->
             <div class="row">
                 <div class="offset-md-2 col-md-8">
-                    <font color="blue"> <span th:text="${updatedInfo}"/></font>
+                    <font size="6px" color="gray"> <span th:text="${updatedInfo}"/></font>
                     <form action="#" th:action="@{/editUserRoleForm}" method="post" th:object="${user}">
                         <div class="col-md-12">
-                            <label for="aUserRole">Choose a User Role:</label>
-                            <span th:if="${#authorization.expression('hasAnyAuthority(''ROLE_MANAGER'')')} OR ${#authorization.expression('hasAnyAuthority(''ROLE_ADMIN'')')}">
-                                    <select class="select" name="aUserRole" id="aUserRole">
-                                        <option value="ROLE_ACCOUNTANT">ACCOUNTANT</option>
-                                        <option value="ROLE_AUDITOR">AUDITOR</option>
-                                        <option value="ROLE_AGENT">AGENT</option>
-                                        <option value="ROLE_BOARD_MEMBER">BOARD MEMBER</option>
-                                        <option value="ROLE_CASHIER">CASHIER</option>
-                                        <option value="ROLE_CUSTOMER">CUSTOMER</option>
-                                        <option value="ROLE_CUSTOMER_SERVICE">CUSTOMER SERVICE</option>
-                                        <option value="ROLE_EXECUTIVE_DIRECTOR">EXECUTIVE DIRECTOR</option>
-                                        <option value="ROLE_GENERAL_MANAGER">GENERAL_MANAGER</option>
-                                        <option value="ROLE_LOAN_OFFICER">LOAD OFFICER</option>
+
+                            <table border="0" class="center" width="100%" cellpadding="5">
+                                <tr><td>
+                                    <b><span th:text="${user.gender}"/>. &nbsp;<span th:text="${user.firstName}"/>&nbsp; <span th:text="${user.lastName}"/></b> (<span th:text="${user.userName}"/>) <br/>
+                                <font size="3"> Current Roles </font><br/>
+                                <font color="#803e59">
+                                    <div th:each="userRole : ${user.userRole}">
+                                        <span th:text="${userRole.name}"></span>
+                                    </div>
+                                    <!--                                            <b> <span th:text="${user.userRole[0].name}"/></b>-->
+                                </font>
+                            </td><td>
+
+                                <span th:if="${#authorization.expression('hasAnyAuthority(''ROLE_ADMIN'')')} OR ${#authorization.expression('hasAnyAuthority(''ROLE_EDIT_USER_ACCOUNT'')')}">
+                                    <select class="select" style="width:400px" name="aUserRole" id="aUserRole" multiple>
+
+                                        <option value="ROLE_MAIN_USERS">MAIN USERS</option>
+                                        <option value="ROLE_MAIN_SEARCH_USERS">MAIN SEARCH USERS</option>
+                                        <option value="ROLE_MAIN_TRANSFERS">TRANSFERS</option>
+                                        <option value="ROLE_MAIN_LOANS">MAIN LOANS</option>
+                                        <option value="ROLE_MAIN_SETTINGS">MAIN SETTINGS</option>
+                                        <option value="ROLE_MAIN_BRANCHES">MAIN BRANCHES</option>
+                                        <option value="ROLE_MAIN_GENERAL_LEDGER">MAIN GENERAL LEDGER</option>
+                                        <option value="ROLE_MAIN_SHARES">MAIN SHARES</option>
+                                        <option value="ROLE_MAIN_TRIAL_BALANCE">MAIN TRIAL BALANCE</option>
+
+                                        <option value="ROLE_VIEW_ALL_ACCOUNTS">VIEW ALL ACCOUNTS</option>
+                                        <option value="ROLE_CREATE_CUSTOMER_ACCOUNT">CREATE CUSTOMER ACCOUNT</option>
+                                        <option value="ROLE_CREATE_USER_ACCOUNT">CREATE USER ACCOUNT</option>
+
+                                        <option value="ROLE_EDIT_CUSTOMER_ACCOUNT">EDIT CUSTOMER ACCOUNT</option>
+                                        <option value="ROLE_EDIT_USER_ACCOUNT">EDIT USER ACCOUNT </option>
+
+                                        <option value="ROLE_VIEW_CUSTOMER_ACCOUNT_BALANCES">VIEW CUSTOMER ACCOUNT BALANCES</option>
+                                        <option value="ROLE_PRINT_CUSTOMER_ACCOUNT_BALANCES">PRINT CUSTOMER ACCOUNT BALANCES</option>
+                                        <option value="ROLE_CUSTOMER_ACCOUNT_DEPOSIT_CASH">CUSTOMER ACCOUNT DEPOSIT CASH</option>
+                                        <option value="ROLE_CUSTOMER_ACCOUNT_PAYOUT_CASH">CUSTOMER ACCOUNT PAYOUT CASH</option>
+                                        <option value="ROLE_CUSTOMER_ACCOUNT_TYPE_TRANSFERS">CUSTOMER ACCOUNT TYPE TRANSFERS</option>
+
+                                        <option value="ROLE_CUSTOMER_TRANSACTIONS_VIEW">CUSTOMER TRANSACTIONS VIEW</option>
+                                        <option value="ROLE_CUSTOMER_TRANSACTIONS_PRINT">CUSTOMER TRANSACTIONS PRINT</option>
+
+                                        <option value="ROLE_LOAN_APPLY">LOAN APPLY</option>
+                                        <option value="ROLE_LOAN_APPROVE">LOAN APPROVE</option>
+                                        <option value="ROLE_LOAN_AMORTIZE">LOAN AMORTIZE</option>
+
+                                        <option value="ROLE_LOAN_DELIQUENCY_RATE">LOAN DELIQUENCY RATE</option>
+                                        <option value="ROLE_LOAN_GRANTED">LOAN GRANTED</option>
+
+                                        <option value="ROLE_SHARE_APPLY">SHARE APPLY</option>
+                                        <option value="ROLE_SHARE_APPROVE">SHARE APPROVE</option>
+                                        <option value="ROLE_SHARE_CURRENT_ACCOUNT_PAYOUT">SHARE CURRENT ACCOUNT PAYOUT</option>
+
+                                        <option value="ROLE_VIEW_CUSTOMERS_CREATED">VIEW CUSTOMERS</option>
+                                        <option value="ROLE_PRINT_CUSTOMERS_CREATED">PRINT CUSTOMERS</option>
+
+                                        <option value="ROLE_GL_VIEW">ROLE GL VIEW</option>
+                                        <option value="ROLE_GL_PRINT">ROLE GL PRINT</option>
+
+                                        <option value="ROLE_GL_1_1_TRANSFER">GL_ACCOUNT_1_1_TRANSFER</option>
+                                        <option value="ROLE_GL_1_MANY_TRANSFER">GL_ACCOUNT_1_TO_MANY_TRANSFER</option>
+                                        <option value="ROLE_GL_ACCOUNT_TRANSFER_TO_CUSTOMER_ACCOUNT">GL_ACCOUNT_TRANSFER_TO_CUSTOMER_ACCOUNT</option>
+                                        <option value="ROLE_GL_ACCOUNT_TRANSFER_FROM_CUSTOMER_ACCOUNT">GL_ACCOUNT_TRANSFER_FROM_CUSTOMER_ACCOUNT</option>
+
+                                        <option value="ROLE_PRINT_CASH_SELECTION_SITUATION">PRINT CASH SELECTION SITUATION</option>
+
+                                        <option value="ROLE_GL_ACCOUNT_EXPENSE_ENTRY">GL_ACCOUNT_EXPENSE_ENTRY</option>
+                                        <option value="ROLE_GL_ACCOUNT_EXPENSE_ENTRY">ACCOUNTANT</option>
+
+                                        <!--                                        <option value="ROLE_CUSTOMER_ACCOUNT_RECEIVE_CASH">CUSTOMER ACCOUNT RECEIVE CASH</option>-->
+                                        <option value="ROLE_VIEW_CUSTOMER_ACCOUNT_BALANCES">VIEW CUSTOMER ACCOUNT BALANCES</option>
+
                                         <option value="ROLE_MANAGER">MANAGER</option>
-                                        <option value="ROLE_MARKETER">MARKETER</option>
-                                        <option value="ROLE_OPERATION_OFFICER">OPERATIONS OFFICER</option>
+                                        <option value="ROLE_CUSTOMER">CUSTOMER</option>
+
+                                        <!--                                        <option value="ROLE_ACCOUNTANT">ACCOUNTANT</option>-->
+                                        <!--                                        <option value="ROLE_AUDITOR">AUDITOR</option>-->
+                                        <!--                                        <option value="ROLE_AGENT">AGENT</option>-->
+                                        <!--                                        <option value="ROLE_BOARD_MEMBER">BOARD MEMBER</option>-->
+                                        <!--                                        <option value="ROLE_CASHIER">CASHIER</option>-->
+                                        <!--                                        <option value="ROLE_CUSTOMER_SERVICE">CUSTOMER SERVICE</option>-->
+                                        <!--                                        <option value="ROLE_EXECUTIVE_DIRECTOR">EXECUTIVE DIRECTOR</option>-->
+                                        <!--                                        <option value="ROLE_GENERAL_MANAGER">GENERAL_MANAGER</option>-->
+                                        <!--                                        <option value="ROLE_LOAN_OFFICER">LOAD OFFICER</option>-->
+                                        <!--                                        <option value="ROLE_MARKETER">MARKETER</option>-->
+                                        <!--                                        <option value="ROLE_OPERATION_OFFICER">OPERATIONS OFFICER</option>-->
                                     </select>
                                 </span>
-                            <input type="hidden" name="id" th:field="*{id}"/> <br/>
-
-                            <table border="0" class="center" width="100%" cellpadding="5">
-                                <tr>
-                                    <td colspan="8">
-                                        <font size="3"> Username </font><br/>
-                                        <span th:text="${user.userName}"/>
-                                    </td>
-                                    <td>
-                                        <font size="3"> Name </font><br/>
-                                        <span th:text="${user.lastName}"/>,<span th:text="${user.firstName}"/><br/>
-                                    </td>
-                                    <td>
-                                        <font size="3"> Current Role </font><br/>
-                                        <font color="#803e59"><b> <span th:text="${user.userRole[0].name}"/></b></font>
-                                    </td>
-                                </tr>
-                            </table>
-
-                            <table border="0" class="center" width="100%" cellpadding="5">
-                                <br/><br/>
+                                <input type="hidden" name="id" th:field="*{id}"/> <br/>
+                            </td>
+                            <td>
                                 <input type="submit" class="btn-block btn contact-btn" value="UPDATE USER ROLE"/>
+                            </td>
+                            </tr>
                             </table>
                         </div>
                     </form>
                 </div>
             </div>
-        </div>
+<!--        </div>-->
     </div>
 </section>
 <div th:insert="footer::navbar">

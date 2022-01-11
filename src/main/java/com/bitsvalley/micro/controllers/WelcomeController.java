@@ -1,23 +1,17 @@
 package com.bitsvalley.micro.controllers;
 
 import com.bitsvalley.micro.domain.User;
-import com.bitsvalley.micro.repositories.BranchRepository;
 import com.bitsvalley.micro.repositories.UserRepository;
 import com.bitsvalley.micro.repositories.UserRoleRepository;
-import com.bitsvalley.micro.services.InitSystemService;
-import com.bitsvalley.micro.services.SavingAccountService;
-import com.bitsvalley.micro.services.UserService;
+import com.bitsvalley.micro.services.*;
 import com.bitsvalley.micro.utils.BVMicroUtils;
-import com.bitsvalley.micro.webdomain.RuntimeSetting;
-import com.bitsvalley.micro.webdomain.SavingBilanz;
-import com.bitsvalley.micro.webdomain.SavingBilanzList;
+import com.bitsvalley.micro.webdomain.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -37,6 +31,15 @@ public class WelcomeController extends SuperController{
 
     @Autowired
     SavingAccountService savingAccountService;
+
+    @Autowired
+    LoanAccountService loanAccountService;
+
+    @Autowired
+    CurrentAccountService currentAccountService;
+
+    @Autowired
+    ShareAccountService shareAccountService;
 
     @Autowired
     UserRepository userRepository;
@@ -71,7 +74,12 @@ public class WelcomeController extends SuperController{
         request.getSession().setAttribute("runtimeSettings",initSystemService.findAll());
 
         if(null != aUser){
+
             SavingBilanzList savingBilanzByUserList = savingAccountService.getSavingBilanzByUser(aUser, false);
+            LoanBilanzList loanBilanzByUserList = loanAccountService.getLoanBilanzByUser(aUser, false);
+            CurrentBilanzList currentBilanzByUserList = currentAccountService.getCurrentBilanzByUser(aUser, false);
+            ShareAccountBilanzList shareAccountBilanzList = shareAccountService.getShareAccountBilanzByUser(aUser);
+
             Collections.reverse(savingBilanzByUserList.getSavingBilanzList()); //TODO: reverse during search?
             if(null == savingBilanzByUserList || savingBilanzByUserList.getSavingBilanzList() == null
                     ||  savingBilanzByUserList.getSavingBilanzList().size() == 0 ){ //first time login
@@ -79,6 +87,32 @@ public class WelcomeController extends SuperController{
                 savingBilanzByUserList.setSavingBilanzList(new ArrayList<SavingBilanz>());
                 savingBilanzByUserList.setTotalSaving("0");
             }
+            if(null == loanBilanzByUserList || loanBilanzByUserList.getLoanBilanzList() == null
+                    ||  loanBilanzByUserList.getLoanBilanzList().size() == 0 ){ //first time login
+                loanBilanzByUserList = new LoanBilanzList();
+                loanBilanzByUserList.setLoanBilanzList(new ArrayList<LoanBilanz>());
+                loanBilanzByUserList.setCurrentLoanBalance("0");
+            }
+//            if(null == savingBilanzByUserList || savingBilanzByUserList.getSavingBilanzList() == null
+//                    ||  savingBilanzByUserList.getSavingBilanzList().size() == 0 ){ //first time login
+//                savingBilanzByUserList = new SavingBilanzList();
+//                savingBilanzByUserList.setSavingBilanzList(new ArrayList<SavingBilanz>());
+//                savingBilanzByUserList.setTotalSaving("0");
+//            }
+//            if(null == savingBilanzByUserList || savingBilanzByUserList.getSavingBilanzList() == null
+//                    ||  savingBilanzByUserList.getSavingBilanzList().size() == 0 ){ //first time login
+//                savingBilanzByUserList = new SavingBilanzList();
+//                savingBilanzByUserList.setSavingBilanzList(new ArrayList<SavingBilanz>());
+//                savingBilanzByUserList.setTotalSaving("0");
+//            }
+
+
+            request.getSession().setAttribute("savingBilanzList",savingBilanzByUserList);
+            request.getSession().setAttribute("loanBilanzList",loanBilanzByUserList);
+            request.getSession().setAttribute("currentBilanzList",currentBilanzByUserList);
+            request.getSession().setAttribute("shareAccountBilanzList",shareAccountBilanzList);
+
+
             request.getSession().setAttribute("savingBilanzList",savingBilanzByUserList);
             return "userHome";
         }else{

@@ -1,12 +1,9 @@
 package com.bitsvalley.micro.controllers;
 
 import com.bitsvalley.micro.domain.*;
-import com.bitsvalley.micro.repositories.CallCenterRepository;
 import com.bitsvalley.micro.repositories.UserRepository;
 import com.bitsvalley.micro.services.*;
 import com.bitsvalley.micro.utils.BVMicroUtils;
-import com.bitsvalley.micro.webdomain.RuntimeSetting;
-import com.bitsvalley.micro.webdomain.SavingBilanzList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.security.core.Authentication;
@@ -20,7 +17,10 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.*;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -132,23 +132,23 @@ public class UserController extends SuperController{
 
     @PostMapping(value = "/findUserByUserName")
     public String findUserByUsername(@ModelAttribute("user") User user, ModelMap model, HttpServletRequest request){
-        return findUserByUserName(user,model,request);
+        return findUserByUserName(user, model, request);
     }
 
     @GetMapping(value = "/findAllCustomers")
     public String findUserByUserRole(ModelMap model) {
-        String authority = getAuthorityString();
-        if( authority.equals("ROLE_AGENT") ){
-            model.put("userList", getAllCustomers() );
-        }else if(authority.equals("ROLE_MANAGER")){
+//        String authority = getAuthorityString();
+//        if( authority.equals("ROLE_AGENT") ){
+//            model.put("userList", getAllCustomers() );
+//        }else if(authority.equals("ROLE_MANAGER") || authority.equals("ROLE_VIEW_ALL_ACCOUNTS")){
             model.put("userList", getAllUsers() );
-        }
-        else if (authority.equals("ROLE_ADMIN")){
-            model.put("userList", getAllUsers() );
-        }else{
-            model.put("userList", getAllCustomers() );
-        }
-        model.put("name", getLoggedInUserName());
+//        }
+//        else if (authority.equals("ROLE_ADMIN")){
+//            model.put("userList", getAllUsers() );
+//        }else{
+//            model.put("userList", getAllCustomers() );
+//        }
+//        model.put("name", getLoggedInUserName());
         return "customers";
     }
 
@@ -157,8 +157,12 @@ public class UserController extends SuperController{
                 getAuthentication().getAuthorities();
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         Collection<? extends GrantedAuthority> authorities1 = authentication.getAuthorities();
-        GrantedAuthority next = authorities1.iterator().next();
-        String authority = next.getAuthority();
+        Iterator<? extends GrantedAuthority> itr = authorities1.iterator();
+        String authority = "";
+        while(itr.hasNext()) {
+            GrantedAuthority element = (GrantedAuthority)itr.next();
+            authority = element.getAuthority();
+        }
         return authority;
     }
 
@@ -174,8 +178,14 @@ public class UserController extends SuperController{
     @GetMapping(value = "/editUserRole/{id}")
     public String editUserRole(@PathVariable("id") long id, ModelMap model,
                                    HttpServletRequest request) {
-        Optional<User> userById = userRepository.findById(id);
-        User user = userById.get();
+        User user = userRepository.findById(id).get();
+        UserRole role_customer = userRoleService.findUserRoleByName("ROLE_CUSTOMER");
+        if(user.getUserRole().contains(role_customer)){
+            model.put("error", "Cannot Edit A Customer Role");
+            model.put("userList", getAllUsers() );
+            model.put("name", getLoggedInUserName());
+            return "customers";
+        }
         model.put("user", user);
         return "editUserRole";
     }
@@ -184,11 +194,21 @@ public class UserController extends SuperController{
     public String editUserRoleForm(ModelMap model, HttpServletRequest req, @ModelAttribute("user") User user) {
 
         User aUser = userRepository.findById(user.getId()).get();
-        String userRole = req.getParameter("aUserRole");
+//        String userRole = req.getParameter("aUserRole");
+
+        String[] userRole = req.getParameterValues("aUserRole");
 
         List<UserRole> userRolesList = new ArrayList<UserRole>();
-        UserRole aUserRole = userRoleService.findUserRoleByName(userRole);
-        userRolesList.add(aUserRole);
+        for (String newUserRole: userRole) {
+            UserRole aUserRole = userRoleService.findUserRoleByName(newUserRole);
+            if(null == aUserRole){
+                aUserRole = new UserRole();
+                aUserRole.setName(newUserRole);
+                userRoleService.saveUserRole(aUserRole);
+            }
+            userRolesList.add(aUserRole);
+        }
+
         aUser.setUserRole(userRolesList);
         userRepository.save(aUser);
         model.put("user", aUser);
@@ -200,7 +220,7 @@ public class UserController extends SuperController{
     public String lockAccount(@PathVariable("id") long id, ModelMap model,
                                  HttpServletRequest request,
                             HttpServletResponse response) throws IOException {
-        if(getAuthorityString().equals("ROLE_MANAGER")){
+//        if(getAuthorityString().equals("ROLE_MANAGER")){
             Optional<User> userById = userRepository.findById(id);
             User user = userById.get();
             user.setAccountLocked(!user.isAccountLocked());
@@ -208,7 +228,7 @@ public class UserController extends SuperController{
             String blocked = user.isAccountLocked()?"Blocked":"UnBlocked";
             callCenterService.callCenterUserAccount(user, "Account has been switched "+ "Account is now "+ blocked +"by " + getLoggedInUserName());
 
-        };
+//        };
         model.put("userList", getAllUsers() );
         model.put("name", getLoggedInUserName());
         return "customers";

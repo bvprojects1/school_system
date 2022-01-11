@@ -8,9 +8,10 @@ public class LoanBilanzList {
     List<LoanBilanz> loanBilanzList = new ArrayList<LoanBilanz>();
     String totalLoanInterest = "0";
     String totalLoan = "0";
-    String currentLoanBalance = "";
+    String currentLoanBalance = "0";
     String numberOfLoanAccounts = "0";
     String numberOfRetirementLoans = "0";
+    Double interestOwed = 0.0;
 
     public List<LoanBilanz> getLoanBilanzList() {
         return loanBilanzList;
@@ -58,6 +59,14 @@ public class LoanBilanzList {
 
     public void setCurrentLoanBalance(String currentLoanBalance) {
         this.currentLoanBalance = currentLoanBalance;
+    }
+
+    public Double getInterestOwed() {
+        return interestOwed;
+    }
+
+    public void setInterestOwed(Double interestOwed) {
+        this.interestOwed = interestOwed;
     }
 
 }

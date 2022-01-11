@@ -9,7 +9,7 @@ public class SavingBilanz {
     String agent;
     String modeOfPayment;
     String noOfDays;
-    String savingAmount;
+    double savingAmount;
     String currentBalance;
     String reference;
     String accountType;
@@ -158,11 +158,11 @@ public class SavingBilanz {
         this.noOfDays = noOfDays;
     }
 
-    public String getSavingAmount() {
+    public double getSavingAmount() {
         return savingAmount;
     }
 
-    public void setSavingAmount(String savingAmount) {
+    public void setSavingAmount(double savingAmount) {
         this.savingAmount = savingAmount;
     }
 

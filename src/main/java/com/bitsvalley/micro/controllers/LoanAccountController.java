@@ -8,7 +8,6 @@ import com.bitsvalley.micro.utils.Amortization;
 import com.bitsvalley.micro.utils.BVMicroUtils;
 import com.bitsvalley.micro.webdomain.LoanBilanzList;
 import com.bitsvalley.micro.webdomain.RuntimeSetting;
-import com.bitsvalley.micro.webdomain.SavingBilanzList;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,12 +17,8 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -145,8 +140,16 @@ public class LoanAccountController extends SuperController {
         AccountType accountType = accountTypeService.getAccountTypeByProductCode(loanAccount.getProductCode());
         loanAccount.setAccountType(accountType);
 
+        String error = "";
+
         if(!StringUtils.isEmpty(loanAccount.getGuarantorAccountNumber1())){
             SavingAccount byAccountNumber1 = savingAccountService.findByAccountNumber(loanAccount.getGuarantorAccountNumber1());
+            if(null == byAccountNumber1){
+                error = "Guarantor account number not valid";
+                model.put("loanAccount", loanAccount);
+                model.put("error", error );
+                return "loanAccount";
+            }
             request.getSession().setAttribute("guarantor1",byAccountNumber1);
         }
         if(!StringUtils.isEmpty(loanAccount.getGuarantorAccountNumber2())){
@@ -178,11 +181,15 @@ public class LoanAccountController extends SuperController {
     @GetMapping(value = "/approveLoan/{id}")
     public String approveLoan(@PathVariable("id") long id, ModelMap model) {
         LoanAccount byId = loanAccountService.findById(id).get();
-        byId.setAccountStatus(AccountStatus.PENDING_PAYOUT);
-        byId.setApprovedBy(getLoggedInUserName());
-        byId.setApprovedDate(new Date());
-        callCenterService.saveCallCenterLog("PENDING PAYOUT", getLoggedInUserName(), byId.getAccountNumber(),"LOAN ACCOUNT APPROVED"); //TODO ADD DATE
-        loanAccountService.save(byId);
+        if(byId.getCreatedBy().equals(getLoggedInUserName())){
+            model.put("error","Get another authorized Person to approve loan");
+        }else{
+            byId.setAccountStatus(AccountStatus.PENDING_PAYOUT);
+            byId.setApprovedBy(getLoggedInUserName());
+            byId.setApprovedDate(new Date());
+            callCenterService.saveCallCenterLog("PENDING PAYOUT", getLoggedInUserName(), byId.getAccountNumber(),"LOAN ACCOUNT APPROVED"); //TODO ADD DATE
+            loanAccountService.save(byId);
+        }
         model.put("loan",byId);
         return "loanDetails";
     }
@@ -274,7 +281,6 @@ public class LoanAccountController extends SuperController {
         LoanAccount loanAccount1 = loanAccount.get();
         response.setHeader("Content-disposition","attachment;filename="+ "Loan_("+loanAccount1.getAccountNumber()+").pdf");
 
-
         LoanBilanzList loanBilanzByUserList = loanAccountService.
                 calculateAccountBilanz(loanAccount1.getLoanAccountTransaction(),true);
         RuntimeSetting runtimeSetting = (RuntimeSetting)request.getSession().getAttribute("runtimeSettings");
@@ -287,7 +293,7 @@ public class LoanAccountController extends SuperController {
     @PostMapping(value = "/registerLoanAccountTransactionForm")
     public String registerLoanAccountTransactionForm(ModelMap model, @ModelAttribute("loanAccountTransaction")
             LoanAccountTransaction loanAccountTransaction, HttpServletRequest request) {
-
+        loanAccountTransaction.setWithdrawalDeposit(1);
         String loanAccountId = request.getParameter("loanAccountId");
         Optional<LoanAccount> loanAccount = loanAccountService.findById(new Long(loanAccountId));
         LoanAccount aLoanAccount = loanAccount.get();
@@ -299,6 +305,14 @@ public class LoanAccountController extends SuperController {
                 aLoanAccount.getUser().getLastName());
         loanAccountTransaction.setReference(BVMicroUtils.getSaltString());
         User user = (User) request.getSession().getAttribute(BVMicroUtils.CUSTOMER_IN_USE);
+        String error = "";
+
+        if(StringUtils.isEmpty(loanAccountTransaction.getModeOfPayment() ) ){
+            error = "Select Method of Payment - MOP";
+            model.put("billSelectionError", error);
+            loanAccountTransaction.setNotes(loanAccountTransaction.getNotes());
+            return displayLoanBilanzNoInterest(new Long(loanAccountId), model, loanAccountTransaction);
+        }
 
         if(loanAccountTransaction.getLoanAmount()<loanAccountTransaction.getLoanAccount().getMinimumPayment()){
             model.put("billSelectionError", "Please make minimum payment of "+ BVMicroUtils.formatCurrency(loanAccountTransaction.getLoanAccount().getMinimumPayment()));
@@ -306,12 +320,14 @@ public class LoanAccountController extends SuperController {
             return displayLoanBilanzNoInterest(new Long(loanAccountId), model, loanAccountTransaction);
         }
 
+
         if ("CASH".equals(loanAccountTransaction.getModeOfPayment())) {
 //            if (!checkBillSelectionMatchesEnteredAmount(loanAccountTransaction)) {
 //                model.put("billSelectionError", "Bills Selection does not match entered amount");
 //                loanAccountTransaction.setNotes(loanAccountTransaction.getNotes());
 //                return displayLoanBilanzNoInterest(new Long(savingAccountId), model, loanAccountTransaction);
 //            }
+
         }
 
         String modeOfPayment = request.getParameter("modeOfPayment");
@@ -403,25 +419,20 @@ public class LoanAccountController extends SuperController {
         loanAccount.setApprovedBy(getLoggedInUserName());
         loanAccount.setApprovedDate(new Date());
 
-        //Create a initial loan transaction of borrowed amount
-        LoanAccountTransaction loanAccountTransaction =
-                loanAccountTransactionService.createLoanAccountTransaction(loanAccount);
+        List<CurrentAccount> currentAccounts = loanAccount.
+                getUser().getCurrentAccount();
+        CurrentAccount currentAccount = null;
+        if(null == currentAccounts || currentAccounts.size() == 0){
 
-//        currentAccountService.getCurrentAccountByUser();
-        currentAccountService.createCurrentAccountTransaction(loanAccountTransaction);//
-
-        // Update new loan account transaction
-        loanAccountTransaction.setAmountReceived(loanAccount.getLoanAmount());
-        generalLedgerService.updateGLWithLoanAccountTransaction(loanAccountTransaction);//TODO: NO Accountledger set Amount missing in GL
-        loanAccountTransaction.setAmountReceived(0); // Reset loanAmount
-        callCenterService.saveCallCenterLog("ACTIVE", getLoggedInUserName(), loanAccount.getAccountNumber(),"LOAN FUNDS TRANSFERRED TO CURRENT"); //TODO ADD DATE
-        loanAccountService.save(loanAccount);
-
+            model.put("error","PLEASE CREATE A CURRENT ACCOUNT FOR THIS CUSTOMER");
+        }else{
+            currentAccount = currentAccounts.get(0);
+            currentAccountService.createCurrentAccountTransactionFromLoan(currentAccount, loanAccount);
+            model.put("loanDetailsInfo","THIS LOAN ACCOUNT IS NOW ACTIVE. SUCCESSFULLY  TRANSFERRED FUNDS to CURRENT ACCOUNT. ");
+        }
         model.put("loan",loanAccount);
-        model.put("loanDetailsInfo","FUNDS TRANSFERRED to CURRENT ACCOUNT IS NOW ACTIVE");
         return "loanDetails";
     }
-
 
 
 

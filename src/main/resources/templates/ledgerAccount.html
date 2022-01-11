@@ -4,21 +4,72 @@
 <div th:insert="header::navbar">  </div>
 <br/>
 <br/>
+<br/>
+<br/>
+
 
 <!-- Contact form area start -->
 <section class="contact-form-area-start space df-bg">
     <!--Project title area start-->
     <div class="project-title-area text-center">
         <div class="container">
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="project-title-content">
-                        <h3>CREATE LEDGER ACCOUNT</h3>
-                        <span><i class="fas fa-crosshairs"></i></span>
+
+
+                        <div class="offset-md-2 col-md-8">
                         <!--  <p>Cross-agency coordination clean water rural, promising development turmoil inclusive education transformative community.</p>-->
-                    </div>
-                </div>
-            </div>
+
+                            <table width="90%" class="center" border="0px">
+                                <tr>
+                                    <td align="center">
+                                        <div class="project-title-content">
+                                            <font size="4" color="green"><b>CREATE LEDGER ACCOUNT</b></font><br/>
+                                            <span><i class="fas fa-crosshairs"></i></span>
+                                        </div>
+
+                                            <font color="gray;" size="4"> <b><span th:text="${ledgerAccountInfo}"/></b> </font>
+                                        <br/>
+                                    </td>
+                                </tr>
+                            </table>
+
+                        <form action="#" th:action="@{/saveLedgerAccountForm}" method="post" th:object="${ledgerAccount}">
+
+                            <select class="selectMedium" name="Category" id="category" th:field="*{category}">
+                                <option value="1000 – 1999">Assets (1000 – 1999)</option>
+                                <option value="2000 – 2999">Long Term Assets (2000 – 2999)</option>
+                                <option value="3000 – 3999">Inventory (3000 – 3999)</option>
+                                <option value="4000 – 4999">Third Party Revenue (4000 – 4999)</option>
+                                <option value="5000 – 5999">Treasury Accounts (5000 – 5999)</option>
+                                <option value="6000 – 6999">Expense (6000 – 6999)</option>
+                                <option value="7000 – 7999">Revenue (7000 – 7999)</option>
+                                <option value="8000 – 8999">Extra Ordinary Activities (8000 – 8999)</option>
+                            </select>
+                            <br/>
+                            <br/>
+                            <label for="status"><font size="4px"> Name</font></label>
+                            <input type="text" name="name" th:field="*{name}" id="name"
+                                   placeholder="Name" class="form-control" required>
+
+                            <br/>
+                            <label for="status"><font size="4px"> Code</font></label>
+                            <input type="text" name="code" th:field="*{code}" id="code"
+                                   placeholder="Code" class="form-control" required>
+                            <br/>
+
+                            <label for="status"><font size="4px"> Active</font></label>
+                            <input class="largerCheckbox" th:field="*{status}" type="checkbox" id="status" name="status" value="true"
+                                   checked>
+                            <br/>
+
+                            <input type="submit" class="btn-block btn contact-btn"
+                                   value="CREATE LEDGER ACCOUNT"/>
+                            <br/>
+
+                        </form>
+                        </div>
+
+
+
         </div>
     </div>
     <!--Project title area end-->
@@ -26,44 +77,7 @@
     <div class="contact-from-area">
         <div class="container">
             <div class="row">
-                <div class="offset-md-2 col-md-8">
-                    <font size="6" color="gray"><span  th:text="${ledgerAccountInfo}"/></font>
-                    <form action="#" th:action="@{/saveLedgerAccountForm}" method="post" th:object="${ledgerAccount}">
 
-                            <div class="col-md-12">
-
-                                <select class="select" name="Category" id="category">
-                                    <option value="Assets">Assets (1000 – 1999)</option>
-                                    <option value="Long Term Assets">Long Term Assets (2000 – 2999)</option>
-                                    <option value="Inventory">Inventory (3000 – 3999)</option>
-                                    <option value="Third Party Revenue">Third Party Revenue (4000 – 4999)</option>
-                                    <option value="Treasury Accounts">Treasury Accounts (5000 – 5999)</option>
-                                    <option value="Expense">Expense (6000 – 6999)</option>
-                                    <option value="Revenue">Revenue (7000 – 7999)</option>
-                                    <option value="Extra Ordinary Activities">Extra Ordinary Activities (8000 – 8999)</option>
-                                </select>
-                                <br/>
-                                <br/>
-                                <label for="status"><font size="4px"> Name</font></label>
-                                <input type="text" name="name" th:field="*{name}" id="name"
-                                       placeholder="name" class="form-control" required>
-
-                                <br/>
-                                <label for="status"><font size="4px"> Code</font></label>
-                                <input type="text" name="code" th:field="*{code}" id="code"
-                                       placeholder="code" class="form-control" required>
-                                <br/>
-
-                                <label for="status"><font size="4px"> Active</font></label>
-                                <input class="largerCheckbox" th:field="*{status}" type="checkbox" id="status" name="status" value="true"
-                                           checked>
-                                <br/>
-
-                                <input type="submit" class="btn-block btn contact-btn"
-                                       value="CREATE LEDGER ACCOUNT"/>
-                                <br/>
-                        </div>
-                    </form>
 
                     <br/><br/>
                     <table width="90%" class="center" border="0px">
@@ -74,13 +88,13 @@
                             <td th:text="${aLedgerAccount.category}"> </td>
                             <td th:text="${aLedgerAccount.status}"> </td>
                             <td>
-                                <a href="#" th:href="@{/addGeneralLedgerEntry/{id}(id=${aLedgerAccount.id})}"> <img width="30px" th:src="@{/assets/images/add.png}"/> </a>
-                                <a href="#" th:href="@{/viewLedgerAccount/{id}(id=${aLedgerAccount.id})}">See more ...</a>
+                                <font size="4"></font><a href="#" th:href="@{/cashToLedgerAccount/{id}(id=${aLedgerAccount.id})}">Cash From This Account</a><br/></font>
+                                <a href="#" th:href="@{/addGeneralLedgerEntry/{id}(id=${aLedgerAccount.id})}"> <img width="30px" th:src="@{/assets/images/transfer2.png}"/> </a><br/>
+                                <font size="4"><a href="#" th:href="@{/cashFromLedgerAccount/{id}(id=${aLedgerAccount.id})}">Cash To This Account</a></font>
                             </td>
                         </tr>
                     </table>
 
-                </div>
             </div>
         </div>
     </div>

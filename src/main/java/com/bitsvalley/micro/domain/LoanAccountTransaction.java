@@ -39,12 +39,22 @@ public class LoanAccountTransaction {
     private String branchCountry;
     private String loanAmountInLetters;
     private double vatPercent;
+    private String increaseGuarantorMinimum;
+    private int withdrawalDeposit;
 
     @Column(unique = true)
     private String reference;
 
     @ManyToOne
     private LoanAccount loanAccount;
+
+    public String getIncreaseGuarantorMinimum() {
+        return increaseGuarantorMinimum;
+    }
+
+    public void setIncreaseGuarantorMinimum(String increaseGuarantorMinimum) {
+        this.increaseGuarantorMinimum = increaseGuarantorMinimum;
+    }
 
     public long getId() {
         return id;
@@ -260,5 +270,13 @@ public class LoanAccountTransaction {
 
     public void setVatPercent(double vatPercent) {
         this.vatPercent = vatPercent;
+    }
+
+    public int getWithdrawalDeposit() {
+        return withdrawalDeposit;
+    }
+
+    public void setWithdrawalDeposit(int withdrawalDeposit) {
+        this.withdrawalDeposit = withdrawalDeposit;
     }
 }

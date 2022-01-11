@@ -11,4 +11,7 @@ public interface UserRepository extends CrudRepository<User, Long> {
 
     ArrayList<User> findAllByUserRoleIn(ArrayList<UserRole> userRole);
 
+    ArrayList<User> findDistintAllByUserRoleNotIn(ArrayList<UserRole> userRole);
+
+
 }

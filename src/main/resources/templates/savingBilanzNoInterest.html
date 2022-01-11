@@ -10,11 +10,18 @@
     <table class="center" width="100%" border="0">
         <tr>
             <td align="center">
-                <font size="2px">Username</font> <br/> <font size="6">
-                <span style th:text="${session.customerInUse.userName}"/> </font>
+                <font size="2px">Username</font> <br/>
+
+                <font size="4">
+                    <a href="#" th:href="@{/showCustomer/{id}(id=${session.customerInUse.id})}">
+                        <span style th:text="${session.customerInUse.userName}"/>
+                    </a>
+                </font>
+
                 <button style="font-face: 'Comic Sans MS'; font-size: larger; color: teal; background-color: #FFFFC0; border: 3pt ridge lightgrey"
                         type="submit">
-                    <a href="#" th:href="@{/file/{userName}(userName=${session.customerInUse.userName})}"><font size="2px">Upload I.D</font></a>
+                    <a href="#" th:href="@{/file/{userName}(userName=${session.customerInUse.userName})}"><font
+                            size="2px">Upload I.D</font></a>
                 </button>
                 <a href="#" th:href="@{/reloadUser}"><img width="40px" th:src="@{/getImage}"/> </a>
             </td>
@@ -76,7 +83,7 @@
             </td>
         </tr>
     </table>
-    <br/> <br/> <br/> <br/>
+    <br/> <br/>
     <form action="#" th:action="@{/registerSavingAccountTransactionForm}" method="post"
           th:object="${savingAccountTransaction}">
 
@@ -86,20 +93,22 @@
                 </th>
                 <th>
                     <div class="error" th:text="${billSelectionError}"/>
-                    <font size="6" color="gray"><span  th:text="${billSelectionInfo}"/></font>
+                    <font size="6" color="gray"><span th:text="${billSelectionInfo}"/></font>
                 </th>
             </tr>
             <tr>
                 <td width="10%">
                 </td>
                 <td>
-                    <font size="5" color="green"><b> MAKE A TRANSACTION</b></font>
-                    <br/>
-                    <select name="deposit_withdrawal">
+                    <font size="5" color="green"><b> MAKE A SAVING ACCOUNT TRANSACTION</b></font>
+                    <br/> <br/>
+                    <select class="selectNormal" name="deposit_withdrawal">
+                        <option value="">Select A Transaction Type</option>
                         <option value="DEPOSIT">DEPOSIT</option>
                         <option value="WITHDRAWAL">WITHDRAWAL</option>
                     </select>
-                    <select name="modeOfPayment" id="modeOfPayment">
+                    <select class="selectNormal" name="modeOfPayment" id="modeOfPayment">
+                        <option value="">Select MOP</option>
                         <option value="CASH">CASH</option>
                         <option value="MOMO">MOMO</option>
                         <option value="ORANGE MONEY">ORANGE MONEY</option>
@@ -107,13 +116,17 @@
                         <option value="RECEIPT">RECEIPT</option>
                         <option value="OTHER">OTHER</option>
                     </select>
-                    <b>Enter Amount:</b><input placeholder="Enter Amount" size="6" type="number"
+
+                    <br/> <br/>
+                    <b>Enter Amount: <br/></b><input class="selectAmount" size="6" placeholder="Enter Amount" type="number"
                                                th:field="*{savingAmount}"
                                                value="${savingAccountTransaction.savingAmount}"/>
 
                     <span
-                        th:text="${#numbers.formatDecimal(savingAccountTransaction.savingAccount.minimumPayment, 0, 'COMMA', 0, 'POINT')}"/>(Minimum)
-                    <textarea placeholder="Enter Amount in letters ..." id="savingAmountInLetters" rows="1" cols="90"
+                            th:text="${#numbers.formatDecimal(savingAccountTransaction.savingAccount.minimumPayment, 0, 'COMMA', 0, 'POINT')}"/>(Minimum)
+
+                    <br/> <br/>
+                    <textarea class="selectNormal" placeholder="Enter Amount in letters ..." id="savingAmountInLetters" rows="1" cols="70"
                               th:field="*{savingAmountInLetters}" maxlength="255">
                     </textarea>
 
@@ -121,36 +134,38 @@
                     <br/>
 
                     <font size="3" color="green"> BILL SELECTION:</font><br/>
-                    <input name="tenThousand" th:field="*{tenThousand}" type="number" min="0" max="999" maxlength="4"
+                    <input class="selectSmall" name="tenThousand" th:field="*{tenThousand}" type="number" min="0" max="999" maxlength="4"
                            value="${savingAccountTransaction.tenThousand}" size="4"/>10 000 &nbsp;
-                    <input name="fiveThousand" th:field="*{fiveThousand}" type="number" min="0" max="999" maxlength="4"
+                    <input class="selectSmall" name="fiveThousand" th:field="*{fiveThousand}" type="number" min="0" max="999" maxlength="4"
                            size="4"/>5 000 &nbsp;
-                    <input name="twoThousand" th:field="*{twoThousand}" type="number" min="0" max="999" maxlength="4"
+                    <input class="selectSmall" name="twoThousand" th:field="*{twoThousand}" type="number" min="0" max="999" maxlength="4"
                            size="4"/>2 000 &nbsp;
-                    <input name="oneThousand" th:field="*{oneThousand}" type="number" min="0" max="999" maxlength="4"
+                    <input class="selectSmall" name="oneThousand" th:field="*{oneThousand}" type="number" min="0" max="999" maxlength="4"
                            size="4"/>1 000 &nbsp;
-                    <input name="fiveHundred" th:field="*{fiveHundred}" type="number" min="0" max="999" maxlength="4"
+                    <input class="selectSmall" name="fiveHundred" th:field="*{fiveHundred}" type="number" min="0" max="999" maxlength="4"
                            size="4"/>500 &nbsp;
-                    <input name="oneHundred" th:field="*{oneHundred}" type="number" min="0" max="999" maxlength="4"
+                    <input class="selectSmall" name="oneHundred" th:field="*{oneHundred}" type="number" min="0" max="999" maxlength="4"
                            size="4"/>100 &nbsp;
-                    <input name="fifty" th:field="*{fifty}" type="number" min="0" max="999" maxlength="4" size="4"/>50
+                    <input class="selectSmall" name="fifty" th:field="*{fifty}" type="number" min="0" max="999" maxlength="4" size="4"/>50
                     &nbsp;
-                    <input name="twentyFive" th:field="*{twentyFive}" type="number" min="0" max="999" maxlength="4"
+                    <input class="selectSmall" name="twentyFive" th:field="*{twentyFive}" type="number" min="0" max="999" maxlength="4"
                            size="4"/>25 &nbsp;
 
                     <input type="hidden" th:value="${savingAccountTransaction.savingAccount.id}"
                            th:attr="name='savingAccountId'"/>
                     <br/> <br/>
-                    <textarea placeholder="Enter Notes ..." id="notes" rows="2" cols="90" th:field="*{notes}"
+                    <textarea class="selectNormal" placeholder="Enter Notes ..." id="notes" rows="2" cols="70" th:field="*{notes}"
                               maxlength="255">
                 </textarea>
 
                     <br/> <br/>
-                    <label for="true">Account Owner:</label>
-                    True<input th:field="*{accountOwner}" type="checkbox" id="true" name="accountOwner" value="true"
-                               checked>
 
-                    <button type="submit" class="btn btn-success">SUBMIT TRANSACTION</button>
+                    <input class="selectSmall" th:field="*{accountOwner}" type="checkbox" id="true" name="accountOwner"
+                               value="true"
+                               checked>
+                    <font class="selectSmall">Account Owner:</font>
+
+                    <button type="submit" class="btn btn-success"><b>SUBMIT TRANSACTION</b></button>
                     <br/><br/>
 
                 </td>
@@ -168,7 +183,7 @@
             </th>
         </tr>
     </table>
-    <table border="0" width="100%" class="center">
+    <table cellpadding="5px" border="0" width="100%" class="center">
         <tr>
             <td>Payment Date</td>
             <td>MOP</td>
@@ -176,7 +191,8 @@
             <td>Agent</td>
             <td>Owner</td>
             <td>Notes</td>
-            <td>Amount</td>
+            <td>Debit</td>
+            <td>Credit</td>
             <td><font color="green" size="6px">
                 <div th:text="${savingBilanzList.totalSaving}"/>
             </font></td>
@@ -190,7 +206,12 @@
             <td th:text="${bilanz.agent}"></td>
             <td th:text="${bilanz.accountOwner}"></td>
             <td th:text="${bilanz.notes}"></td>
-            <td th:text="${bilanz.savingAmount}"></td>
+            <td>
+                <span th:if="${bilanz.savingAmount} > 0" th:text="${#numbers.formatDecimal(bilanz.savingAmount, 0, 'COMMA', 0, 'POINT')}"/>
+            </td>
+            <td>
+                <span th:if="${bilanz.savingAmount} < 0" th:text="${#numbers.formatDecimal(bilanz.savingAmount, 0, 'COMMA', 0, 'POINT')}"/>
+            </td>
             <td th:text="${bilanz.currentBalance}"></td>
             <td>
                 <a href="#" th:href="@{/createSavingAccountReceiptPdf/{id}(id=${bilanz.id})}">

@@ -7,7 +7,7 @@ public class ShareAccountBilanzList {
 
     List<ShareAccountBilanz> shareAccountBilanz = new ArrayList<ShareAccountBilanz>();
 
-    String totalCurrent = "0";
+    String totalShare = "0";
     String currentShareBalance = "";
     String numberOfShareAccounts = "0";
 
@@ -19,12 +19,12 @@ public class ShareAccountBilanzList {
         this.shareAccountBilanz = shareAccountBilanz;
     }
 
-    public String getTotalCurrent() {
-        return totalCurrent;
+    public String getTotalShare() {
+        return totalShare;
     }
 
-    public void setTotalCurrent(String totalCurrent) {
-        this.totalCurrent = totalCurrent;
+    public void setTotalShare(String totalShare) {
+        this.totalShare = totalShare;
     }
 
     public String getNumberOfLoanAccounts() {

@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
-<div th:insert="header::navbar">  </div>
+<div th:insert="header::navbar"></div>
 <br/>
 <br/>
 
@@ -14,7 +14,7 @@
             <div class="row">
                 <div class="col-md-12">
                     <div class="project-title-content">
-                        <h3>CREATE A SAVING ACCOUNT</h3>
+                        <font color="green" size="4">CREATE A SAVING ACCOUNT</font><br/>
                         <span><i class="fas fa-crosshairs"></i></span>
                         <!--                            <p>Cross-agency coordination clean water rural, promising development turmoil inclusive education transformative community.</p>-->
                     </div>
@@ -22,15 +22,55 @@
             </div>
         </div>
     </div>
+    <div class="container">
+
+        <table style="border:0px" class="center" width="100%" cellpadding="5">
+            <tr>
+                <td>
+                    <font size="3">Account Owner</font>
+                    <br/>
+
+                    <a href="#" th:href="@{/showCustomer/{id}(id=${session.customerInUse.id})}">
+                        <font color="gray" size="5">
+                            <b><span style th:text="${session.customerInUse.userName}"/></b>
+                        </font>
+                    </a>
+
+                    <button type="submit">
+                        <a href="#" th:href="@{/file/{userName}(userName=${session.customerInUse.userName})}">
+                            <font color="gray" size="2px">Upload I.D</font></a>
+                    </button>
+                    <a href="#" th:href="@{/reloadUser}">
+                        <img width="40px" th:src="@{/getImage}"/>
+                    </a>
+                    <br/>
+                <td></td>
+                <td> Saving <br/>
+                    <font color="gray" size="4px">
+                        <div th:text="${session.savingBilanzList.totalSaving}"/>
+                    </font>
+                </td>
+                <td> Loan<br/>
+                    <font size="4px" color="gray">
+                        <div th:text="${session.loanBilanzList.currentLoanBalance}"/>
+                    </font></td>
+                <td> Current<br/> <font size="4px" color="gray"> <span th:text="${session.currentBilanzList.totalCurrent}"/></font></td>
+                <td> Shares<br/> <font size="4px" color="gray"> <span th:text="${session.shareAccountBilanzList.totalShare}"/></font></td>
+            </tr>
+        </table>
+
+
 
     <form action="#" th:action="@{/registerSavingAccountForm}" method="post" th:object="${savingAccount}">
-        <table class="center" width="60%">
-            <tr>
-                <td width="33%"></td>
-                <td><label> Saving Type:</label></td>
-                <td><select name="savingType" id="savingType" th:field="*{productCode}">
+        <table class="center" width="90%">
+            <tr><td>
+            </td></tr>
+            <tr><td width="20%"></td><td>
+                <br/>
+                 Saving Type:
+                <select class="selectNormal" name="savingType" id="savingType" th:field="*{productCode}">
                     <option value="11">GENERAL SAVINGS - 11</option>
-                    <option value="12">RETIREMENT SAVINGS - 12 </option>
+                    <option value="12">RETIREMENT SAVINGS - 12</option>
                     <option value="13">DAILY SAVINGS - 13</option>
                     <option value="14">MEDICAL SAVINGS - 14</option>
                     <option value="15">SOCIAL SAVINGS - 15</option>
@@ -39,57 +79,48 @@
                     <option value="18">REAL ESTATE SAVINGS - 18</option>
                     <option value="19">EDUCATION SAVINGS - 19</option>
                 </select>
-                </td>
-            </tr>
-            <tr>
-                <td width="33%"></td>
-                <td width="10%"><label> Minimum balance:</label></td>
-                <td><input placeholder="0" type="number" th:field="*{accountMinBalance}"/></td>
-            </tr>
-            <tr>
-                <td width="33%"></td>
-                <td width="10%"><label> Interest Rate:</label></td>
-                <td>  <input type="number" th:field="*{interestRate}" max="100" maxlength="2"/></td>
-            </tr>
 
-            <tr>
-                <td width="33%"></td>
-                <td width="10%"><label> Minimum Payment:</label></td>
-                <td><input type="number" th:field="*{minimumPayment}"/></td>
-            </tr>
 
-            <tr>
-                <td width="33%"></td>
-                <td width="10%"><label for="intervalOfSaving">Saving Interval:</label></td>
-                <td><select name="intervalOfSaving" id="intervalOfSaving">
+                Interest Rate:
+                <input class="selectSmall" type="number" th:field="*{interestRate}" max="100" maxlength="2"/>
+
+                <br/><br/>
+            Minimum balance:
+                    <input class="selectAmount" placeholder="0" type="number" th:field="*{accountMinBalance}"/>
+
+
+
+                Minimum Deposit:
+                <input class="selectAmount" type="number" th:field="*{minimumPayment}"/>
+                    <br/> <br/>
+
+
+                Notes:
+
+                <textarea class="selectNormal" id="notes" rows="3" cols="30" th:field="*{notes}">
+                </textarea>
+
+                <button type="submit" class="btn btn-success">Create Account</button>
+                <br/><br/>
+
+                <!--                    Saving Interval:-->
+                <!--                    <br/>-->
+                <select hidden class="selectNormal" name="intervalOfSaving" id="intervalOfSaving">
                     <option value="01 DAY">01 DAY</option>
                     <option value="15 DAY">15 DAY</option>
                     <option value="OTHER">OTHER</option>
-                </select></td>
-            </tr>
+                </select>
 
-            <tr>
-                <td width="33%"></td>
-                <td width="10%"><label> Notes:</label></td>
-                <td><br/><textarea id="notes" rows="3" cols="30" th:field="*{notes}">
-                        </textarea></td>
-            </tr>
-
-            <tr>
-                <td width="33%"></td>
-                <td width="10%"></td>
-                <td>
-                    <br/>
-                    <button type="submit" class="btn btn-success">Create Account</button>
                 </td>
             </tr>
         </table>
     </form>
+    </div>
     <!--                </div>-->
     <!--            </div>-->
     <!--        </div>-->
     <!--    </div>-->
 </section>
 
-<div th:insert="footer::navbar">  </div>
+<div th:insert="footer::navbar"></div>
 </html>

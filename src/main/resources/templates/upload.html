@@ -12,7 +12,7 @@
                 <br/><br/><br/>
                 <h3>Upload Customer Identity Card info </h3>
 <!--                User: <div th:text="${userName}"/>-->
-                Name:<span style th:text="${session.customerInUse.lastName}"/><br/>
+                Name:<span style th:text="${session.customerInUse.lastName}"/><br/><br/>
                 <p th:text="${message}" th:if="${message ne null}" class="alert alert-primary"></p>
                 <form action="#" method="post" th:action="@{/upload}" enctype="multipart/form-data">
                     <div class="form-group">

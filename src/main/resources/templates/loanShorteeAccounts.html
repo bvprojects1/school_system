@@ -90,12 +90,19 @@
                 <span th:text="${#numbers.formatDecimal(session.guarantor1.accountMinBalance, 0, 'COMMA', 0, 'POINT')}"/>
             </td>
             <td>
+                <br/>
                 Enter Amount: <input type="number" name="guarantor1Amount1" th:field="*{guarantor1Amount1}">
+                <br/>
             </td>
             <td>
+                <br/>
                 <button type="submit" class="btn btn-success">
                     Apply Loan Guarantees
                 </button>
+
+                <input type="hidden" name="vatOption" th:field="*{vatOption}"/>
+                <input type="hidden" name="blockBalanceQuarantor" th:field="*{blockBalanceQuarantor}"/>
+                <br/>
             </td>
         </tr>
     <!--    <tr>-->

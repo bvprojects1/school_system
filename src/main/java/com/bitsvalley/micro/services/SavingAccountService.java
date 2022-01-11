@@ -6,6 +6,8 @@ import com.bitsvalley.micro.utils.AccountStatus;
 import com.bitsvalley.micro.utils.BVMicroUtils;
 import com.bitsvalley.micro.webdomain.SavingBilanz;
 import com.bitsvalley.micro.webdomain.SavingBilanzList;
+import org.apache.commons.lang3.StringUtils;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.YearMonth;
+import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
 
@@ -25,6 +28,9 @@ public class SavingAccountService extends SuperService {
 
     @Autowired
     private AccountTypeRepository accountTypeRepository;
+
+    @Autowired
+    private CurrentAccountRepository currentAccountRepository;
 
     @Autowired
     private SavingAccountTransactionRepository savingAccountTransactionRepository;
@@ -56,6 +62,12 @@ public class SavingAccountService extends SuperService {
     @Autowired
     private BranchService branchService;
 
+    @Autowired
+    private CurrentAccountService currentAccountService;
+
+    @Autowired
+    private CurrentAccountTransactionRepository currentAccountTransactionRepository;
+
     private double minimumSaving;
 
     public SavingAccount findByAccountNumber(String accountNumber) {
@@ -85,7 +97,6 @@ public class SavingAccountService extends SuperService {
         savingAccount.setUser(user);
         savingAccountRepository.save(savingAccount);
 
-
         user = userRepository.findById(user.getId()).get();
         user.getSavingAccount().add(savingAccount);
         userService.saveUser(user);
@@ -108,7 +119,6 @@ public class SavingAccountService extends SuperService {
         return calculateUsersInterest(userList, calculateInterest);
     }
 
-
     @Transactional
     public void createSavingAccountTransaction(SavingAccountTransaction savingAccountTransaction) {
         //Get id of savingAccount transaction
@@ -116,8 +126,31 @@ public class SavingAccountService extends SuperService {
         savingAccountTransaction.setCreatedBy(getLoggedInUserName());
         savingAccountTransaction.setCreatedDate(LocalDateTime.now());
         savingAccountTransactionRepository.save(savingAccountTransaction);
-//        generalLedgerService.updateSavingAccountTransaction(savingAccountTransaction);
+        // generalLedgerService.updateSavingAccountTransaction(savingAccountTransaction);
+    }
 
+    @Transactional
+    public void createCurrentAccountTransaction(CurrentAccountTransaction currentAccountTransaction) {
+        //Get id of savingAccount transaction
+        currentAccountTransaction.setReference(BVMicroUtils.getSaltString()); //Collision
+        currentAccountTransaction.setCreatedBy(getLoggedInUserName());
+        currentAccountTransaction.setCreatedDate(LocalDateTime.now());
+        currentAccountTransactionRepository.save(currentAccountTransaction);
+        // generalLedgerService.updateSavingAccountTransaction(savingAccountTransaction);
+    }
+
+    @Transactional
+    public void createSavingAccountTransaction(SavingAccountTransaction savingAccountTransaction, SavingAccount savingAccount) {
+        //Get id of savingAccount transaction
+        createSavingAccountTransaction(savingAccountTransaction);
+        if (savingAccount.getSavingAccountTransaction() != null) {
+            savingAccount.getSavingAccountTransaction().add(savingAccountTransaction);
+        } else {
+            savingAccount.setSavingAccountTransaction(new ArrayList<SavingAccountTransaction>());
+            savingAccount.getSavingAccountTransaction().add(savingAccountTransaction);
+        }
+        save(savingAccount);
+        generalLedgerService.updateGLAfterSavingAccountTransaction(savingAccountTransaction);
     }
 
 
@@ -177,7 +210,7 @@ public class SavingAccountService extends SuperService {
         }
         savingBilanzsList.setTotalSaving(BVMicroUtils.formatCurrency(totalSaved));
 
-        Collections.reverse(savingBilanzsList.getSavingBilanzList());
+//        Collections.reverse(savingBilanzsList.getSavingBilanzList());
         return savingBilanzsList;
     }
 
@@ -250,7 +283,8 @@ public class SavingAccountService extends SuperService {
         savingBilanz.setReference(savingAccountTransaction.getReference());
         savingBilanz.setAgent(savingAccountTransaction.getCreatedBy());
         savingBilanz.setInterestRate("" + savingAccountTransaction.getSavingAccount().getInterestRate());
-        savingBilanz.setSavingAmount(BVMicroUtils.formatCurrency(savingAccountTransaction.getSavingAmount()));
+        savingBilanz.setSavingAmount(savingAccountTransaction.getSavingAmount());
+
         savingBilanz.setCreatedDate(BVMicroUtils.formatDateTime(savingAccountTransaction.getCreatedDate()));
         savingBilanz.setNotes(savingAccountTransaction.getNotes());
         savingBilanz.setAccountNumber(savingAccountTransaction.getSavingAccount().getAccountNumber());
@@ -281,18 +315,15 @@ public class SavingAccountService extends SuperService {
 //        if(savingAccount.getAccountSavingType().getName().equals("GENERAL SAVINGS")){
         List<SavingAccountTransaction> savingAccountTransactionList = savingAccount.getSavingAccountTransaction();
 
-        Date createdDate = savingAccount.getCreatedDate();
-        Date currentDate = new Date(System.currentTimeMillis());
+        LocalDateTime currentDateCal = LocalDateTime.now();
 
-        Calendar currentDateCal = GregorianCalendar.getInstance();
-        currentDateCal.setTime(currentDate);
+        Date input = savingAccount.getCreatedDate();
+        LocalDate createdLocalDate = input.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
 
-        Calendar createdCalenderCal = GregorianCalendar.getInstance();
-        createdCalenderCal.setTime(createdDate);
 
         long monthsBetween = ChronoUnit.MONTHS.between(
-                YearMonth.from(LocalDate.parse(createdCalenderCal.get(GregorianCalendar.YEAR) + "-" + padding(createdCalenderCal.get(GregorianCalendar.MONTH)) + "-" + padding(createdCalenderCal.get(GregorianCalendar.DAY_OF_MONTH)))),
-                YearMonth.from(LocalDate.parse(currentDateCal.get(GregorianCalendar.YEAR) + "-" + padding(currentDateCal.get(GregorianCalendar.MONTH)) + "-" + padding(currentDateCal.get(GregorianCalendar.DAY_OF_MONTH)))));
+                YearMonth.from(LocalDate.of(createdLocalDate.getYear(), createdLocalDate.getMonth(), createdLocalDate.getDayOfMonth())),
+                YearMonth.from(LocalDate.of(currentDateCal.getYear(), currentDateCal.getMonth(), currentDateCal.getDayOfMonth())));
 
         if (monthsBetween >= savingAccountTransactionList.size()) {
             CallCenter callCenter = new CallCenter();
@@ -304,17 +335,6 @@ public class SavingAccountService extends SuperService {
             return true;
         }
 
-/*            if (savingAccount.getAccountMinBalance() > totalSaved){
-                CallCenter callCenter = new CallCenter();
-                callCenter.setNotes("Minimum payment not met");
-                callCenter.setDate(new Date(System.currentTimeMillis()));
-                callCenter.setAccountHolderName(savingAccount.getUser().getFirstName() + " "+ savingAccount.getUser().getLastName());
-                callCenter.setAccountNumber(savingAccount.getAccountNumber());
-                callCenterRepository.save(callCenter);
-                return true;
-            }*/
-
-//        }
         return false;
     }
 
@@ -347,26 +367,20 @@ public class SavingAccountService extends SuperService {
         return total;
     }
 
-    public void transferFromSavingToLoan(String fromAccountNumber,
-                                         String toAccountNumber,
-                                         double transferAmount,
-                                         String notes) {
+    @Transactional
+    public String transferFromCurrentToLoan(CurrentAccount fromCurrentAccount,
+                                           LoanAccount loanAccount,
+                                           double transferAmount,
+                                           String notes) {
         LocalDateTime now = LocalDateTime.now();
         String loggedInUserName = getLoggedInUserName();
         Branch branchInfo = branchService.getBranchInfo(loggedInUserName);
 
-        SavingAccount savingAccount = findByAccountNumber(fromAccountNumber);
-        SavingAccountTransaction savingAccountTransaction = new SavingAccountTransaction();
-        savingAccountTransaction.setNotes(notes);
-        savingAccountTransaction.setSavingAccount(savingAccount);
-        savingAccountTransaction.setSavingAmount(transferAmount*-1);
-        savingAccountTransaction.setModeOfPayment(BVMicroUtils.TRANSFER);
-        savingAccountTransaction.setBranch(branchInfo.getId());
-        savingAccountTransaction.setBranchCode(branchInfo.getCode());
-        savingAccountTransaction.setBranchCountry(branchInfo.getCountry());
-        createSavingAccountTransaction(savingAccountTransaction);
+        CurrentAccountTransaction currentAccountTransaction = getCurrentAccountTransaction(notes, branchInfo, fromCurrentAccount, transferAmount * -1, BVMicroUtils.CURRENT_LOAN_TRANSFER);
 
-        LoanAccount loanAccount = loanAccountService.findByAccountNumber(toAccountNumber);
+        if(!StringUtils.equals(loanAccount.getAccountStatus().name(),AccountStatus.ACTIVE.name())){
+            return BVMicroUtils.LOAN_MUST_BE_IN_ACTIVE_STATE;
+        }
         LoanAccountTransaction loanAccountTransaction = new LoanAccountTransaction();
         loanAccountTransaction.setLoanAccount(loanAccount);
 
@@ -381,20 +395,95 @@ public class SavingAccountService extends SuperService {
         loanAccountTransaction.setAccountOwner(loanAccount.getUser().getLastName() +", "+
                 loanAccount.getUser().getLastName());
         loanAccountTransaction.setReference(BVMicroUtils.getSaltString());
-        loanAccountService.createLoanAccountTransaction(loanAccountTransaction, loanAccount, BVMicroUtils.TRANSFER);
+        loanAccount = loanAccountService.createLoanAccountTransaction(loanAccountTransaction, loanAccount, BVMicroUtils.TRANSFER);
 
-        savingAccount.getSavingAccountTransaction().add(savingAccountTransaction);
-        savingAccountRepository.save(savingAccount);
+//
 
         //Update shortee accounts min balance
-        List<ShorteeAccount> shorteeAccounts = loanAccount.getShorteeAccounts();
-        ShorteeAccount shorteeAccount = shorteeAccounts.get(0);
-        SavingAccount shorteeSavingAccount = shorteeAccount.getSavingAccount();
-        shorteeSavingAccount.setAccountMinBalance(shorteeSavingAccount.getAccountMinBalance()-loanAccountTransaction.getAmountReceived());
-        savingAccountRepository.save(shorteeSavingAccount);
+        if( loanAccount.isBlockBalanceQuarantor()){
+            List<ShorteeAccount> shorteeAccounts = loanAccount.getShorteeAccounts();
+            ShorteeAccount shorteeAccount = shorteeAccounts.get(0);
+            SavingAccount shorteeSavingAccount = shorteeAccount.getSavingAccount();
+            shorteeSavingAccount.setAccountMinBalance(shorteeSavingAccount.getAccountMinBalance()-loanAccountTransaction.getAmountReceived());
+            savingAccountRepository.save(shorteeSavingAccount);
+        }
+
 
         generalLedgerService.updateGLAfterLoanAccountTransferRepayment(loanAccountTransaction);
+        return "true";
+    }
 
+//    public String transferFromSavingToLoan(String fromAccountNumber,
+//                                         String toAccountNumber,
+//                                         double transferAmount,
+//                                         String notes) {
+//        LocalDateTime now = LocalDateTime.now();
+//        String loggedInUserName = getLoggedInUserName();
+//        Branch branchInfo = branchService.getBranchInfo(loggedInUserName);
+//
+//        SavingAccount savingAccount = findByAccountNumber(fromAccountNumber);
+//        SavingAccountTransaction savingAccountTransaction = getSavingAccountTransaction(notes, branchInfo, savingAccount, transferAmount * -1, BVMicroUtils.DEBIT_LOAN_TRANSFER);
+//
+//        LoanAccount loanAccount = loanAccountService.findByAccountNumber(toAccountNumber);
+//        if(!StringUtils.equals(loanAccount.getAccountStatus().name(),AccountStatus.ACTIVE.name())){
+//            return BVMicroUtils.LOAN_MUST_BE_IN_ACTIVE_STATE;
+//        }
+//        LoanAccountTransaction loanAccountTransaction = new LoanAccountTransaction();
+//        loanAccountTransaction.setLoanAccount(loanAccount);
+//
+//        loanAccountTransaction.setCreatedDate(now);
+//        loanAccountTransaction.setCreatedBy(loggedInUserName);
+//        loanAccountTransaction.setNotes(notes);
+//
+//        loanAccountTransaction.setBranch(branchInfo.getId());
+//        loanAccountTransaction.setBranchCode(branchInfo.getCode());
+//        loanAccountTransaction.setBranchCountry(branchInfo.getCountry());
+//        loanAccountTransaction.setAmountReceived(transferAmount);
+//        loanAccountTransaction.setAccountOwner(loanAccount.getUser().getLastName() +", "+
+//                loanAccount.getUser().getLastName());
+//        loanAccountTransaction.setReference(BVMicroUtils.getSaltString());
+//        loanAccountService.createLoanAccountTransaction(loanAccountTransaction, loanAccount, BVMicroUtils.TRANSFER);
+//
+//        savingAccount.getSavingAccountTransaction().add(savingAccountTransaction);
+//        savingAccountRepository.save(savingAccount);
+//
+//        //Update shortee accounts min balance
+//        List<ShorteeAccount> shorteeAccounts = loanAccount.getShorteeAccounts();
+//        ShorteeAccount shorteeAccount = shorteeAccounts.get(0);
+//        SavingAccount shorteeSavingAccount = shorteeAccount.getSavingAccount();
+//        shorteeSavingAccount.setAccountMinBalance(shorteeSavingAccount.getAccountMinBalance()-loanAccountTransaction.getAmountReceived());
+//        savingAccountRepository.save(shorteeSavingAccount);
+//
+//        generalLedgerService.updateGLAfterLoanAccountTransferRepayment(loanAccountTransaction);
+//        return "true";
+//    }
+
+    @NotNull
+    public SavingAccountTransaction getSavingAccountTransaction(String notes, Branch branchInfo, SavingAccount savingAccount, double v, String modeOfPayment) {
+        SavingAccountTransaction savingAccountTransaction = new SavingAccountTransaction();
+        savingAccountTransaction.setNotes(notes);
+        savingAccountTransaction.setSavingAccount(savingAccount);
+        savingAccountTransaction.setSavingAmount(v);
+        savingAccountTransaction.setModeOfPayment(modeOfPayment);
+        savingAccountTransaction.setBranch(branchInfo.getId());
+        savingAccountTransaction.setBranchCode(branchInfo.getCode());
+        savingAccountTransaction.setBranchCountry(branchInfo.getCountry());
+        createSavingAccountTransaction(savingAccountTransaction);
+        return savingAccountTransaction;
+    }
+
+    @NotNull
+    public CurrentAccountTransaction getCurrentAccountTransaction(String notes, Branch branchInfo, CurrentAccount currentAccount, double v, String transferMode) {
+        CurrentAccountTransaction currentAccountTransaction = new CurrentAccountTransaction();
+        currentAccountTransaction.setNotes(notes);
+        currentAccountTransaction.setCurrentAccount(currentAccount);
+        currentAccountTransaction.setCurrentAmount(v);
+        currentAccountTransaction.setModeOfPayment(transferMode);
+        currentAccountTransaction.setBranch(branchInfo.getId());
+        currentAccountTransaction.setBranchCode(branchInfo.getCode());
+        currentAccountTransaction.setBranchCountry(branchInfo.getCountry());
+        createCurrentAccountTransaction(currentAccountTransaction);
+        return currentAccountTransaction;
     }
 
     public SavingAccount transferFromDebitToDebit(String fromAccountNumber,
@@ -406,37 +495,148 @@ public class SavingAccountService extends SuperService {
         if(toSavingAccount == null ){
             return null;
         }
-
-        LocalDateTime now = LocalDateTime.now();
         String loggedInUserName = getLoggedInUserName();
         Branch branchInfo = branchService.getBranchInfo(loggedInUserName);
 
-        SavingAccount savingAccount = findByAccountNumber(fromAccountNumber);
-        SavingAccountTransaction savingAccountTransaction = new SavingAccountTransaction();
-        savingAccountTransaction.setNotes(notes);
-        savingAccountTransaction.setSavingAccount(savingAccount);
-        savingAccountTransaction.setSavingAmount(transferAmount*-1);
-        savingAccountTransaction.setModeOfPayment(BVMicroUtils.TRANSFER);
-        savingAccountTransaction.setBranch(branchInfo.getId());
-        savingAccountTransaction.setBranchCode(branchInfo.getCode());
-        savingAccountTransaction.setBranchCountry(branchInfo.getCountry());
-        createSavingAccountTransaction(savingAccountTransaction);
-        savingAccount.getSavingAccountTransaction().add(savingAccountTransaction);
-        savingAccountRepository.save(savingAccount);
+        SavingAccountTransaction fromSavingAccountTransaction = getSavingAccount(fromAccountNumber, -1*transferAmount, notes, branchInfo, BVMicroUtils.DEBIT_DEBIT_TRANSFER);
 
-        SavingAccountTransaction toSavingAccountTransaction = new SavingAccountTransaction();
-        toSavingAccountTransaction.setNotes(notes);
-        toSavingAccountTransaction.setSavingAccount(toSavingAccount);
-        toSavingAccountTransaction.setSavingAmount(transferAmount);
-        toSavingAccountTransaction.setModeOfPayment(BVMicroUtils.TRANSFER);
-        toSavingAccountTransaction.setBranch(branchInfo.getId());
-        toSavingAccountTransaction.setBranchCode(branchInfo.getCode());
-        toSavingAccountTransaction.setBranchCountry(branchInfo.getCountry());
-        createSavingAccountTransaction(toSavingAccountTransaction);
+        SavingAccountTransaction toSavingAccountTransaction = getSavingAccountTransaction(notes, branchInfo, toSavingAccount, transferAmount, BVMicroUtils.DEBIT_DEBIT_TRANSFER);
         toSavingAccount.getSavingAccountTransaction().add(toSavingAccountTransaction);
         savingAccountRepository.save(toSavingAccount);
 
-        return savingAccount;
+        generalLedgerService.updateGLAfterDebitDebitTransfer(toSavingAccountTransaction, fromSavingAccountTransaction);
+
+        callCenterService.saveCallCenterLog(fromSavingAccountTransaction.getReference(),
+                loggedInUserName, fromSavingAccountTransaction.getSavingAccount().getAccountNumber(),
+                "TRANSFER FROM: Saving account transaction made to "+ toSavingAccountTransaction.getSavingAccount().getAccountNumber() + " "+BVMicroUtils.formatCurrency(toSavingAccountTransaction.getSavingAmount()));
+
+        callCenterService.saveCallCenterLog(toSavingAccountTransaction.getReference(),
+                loggedInUserName, toSavingAccountTransaction.getSavingAccount().getAccountNumber(),
+                "TRANSFER TO: Saving account transaction made from "+ fromSavingAccountTransaction.getSavingAccount().getAccountNumber() + " "+BVMicroUtils.formatCurrency(toSavingAccountTransaction.getSavingAmount()));
+
+        return fromSavingAccountTransaction.getSavingAccount();
+    }
+
+    public SavingAccount transferFromDebitToCurrent(String fromAccountNumber,
+                                                  String toAccountNumber,
+                                                  double transferAmount,
+                                                  String notes) {
+
+        CurrentAccount toCurrentAccount = currentAccountService.findByAccountNumber(toAccountNumber);
+        if(toCurrentAccount == null ){
+            return null;
+        }
+
+        String loggedInUserName = getLoggedInUserName();
+        Branch branchInfo = branchService.getBranchInfo(loggedInUserName);
+
+        SavingAccountTransaction savingAccountTransaction = getSavingAccount(fromAccountNumber, transferAmount, notes, branchInfo, BVMicroUtils.DEBIT_CURRENT_TRANSFER);
+
+        CurrentAccountTransaction toCurrentAccountTransaction = getCurrentAccountTransaction(notes, branchInfo, toCurrentAccount, transferAmount, BVMicroUtils.DEBIT_CURRENT_TRANSFER);
+        toCurrentAccount.getCurrentAccountTransaction().add(toCurrentAccountTransaction);
+        currentAccountRepository.save(toCurrentAccount);
+
+        generalLedgerService.updateGLAfterDebitCurrentTransfer(savingAccountTransaction);
+
+        callCenterService.saveCallCenterLog(savingAccountTransaction.getReference(),
+                loggedInUserName, savingAccountTransaction.getSavingAccount().getAccountNumber(),
+                "TRANSFER FROM: Current account transaction made to "+ toCurrentAccountTransaction.getCurrentAccount().getAccountNumber() + " "+ BVMicroUtils.formatCurrency(savingAccountTransaction.getSavingAmount()));
+
+        callCenterService.saveCallCenterLog(toCurrentAccountTransaction.getReference(),
+                loggedInUserName, toCurrentAccountTransaction.getCurrentAccount().getAccountNumber(),
+                "TRANSFER TO: Saving account transaction made from "+ savingAccountTransaction.getSavingAccount().getAccountNumber() + " "+ BVMicroUtils.formatCurrency(toCurrentAccountTransaction.getCurrentAmount()));
+
+        return savingAccountTransaction.getSavingAccount();
+    }
+
+    public CurrentAccount transferFromCurrentToDebit(String fromCurrentAccountNumber,
+                                                    String toDebitAccountNumber,
+                                                    double transferAmount,
+                                                    String notes) {
+
+        CurrentAccount fromCurrentAccount = currentAccountService.findByAccountNumber(fromCurrentAccountNumber);
+        if(fromCurrentAccount == null ){
+            return null;
+        }
+
+        String loggedInUserName = getLoggedInUserName();
+        Branch branchInfo = branchService.getBranchInfo(loggedInUserName);
+
+        SavingAccountTransaction savingAccountTransaction = getSavingAccount(toDebitAccountNumber, transferAmount, notes, branchInfo, BVMicroUtils.CURRENT_DEBIT_TRANSFER);
+
+        CurrentAccountTransaction fromCurrentAccountTransaction = getCurrentAccountTransaction(notes, branchInfo, fromCurrentAccount, -1*transferAmount, BVMicroUtils.CURRENT_DEBIT_TRANSFER);
+
+        fromCurrentAccount.getCurrentAccountTransaction().add(fromCurrentAccountTransaction);
+        currentAccountRepository.save(fromCurrentAccount);
+
+        generalLedgerService.updateGLAfterCurrentDebitTransfer(fromCurrentAccountTransaction,savingAccountTransaction.getSavingAccount().getProductCode());
+
+        callCenterService.saveCallCenterLog(savingAccountTransaction.getReference(),
+                loggedInUserName, savingAccountTransaction.getSavingAccount().getAccountNumber(),
+                "TRANSFER FROM: Current account transaction made to "+ fromCurrentAccountTransaction.getCurrentAccount().getAccountNumber() +" "+BVMicroUtils.formatCurrency(savingAccountTransaction.getSavingAmount()));
+
+        callCenterService.saveCallCenterLog(savingAccountTransaction.getReference(),
+                loggedInUserName, fromCurrentAccountTransaction.getCurrentAccount().getAccountNumber(),
+                "TRANSFER TO: Saving account transaction made from "+ savingAccountTransaction.getSavingAccount().getAccountNumber()+ " "+BVMicroUtils.formatCurrency(fromCurrentAccountTransaction.getCurrentAmount()));
+
+        return fromCurrentAccount;
+    }
+
+    public CurrentAccount transferFromCurrentToCurrent(String fromAccountNumber,
+                                                     String toAccountNumber,
+                                                     double transferAmount,
+                                                     String notes) {
+
+        CurrentAccount fromCurrentAccount = currentAccountService.findByAccountNumber(toAccountNumber);
+        if(fromCurrentAccount == null ){
+            return null;
+        }
+        String loggedInUserName = getLoggedInUserName();
+        Branch branchInfo = branchService.getBranchInfo(loggedInUserName);
+
+        CurrentAccountTransaction currentAccountTransaction = getCurrentAccount(fromAccountNumber, transferAmount, notes, branchInfo, BVMicroUtils.CURRENT_CURRENT_TRANSFER);
+
+        CurrentAccountTransaction toCurrentAccountTransaction = getCurrentAccountTransaction(notes, branchInfo, fromCurrentAccount, transferAmount, BVMicroUtils.CURRENT_CURRENT_TRANSFER);
+        fromCurrentAccount.getCurrentAccountTransaction().add(toCurrentAccountTransaction);
+        currentAccountRepository.save(fromCurrentAccount);
+
+        generalLedgerService.updateGLAfterCurrentCurrentTransfer(toCurrentAccountTransaction);
+
+        callCenterService.saveCallCenterLog(currentAccountTransaction.getReference(),
+                loggedInUserName, currentAccountTransaction.getCurrentAccount().getAccountNumber(),
+                "TRANSFER FROM: Current account transaction made to "+toCurrentAccountTransaction.getCurrentAccount().getAccountNumber() +" "+ BVMicroUtils.formatCurrency(currentAccountTransaction.getCurrentAmount()));
+
+        callCenterService.saveCallCenterLog(toCurrentAccountTransaction.getReference(),
+                loggedInUserName, toCurrentAccountTransaction.getCurrentAccount().getAccountNumber(),
+                "TRANSFER TO: Current account transaction made from "+ currentAccountTransaction.getCurrentAccount().getAccountNumber()+" "+BVMicroUtils.formatCurrency(toCurrentAccountTransaction.getCurrentAmount()));
+        return fromCurrentAccount;
+    }
+
+    @NotNull
+    private SavingAccountTransaction getToSavingAccount(String fromAccountNumber, double transferAmount, String notes, Branch branchInfo, String transferMode) {
+        SavingAccount savingAccount = findByAccountNumber(fromAccountNumber);
+        SavingAccountTransaction savingAccountTransaction = getSavingAccountTransaction(notes, branchInfo, savingAccount, transferAmount, transferMode);
+        savingAccount.getSavingAccountTransaction().add(savingAccountTransaction);
+        savingAccountRepository.save(savingAccount);
+        return savingAccountTransaction;
+    }
+
+    @NotNull
+    private SavingAccountTransaction getSavingAccount(String fromAccountNumber, double transferAmount, String notes, Branch branchInfo, String transferMode) {
+        SavingAccount savingAccount = findByAccountNumber(fromAccountNumber);
+        SavingAccountTransaction savingAccountTransaction = getSavingAccountTransaction(notes, branchInfo, savingAccount, transferAmount, transferMode);
+        savingAccount.getSavingAccountTransaction().add(savingAccountTransaction);
+        savingAccountRepository.save(savingAccount);
+        return savingAccountTransaction;
+    }
+
+    @NotNull
+    private CurrentAccountTransaction getCurrentAccount(String fromAccountNumber, double transferAmount, String notes, Branch branchInfo, String transactionType) {
+        CurrentAccount currentAccount = currentAccountService.findByAccountNumber(fromAccountNumber);
+        CurrentAccountTransaction currentAccountTransaction = getCurrentAccountTransaction(notes, branchInfo, currentAccount, transferAmount * -1,transactionType);
+        currentAccount.getCurrentAccountTransaction().add(currentAccountTransaction);
+        currentAccountRepository.save(currentAccount);
+        return currentAccountTransaction;
     }
 
 }

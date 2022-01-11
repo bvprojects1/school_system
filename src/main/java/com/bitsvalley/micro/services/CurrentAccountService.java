@@ -6,8 +6,6 @@ import com.bitsvalley.micro.utils.AccountStatus;
 import com.bitsvalley.micro.utils.BVMicroUtils;
 import com.bitsvalley.micro.webdomain.CurrentBilanz;
 import com.bitsvalley.micro.webdomain.CurrentBilanzList;
-import com.bitsvalley.micro.webdomain.SavingBilanz;
-import com.bitsvalley.micro.webdomain.SavingBilanzList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.YearMonth;
+import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
 
@@ -62,12 +61,19 @@ public class CurrentAccountService extends SuperService {
     private LoanAccountService loanAccountService;
 
     @Autowired
+    private LoanAccountTransactionService loanAccountTransactionService;
+
+    @Autowired
     private BranchService branchService;
+
+    @Autowired
+    private
+    CurrentAccountService currentAccountService;
 
     private double minimumSaving;
 
-    public SavingAccount findByAccountNumber(String accountNumber) {
-        return savingAccountRepository.findByAccountNumber(accountNumber);
+    public CurrentAccount findByAccountNumber(String accountNumber) {
+        return currentAccountRepository.findByAccountNumber(accountNumber);
     }
 
     public int findAllSavingAccountCount() {
@@ -86,7 +92,7 @@ public class CurrentAccountService extends SuperService {
         currentAccount.setLastUpdatedBy(getLoggedInUserName());
         currentAccount.setAccountLocked(false);
         currentAccount.setLastUpdatedDate(new Date(System.currentTimeMillis()));
-
+        currentAccount.setAccountMinBalance(0);
         AccountType savingAccountType = accountTypeRepository.findByNumber(currentAccount.getProductCode());
         currentAccount.setAccountType(savingAccountType);
 
@@ -116,7 +122,7 @@ public class CurrentAccountService extends SuperService {
     }
 
     @Transactional
-    public void createCurrentAccountTransaction(CurrentAccountTransaction currentAccountTransaction) {
+    public void createCurrentAccountTransaction(CurrentAccountTransaction currentAccountTransaction, CurrentAccount currentAccount) {
 
         currentAccountTransaction.setCreatedBy(getLoggedInUserName());
         currentAccountTransaction.setCreatedDate(LocalDateTime.now());
@@ -124,18 +130,19 @@ public class CurrentAccountService extends SuperService {
 
         currentAccountTransactionRepository.save(currentAccountTransaction);
 
+        currentAccountService.save(currentAccount);
+
+        generalLedgerService.updateGLAfterCurrentAccountTransaction(currentAccountTransaction);
+
 //        generalLedgerService.updateCurrentAccountTransaction(currentAccountTransaction);
     }
 
     @Transactional
-    public void createCurrentAccountTransaction(LoanAccountTransaction loanAccountTransaction) {
+    public void createCurrentAccountTransaction(CurrentAccount currentAccount, LoanAccountTransaction loanAccountTransaction) {
 
         String loggedInUserName = getLoggedInUserName();
         Branch branchInfo = branchService.getBranchInfo(loggedInUserName);
 
-        List<CurrentAccount> currentAccounts = loanAccountTransaction.getLoanAccount().
-                getUser().getCurrentAccount();
-        CurrentAccount currentAccount = currentAccounts.get(0);
 
         CurrentAccountTransaction currentAccountTransaction = new CurrentAccountTransaction();
         currentAccountTransaction.setCurrentAmount(loanAccountTransaction.getLoanAmount());
@@ -213,7 +220,7 @@ public class CurrentAccountService extends SuperService {
         }
         currentBilanzsList.setTotalCurrent(BVMicroUtils.formatCurrency(totalSaved));
 
-        Collections.reverse(currentBilanzsList.getCurrentBilanzList());
+//        Collections.reverse(currentBilanzsList.getCurrentBilanzList());
         return currentBilanzsList;
     }
 
@@ -262,7 +269,7 @@ public class CurrentAccountService extends SuperService {
 
         currentBilanzList.setTotalCurrent(BVMicroUtils.formatCurrency(totalSaved));
         currentBilanzList.setTotalCurrentInterest(BVMicroUtils.formatCurrency(currentAccountTransactionInterest));
-        Collections.reverse(currentBilanzList.getCurrentBilanzList());
+//        Collections.reverse(currentBilanzList.getCurrentBilanzList());
         return currentBilanzList;
     }
 
@@ -284,7 +291,7 @@ public class CurrentAccountService extends SuperService {
         currentBilanz.setReference(currentAccountTransaction.getReference());
         currentBilanz.setAgent(currentAccountTransaction.getCreatedBy());
         currentBilanz.setInterestRate("" + currentAccountTransaction.getCurrentAccount().getInterestRate());
-        currentBilanz.setCurrentAmount(BVMicroUtils.formatCurrency(currentAccountTransaction.getCurrentAmount()));
+        currentBilanz.setCurrentAmount(currentAccountTransaction.getCurrentAmount());
         currentBilanz.setCreatedDate(BVMicroUtils.formatDateTime(currentAccountTransaction.getCreatedDate()));
         currentBilanz.setNotes(currentAccountTransaction.getNotes());
         currentBilanz.setAccountNumber(currentAccountTransaction.getCurrentAccount().getAccountNumber());
@@ -315,18 +322,14 @@ public class CurrentAccountService extends SuperService {
 //        if(savingAccount.getAccountSavingType().getName().equals("GENERAL SAVINGS")){
         List<SavingAccountTransaction> savingAccountTransactionList = savingAccount.getSavingAccountTransaction();
 
-        Date createdDate = savingAccount.getCreatedDate();
-        Date currentDate = new Date(System.currentTimeMillis());
+        LocalDateTime currentDateCal = LocalDateTime.now();
+        Date input = savingAccount.getCreatedDate();
+        LocalDate createdLocalDate = input.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
 
-        Calendar currentDateCal = GregorianCalendar.getInstance();
-        currentDateCal.setTime(currentDate);
-
-        Calendar createdCalenderCal = GregorianCalendar.getInstance();
-        createdCalenderCal.setTime(createdDate);
 
         long monthsBetween = ChronoUnit.MONTHS.between(
-                YearMonth.from(LocalDate.parse(createdCalenderCal.get(GregorianCalendar.YEAR) + "-" + padding(createdCalenderCal.get(GregorianCalendar.MONTH)) + "-" + padding(createdCalenderCal.get(GregorianCalendar.DAY_OF_MONTH)))),
-                YearMonth.from(LocalDate.parse(currentDateCal.get(GregorianCalendar.YEAR) + "-" + padding(currentDateCal.get(GregorianCalendar.MONTH)) + "-" + padding(currentDateCal.get(GregorianCalendar.DAY_OF_MONTH)))));
+                YearMonth.from(LocalDate.of(createdLocalDate.getYear(), createdLocalDate.getMonth(),createdLocalDate.getDayOfMonth())),
+                YearMonth.from(LocalDate.of(currentDateCal.getYear() , currentDateCal.getMonth(),currentDateCal.getYear())));
 
         if (monthsBetween >= savingAccountTransactionList.size()) {
             CallCenter callCenter = new CallCenter();
@@ -380,6 +383,25 @@ public class CurrentAccountService extends SuperService {
         }
         return total;
     }
+
+    public void createCurrentAccountTransactionFromLoan(CurrentAccount currentAccount, LoanAccount loanAccount) {
+        //Create a initial loan transaction of borrowed amount
+        LoanAccountTransaction loanAccountTransaction =
+                loanAccountTransactionService.createLoanAccountTransaction(loanAccount);
+
+//        currentAccountService.getCurrentAccountByUser();
+        currentAccountService.createCurrentAccountTransaction(currentAccount, loanAccountTransaction);//
+
+        // Update new loan account transaction
+        loanAccountTransaction.setAmountReceived(loanAccount.getLoanAmount());
+        generalLedgerService.updateGLWithCurrentLoanAccountTransaction(loanAccountTransaction);//TODO: NO Accountledger set Amount missing in GL
+
+//      generalLedgerService.updateGLAfterLoanAccountTransferRepayment(loanAccountTransaction);
+        loanAccountTransaction.setAmountReceived(0); // Reset loanAmount
+        callCenterService.saveCallCenterLog("ACTIVE", getLoggedInUserName(), loanAccount.getAccountNumber(),"LOAN FUNDS TRANSFERRED TO CURRENT"); //TODO ADD DATE
+        loanAccountService.save(loanAccount);
+    }
+
 
 //    public void transferFromSavingToLoan(String fromAccountNumber,
 //                                         String toAccountNumber,

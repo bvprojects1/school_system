@@ -10,7 +10,7 @@ public class CurrentBilanz {
     String modeOfPayment;
     String noOfDays;
     String monthYearOfLastPayment;
-    String currentAmount;
+    double currentAmount;
     String monthlyPayment;
     String initiationFee;
     String initialLoanAmount;
@@ -146,11 +146,11 @@ public class CurrentBilanz {
         this.noOfDays = noOfDays;
     }
 
-    public String getCurrentAmount() {
+    public double getCurrentAmount() {
         return currentAmount;
     }
 
-    public void setCurrentAmount(String currentAmount) {
+    public void setCurrentAmount(double currentAmount) {
         this.currentAmount = currentAmount;
     }
 

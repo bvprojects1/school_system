@@ -30,7 +30,9 @@ public class LoanAccount {
     private Date lastUpdatedDate;
     private String productCode;
     private int termOfLoan;
-
+    private boolean active;
+    private boolean vatOption;
+    private boolean blockBalanceQuarantor;
     private Date approvedDate;
     private String approvedBy;
 
@@ -38,6 +40,8 @@ public class LoanAccount {
     private double extraFee;
     private Date LastPaymentDate;
     private double monthlyPayment;
+
+    private double interestOwed;
 
     private String guarantorAccountNumber1;
     private String guarantorAccountNumber2;
@@ -376,5 +380,37 @@ public class LoanAccount {
 
     public void setExtraFee(double extraFee) {
         this.extraFee = extraFee;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
+    }
+
+    public boolean isVatOption() {
+        return vatOption;
+    }
+
+    public void setVatOption(boolean vatOption) {
+        this.vatOption = vatOption;
+    }
+
+    public boolean isBlockBalanceQuarantor() {
+        return blockBalanceQuarantor;
+    }
+
+    public void setBlockBalanceQuarantor(boolean blockBalanceQuarantor) {
+        this.blockBalanceQuarantor = blockBalanceQuarantor;
+    }
+
+    public double getInterestOwed() {
+        return interestOwed;
+    }
+
+    public void setInterestOwed(double interestOwed) {
+        this.interestOwed = interestOwed;
     }
 }

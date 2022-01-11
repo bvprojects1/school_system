@@ -1,6 +1,8 @@
 package com.bitsvalley.micro.webdomain;
 
 import com.bitsvalley.micro.domain.LedgerAccount;
+import com.bitsvalley.micro.domain.User;
+
 import java.util.List;
 
 public class GLSearchDTO {
@@ -9,7 +11,8 @@ public class GLSearchDTO {
     private String endDate;
     private String creditOrDebit;
     private String accountNumber;
-    private List<LedgerAccount> allLedgerAccount;
+    private List<Integer> allLedgerAccount;
+    private List<String> allGLEntryUsers;
 
     public String getCreditOrDebit() {
         return creditOrDebit;
@@ -43,12 +46,19 @@ public class GLSearchDTO {
         this.endDate = endDate;
     }
 
-    public List<LedgerAccount> getAllLedgerAccount() {
+    public List<Integer> getAllLedgerAccount() {
         return allLedgerAccount;
     }
 
-    public void setAllLedgerAccount(List<LedgerAccount> allLedgerAccount) {
+    public void setAllLedgerAccount(List<Integer> allLedgerAccount) {
         this.allLedgerAccount = allLedgerAccount;
     }
 
+    public List<String> getAllGLEntryUsers() {
+        return allGLEntryUsers;
+    }
+
+    public void setAllGLEntryUsers(List<String> allGLEntryUsers) {
+        this.allGLEntryUsers = allGLEntryUsers;
+    }
 }

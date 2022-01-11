@@ -1,11 +1,13 @@
 package com.bitsvalley.micro.controllers;
 
 import com.bitsvalley.micro.domain.*;
-import com.bitsvalley.micro.repositories.CallCenterRepository;
 import com.bitsvalley.micro.repositories.UserRepository;
 import com.bitsvalley.micro.services.*;
 import com.bitsvalley.micro.utils.BVMicroUtils;
-import com.bitsvalley.micro.webdomain.*;
+import com.bitsvalley.micro.webdomain.RuntimeSetting;
+import com.bitsvalley.micro.webdomain.SavingBilanzList;
+import com.bitsvalley.micro.webdomain.TransferBilanz;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -16,11 +18,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.util.*;
+import java.util.List;
+import java.util.Optional;
 
 /**
  * @author Fru Chifen
@@ -56,6 +57,8 @@ public class SavingAccountController extends SuperController {
     @Autowired
     InitSystemService initSystemService;
 
+    @Autowired
+    CurrentAccountService currentAccountService;
 
     @GetMapping(value = "/registerSavingAccount")
     public String registerSaving(ModelMap model, HttpServletRequest request) {
@@ -115,14 +118,37 @@ public class SavingAccountController extends SuperController {
     }
 
 
-    @GetMapping(value = "/transferFromSavingToLoanAccountsForm")
+    @GetMapping(value = "/transferFromCurrentToLoanAccountsForm")
     public String transferBetweenAccounts(ModelMap model,
                                         HttpServletRequest request,
                                         HttpServletResponse response) {
         TransferBilanz transferBilanz = new TransferBilanz();
-        transferBilanz.setTransferType(BVMicroUtils.DEBIT_LOAN_TRANSFER);
+        transferBilanz.setTransferType(BVMicroUtils.CURRENT_LOAN_TRANSFER);
         model.put("transferBilanz", transferBilanz);
         return "transfer";
+    }
+
+
+    @GetMapping(value = "/transferFromCurrentToDebitForm")
+    public String transferFromCurrentToDebitForm(ModelMap model,
+                                               HttpServletRequest request) {
+
+        if (getUserInUse(model, request)) return "findCustomer";
+        TransferBilanz transferBilanz = new TransferBilanz();
+        transferBilanz.setTransferType(BVMicroUtils.CURRENT_DEBIT_TRANSFER);
+        model.put("transferBilanz", transferBilanz );
+        return "transferCurrentToDebit";
+    }
+
+    @GetMapping(value = "/transferFromCurrentToCurrentForm")
+    public String transferFromCurrentToCurrentForm(ModelMap model,
+                                                 HttpServletRequest request) {
+
+        if (getUserInUse(model, request)) return "findCustomer";
+        TransferBilanz transferBilanz = new TransferBilanz();
+        transferBilanz.setTransferType(BVMicroUtils.CURRENT_CURRENT_TRANSFER);
+        model.put("transferBilanz", transferBilanz );
+        return "transferCurrentToCurrent";
     }
 
 
@@ -130,26 +156,42 @@ public class SavingAccountController extends SuperController {
     public String transferFromDebitToDebitForm(ModelMap model,
                                                HttpServletRequest request) {
 
-        User user = (User) request.getSession().getAttribute(BVMicroUtils.CUSTOMER_IN_USE);
-        if (user == null ) {
-            model.addAttribute("user", new User());
-            return "findCustomer";
-        }
-        try{
-            user.getSavingAccount().size();
-        }catch (RuntimeException exp){
-            model.addAttribute("user", new User());
-            return "findCustomer";
-        }
+        if (getUserInUse(model, request)) return "findCustomer";
         TransferBilanz transferBilanz = new TransferBilanz();
         transferBilanz.setTransferType(BVMicroUtils.DEBIT_DEBIT_TRANSFER);
         model.put("transferBilanz", transferBilanz );
         return "transferDebitToDebit";
     }
 
+    private boolean getUserInUse(ModelMap model, HttpServletRequest request) {
+        User user = (User) request.getSession().getAttribute(BVMicroUtils.CUSTOMER_IN_USE);
+        if (user == null) {
+            model.addAttribute("user", new User());
+            return true;
+        }
+        try {
+            user.getSavingAccount().size();
+        } catch (RuntimeException exp) {
+            model.addAttribute("user", new User());
+            return true;
+        }
+        return false;
+    }
+
+    @GetMapping(value = "/transferFromDebitToCurrentForm")
+    public String transferFromDebitToCurrentForm(ModelMap model,
+                                               HttpServletRequest request) {
+
+        if (getUserInUse(model, request)) return "findCustomer";
+        TransferBilanz transferBilanz = new TransferBilanz();
+        transferBilanz.setTransferType(BVMicroUtils.DEBIT_CURRENT_TRANSFER);
+        model.put("transferBilanz", transferBilanz );
+        return "transferDebitToCurrent";
+    }
+
 
     @PostMapping(value = "/transferFromSavingToLoanAccountsForm")
-    public String transferFromSavingToLoanAccountsForm(ModelMap model,
+    public String transferFromAccountToAccount(ModelMap model,
                                                        @ModelAttribute("transferBilanz") TransferBilanz transferBilanz) {
         //Validate transfer amount is available
 
@@ -158,20 +200,90 @@ public class SavingAccountController extends SuperController {
         model.put("transferAmount",BVMicroUtils.formatCurrency(transferBilanz.getTransferAmount()) );
         model.put("notes", transferBilanz.getNotes());
 
-        if(transferBilanz.getTransferType().equals(BVMicroUtils.DEBIT_LOAN_TRANSFER)) {
-            savingAccountService.transferFromSavingToLoan(transferBilanz.getTransferFromAccount(),
-                    transferBilanz.getTransferToAccount(),
+        if(transferBilanz.getTransferType().equals(BVMicroUtils.CURRENT_LOAN_TRANSFER)) {
+
+            CurrentAccount currentAccount = currentAccountService.findByAccountNumber(transferBilanz.getTransferFromAccount());
+            LoanAccount byAccountNumber = loanAccountService.findByAccountNumber(transferBilanz.getTransferToAccount());
+            if( transferBilanz.getTransferAmount() < 1){
+                model.put("error", "Transfer amount not valid");
+                model.put("transferBilanz",transferBilanz);
+                return "transfer";
+            }
+            if(currentAccount.getAccountBalance() < transferBilanz.getTransferAmount()){
+                model.put("error", "Account Balance cannot be lower than transfer amount");
+                model.put("transferBilanz",transferBilanz);
+                return "transfer";
+            }
+            String result = savingAccountService.transferFromCurrentToLoan(currentAccount,
+                    byAccountNumber,
                     transferBilanz.getTransferAmount(), transferBilanz.getNotes());
-        }else{
-            SavingAccount savingAccount = savingAccountService.transferFromDebitToDebit(transferBilanz.getTransferFromAccount(),
+            if(!StringUtils.equals("true", result)){
+                model.put("error", result);
+                model.put("transferBilanz",transferBilanz);
+                return "transfer";
+            }
+        }else if(transferBilanz.getTransferType().equals(BVMicroUtils.DEBIT_DEBIT_TRANSFER)) {
+            savingAccountService.transferFromDebitToDebit(transferBilanz.getTransferFromAccount(),
                     transferBilanz.getTransferToAccount(),
                     transferBilanz.getTransferAmount(), transferBilanz.getNotes());
 
-        }
-
+        }else if(transferBilanz.getTransferType().equals(BVMicroUtils.DEBIT_CURRENT_TRANSFER)) {
+            savingAccountService.transferFromDebitToCurrent(transferBilanz.getTransferFromAccount(),
+                transferBilanz.getTransferToAccount(),
+                transferBilanz.getTransferAmount(), transferBilanz.getNotes());
+        }else if(transferBilanz.getTransferType().equals(BVMicroUtils.CURRENT_DEBIT_TRANSFER)) {
+            savingAccountService.transferFromCurrentToDebit(transferBilanz.getTransferFromAccount(),
+                    transferBilanz.getTransferToAccount(),
+                    transferBilanz.getTransferAmount(), transferBilanz.getNotes());
+        }else if(transferBilanz.getTransferType().equals(BVMicroUtils.CURRENT_CURRENT_TRANSFER)) {
+            savingAccountService.transferFromCurrentToCurrent(transferBilanz.getTransferFromAccount(),
+                transferBilanz.getTransferToAccount(),
+                transferBilanz.getTransferAmount(), transferBilanz.getNotes());
+    }
         return "transferConfirm";
     }
 
+
+
+    @PostMapping(value = "/transferFromCurrentToCurrentFormReview")
+    public String transferFromCurrentToCurrentFormReview(ModelMap model,
+                                                     @ModelAttribute("transferBilanz") TransferBilanz transferBilanz) {
+
+        CurrentAccount toAccount = currentAccountService.findByAccountNumber(transferBilanz.getTransferToAccount());
+        if(null==toAccount){
+            model.put("invalidToAccount","Please make sure Account Number is valid" );
+            return "transferCurrentToCurrent";
+        }
+        model.put("transferBilanz", transferBilanz);
+        CurrentAccount fromAccount = currentAccountService.findByAccountNumber(transferBilanz.getTransferFromAccount());
+
+        model.put("transferType", transferBilanz.getTransferType());
+        model.put("fromTransferText","Balance " + BVMicroUtils.formatCurrency(fromAccount.getAccountBalance()) +"--- Minimum Balance "+ BVMicroUtils.formatCurrency(fromAccount.getAccountMinBalance()) );
+        model.put("toTransferText","Balance " + BVMicroUtils.formatCurrency(toAccount.getAccountBalance()) +"--- Minimum Balance "+ BVMicroUtils.formatCurrency(toAccount.getAccountMinBalance()) );
+        model.put("transferAmount", BVMicroUtils.formatCurrency(transferBilanz.getTransferAmount()));
+        model.put("notes", transferBilanz.getNotes());
+        return "transferReview";
+    }
+
+    @PostMapping(value = "/transferFromCurrentToDebitFormReview")
+    public String transferFromCurrentToDebitFormReview(ModelMap model,
+                                                         @ModelAttribute("transferBilanz") TransferBilanz transferBilanz) {
+
+        SavingAccount toAccount = savingAccountService.findByAccountNumber(transferBilanz.getTransferToAccount());
+        if(null==toAccount){
+            model.put("invalidToAccount","Please make sure Account Number is valid" );
+            return "transferCurrentToCurrent";
+        }
+        model.put("transferBilanz", transferBilanz);
+        CurrentAccount fromAccount = currentAccountService.findByAccountNumber(transferBilanz.getTransferFromAccount());
+
+        model.put("transferType", transferBilanz.getTransferType());
+        model.put("fromTransferText"," --- Balance " + BVMicroUtils.formatCurrency(fromAccount.getAccountBalance()) +"--- Minimum Balance "+ BVMicroUtils.formatCurrency(fromAccount.getAccountMinBalance()) );
+        model.put("toTransferText",toAccount.getAccountType().getName() +" --- Balance " + BVMicroUtils.formatCurrency(toAccount.getAccountBalance()) +"--- Minimum Balance "+ BVMicroUtils.formatCurrency(toAccount.getAccountMinBalance()) );
+        model.put("transferAmount", BVMicroUtils.formatCurrency(transferBilanz.getTransferAmount()));
+        model.put("notes", transferBilanz.getNotes());
+        return "transferReview";
+    }
 
     @PostMapping(value = "/transferFromDebitToDebitFormReview")
     public String transferFromDebitToDebitFormReview(ModelMap model,
@@ -193,16 +305,36 @@ public class SavingAccountController extends SuperController {
         return "transferReview";
     }
 
-    @PostMapping(value = "/transferFromSavingToLoanAccountsFormReview")
-    public String transferFromSavingToLoanAccountsFormReview(ModelMap model,
+    @PostMapping(value = "/transferFromDebitToCurrentFormReview")
+    public String transferFromDebitToCurrentFormReview(ModelMap model,
+                                                     @ModelAttribute("transferBilanz") TransferBilanz transferBilanz) {
+
+        CurrentAccount toAccount = currentAccountService.findByAccountNumber(transferBilanz.getTransferToAccount());
+        if(null==toAccount){
+            model.put("invalidToAccount","Please make sure Account Number is valid" );
+            return "transferDebitToCurrent";
+        }
+        model.put("transferBilanz", transferBilanz);
+        SavingAccount fromAccount = savingAccountService.findByAccountNumber(transferBilanz.getTransferFromAccount());
+
+        model.put("transferType", transferBilanz.getTransferType());
+        model.put("fromTransferText",fromAccount.getAccountType().getName() +" --- Balance " + BVMicroUtils.formatCurrency(fromAccount.getAccountBalance()) +"--- Minimum Balance "+ BVMicroUtils.formatCurrency(fromAccount.getAccountMinBalance()) );
+        model.put("toTransferText","Balance " + BVMicroUtils.formatCurrency(toAccount.getAccountBalance()) +"--- Minimum Balance "+ BVMicroUtils.formatCurrency(toAccount.getAccountMinBalance()) );
+        model.put("transferAmount", BVMicroUtils.formatCurrency(transferBilanz.getTransferAmount()));
+        model.put("notes", transferBilanz.getNotes());
+        return "transferReview";
+    }
+
+    @PostMapping(value = "/transferFromCurrentToLoanAccountsFormReview")
+    public String transferFromCurrentToLoanAccountsFormReview(ModelMap model,
                                                        @ModelAttribute("transferBilanz") TransferBilanz transferBilanz) {
         model.put("transferBilanz", transferBilanz);
-        SavingAccount fromAccount= savingAccountService.findByAccountNumber(transferBilanz.getTransferFromAccount());
+        CurrentAccount fromAccount = currentAccountService.findByAccountNumber(transferBilanz.getTransferFromAccount());
         LoanAccount toAccount = loanAccountService.findByAccountNumber(transferBilanz.getTransferToAccount());
 
-        model.put("transferType", BVMicroUtils.DEBIT_LOAN_TRANSFER);
-        model.put("fromTransferText", fromAccount.getAccountType().getName() +" --- Balance " + BVMicroUtils.formatCurrency(fromAccount.getAccountBalance()) +"--- Minimum Balance "+ BVMicroUtils.formatCurrency(fromAccount.getAccountMinBalance()) );
-        model.put("toTransferText", toAccount.getAccountType().getName() +" --- Balance " + BVMicroUtils.formatCurrency(toAccount.getCurrentLoanAmount()) +"--- Initial Loan "+ BVMicroUtils.formatCurrency(toAccount.getLoanAmount()) );
+        model.put("transferType", BVMicroUtils.CURRENT_LOAN_TRANSFER);
+        model.put("fromTransferText", "Balance " + BVMicroUtils.formatCurrency(fromAccount.getAccountBalance()) +" --- Minimum Balance: "+ BVMicroUtils.formatCurrency(fromAccount.getAccountMinBalance()) );
+        model.put("toTransferText", toAccount.getAccountType().getName() +" --- Balance: " + BVMicroUtils.formatCurrency(toAccount.getCurrentLoanAmount()) +" --- Initial Loan: "+ BVMicroUtils.formatCurrency(toAccount.getLoanAmount()) );
         model.put("transferAmount", BVMicroUtils.formatCurrency(transferBilanz.getTransferAmount()) );
         model.put("notes", transferBilanz.getNotes());
 
@@ -214,11 +346,33 @@ public class SavingAccountController extends SuperController {
     @PostMapping(value = "/registerSavingAccountTransactionForm")
     public String registerSavingAccountTransactionForm(ModelMap model, @ModelAttribute("savingAccountTransaction") SavingAccountTransaction savingAccountTransaction, HttpServletRequest request) {
         String savingAccountId = request.getParameter("savingAccountId");
-        Optional<SavingAccount> savingAccount = savingAccountService.findById(new Long(savingAccountId));
-        savingAccountTransaction.setSavingAccount(savingAccount.get());
+        SavingAccount savingAccount = savingAccountService.findById(new Long(savingAccountId)).get();
+        savingAccountTransaction.setSavingAccount(savingAccount);
         User user = (User) request.getSession().getAttribute(BVMicroUtils.CUSTOMER_IN_USE);
+        String deposit_withdrawal = request.getParameter("deposit_withdrawal");
+        String error = "";
+        savingAccountTransaction.setWithdrawalDeposit(1);
+        if(StringUtils.isEmpty( savingAccountTransaction.getModeOfPayment() ) ){
+            error = "Select Method of Payment - MOP";
+        }
+        else if(StringUtils.isEmpty(deposit_withdrawal)){
+            error = "Select Transaction Type";
+        }
 
-        if(savingAccountTransaction.getSavingAmount()<savingAccountTransaction.getSavingAccount().getMinimumPayment()){
+        if (deposit_withdrawal.equals("WITHDRAWAL")) {
+            savingAccountTransaction.setSavingAmount(savingAccountTransaction.getSavingAmount() * -1);
+            savingAccountTransaction.setWithdrawalDeposit(-1);
+            error = savingAccountService.withdrawalAllowed(savingAccountTransaction);
+            //Make sure min amount is not violated at withdrawal
+        }
+
+        if (!StringUtils.isEmpty(error)) {
+            model.put("billSelectionError", error);
+            savingAccountTransaction.setNotes(savingAccountTransaction.getNotes());
+            return displaySavingBilanzNoInterest(new Long(savingAccountId), model, savingAccountTransaction);
+        }
+
+        if((savingAccountTransaction.getSavingAmount() + savingAccountTransaction.getSavingAccount().getAccountBalance() ) < savingAccountTransaction.getSavingAccount().getMinimumPayment()){
             model.put("billSelectionError", "Please make minimum payment of "+ BVMicroUtils.formatCurrency(savingAccountTransaction.getSavingAccount().getMinimumPayment()));
             savingAccountTransaction.setNotes(savingAccountTransaction.getNotes());
             return displaySavingBilanzNoInterest(new Long(savingAccountId), model, savingAccountTransaction);
@@ -232,16 +386,6 @@ public class SavingAccountController extends SuperController {
             }
         }
 
-        if (request.getParameter("deposit_withdrawal").equals("WITHDRAWAL")) {
-            savingAccountTransaction.setSavingAmount(savingAccountTransaction.getSavingAmount() * -1);
-            String error = savingAccountService.withdrawalAllowed(savingAccountTransaction);
-            //Make sure min amount is not violated at withdrawal
-            if (!(error == null)) {
-                model.put("billSelectionError", error);
-                savingAccountTransaction.setNotes(savingAccountTransaction.getNotes());
-                return displaySavingBilanzNoInterest(new Long(savingAccountId), model, savingAccountTransaction);
-            }
-        }
         String modeOfPayment = request.getParameter("modeOfPayment");
         savingAccountTransaction.setModeOfPayment(modeOfPayment);
         Branch branchInfo = branchService.getBranchInfo(getLoggedInUserName());
@@ -249,30 +393,21 @@ public class SavingAccountController extends SuperController {
         savingAccountTransaction.setBranch(branchInfo.getId());
         savingAccountTransaction.setBranchCode(branchInfo.getCode());
         savingAccountTransaction.setBranchCountry(branchInfo.getCountry());
-
-        savingAccountService.createSavingAccountTransaction(savingAccountTransaction);
-        if (savingAccount.get().getSavingAccountTransaction() != null) {
-            savingAccount.get().getSavingAccountTransaction().add(savingAccountTransaction);
-        } else {
-            savingAccount.get().setSavingAccountTransaction(new ArrayList<SavingAccountTransaction>());
-            savingAccount.get().getSavingAccountTransaction().add(savingAccountTransaction);
-        }
-        savingAccountService.save(savingAccount.get());
+        savingAccountService.createSavingAccountTransaction(savingAccountTransaction, savingAccount);
 
         String username = getLoggedInUserName();
-
         callCenterService.saveCallCenterLog(savingAccountTransaction.getReference(),
-                username, savingAccount.get().getAccountNumber(),
+                username, savingAccount.getAccountNumber(),
                 "Saving account transaction made "+ BVMicroUtils.formatCurrency(savingAccountTransaction.getSavingAmount()));
 
-        SavingBilanzList savingBilanzByUserList = savingAccountService.calculateAccountBilanz(savingAccount.get().getSavingAccountTransaction(), false);
+        SavingBilanzList savingBilanzByUserList = savingAccountService.calculateAccountBilanz(savingAccount.getSavingAccountTransaction(), false);
         model.put("name", username );
         model.put("billSelectionInfo", BVMicroUtils.formatCurrency(savingAccountTransaction.getSavingAmount()) + " ---- PAYMENT HAS REGISTERED ----- ");
         model.put("savingBilanzList", savingBilanzByUserList);
         request.getSession().setAttribute("savingBilanzList", savingBilanzByUserList);
         Optional<User> byId = userRepository.findById(user.getId());
         request.getSession().setAttribute(BVMicroUtils.CUSTOMER_IN_USE, byId.get());
-        savingAccountTransaction.setSavingAccount(savingAccount.get());
+        savingAccountTransaction.setSavingAccount(savingAccount);
         resetSavingsAccountTransaction(savingAccountTransaction); //reset BillSelection and amount
         savingAccountTransaction.setNotes("");
         model.put("savingAccountTransaction", savingAccountTransaction);
@@ -314,14 +449,18 @@ public class SavingAccountController extends SuperController {
     }
 
     private boolean checkBillSelectionMatchesEnteredAmount(SavingAccountTransaction sat) {
-        boolean match = (sat.getSavingAmount() == (sat.getTenThousand() * 10000) +
+
+        double selection = (sat.getTenThousand() * 10000) +
                 (sat.getFiveThousand() * 5000) +
                 (sat.getTwoThousand() * 2000) +
                 (sat.getOneThousand() * 1000) +
                 (sat.getFiveHundred() * 500) +
                 (sat.getOneHundred() * 100) +
                 (sat.getFifty() * 50) +
-                (sat.getTwentyFive() * 25));
+                (sat.getTwentyFive() * 25);
+
+        boolean match = (sat.getSavingAmount() == selection) || (sat.getSavingAmount()*-1 == selection) ;
+
         if (match) {
             sat.setNotes(sat.getNotes()
                     + addBillSelection(sat));

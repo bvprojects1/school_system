@@ -1,6 +1,6 @@
 package com.bitsvalley.micro.repositories;
+
 import com.bitsvalley.micro.domain.LedgerAccount;
-import com.bitsvalley.micro.domain.LoanAccount;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
@@ -13,7 +13,7 @@ public interface LedgerAccountRepository extends CrudRepository<LedgerAccount, L
     @Query(value = "SELECT * FROM LEDGERACCOUNT la WHERE la.id != :id", nativeQuery = true)
     List<LedgerAccount>  findAllExcept(Long id);
 
-    @Query(value = "SELECT * FROM LEDGERACCOUNT la WHERE la.code = :code", nativeQuery = true)
+//    @Query(value = "SELECT * FROM LEDGERACCOUNT la WHERE la.code = :code", nativeQuery = true)
     LedgerAccount  findByCode(String code);
-
+//
 }

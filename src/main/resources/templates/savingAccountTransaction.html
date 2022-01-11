@@ -24,7 +24,7 @@
         </div>
     </div>
 
-    <table class="center" width="100%" border="1">
+    <table class="center" width="100%" border="0">
         <tr>
             <th>
                 Account Type
@@ -46,7 +46,9 @@
                 </b></font>
             </td>
             <td>
-                <div th:text="${session.customerInUse.userName}"/>
+                <a href="#" th:href="@{/showCustomer/{id}(id=${session.customerInUse.id})}">
+                    <div th:text="${session.customerInUse.userName}"/>
+                </a>
             </td>
         </tr>
     </table>
@@ -57,7 +59,7 @@
     <form action="#" th:action="@{/registerSavingAccountTransactionForm}" method="post"
           th:object="${savingAccountTransaction}">
 
-        <table border="1" width="100%" class="center">
+        <table border="0" width="100%" class="center">
             <tr>
                 <td>
                         <select name="deposit_withdrawal">

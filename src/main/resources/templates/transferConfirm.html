@@ -10,7 +10,7 @@
     <!-- Contact form area start -->
     <section class="contact-form-area-start space df-bg">
         <form action="#" th:action="@{/transferFromSavingToLoanAccountsForm}" method="post" th:object="${transferBilanz}">
-            <table class="center" width="100%" border="1">
+            <table class="center" width="100%" border="0">
                 <tr>
                     <td align="center">
                         <div class="project-title-content">
@@ -21,27 +21,27 @@
                 </tr>
                 <tr>
                     <td align="center" colspan="2">
-                        <font size="2">Account Owner</font><br/>
+                        <font size="4">Account Owner</font><br/>
                         <font size="4">
-                            <span style th:text="${session.customerInUse.userName}"/>'s
+                            <span class="selectNormal" style th:text="${session.customerInUse.userName}"/>'s
                         </font>
                         <br/><br/>
 
                         <label><b> From Account:</b></label>
-                        <span th:text="${fromTransferText}"/>
+                        <span class="selectNormal" th:text="${fromTransferText}"/>
                         <br/>
                         <br/>
                         <label> <b>To Account:</b></label>
-                        <span th:text="${toTransferText}"/>
+                        <span class="selectNormal" th:text="${toTransferText}"/>
                         <br/>
                         <br/>
                         <label> Amount:</label>
-                        <font size="6"> <span th:text="${transferAmount}"/> </font>
+                        <font class="selectNormal" size="6"> <span th:text="${transferAmount}"/> </font>
 
                         <br/>
                         <br/>
                         <label><b> Notes:</b></label>
-                        <span th:text="${notes}"/>
+                        <span class="selectNormal" th:text="${notes}"/>
                         <input type="hidden"  id="notes" rows="3" cols="30" th:field="*{notes}"/>
 
                         <br/><br/>

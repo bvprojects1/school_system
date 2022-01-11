@@ -8,32 +8,46 @@
     <!--Project title area start-->
     <div class="project-title-area text-center">
         <div class="col-md-12">
-            <div class="project-title-content">
-                <br/>
+            <br/>
+            <br/>
+            <br/>
+                <table width="90%" class="center" border="0px">
+                    <tr>
+                        <td align="center">
+                            <div class="project-title-content">
+                                <font color="green" size="4"><b><div th:text="${accountNameHeader}"/></b></font>
+                                <span><i class="fas fa-crosshairs"></i></span>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+
                 <table width="90%" class="center" border="0px">
                     <ul th:each="accountLedger : ${accountLedgerList}">
                         <li th:text="${accountLedger.code}"></li>
                         <li>
                             <a href="#" th:href="@{/accountLedger/{id}(id=${accountLedger.id})}">
-                                <span th:text="${accountLedger.name}"/>
+                                <span th:text="${accountLedger.code}"/>
                             </a>
                         </li>
                     </ul>
                 </table>
-                <br/>
-                <font color="gray;" size="4"> GENERAL LEDGER TRANSACTIONS </font></div>
+                <br/><br/>
+                </div>
+
+            <br/>
             <form action="#" th:action="@{/filterGenaralLedger}" method="post" th:object="${glSearchDTO}">
                 <table border="0" width="80%" class="center">
                     <tr>
                         <td>
-                            Ledger
-                            <select class="select" th:field="*{allLedgerAccount}">
+                            Ledger<br/>
+                            <select name="allLedgerAccount" class="selectMedium" th:field="*{allLedgerAccount}">
                                 <option value="-1">
                                     ALL
                                 </option>
                                 <option th:each="i : ${allLedgerAccount}"
                                         th:value="${i.id}">
-                                    <span th:text="${i.name}"/>
+                                    <span th:text="${i.code}"/>
                                 </option>
                             </select>
                         </td>
@@ -49,30 +63,25 @@
                                             placeholder="End Date:" class="form-control" required>
                         </td>
                         <td width="5"></td>
-
-                        <td>
-                            Account No<input type="accountNumber" name="accountNumber" th:field="*{accountNumber}" id="accountNumber"
-                                   placeholder="accountNumber" class="form-control"/>
-                        </td>
                         <td width="5"></td>
                         <td>
-                            Type<select class="select" name="creditOrDebit" id="creditOrDebit" th:field="*{creditOrDebit}">
-                            <option value="ALL">ALL</option>
-                            <option value="CREDIT">CREDIT</option>
-                            <option value="DEBIT">DEBIT</option>
+                        User<br/>
+                        <select class="selectMedium" name="allGLEntryUsers" id="allGLEntryUsers" th:field="*{allGLEntryUsers}">
+                            <option value="-1">ALL</option>
+                            <option th:each="username : ${allGLEntryUsers}"
+                                    th:value="${username}">
+                                <span th:text="${username}"/>
+                            </option>
                         </select>
                         </td>
                         <td width="5"></td>
                         <td>
-
                             <br/>
                             <button type="submit" class="btn btn-success">SEARCH</button>
                         </td>
                     </tr>
                 </table>
             </form>
-
-            <br/>
 
             <table border="0" width="80%" class="center">
                 <tr>
@@ -106,8 +115,8 @@
             <th>Class</th>
             <th>Reference</th>
             <th>Ledger</th>
-            <th>Account</th>
             <th>Notes</th>
+            <th>Creator</th>
             <th><a href="#" th:href="@{/findGlByType/{type}(type='DEBIT')}">DEBIT</a></th>
             <th width="5"></th>
             <th><a href="#" th:href="@{/findGlByType/{type}(type='CREDIT')}">CREDIT</a></th>
@@ -116,13 +125,17 @@
         </tr>
         <tr th:each="gl : ${generalLedgerBilanz.generalLedgerWeb}">
             <td>
-                <div th:text="${#dates.format(gl.createdDate, 'dd-MMM-yyyy HH:mm')}"></div>
+                <font size="2"> <div th:text="${#dates.format(gl.createdDate, 'dd-MMM-yyyy HH:mm')}"></div></font>
             </td>
             <td th:text="${gl.glClass}"></td>
-            <td th:text="${gl.reference}"></td>
-            <td th:text="${gl?.ledgerAccount?.name}"></td>
-            <td th:text="${gl.accountNumber}"></td>
+            <td>
+                <a href="#" th:href="@{/gl/reference/{code}(code=${gl.reference})}">
+                    <span th:text="${gl.reference}"/>
+                </a>
+            </td>
+            <td th:text="${gl?.ledgerAccount?.code}"></td>
             <td th:text="${gl.notes}"></td>
+            <td th:text="${gl.createdBy}"></td>
             <td>
                 <div th:if="${gl.type == 'DEBIT'}">
                     <span th:text="${#numbers.formatDecimal(gl.amount, 0, 'COMMA', 0, 'POINT')}"></span>

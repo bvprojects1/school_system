@@ -3,6 +3,7 @@ package com.bitsvalley.micro.webdomain;
 public class RuntimeSetting {
 
     private String businessName;
+    private String slogan;
     private String telephone;
     private String telephone2;
     private String logo;
@@ -18,6 +19,13 @@ public class RuntimeSetting {
     private String vatPercent;
     private String unitSharePrice;
 
+    public String getSlogan() {
+        return slogan;
+    }
+
+    public void setSlogan(String slogan) {
+        this.slogan = slogan;
+    }
 
     public String getFax() {
         return fax;
