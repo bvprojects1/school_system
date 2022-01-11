@@ -72,13 +72,13 @@
     </div>
 
     <!--Project title area end-->
-    <table border="0" width="90%" class="center">
+    <table border="1" width="90%" class="center">
         <tr>
             <th>Account Name</th>
             <th>Account Code</th>
             <th>DEBIT</th>
             <th>CREDIT</th>
-            <th>BALANCE</th>
+            <th>BALANCE <span th:text="${trialBalanceBilanz.totalDifference}"></span></th>
         </tr>
         <tr th:each="tb : ${trialBalanceBilanz}">
             <td th:text="${tb.name}">

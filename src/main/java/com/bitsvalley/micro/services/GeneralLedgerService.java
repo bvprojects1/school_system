@@ -467,12 +467,14 @@ public class GeneralLedgerService extends SuperService {
         List<TrialBalanceWeb> trialBalanceWebList = new ArrayList<TrialBalanceWeb>();
         Iterable<LedgerAccount> all = ledgerAccountRepository.findAll();
         TrialBalanceWeb trialBalanceWeb;
-
+        TrialBalanceBilanz trialBalanceBilanz = new TrialBalanceBilanz();
+        double bilanzTotalDifference = 0.0;
         for (LedgerAccount aLedgerAccount: all) {
             trialBalanceWeb = new TrialBalanceWeb();
             Double debitTotal = 0.0;
             Double creditTotal = 0.0;
             Double total = 0.0;
+            double totalDifference = 0.0;
 
             debitTotal =
                     generalLedgerRepository.searchCriteriaLedgerType(aStartDate, aEndDate, aLedgerAccount.getId(),BVMicroUtils.DEBIT);
@@ -484,14 +486,15 @@ public class GeneralLedgerService extends SuperService {
 
             trialBalanceWeb.setCreditTotal( creditTotal );
             trialBalanceWeb.setDebitTotal( debitTotal );
-            trialBalanceWeb.setTotalDifference( creditTotal - debitTotal );
+            totalDifference = creditTotal - debitTotal;
+            trialBalanceWeb.setTotalDifference(totalDifference);
             trialBalanceWeb.setCode( aLedgerAccount.getCode() );
             trialBalanceWeb.setName( aLedgerAccount.getName() );
-            trialBalanceWebList.add(trialBalanceWeb);
-
+            trialBalanceWeb.setTotalDifference( totalDifference );
+            bilanzTotalDifference = bilanzTotalDifference + totalDifference;
         }
-        TrialBalanceBilanz trialBalanceBilanz = new TrialBalanceBilanz();
-//        trialBalanceBilanz.setTotalDifference();
+
+        trialBalanceBilanz.setTotalDifference(bilanzTotalDifference);
         return trialBalanceWebList;
     }
 
