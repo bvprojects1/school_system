@@ -132,7 +132,7 @@ public class GeneralAccountController extends SuperController{
         LocalDate now = LocalDate.now();
         LocalDate localDateStart = now.minusDays(now.getDayOfMonth()-1);
 
-        List<TrialBalanceWeb> trialBalanceBilanz = generalLedgerService.getCurrentTrialBalance(localDateStart, now);
+        TrialBalanceBilanz trialBalanceBilanz = generalLedgerService.getCurrentTrialBalance(localDateStart, now);
 
 //      model.put("allLedgerAccount", all);
 
@@ -159,7 +159,7 @@ public class GeneralAccountController extends SuperController{
         String startDate = glSearchDTO.getStartDate();
         String endDate = glSearchDTO.getEndDate();
 
-        List<TrialBalanceWeb> trialBalanceBilanz = generalLedgerService.getTrialBalanceWebs(startDate, endDate);
+       TrialBalanceBilanz trialBalanceBilanz = generalLedgerService.getTrialBalanceWebs(startDate, endDate);
 
         ArrayList<String> allGLEntryUsers = getAllNonCustomers();
         glSearchDTO.setAllGLEntryUsers(allGLEntryUsers);

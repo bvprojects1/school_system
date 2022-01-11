@@ -47,7 +47,8 @@ public class UploadController extends SuperController{
 
 
 //    private final String UPLOAD_DIR = "assets/images/";
-    private final String UPLOAD_DIR = "c:\\images\\";
+    private final String UPLOAD_DIR = "/Users/frusamachifen/";
+//    private final String UPLOAD_DIR = "c:\\images\\";
 
     @GetMapping("/file")
     public String uploadFile(){

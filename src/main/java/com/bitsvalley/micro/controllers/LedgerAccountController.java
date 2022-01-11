@@ -260,7 +260,7 @@ public class LedgerAccountController extends SuperController{
 
             ledgerAccount = new LedgerAccount();
             ledgerAccount.setName(BVMicroUtils.SHARE);
-            ledgerAccount.setCode(BVMicroUtils.SHARE+"_"+BVMicroUtils.GL_5023);
+            ledgerAccount.setCode(BVMicroUtils.SHARE+"_"+BVMicroUtils.GL_5004);
             ledgerAccount.setCategory("5000 – 5999");
             ledgerAccount.setStatus(BVMicroUtils.ACTIVE);
             ledgerAccountList.add(ledgerAccount);

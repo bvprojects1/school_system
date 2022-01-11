@@ -453,17 +453,17 @@ public class GeneralLedgerService extends SuperService {
 //        return getGeneralLedgerBilanz( generalLedgerWebList );
 //    }
 
-    public List<TrialBalanceWeb> getCurrentTrialBalance(LocalDate startDate, LocalDate endDate ){
+    public TrialBalanceBilanz getCurrentTrialBalance(LocalDate startDate, LocalDate endDate ){
 
         String aStartDate = BVMicroUtils.formatUSDateOnly(startDate);
         String aEndDate = BVMicroUtils.formatUSDateOnly(endDate);
 
-        List<TrialBalanceWeb> trialBalanceWebList = getTrialBalanceWebs(aStartDate, aEndDate);
-        return trialBalanceWebList;
+        TrialBalanceBilanz trialBalanceWeb = getTrialBalanceWebs(aStartDate, aEndDate);
+        return trialBalanceWeb;
     }
 
     @NotNull
-    public List<TrialBalanceWeb> getTrialBalanceWebs(String aStartDate, String aEndDate) {
+    public TrialBalanceBilanz getTrialBalanceWebs(String aStartDate, String aEndDate) {
         List<TrialBalanceWeb> trialBalanceWebList = new ArrayList<TrialBalanceWeb>();
         Iterable<LedgerAccount> all = ledgerAccountRepository.findAll();
         TrialBalanceWeb trialBalanceWeb;
@@ -492,10 +492,11 @@ public class GeneralLedgerService extends SuperService {
             trialBalanceWeb.setName( aLedgerAccount.getName() );
             trialBalanceWeb.setTotalDifference( totalDifference );
             bilanzTotalDifference = bilanzTotalDifference + totalDifference;
+            trialBalanceWebList.add(trialBalanceWeb);
         }
-
+        trialBalanceBilanz.setTrialBalanceWeb(trialBalanceWebList);
         trialBalanceBilanz.setTotalDifference(bilanzTotalDifference);
-        return trialBalanceWebList;
+        return trialBalanceBilanz;
     }
 
     public List<GeneralLedger> searchCriteria(LocalDate startDateLocalDate, LocalDate endDateLocalDate) {
