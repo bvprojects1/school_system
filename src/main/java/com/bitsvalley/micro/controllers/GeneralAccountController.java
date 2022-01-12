@@ -129,7 +129,7 @@ public class GeneralAccountController extends SuperController{
 
     @GetMapping(value = "/trialBalance")
     public String trialBalance( ModelMap model, HttpServletRequest request) {
-        LocalDate now = LocalDate.now();
+        LocalDate now = LocalDate.now().plusDays(1);
         LocalDate localDateStart = now.minusDays(now.getDayOfMonth()-1);
 
         TrialBalanceBilanz trialBalanceBilanz = generalLedgerService.getCurrentTrialBalance(localDateStart, now);
@@ -159,7 +159,7 @@ public class GeneralAccountController extends SuperController{
         String startDate = glSearchDTO.getStartDate();
         String endDate = glSearchDTO.getEndDate();
 
-       TrialBalanceBilanz trialBalanceBilanz = generalLedgerService.getTrialBalanceWebs(startDate, endDate);
+       TrialBalanceBilanz trialBalanceBilanz = generalLedgerService.getTrialBalanceWebs(startDate, endDate+" 23:59:59.999");
 
         ArrayList<String> allGLEntryUsers = getAllNonCustomers();
         glSearchDTO.setAllGLEntryUsers(allGLEntryUsers);
