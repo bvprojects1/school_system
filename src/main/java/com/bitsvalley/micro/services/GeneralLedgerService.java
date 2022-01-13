@@ -815,6 +815,7 @@ public class GeneralLedgerService extends SuperService {
 
             updateGeneralLedger(savingAccountTransaction, BVMicroUtils.CASH, savingAccountTransaction.getSavingAmount() > 0 ? "DEBIT" : "CREDIT", savingAccountTransaction.getSavingAmount(), true);
 
+            
     }
 
 
