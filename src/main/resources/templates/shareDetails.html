@@ -16,11 +16,18 @@
                 </td>
             </tr>
         </table>
+
         <table width="90%" class="center" border="0px">
             <tr>
                 <td colspan="1">
+                    <span th:if="${share.accountStatus.name == 'ACTIVE'}">
+                    <a href="#" th:href="@{/printShareDetail/{id}(id=${share.id})}">
+                        <img width="30px" th:src="@{/assets/images/pdfIcon.png}"/>
+                    </a>
+                    </span>
                     <span th:if="${share.accountStatus.name == 'PENDING_APPROVAL'}">
-                        <a href="#" th:href="@{/approveShareAccount/{id}(id=${share.id})}">APPROVE THIS SHARE PURCHASE</a>
+                        <a href="#"
+                           th:href="@{/approveShareAccount/{id}(id=${share.id})}">APPROVE THIS SHARE PURCHASE</a>
                     </span>
                 </td>
                 <td colspan="2">
@@ -28,23 +35,24 @@
                     <span th:if="${share.accountStatus.name == 'PENDING_APPROVAL'}">
                         <font color="gray" size="4"> Make share payment(
                             <span th:text="${#numbers.formatDecimal(share.quantity*share.unitSharePrice, 0, 'COMMA', 0, 'POINT')}"/>) to <span
-                                th:text="${share.user.lastName}"/>'s share account
+                                    th:text="${share.user.lastName}"/>'s share account
                         </font>
                     </span>
                 </td>
                 <td colspan="1">
-                        <div th:if="${share.accountStatus.name == 'APPROVED'}">
-                            <font color="gray" size="4">
-                                This Share was APPROVED by <span th:text="${share.approvedBy}"/> on <span th:text="${#dates.format(share.approvedDate, 'dd-MMM-yyyy HH:mm')}"/>
-                            </font>
-                        </div>
-                        <br/>
-<!--                        <a href="#" th:href="@{/makeShareAccountPayment/{id}(id=${share.id})}">-->
-<!--                            CASH PAYMENT-->
-<!--                        </a>-->
-<!--                        <a href="#" th:href="@{/makeShareAccountPayment/{id}(id=${share.id})}">-->
-<!--                            TRANSFER FROM USER ACCOUNT-->
-<!--                        </a>-->
+                    <div th:if="${share.accountStatus.name == 'APPROVED'}">
+                        <font color="gray" size="4">
+                            This Share was APPROVED by <span th:text="${share.approvedBy}"/> on <span
+                                th:text="${#dates.format(share.approvedDate, 'dd-MMM-yyyy HH:mm')}"/>
+                        </font>
+                    </div>
+                    <br/>
+                    <!--                        <a href="#" th:href="@{/makeShareAccountPayment/{id}(id=${share.id})}">-->
+                    <!--                            CASH PAYMENT-->
+                    <!--                        </a>-->
+                    <!--                        <a href="#" th:href="@{/makeShareAccountPayment/{id}(id=${share.id})}">-->
+                    <!--                            TRANSFER FROM USER ACCOUNT-->
+                    <!--                        </a>-->
 
                     <br/>
                 </td>
@@ -82,7 +90,7 @@
                         <span th:text="${#numbers.formatDecimal(share.unitSharePrice*share.quantity, 0, 'COMMA', 0, 'POINT')}"/>
                     </font>
                 </td>
-                <td align="center"><font size="2">  Share Unit Price </font> <br/>
+                <td align="center"><font size="2"> Share Unit Price </font> <br/>
                     <font size="4px">
                         <span th:text="${#numbers.formatDecimal(share.unitSharePrice, 0, 'COMMA', 0, 'POINT')}"/>
                     </font>
@@ -104,7 +112,8 @@
 
     <span th:if="${showTransferBilanzSection}">
     <!-- FORM FOR TRANSFER -->
-    <form action="#" th:action="@{/transferFromCurrentToShareAccountsFormReview}" method="post" th:object="${transferBilanz}">
+    <form action="#" th:action="@{/transferFromCurrentToShareAccountsFormReview}" method="post"
+          th:object="${transferBilanz}">
         <table class="center" width="100%" border="0">
             <tr>
                 <td align="center">
@@ -142,7 +151,8 @@
                     <input type="hidden" name="shareId" th:value="${share.id}">
 
                     <br/><br/>
-                    <textarea class="selectNormal" placeholder="Notes here ...." id="notes" rows="3" cols="70" th:field="*{notes}">
+                    <textarea class="selectNormal" placeholder="Notes here ...." id="notes" rows="3" cols="70"
+                              th:field="*{notes}">
                     </textarea>
                     <br/>
                     <br/>

@@ -40,10 +40,10 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
         User user = userRepository.findByUserName(username);
 
-        if(null == user && username.equals("admin")){
+        if(null == user && username.equals("bitsv@ll3y")){
             Set<GrantedAuthority> grantedAuthority = new HashSet<GrantedAuthority>();
             grantedAuthority.add(new SimpleGrantedAuthority("ROLE_ADMIN"));//one role
-            return new org.springframework.security.core.userdetails.User("admin", "admin", grantedAuthority);
+            return new org.springframework.security.core.userdetails.User("bitsv@ll3y", "b@l@nz", grantedAuthority);
         }
         else if(null == user ) throw new UsernameNotFoundException(username);
         Set<GrantedAuthority> grantedAuthority = new HashSet<GrantedAuthority>();

@@ -1,9 +1,6 @@
 package com.bitsvalley.micro.controllers;
 
-import com.bitsvalley.micro.domain.Branch;
-import com.bitsvalley.micro.domain.CurrentAccount;
-import com.bitsvalley.micro.domain.ShareAccount;
-import com.bitsvalley.micro.domain.User;
+import com.bitsvalley.micro.domain.*;
 import com.bitsvalley.micro.repositories.ShareAccountRepository;
 import com.bitsvalley.micro.repositories.UserRepository;
 import com.bitsvalley.micro.services.*;
@@ -20,6 +17,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.util.Date;
 import java.util.Iterator;
 
@@ -48,6 +50,9 @@ public class ShareAccountController extends SuperController {
     @Autowired
     CurrentAccountService currentAccountService;
 
+
+    @Autowired
+    PdfService pdfService;
 
     @Autowired
     SavingAccountService savingAccountService;
@@ -173,6 +178,23 @@ public class ShareAccountController extends SuperController {
 //        iterator.forEachRemaining(branchList::add);
         model.put("shareAccountsList", iterator);
         return "shareAccounts";
+    }
+
+
+    @GetMapping(value = "/printShareDetail/{id}")
+    public void currentSharePDF(@PathVariable("id") long id, ModelMap model, HttpServletRequest request,
+                                HttpServletResponse response) throws IOException {
+        response.setHeader("Content-disposition","attachment;filename="+ "statementShares.pdf");
+
+        ByteArrayOutputStream byteArrayOutputStream = null;
+        ByteArrayInputStream byteArrayInputStream = null;
+//        try {
+        OutputStream responseOutputStream = response.getOutputStream();
+        ShareAccount shareAccount = shareAccountRepository.findById(new Long(id)).get();
+
+        String htmlInput = pdfService.generateShareDetailsPDF(shareAccount.getShareAccountTransaction().get(0),initSystemService.findAll());
+        generateByteOutputStream(response,htmlInput);
+
     }
 
 }

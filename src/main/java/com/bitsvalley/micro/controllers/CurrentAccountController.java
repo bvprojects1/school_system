@@ -238,6 +238,9 @@ public class CurrentAccountController extends SuperController {
 //
     @PostMapping(value = "/registerCurrentAccountTransactionForm")
     public String registerCurrentAccountTransactionForm(ModelMap model, @ModelAttribute("currentAccountTransaction") CurrentAccountTransaction currentAccountTransaction, HttpServletRequest request) {
+        if(null == currentAccountTransaction.getAccountOwner()){
+            currentAccountTransaction.setAccountOwner("false");
+        }
         String currentAccountId = request.getParameter("currentAccountId");
         CurrentAccount currentAccount = currentAccountService.findById(new Long(currentAccountId)).get();
         currentAccountTransaction.setCurrentAccount(currentAccount);

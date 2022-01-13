@@ -293,6 +293,9 @@ public class LoanAccountController extends SuperController {
     @PostMapping(value = "/registerLoanAccountTransactionForm")
     public String registerLoanAccountTransactionForm(ModelMap model, @ModelAttribute("loanAccountTransaction")
             LoanAccountTransaction loanAccountTransaction, HttpServletRequest request) {
+        if(null == loanAccountTransaction.getAccountOwner()){
+            loanAccountTransaction.setAccountOwner("false");
+        }
         loanAccountTransaction.setWithdrawalDeposit(1);
         String loanAccountId = request.getParameter("loanAccountId");
         Optional<LoanAccount> loanAccount = loanAccountService.findById(new Long(loanAccountId));
