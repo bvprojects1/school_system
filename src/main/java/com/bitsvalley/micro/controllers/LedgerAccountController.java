@@ -395,7 +395,7 @@ public class LedgerAccountController extends SuperController{
     @GetMapping(value = "/cashToLedgerAccount/{id}")
     public String cashToLedgerAccount(@PathVariable("id") long id, ModelMap model, HttpServletRequest request) {
         LedgerAccount fromLedgerAccount = ledgerAccountRepository.findById(id).get();
-        LedgerAccount cashAccount = ledgerAccountRepository.findByName(BVMicroUtils.CASH_GL_5001);
+        LedgerAccount cashAccount = ledgerAccountRepository.findByName(BVMicroUtils.CASH);
 
         LedgerEntryDTO ledgerEntryDTO = new LedgerEntryDTO();
         ledgerEntryDTO.setCreditOrDebit(BVMicroUtils.CREDIT);
@@ -410,6 +410,9 @@ public class LedgerAccountController extends SuperController{
     public String cashFromLedgerAccount(@PathVariable("id") long id, ModelMap model, HttpServletRequest request) {
         LedgerAccount toLedgerAccount = ledgerAccountRepository.findById(id).get();
         LedgerAccount cashAccount = ledgerAccountRepository.findByName(BVMicroUtils.CASH_GL_5001);
+        if(null==cashAccount){
+            cashAccount = ledgerAccountRepository.findByCode(BVMicroUtils.CASH_GL_5001);
+        }
         LedgerEntryDTO ledgerEntryDTO = new LedgerEntryDTO();
         ledgerEntryDTO.setCreditOrDebit(BVMicroUtils.DEBIT);
         model.put("ledgerEntryDTO",ledgerEntryDTO );
