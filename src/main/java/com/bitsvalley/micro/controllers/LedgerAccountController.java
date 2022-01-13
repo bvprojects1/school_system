@@ -273,7 +273,7 @@ public class LedgerAccountController extends SuperController{
 
         model.put("ledgerAccount",new LedgerAccount());
         model.put("ledgerAccountList", all);
-        return "ledgeraccount";
+        return "ledgerAccount";
     }
 
     @PostMapping(value = "/saveLedgerAccountForm")
@@ -295,7 +295,7 @@ public class LedgerAccountController extends SuperController{
 
         model.put("ledgerAccountList", ledgerAccountRepository.findAll());
         model.put("ledgerAccountInfo", "Created "+ledgerAccount.getName()+ " successfully ");
-        return "ledgeraccount";
+        return "ledgerAccount";
     }
 
     @GetMapping(value = "/addGeneralLedgerEntry/{id}")
