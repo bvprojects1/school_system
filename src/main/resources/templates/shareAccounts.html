@@ -47,7 +47,7 @@
             </td>
         </tr>
         <tr th:each="share : ${shareAccountsList}">
-            <td th:text="${share.user.gender}  + ${share.user.firstName} + ${share.user.lastName}"></td>
+            <td th:text="${share.user.gender} + ' ' + ${share.user.firstName} + ' ' + ${share.user.lastName}"></td>
             <td th:text="${share.accountNumber}"></td>
             <td><span th:text="${#numbers.formatDecimal(share.unitSharePrice*share.quantity, 0, 'COMMA', 0, 'POINT')}"/></td>
             <td><span th:text="${#numbers.formatDecimal(share.unitSharePrice, 0, 'COMMA', 0, 'POINT')}"/></td>

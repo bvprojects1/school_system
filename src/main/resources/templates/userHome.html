@@ -76,6 +76,14 @@
                     </div>
 
                 </td>
+<!--                ADD THIS TO ADD ROLE RESTRICTION --  BEGIN ARSENE----->
+<!--                bring in th:if and th:unless sections below-->
+<!--                th:if="${#authorization.expression('hasAnyAuthority(''ROLE_CUSTOMER_ACCOUNT_TYPE_TRANSFERS'')')}"-->
+<!--                <div th:unless="${#authorization.expression('hasAnyAuthority(''ROLE_CUSTOMER_ACCOUNT_TYPE_TRANSFERS'')')}" href="">-->
+<!--                    Loan re-payment <img width="40px" th:src="@{/assets/images/transferLoan.png}"/> <label title="Requires ROLE_CUSTOMER_ACCOUNT_TYPE_TRANSFERS"> <img width="30px" th:src="@{/assets/images/toolTip.png}"/> </label>-->
+<!--                </div>-->
+                <!--                ADD THIS TO ADD ROLE RESTRICTION --  END arsene ----->
+
                 <td colspan="1">
                     <a th:if="${#authorization.expression('hasAnyAuthority(''ROLE_CUSTOMER_ACCOUNT_TYPE_TRANSFERS'')')}" href="#" th:href="@{/transferFromCurrentToLoanAccountsForm}">
                         Loan re-payment <img width="40px" th:src="@{/assets/images/transferLoan.png}"/>
