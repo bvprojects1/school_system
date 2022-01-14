@@ -260,7 +260,7 @@ public class LedgerAccountController extends SuperController{
 
             ledgerAccount = new LedgerAccount();
             ledgerAccount.setName(BVMicroUtils.SHARE);
-            ledgerAccount.setCode(BVMicroUtils.SHARE+"_"+BVMicroUtils.GL_5023);
+            ledgerAccount.setCode(BVMicroUtils.SHARE+"_"+BVMicroUtils.GL_5004);
             ledgerAccount.setCategory("5000 – 5999");
             ledgerAccount.setStatus(BVMicroUtils.ACTIVE);
             ledgerAccountList.add(ledgerAccount);
@@ -273,7 +273,7 @@ public class LedgerAccountController extends SuperController{
 
         model.put("ledgerAccount",new LedgerAccount());
         model.put("ledgerAccountList", all);
-        return "ledgeraccount";
+        return "ledgerAccount";
     }
 
     @PostMapping(value = "/saveLedgerAccountForm")
@@ -295,7 +295,7 @@ public class LedgerAccountController extends SuperController{
 
         model.put("ledgerAccountList", ledgerAccountRepository.findAll());
         model.put("ledgerAccountInfo", "Created "+ledgerAccount.getName()+ " successfully ");
-        return "ledgeraccount";
+        return "ledgerAccount";
     }
 
     @GetMapping(value = "/addGeneralLedgerEntry/{id}")
@@ -395,7 +395,7 @@ public class LedgerAccountController extends SuperController{
     @GetMapping(value = "/cashToLedgerAccount/{id}")
     public String cashToLedgerAccount(@PathVariable("id") long id, ModelMap model, HttpServletRequest request) {
         LedgerAccount fromLedgerAccount = ledgerAccountRepository.findById(id).get();
-        LedgerAccount cashAccount = ledgerAccountRepository.findByName(BVMicroUtils.CASH_GL_5001);
+        LedgerAccount cashAccount = ledgerAccountRepository.findByName(BVMicroUtils.CASH);
 
         LedgerEntryDTO ledgerEntryDTO = new LedgerEntryDTO();
         ledgerEntryDTO.setCreditOrDebit(BVMicroUtils.CREDIT);
@@ -410,6 +410,9 @@ public class LedgerAccountController extends SuperController{
     public String cashFromLedgerAccount(@PathVariable("id") long id, ModelMap model, HttpServletRequest request) {
         LedgerAccount toLedgerAccount = ledgerAccountRepository.findById(id).get();
         LedgerAccount cashAccount = ledgerAccountRepository.findByName(BVMicroUtils.CASH_GL_5001);
+        if(null==cashAccount){
+            cashAccount = ledgerAccountRepository.findByCode(BVMicroUtils.CASH_GL_5001);
+        }
         LedgerEntryDTO ledgerEntryDTO = new LedgerEntryDTO();
         ledgerEntryDTO.setCreditOrDebit(BVMicroUtils.DEBIT);
         model.put("ledgerEntryDTO",ledgerEntryDTO );

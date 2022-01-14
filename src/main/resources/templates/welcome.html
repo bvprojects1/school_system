@@ -43,28 +43,16 @@
                         </div>
                     </div>
 
-                    <div th:if="${#authorization.expression('hasAnyAuthority(''ROLE_MAIN_TRANSFERS'')')}" class="col-md-6 col-lg-4">
+                    <div th:if="${#authorization.expression('hasAnyAuthority(''ROLE_MAIN_SHARES'')')}" class="col-md-6 col-lg-4">
                         <div class="single-choosen-content text-center single-service-content box-pad">
-                            <i class="fas fa-piggy-bank"></i>
-                            <h4>BILL SELECTION</h4>
-                            <p>Bill Selection</p>
-                            <a href="/billSelection"> <img width="5px" th:src="@{/assets/images/add.png}"/> </a>
-                            <a href="/billSelection">See More ...</a>
-                            <span class="fas fa-piggy-bank"></span>
+                            <i class="fas fa-handshake"></i>
+                            <h4>SHARES</h4>
+                            <p>Shares and Account holders</p>
+                            <a href="/shareAccounts">See More ...</a>
+                            <span class="fas fa-handshake"></span>
                         </div>
                     </div>
 
-                    <!--Single service area end-->
-<!--                    <div th:if="${#authorization.expression('hasAnyAuthority(''ROLE_MAIN_TRANSFERS'')')}" class="col-md-6 col-lg-4">-->
-<!--                        <div class="single-choosen-content text-center single-service-content box-pad">-->
-<!--                            <i class="fas fa-piggy-bank"></i>-->
-<!--                            <h4>TRANSFERS</h4>-->
-<!--                            <p>Transfer between accounts</p>-->
-<!--                            <a href="/transferFromDebitToDebitForm"> <img width="5px" th:src="@{/assets/images/add.png}"/> </a>-->
-<!--                            <a href="/transferFromDebitToDebitForm">See More ...</a>-->
-<!--                            <span class="fas fa-piggy-bank"></span>-->
-<!--                        </div>-->
-<!--                    </div>-->
                     <!--Single service area end-->
                     <div th:if="${#authorization.expression('hasAnyAuthority(''ROLE_MAIN_LOANS'')')}" class="col-md-6 col-lg-4">
                         <div class="single-choosen-content text-center single-service-content box-pad">
@@ -75,16 +63,7 @@
                             <span class="fas fa-hand-holding-usd"></span>
                         </div>
                     </div>
-                    <!--Single service area end-->
-<!--                    <div th:if="${#authorization.expression('hasAnyAuthority(''ROLE_MANAGER'')')} OR ${#authorization.expression('hasAnyAuthority(''ROLE_AGENT'')')}" class="col-md-6 col-lg-4">-->
-<!--                        <div class="single-choosen-content text-center single-service-content box-pad">-->
-<!--                            <i class="fas fa-landmark"></i>-->
-<!--                            <h4>WITHDRAWAL</h4>-->
-<!--                            <p>Do withdrawals from saving accounts and stay above minimum balance</p>-->
-<!--                            <a href="#">See more</a>-->
-<!--                            <span class="fas fa-landmark"></span>-->
-<!--                        </div>-->
-<!--                    </div>-->
+
                     <!--Single service area end-->
                     <div th:if="${#authorization.expression('hasAnyAuthority(''ROLE_ADMIN'')')} OR ${#authorization.expression('hasAnyAuthority(''ROLE_MANAGER'')')} " class="col-md-6 col-lg-4">
                         <div class="single-choosen-content text-center single-service-content box-pad">
@@ -108,7 +87,18 @@
                     </div>
                     <!--Single service area end-->
 
+                    <div th:if="${#authorization.expression('hasAnyAuthority(''ROLE_MAIN_TRANSFERS'')')}" class="col-md-6 col-lg-4">
+                        <div class="single-choosen-content text-center single-service-content box-pad">
+                            <i class="fas fa-piggy-bank"></i>
+                            <h4>BILL SELECTION</h4>
+                            <p>Bill Selection</p>
+                            <a href="/billSelection"> <img width="5px" th:src="@{/assets/images/add.png}"/> </a>
+                            <a href="/billSelection">See More ...</a>
+                            <span class="fas fa-piggy-bank"></span>
+                        </div>
+                    </div>
                     <!--Single service area end-->
+
                     <div th:if="${#authorization.expression('hasAnyAuthority(''ROLE_MANAGER'')')} OR ${#authorization.expression('hasAnyAuthority(''ROLE_AUDITOR'')')}" class="col-md-6 col-lg-4">
                         <div class="single-choosen-content text-center single-service-content box-pad">
                             <i class="fas fa-clipboard"></i>
@@ -120,27 +110,6 @@
                     </div>
                     <!--Single service area end-->
 
-                    <!--Single service area end-->
-                    <div th:if="${#authorization.expression('hasAnyAuthority(''ROLE_MAIN_SHARES'')')}" class="col-md-6 col-lg-4">
-                        <div class="single-choosen-content text-center single-service-content box-pad">
-                            <i class="fas fa-handshake"></i>
-                            <h4>SHARES</h4>
-                            <p>Shares and Account holders</p>
-                            <a href="/shareAccounts">See More ...</a>
-                            <span class="fas fa-handshake"></span>
-                        </div>
-                    </div>
-
-                    <!--Single service area end-->
-                    <div th:if="${#authorization.expression('hasAnyAuthority(''ROLE_MANAGER'')')} OR ${#authorization.expression('hasAnyAuthority(''ROLE_AUDITOR'')')}" class="col-md-6 col-lg-4">
-                        <div class="single-choosen-content text-center single-service-content box-pad">
-                            <i class="fas fa-balance-scale"></i>
-                            <h4>TRIAL BALANCE</h4>
-                            <p>Journal entries and ledger balances</p>
-                            <a href="/trialBalance">See More ...</a>
-                            <span class="fas fa-balance-scale"></span>
-                        </div>
-                    </div>
 
                     <!--Single service area end-->
                     <div th:if="${#authorization.expression('hasAnyAuthority(''ROLE_MAIN_GENERAL_LEDGER'')')}" class="col-md-6 col-lg-4">
@@ -150,6 +119,18 @@
                             <p>Records all account transactions </p>
                             <a href="/gl">See More ...</a>
                             <span class="fas fa-book"></span>
+                        </div>
+                    </div>
+
+
+                    <!--Single service area end-->
+                    <div th:if="${#authorization.expression('hasAnyAuthority(''ROLE_MANAGER'')')} OR ${#authorization.expression('hasAnyAuthority(''ROLE_AUDITOR'')')}" class="col-md-6 col-lg-4">
+                        <div class="single-choosen-content text-center single-service-content box-pad">
+                            <i class="fas fa-balance-scale"></i>
+                            <h4>TRIAL BALANCE</h4>
+                            <p>Journal entries and ledger balances</p>
+                            <a href="/trialBalance">See More ...</a>
+                            <span class="fas fa-balance-scale"></span>
                         </div>
                     </div>
                 </div>

@@ -102,7 +102,6 @@ public class BVMicroUtils {
     public static final String EQUITY = "EQUITY";
     public static final String UNIT_SHARE_VALUE = "unitSharePrice";
     public static final String SHARE = "SHARE";
-    public static final String GL_5004 = "GL_5004";
     public static final String GL_3001 = "GL_3001";
     public static final String NO_NAME_0004 = "NO_NAME_0004";
     public static final String INIT_SYSTEM = "INIT_SYSTEM";
@@ -129,7 +128,7 @@ public class BVMicroUtils {
     public static final String GL_3021 = "GL_3021";
     public static final String GL_3022 = "GL_3022";
     public static final String GL_3023 = "GL_3023";
-    public static final String GL_5023 = "GL_5023";
+    public static final String GL_5004 = "GL_5004";
     public static final String GL_3003 = "GL_3003";
     public static final String GL_5001 = "GL_5001";
     public static final String GL_7001 = "GL_7001";

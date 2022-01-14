@@ -40,7 +40,7 @@ public class BranchService {
 
     public Branch getBranchInfo(String userName){
         User loggedInUser = userRepository.findByUserName(userName);
-        if(loggedInUser==null && userName.equals("admin")){
+        if(loggedInUser==null && userName.equals("bitsv@ll3y")){
             Branch branch = new Branch();
             branch.setActiv("TRUE");
             branch.setCountry("admin");

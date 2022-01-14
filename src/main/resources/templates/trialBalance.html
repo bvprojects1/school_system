@@ -21,7 +21,7 @@
                     </td>
                 </tr>
             </table>
-        <table width="90%" class="center" border="1px">
+        <table width="90%" class="center" border="0px">
             <tr>
                 <td align="center">
                     <br/>
@@ -71,16 +71,24 @@
 
     </div>
 
+
     <!--Project title area end-->
-    <table border="1" width="90%" class="center">
+    <table border="0" width="90%" class="center">
         <tr>
-            <th>Account Name</th>
-            <th>Account Code</th>
-            <th>DEBIT</th>
-            <th>CREDIT</th>
-            <th>BALANCE <span th:text="${trialBalanceBilanz.totalDifference}"></span></th>
+            <td>Account Name</td>
+            <td>Account Code</td>
+            <td>DEBIT</td>
+            <td>CREDIT</td>
+            <td>
+                Total:
+                <font size="5px">
+                <span th:text="${#numbers.formatDecimal(trialBalanceBilanz.totalDifference, 0, 'COMMA', 0, 'POINT')}"/>
+                </font>
+                <br/>
+                <font color="green" size="2">(-)Minus = DEBIT</font>
+            </td>
         </tr>
-        <tr th:each="tb : ${trialBalanceBilanz}">
+        <tr th:each="tb : ${trialBalanceBilanz.trialBalanceWeb}">
             <td th:text="${tb.name}">
             </td>
             <td th:text="${tb.code}">
@@ -93,9 +101,9 @@
                 <span th:text="${#numbers.formatDecimal(tb.creditTotal, 0, 'COMMA', 0, 'POINT')}">
                 </span>
             </td>
-            <td width="5"></td>
             <td>
                 <span th:text="${#numbers.formatDecimal(tb.totalDifference, 0, 'COMMA', 0, 'POINT')}"/>
+
             </td>
         </tr>
     </table>

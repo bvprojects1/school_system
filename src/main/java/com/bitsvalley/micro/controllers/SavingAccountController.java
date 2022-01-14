@@ -345,6 +345,9 @@ public class SavingAccountController extends SuperController {
 
     @PostMapping(value = "/registerSavingAccountTransactionForm")
     public String registerSavingAccountTransactionForm(ModelMap model, @ModelAttribute("savingAccountTransaction") SavingAccountTransaction savingAccountTransaction, HttpServletRequest request) {
+        if(null == savingAccountTransaction.getAccountOwner()){
+            savingAccountTransaction.setAccountOwner("false");
+        }
         String savingAccountId = request.getParameter("savingAccountId");
         SavingAccount savingAccount = savingAccountService.findById(new Long(savingAccountId)).get();
         savingAccountTransaction.setSavingAccount(savingAccount);
