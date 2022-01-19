@@ -27,7 +27,7 @@ public class CurrentAccount {
     private AccountStatus accountStatus;
     private int minimumPayment;
     private int noOfCurrentActivity;
-    private int interestRate;
+    private float interestRate;
     private String country;
     private String productCode;
     @Column(unique = true)
@@ -116,11 +116,11 @@ public class CurrentAccount {
         this.createdBy = createdBy;
     }
     
-    public int getInterestRate() {
+    public float getInterestRate() {
         return interestRate;
     }
 
-    public void setInterestRate(int interestRate) {
+    public void setInterestRate(float interestRate) {
         this.interestRate = interestRate;
     }
 

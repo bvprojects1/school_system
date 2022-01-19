@@ -1,9 +1,6 @@
 package com.bitsvalley.micro.controllers;
 
-import com.bitsvalley.micro.domain.Branch;
-import com.bitsvalley.micro.domain.CurrentAccount;
-import com.bitsvalley.micro.domain.CurrentAccountTransaction;
-import com.bitsvalley.micro.domain.User;
+import com.bitsvalley.micro.domain.*;
 import com.bitsvalley.micro.repositories.UserRepository;
 import com.bitsvalley.micro.services.*;
 import com.bitsvalley.micro.utils.BVMicroUtils;
@@ -61,7 +58,7 @@ public class CurrentAccountController extends SuperController {
 
 
     @GetMapping(value = "/registerCurrentAccount")
-    public String registerSaving(ModelMap model, HttpServletRequest request) {
+    public String registerCurrent(ModelMap model, HttpServletRequest request) {
         User user = (User) request.getSession().getAttribute(BVMicroUtils.CUSTOMER_IN_USE);
         if (user == null) {
             return "findCustomer";
@@ -79,6 +76,12 @@ public class CurrentAccountController extends SuperController {
         Branch branchInfo = branchService.getBranchInfo(getLoggedInUserName());//TODO Create branch repo
         currentAccount.setBranchCode(branchInfo.getCode());
         currentAccount.setCountry(branchInfo.getCountry());
+
+        AccountType accountType = new AccountType();
+        accountType.setName(BVMicroUtils.CURRENT);
+        accountType.setNumber("20");
+
+        currentAccount.setAccountType(accountType);
         currentAccountService.createCurrentAccount(currentAccount, user);
         return findUserByUserName(user, model, request);
     }

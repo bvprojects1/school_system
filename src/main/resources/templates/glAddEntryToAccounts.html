@@ -54,7 +54,7 @@
                         <select class="selectNormal" th:field="*{originLedgerAccount}">
                             <option th:each="i : ${originLedgerAccounts}"
                                     th:value="${i.id}">
-                                <span th:text="${i.name}"/>
+                                <span th:text="${i.code}"/>
                             </option>
                         </select>
                     </td>
@@ -87,9 +87,13 @@
                     <td colspan="4">
                         <div th:each="currentAccount : ${session.customerInUse.currentAccount}">
                         <font size="2">
-                            Account Number:
+                            Account Details:
                         </font>
-                        <font size="4"><span th:text="${currentAccount.accountNumber}"/>
+                        <font size="4">
+                            <span th:text="${currentAccount.accountNumber}"/><span> <span> CURRENT ACCOUNT </span>
+<!--                            <br/>-->
+<!--                            <span th:text="${currentAccount.accountType.name}"/>-->
+
                         </font>
                         <input class="selectAmount" required type="text" th:name="${currentAccount.accountNumber}">
                         <span th:text="' Balance: '+${#numbers.formatDecimal(currentAccount.accountBalance, 0, 'COMMA', 0, 'POINT')}"/>
@@ -113,6 +117,7 @@
                                 Account Number:
                             </font>
                             <font size="4"><span th:text="${savingAccount.accountNumber}"/>
+                                <span th:text="${savingAccount.accountType.name}"/>
                             </font>
 
                             <input class="selectAmount" required type="text" th:name="${savingAccount.accountNumber}">
@@ -138,7 +143,9 @@
                         <font size="2">
                             Account Number:
                         </font>
-                            <font size="4"><span th:text="${loanAccount.accountNumber}"/>
+                            <font size="4">
+                                <span th:text="${loanAccount.accountNumber}"/>
+                                <span th:text="${loanAccount.accountType}"/>
                         </font>
                         <input class="selectAmount" required type="text" th:name="${loanAccount.accountNumber}">
                         <span th:text="' Balance: '+${#numbers.formatDecimal(loanAccount.loanAmount, 0, 'COMMA', 0, 'POINT')}"/>

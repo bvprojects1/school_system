@@ -7,6 +7,7 @@ import com.bitsvalley.micro.repositories.LedgerAccountRepository;
 import com.bitsvalley.micro.repositories.SavingAccountRepository;
 import com.bitsvalley.micro.repositories.UserRepository;
 import com.bitsvalley.micro.services.GeneralLedgerService;
+import com.bitsvalley.micro.services.SavingAccountService;
 import com.bitsvalley.micro.utils.BVMicroUtils;
 import com.bitsvalley.micro.webdomain.LedgerEntryDTO;
 import org.apache.commons.lang3.StringUtils;
@@ -34,6 +35,9 @@ public class LedgerAccountController extends SuperController{
 
     @Autowired
     SavingAccountRepository savingAccountRepository;
+
+    @Autowired
+    SavingAccountService savingAccountService;
 
     @Autowired
     UserRepository userRepository;

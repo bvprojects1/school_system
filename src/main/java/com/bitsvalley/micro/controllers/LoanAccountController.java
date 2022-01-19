@@ -109,8 +109,8 @@ public class LoanAccountController extends SuperController {
 
     @PostMapping(value = "/registerLoanAccountForm")
     public String registerLoanAccountForm(@ModelAttribute("loanAccount") LoanAccount loanAccount, ModelMap model, HttpServletRequest request) {
-        User user = (User) request.getSession().getAttribute(BVMicroUtils.CUSTOMER_IN_USE);
-        user = userRepository.findById(user.getId()).get();
+//        User user = (User) request.getSession().getAttribute(BVMicroUtils.CUSTOMER_IN_USE);
+//        user = userRepository.findById(user.getId()).get();
 
         Branch branchInfo = branchService.getBranchInfo(getLoggedInUserName());
         loanAccount.setBranchCode(new Long(branchInfo.getId()).toString());
@@ -201,8 +201,10 @@ public class LoanAccountController extends SuperController {
                                     HttpServletRequest request) {
 
         LoanAccount loanAccountSession = (LoanAccount)request.getSession().getAttribute("loanAccount");
+
         loanAccountSession.setGuarantor1Amount1(loanAccount.getGuarantor1Amount1());
         loanAccountSession.setGuarantorAccountNumber1(loanAccount.getGuarantorAccountNumber1());
+
         String loanShorteeMessage = getLoanShorteeMessage(loanAccountSession);
 
         request.getSession().setAttribute("loanAccount", loanAccountSession);

@@ -41,7 +41,7 @@ public class PdfService {
                 "<td>"+
                 "<b><font style=\"font-size:1.6em;color:black;\"> "+ rt.getBusinessName() +"</font></b><br/> Branch No: "+savingAccountTransaction.getBranch()+
                 "<br/>"+rt.getAddress()+"<br/> "+rt.getTelephone() +
-                "<br/>"+savingAccountTransaction.getModeOfPayment()+" from Account Owner:" + savingAccountTransaction.getAccountOwner() +"</td></tr>" +
+                "<br/>"+savingAccountTransaction.getModeOfPayment()+" from Account Owner:" + BVMicroUtils.formatCurrency(savingAccountTransaction.getSavingAmount()) +"</td></tr>" +
                 "<tr><td>" +
                 "Account Number: "+ savingAccountTransaction.getSavingAccount().getAccountNumber()
                 +"<br/>Customer: <b>"+savingAccountTransaction.getSavingAccount().getUser().getLastName()+","
@@ -50,11 +50,11 @@ public class PdfService {
                 + BVMicroUtils.formatCurrency(savingAccountTransaction.getSavingAmount()) + "</font></td></tr>" +
                 "        <tr><td>" +
                 "Representative: <b>"+ savingAccountTransaction.getCreatedBy()+"</b></td><td> Amount in Letters: <font color=\""+rt.getThemeColor()+"\" size=\"8px\"> "
-                +savingAccountTransaction.getSavingAmountInLetters()+"</font><br/>Notes:\"+savingAccountTransaction.getNotes()+\"</td>\n" +
+                +savingAccountTransaction.getSavingAmountInLetters()+"</font><br/>Notes:"+savingAccountTransaction.getNotes()+"</td>\n" +
                 "    </tr></table>" +
                 "    <table  border=\"1\" width=\"100%\" class=\"center\">\n" +
                 "            <tr>\n" +
-                "                <th><font style=\"font-size:1.2em;color:black;\">Bill Selection - Cash Breakdown</font>\"<font style=\"font-size:1.6em;color:black;\"> "+BVMicroUtils.formatCurrency(savingAccountTransaction.getSavingAmount()) +"frs CFA</font></th>\n" +
+                "                <th><font style=\"font-size:1.2em;color:black;\">Bill Selection - Cash Breakdown</font><font style=\"font-size:1.6em;color:black;\"> "+BVMicroUtils.formatCurrency(savingAccountTransaction.getSavingAmount()) +"frs CFA</font></th>\n" +
                 "            </tr>\n" +
                 "            <tr>\n" +
                 "               <td> 10 000 x "+savingAccountTransaction.getTenThousand()+" = <b>" + 10000 * savingAccountTransaction.getTenThousand()+"</b>,"+
@@ -70,20 +70,20 @@ public class PdfService {
                 "        </table>" +
                 "<br/> " +
                 "       <table><tr>" +
-                "       <td>Agent Name & Signature: ---------------------------------------------<br/>  Bamenda Branch, N W Region,</td>" +
-                "       <td>**************** ------  ------  ------ ------  --------  -----  ------- ******************</td>" +
+                "       <td>Agent Name & Signature: -------------- ------------------ -------------<br/>  Bamenda Branch, N W Region,</td>" +
+                "       <td>**************** **************** ******************</td>" +
                 "       <td></td>" +
                 "       <td></td>" +
                 "       <td>Date:"+ BVMicroUtils.formatDate(new Date(System.currentTimeMillis())) +"</td></tr>" +
                 "       </table>" +
                 "<br/><br/>" +
-                "<table border=\"1\" width=\"100%\">" +
+                "<b>RECEIPT FOR PAYMENT MADE</b><br/><table border=\"1\" width=\"100%\">" +
                 "<tr> <td><img width=\"75\" src=\""+ rt.getUnionLogo()+"\"/><br/> Reference No:"+ savingAccountTransaction.getReference() +
                 "<br/>Date:<b>"+BVMicroUtils.formatDateTime(savingAccountTransaction.getCreatedDate())+"</b> </td>" +
                 "<td>"+
                 "<b><font style=\"font-size:1.6em;color:black;\"> "+ rt.getBusinessName() +"</font></b><br/> Branch No: "+savingAccountTransaction.getBranch()+
                 "<br/>"+rt.getAddress()+"<br/> "+rt.getTelephone() +
-                "<br/>"+savingAccountTransaction.getModeOfPayment()+" from Account Owner:" + savingAccountTransaction.getSavingAmount() +"</td></tr>" +
+                "<br/>"+savingAccountTransaction.getModeOfPayment()+" from Account Owner:" + BVMicroUtils.formatCurrency(savingAccountTransaction.getSavingAmount()) +"</td></tr>" +
                 "<tr><td>" +
                 "Account Number: "+ savingAccountTransaction.getSavingAccount().getAccountNumber()
                 +"<br/>Customer: <b>"+savingAccountTransaction.getSavingAccount().getUser().getLastName()+","
@@ -96,7 +96,7 @@ public class PdfService {
                 "    </tr></table>" +
                 "    <table  border=\"1\" width=\"100%\" class=\"center\">\n" +
                 "            <tr>\n" +
-                "                <th><font style=\"font-size:1.2em;color:black;\">Bill Selection - Cash Breakdown</font> \"<font style=\"font-size:1.6em;color:black;\">" +BVMicroUtils.formatCurrency(savingAccountTransaction.getSavingAmount()) +"frs CFA</font></th>\n" +
+                "                <th><font style=\"font-size:1.2em;color:black;\">Bill Selection - Cash Breakdown</font> <font style=\"font-size:1.6em;color:black;\">" +BVMicroUtils.formatCurrency(savingAccountTransaction.getSavingAmount()) +"frs CFA</font></th>\n" +
                 "            </tr>\n" +
                 "            <tr>\n" +
                 "               <td> 10 000 x "+savingAccountTransaction.getTenThousand()+" = <b>" + 10000 * savingAccountTransaction.getTenThousand()+"</b>,"+
@@ -142,11 +142,11 @@ public class PdfService {
                 + BVMicroUtils.formatCurrency(shareAccountTransaction.getShareAmount()) + "</font></td></tr>" +
                 "        <tr><td>" +
                 "Representative: <b>" + shareAccountTransaction.getCreatedBy() + "</b></td><td> <font color=\"" + rt.getThemeColor() + "\" size=\"8px\"> "+
-                "</font><br/>Notes:\""+shareAccountTransaction.getNotes()+"\"</td>\n" +
+                "</font><br/>Notes:"+shareAccountTransaction.getNotes()+"</td>\n" +
                 "    </tr></table>" +
                 "    <table  border=\"1\" width=\"100%\" class=\"center\">\n" +
                 "            <tr>\n" +
-                "                <th><font style=\"font-size:1.2em;color:black;\">Bill Selection - Cash Breakdown</font>\"<font style=\"font-size:1.6em;color:black;\"> " + BVMicroUtils.formatCurrency(shareAccountTransaction.getShareAmount()) + "frs CFA</font></th>\n" +
+                "                <th><font style=\"font-size:1.2em;color:black;\">Bill Selection - Cash Breakdown</font><font style=\"font-size:1.6em;color:black;\"> " + BVMicroUtils.formatCurrency(shareAccountTransaction.getShareAmount()) + "frs CFA</font></th>\n" +
                 "            </tr>\n" +
                 "        </table>" +
                 "<br/> " +
@@ -187,11 +187,11 @@ public class PdfService {
                 + BVMicroUtils.formatCurrency(currentAccountTransaction.getCurrentAmount()) + "</font></td></tr>" +
                 "        <tr><td>" +
                 "Representative: <b>" + currentAccountTransaction.getCreatedBy() + "</b></td><td> Amount in Letters: <font color=\"" + rt.getThemeColor() + "\" size=\"8px\"> "
-                + currentAccountTransaction.getCurrentAmountInLetters() + "</font><br/>Notes:\"+savingAccountTransaction.getNotes()+\"</td>\n" +
+                + currentAccountTransaction.getCurrentAmountInLetters() + "</font><br/>Notes:"+currentAccountTransaction.getNotes()+"</td>\n" +
                 "    </tr></table>" +
                 "    <table  border=\"1\" width=\"100%\" class=\"center\">\n" +
                 "            <tr>\n" +
-                "                <th><font style=\"font-size:1.2em;color:black;\">Bill Selection - Cash Breakdown</font>\"<font style=\"font-size:1.6em;color:black;\"> " + BVMicroUtils.formatCurrency(currentAccountTransaction.getCurrentAmount()) + "frs CFA</font></th>\n" +
+                "                <th><font style=\"font-size:1.2em;color:black;\">Bill Selection - Cash Breakdown</font><font style=\"font-size:1.6em;color:black;\"> " + BVMicroUtils.formatCurrency(currentAccountTransaction.getCurrentAmount()) + "frs CFA</font></th>\n" +
                 "            </tr>\n" +
                 "            <tr>\n" +
                 "               <td> 10 000 x " + currentAccountTransaction.getTenThousand() + " = <b>" + 10000 * currentAccountTransaction.getTenThousand() + "</b>," +
@@ -234,7 +234,7 @@ public class PdfService {
                 "    </tr></table>" +
                 "    <table  border=\"1\" width=\"100%\" class=\"center\">\n" +
                 "            <tr>\n" +
-                "                <th><font style=\"font-size:1.2em;color:black;\">Bill Selection - Cash Breakdown</font> \"<font style=\"font-size:1.6em;color:black;\">" + BVMicroUtils.formatCurrency(currentAccountTransaction.getCurrentAmount()) + "frs CFA</font></th>\n" +
+                "                <th><font style=\"font-size:1.2em;color:black;\">Bill Selection - Cash Breakdown</font> <font style=\"font-size:1.6em;color:black;\">" + BVMicroUtils.formatCurrency(currentAccountTransaction.getCurrentAmount()) + "frs CFA</font></th>\n" +
                 "            </tr>\n" +
                 "            <tr>\n" +
                 "               <td> 10 000 x " + currentAccountTransaction.getTenThousand() + " = <b>" + 10000 * currentAccountTransaction.getTenThousand() + "</b>," +

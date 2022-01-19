@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.*;
 
 /**
@@ -453,10 +454,10 @@ public class GeneralLedgerService extends SuperService {
 //        return getGeneralLedgerBilanz( generalLedgerWebList );
 //    }
 
-    public TrialBalanceBilanz getCurrentTrialBalance(LocalDate startDate, LocalDate endDate ){
+    public TrialBalanceBilanz getCurrentTrialBalance(LocalDateTime startDate, LocalDateTime endDate ){
 
-        String aStartDate = BVMicroUtils.formatUSDateOnly(startDate);
-        String aEndDate = BVMicroUtils.formatUSDateOnly(endDate);
+        String aStartDate = BVMicroUtils.formatDateTime(startDate);
+        String aEndDate = BVMicroUtils.formatDateTime(endDate);
 
         TrialBalanceBilanz trialBalanceWeb = getTrialBalanceWebs(aStartDate, aEndDate);
         return trialBalanceWeb;
@@ -469,6 +470,8 @@ public class GeneralLedgerService extends SuperService {
         TrialBalanceWeb trialBalanceWeb;
         TrialBalanceBilanz trialBalanceBilanz = new TrialBalanceBilanz();
         double bilanzTotalDifference = 0.0;
+        double bilanzTotalDebit = 0.0;
+        double bilanzTotalCredit = 0.0;
         for (LedgerAccount aLedgerAccount: all) {
             trialBalanceWeb = new TrialBalanceWeb();
             Double debitTotal = 0.0;
@@ -492,10 +495,16 @@ public class GeneralLedgerService extends SuperService {
             trialBalanceWeb.setName( aLedgerAccount.getName() );
             trialBalanceWeb.setTotalDifference( totalDifference );
             bilanzTotalDifference = bilanzTotalDifference + totalDifference;
+            bilanzTotalCredit = bilanzTotalCredit + creditTotal;
+            bilanzTotalDebit = bilanzTotalDebit + debitTotal;
             trialBalanceWebList.add(trialBalanceWeb);
         }
+
         trialBalanceBilanz.setTrialBalanceWeb(trialBalanceWebList);
         trialBalanceBilanz.setTotalDifference(bilanzTotalDifference);
+        trialBalanceBilanz.setCreditTotal(bilanzTotalCredit);
+        trialBalanceBilanz.setDebitTotal(bilanzTotalDebit);
+
         return trialBalanceBilanz;
     }
 
@@ -923,6 +932,8 @@ public class GeneralLedgerService extends SuperService {
                 savingAccountTransaction.setAccountOwner(byAccountNumber.getUser().getLastName());
                 savingAccountTransaction.setSavingAmountInLetters("SYSTEM");
                 savingAccountTransactionRepository.save(savingAccountTransaction);
+                byAccountNumber.getSavingAccountTransaction().add(savingAccountTransaction);
+                savingAccountRepository.save(byAccountNumber);
                 updateGeneralLedger(savingAccountTransaction, ledgerAccount.getCode(), BVMicroUtils.CREDIT, savingAccountTransaction.getSavingAmount(), true);
 
             }else if( productCode == 20){
@@ -945,6 +956,8 @@ public class GeneralLedgerService extends SuperService {
                     currentAccountTransaction.setAccountOwner(byAccountNumber.getUser().getLastName());
                     currentAccountTransaction.setCurrentAmountInLetters("SYSTEM");
                     currentAccountTransactionRepository.save(currentAccountTransaction);
+                    byAccountNumber.getCurrentAccountTransaction().add(currentAccountTransaction);
+                    currentAccountRepository.save(byAccountNumber);
                     updateGeneralLedger(currentAccountTransaction, ledgerAccount.getCode(), BVMicroUtils.CREDIT, currentAccountTransaction.getCurrentAmount(), true);
 
 
@@ -968,7 +981,8 @@ public class GeneralLedgerService extends SuperService {
                 loanAccountTransaction.setLoanAmountInLetters("SYSTEM");
                 loanAccountTransactionRepository.save(loanAccountTransaction);
                 updateGeneralLedger(loanAccountTransaction, ledgerAccount.getCode(), BVMicroUtils.CREDIT, loanAccountTransaction.getLoanAmount(), true);
-
+                byAccountNumber.getLoanAccountTransaction().add(loanAccountTransaction);
+                loanAccountRepository.save(byAccountNumber);
             }
         }
     }
