@@ -371,6 +371,9 @@
                     Account Number
                 </td>
                 <td>
+                    Account Type
+                </td>
+                <td>
                     Total Value
                 </td>
                 <td>
@@ -397,7 +400,9 @@
                         </font>
                     </a>
                 </td>
+                <td> Ordinary Share </td>
                 <td th:text="${#numbers.formatDecimal(shareAccount.accountBalance, 0, 'COMMA', 0, 'POINT')}"/>
+                <td th:text="${#numbers.formatDecimal(shareAccount.unitSharePrice, 0, 'COMMA', 0, 'POINT')}"/>
                 <td th:text="${#numbers.formatDecimal(shareAccount.unitSharePrice, 0, 'COMMA', 0, 'POINT')}"/>
                 <td th:text="${shareAccount.quantity}"/>
                 <td th:text="${shareAccount.createdDate}"/>

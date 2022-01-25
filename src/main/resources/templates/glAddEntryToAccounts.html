@@ -50,7 +50,7 @@
             <table border="0" class="center" width="100%" cellpadding="5">
                 <tr>
                     <td>
-                        <b>Select From:</b><br/>
+                        <b>Select From</b><br/>
                         <select class="selectNormal" th:field="*{originLedgerAccount}">
                             <option th:each="i : ${originLedgerAccounts}"
                                     th:value="${i.id}">
@@ -61,6 +61,10 @@
                     <td><b>Enter Amount</b><br/>
                         <input required class="selectAmount" name="glAccountAmount" type="text" th:field="*{ledgerAmount}"/>
                         <br/><font size="2"> (Opposite booking Type happens in various customer accounts)</font>
+                    </td>
+                    <td><b>From User Accounts</b><br/>
+                        <input class="selectAmount" name="fromAccountToLedger" type="checkbox" th:field="*{fromAccountToLedger}"/>
+                        <br/><font size="2"> (Check to transfer from user account)</font>
                     </td>
                     <td><b>Date</b><br/>
                         <input required name="recordDate" type="date"/><br/>

@@ -69,11 +69,10 @@ public class PdfService {
                 "            </tr>" +
                 "        </table>" +
                 "<br/> " +
-                "       <table><tr>" +
-                "       <td>Agent Name & Signature: -------------- ------------------ -------------<br/>  Bamenda Branch, N W Region,</td>" +
-                "       <td>**************** **************** ******************</td>" +
-                "       <td></td>" +
-                "       <td></td>" +
+                "       <table>" +
+                "       <tr><td>Agent Name and Signature: -------------------------------------------------<br/> Bamenda Branch, N W Region,</td>" +
+                "       <td>Date:"+ BVMicroUtils.formatDate(new Date(System.currentTimeMillis())) +"</td></tr>" +
+                "       <tr><td>Agent Name and Signature: -------------------------------------------------<br/> Bamenda Branch, N W Region,</td>" +
                 "       <td>Date:"+ BVMicroUtils.formatDate(new Date(System.currentTimeMillis())) +"</td></tr>" +
                 "       </table>" +
                 "<br/><br/>" +
@@ -111,11 +110,10 @@ public class PdfService {
                 "            </tr>" +
                 "        </table>" +
                 "<br/><br/>" +
-                "       <table><tr>" +
-                "       <td>Agent Name and Signature: -------------------------------------------------<br/> Bamenda Branch, N W Region,</td>" +
-                "       <td></td>" +
-                "       <td></td>" +
-                "       <td></td>" +
+                "       <table>" +
+                "       <tr><td>Agent Name and Signature: -------------------------------------------------<br/> Bamenda Branch, N W Region,</td>" +
+                "       <td>Date:"+ BVMicroUtils.formatDate(new Date(System.currentTimeMillis())) +"</td></tr>" +
+                "       <tr><td>Agent Name and Signature: -------------------------------------------------<br/> Bamenda Branch, N W Region,</td>" +
                 "       <td>Date:"+ BVMicroUtils.formatDate(new Date(System.currentTimeMillis())) +"</td></tr>" +
                 "       </table>" +
                 "" +
@@ -478,13 +476,14 @@ public class PdfService {
                     "                \n" +
                     "            </tr>"+
                     "        </table><br/>" +
-                "    <table id=\"transactions\" border=\"0\" width=\"100%\" class=\"center\">\n" +
-                "       <tr><th id=\"transactions\">Opening Balance</th><th>1000</th></tr>" +
-                "       <tr><td>Credit Sum</td> <td></td></tr>" +
-                "       <tr><td>Debit Sum</td> <td></td></tr></table>" +
+//                "    <table id=\"transactions\" border=\"0\" width=\"100%\" class=\"center\">\n" +
+//                "       <tr><th id=\"transactions\">Opening Balance</th><th>1000</th></tr>" +
+//                "       <tr><td>Credit Sum</td> <td></td></tr>" +
+//                "       <tr><td>Debit Sum</td> <td></td></tr></table>" +
                 "       <table><tr><th>Closing Balance</th><th>" +savingBilanzList.getTotalSaving()+ "</th></tr>" +
 //              "       <tr><td>Bamenda Branch, N W Region</td><td>"+ BVMicroUtils.formatDate(new Date(System.currentTimeMillis())) +"</td></tr>" +
-                "       </table></body></html>";
+                "       </table>" +
+                "</body></html>";
         return savingBilanzNoInterest;
     }
 
@@ -563,10 +562,10 @@ public class PdfService {
                 "                \n" +
                 "            </tr>"+
                 "        </table><br/>" +
-                "    <table id=\"transactions\" border=\"0\" width=\"100%\" class=\"center\">\n" +
-                "       <tr><th id=\"transactions\">Opening Balance</th><th>1000</th></tr>" +
-                "       <tr><td>Credit Sum</td> <td></td></tr>" +
-                "       <tr><td>Debit Sum</td> <td></td></tr></table>" +
+//                "    <table id=\"transactions\" border=\"0\" width=\"100%\" class=\"center\">\n" +
+//                "       <tr><th id=\"transactions\">Opening Balance</th><th>1000</th></tr>" +
+//                "       <tr><td>Credit Sum</td> <td></td></tr>" +
+//                "       <tr><td>Debit Sum</td> <td></td></tr></table>" +
                 "       <table><tr><th>Closing Balance</th><th>" +currentBilanzList.getTotalCurrent()+ "</th></tr>" +
 //              "       <tr><td>Bamenda Branch, N W Region</td><td>"+ BVMicroUtils.formatDate(new Date(System.currentTimeMillis())) +"</td></tr>" +
                 "       </table></body></html>";
