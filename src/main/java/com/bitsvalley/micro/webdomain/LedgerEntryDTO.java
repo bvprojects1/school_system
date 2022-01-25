@@ -14,6 +14,7 @@ public class LedgerEntryDTO {
     private String creditOrDebit;
     private String recordDate;
     private String notes;
+    private boolean fromAccountToLedger;
     private List<String> paramValueString = new ArrayList<String>();
     private List<SavingAccount> savingAccounts;
 
@@ -83,5 +84,13 @@ public class LedgerEntryDTO {
 
     public void setRecordDate(String recordDate) {
         this.recordDate = recordDate;
+    }
+
+    public boolean isFromAccountToLedger() {
+        return fromAccountToLedger;
+    }
+
+    public void setFromAccountToLedger(boolean fromAccountToLedger) {
+        this.fromAccountToLedger = fromAccountToLedger;
     }
 }

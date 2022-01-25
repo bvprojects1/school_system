@@ -24,7 +24,7 @@ public class LoanAccount {
     private AccountStatus accountStatus;
     private int glClass;
     private String intervalOfLoanPayment;
-    private double interestRate;
+    private float interestRate;
     private double minimumPayment;
     private String lastUpdatedBy;
     private Date lastUpdatedDate;
@@ -334,11 +334,11 @@ public class LoanAccount {
         LastPaymentDate = lastPaymentDate;
     }
 
-    public double getInterestRate() {
+    public float getInterestRate() {
         return interestRate;
     }
 
-    public void setInterestRate(double interestRate) {
+    public void setInterestRate(float interestRate) {
         this.interestRate = interestRate;
     }
 

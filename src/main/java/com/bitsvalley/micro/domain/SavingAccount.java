@@ -29,7 +29,7 @@ public class SavingAccount {
     private AccountStatus accountStatus;
     private int minimumPayment;
     private String intervalOfSaving;
-    private int interestRate;
+    private float interestRate;
     private String country;
     private String productCode;
     private boolean active;
@@ -126,11 +126,11 @@ public class SavingAccount {
         this.createdBy = createdBy;
     }
     
-    public int getInterestRate() {
+    public float getInterestRate() {
         return interestRate;
     }
 
-    public void setInterestRate(int interestRate) {
+    public void setInterestRate(float interestRate) {
         this.interestRate = interestRate;
     }
 

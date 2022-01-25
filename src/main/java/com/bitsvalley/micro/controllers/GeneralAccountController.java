@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -129,14 +130,21 @@ public class GeneralAccountController extends SuperController{
 
     @GetMapping(value = "/trialBalance")
     public String trialBalance( ModelMap model, HttpServletRequest request) {
-        LocalDate now = LocalDate.now().plusDays(1);
-        LocalDate localDateStart = now.minusDays(now.getDayOfMonth()-1);
+
+        LocalDateTime now = LocalDateTime.now().plusHours(23);
+        now = now.plusMinutes(59);
+        now = now.plusSeconds(59);
+
+        LocalDateTime localDateStart = now.minusDays(now.getDayOfMonth() - 1);
+        localDateStart = localDateStart.minusHours(now.getHour());
+        localDateStart = localDateStart.minusMinutes(now.getMinute());
+        localDateStart = localDateStart.minusSeconds(now.getSecond());
 
         TrialBalanceBilanz trialBalanceBilanz = generalLedgerService.getCurrentTrialBalance(localDateStart, now);
 
 //      model.put("allLedgerAccount", all);
-
 //      model.put("trialBalanceBilanz", generalLedgerBilanz );
+
         GLSearchDTO glSearchDTO = new GLSearchDTO();
 
         ArrayList<String> allGLEntryUsers = getAllNonCustomers();
@@ -145,8 +153,8 @@ public class GeneralAccountController extends SuperController{
         model.put("accountNameHeader", "TRIAL BALANCE");
         model.put("trialBalanceBilanz",trialBalanceBilanz);
         model.put("glSearchDTO",glSearchDTO);
-        model.put("startDate", BVMicroUtils.formatDateOnly(localDateStart) );
-        model.put("endDate", BVMicroUtils.formatDateOnly(now));
+        model.put("startDate", BVMicroUtils.formatDateTime(localDateStart) );
+        model.put("endDate", BVMicroUtils.formatDateTime(now));
 
         return "trialBalance";
     }

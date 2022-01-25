@@ -90,7 +90,7 @@
 
                         Term of Loan:<input class="selectSmall" type="number" th:field="*{termOfLoan}"/>
 
-                        Loan Guarantor 1 - Account No:<input class="selectNormal" required type="text"
+                        Loan Guarantor 1 - Account No:<input class="selectNormal" type="text"
                                                              th:field="*{guarantorAccountNumber1}"
                                                              maxlength="15"/>
                         <br/>
@@ -160,7 +160,7 @@
                         <option value="47">OVERDRAFT LOAN - 47</option>
                         <option value="48">NJANGI FINANCING - 48</option>
                     </select>
-                        Loan Amount:<input type="number" th:field="*{loanAmount}" max="9000000" maxlength="10"/>
+                        Loan Amount:<input class="selectAmount" type="number" th:field="*{loanAmount}" max="9000000" maxlength="10"/>
 
                         <select hidden name="intervalOfLoanPayment" th:field="*{intervalOfLoanPayment}">
                             <option value="01 DAY">01 DAY</option>
@@ -169,7 +169,7 @@
                         </select>
                         <br/>
                         <br/>
-                        Interest Rate:<input type="number" th:field="*{interestRate}" max="100" maxlength="2"/>
+                        Interest Rate:<input type="text" th:field="*{interestRate}" max="100" maxlength="45"/>
                         Term of Loan:<input type="number" th:field="*{termOfLoan}"/>
                         <br/>
                         <br/>

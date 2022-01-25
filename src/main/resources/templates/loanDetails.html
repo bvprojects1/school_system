@@ -21,7 +21,7 @@
                 <td>
                         <span th:if="${loan.accountStatus.name == 'PENDING_APPROVAL'}">
                             <a href="#" th:href="@{/approveLoan/{id}(id=${loan.id})}">APPROVE THIS LOAN</a>
-                            <span class="error" th:text="${error}"/>
+                            <font color="brown" size="3px"> <span th:text="${error}"/></font>
                         </span>
                 </td>
                 <td colspan="3">
