@@ -170,7 +170,7 @@
                         <br/>
                         <br/>
                         Interest Rate:<input type="text" th:field="*{interestRate}" max="100" maxlength="45"/>
-                        Term of Loan:<input type="number" th:field="*{termOfLoan}"/>
+                        Term of Loan:<input type="number" th:field="*{termOfLoan}"/>VAT: <<input type="text" disabled th:value="${session.runtimeSettings.vatPercent}"/>
                         <br/>
                         <br/>
                         <button type="submit" class="btn btn-success">

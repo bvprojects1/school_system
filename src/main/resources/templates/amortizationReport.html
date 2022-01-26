@@ -20,23 +20,46 @@
             </div>
         </div>
     </div>
+
+    <table width="90%" class="center" border="0px">
+        <tr>
+            <td>
+                Customer Name: <span style th:text="${session.customerInUse.userName}"/>'s
+            </td>
+        </tr>
+
+    </table>
+
     <table width="90%" class="center" border="0px">
         <tr>
             <td></td>
+            <td>Number: <br/><b> <span th:text="${amortization.loanMonths}"/></b></td>
+            <td>Start Date:<br/><b> <span th:text="${amortization.startDate}"/></b></td>
+            <td>Annual Rate HT: <b> <span th:text= "${amortizationHT.interestRate}"/></b><br/>
+                Annual Rate TTC: <b> <span th:text="${amortization.interestRate}"/></b><br/>
+
+            </td>
             <td>
-                Start Date:<b> <span th:text="${amortization.startDate}"/></b></td>
-            <td>Annual Rate: <b> <span th:text="${amortization.interestRateString}"/></b></td>
-            <td>Number: <b> <span th:text="${amortization.loanMonths}"/></b></td>
-            <td>
-                Monthly Payment: <b> <span th:text="${amortization.monthlyPayment}"/></b>
+                VAT: <b> <span th:text="${session.runtimeSettings.vatPercent}"/></b>
+                <br/>Total VAT Interest:
+                <b>
+                    <span th:text="${#numbers.formatDecimal(amortization.interestVAT, 0, 'COMMA', 0, 'POINT')}"/>
+                </b>
             </td>
             <td>Total Interest:
                 <b>
                     <span th:text="${#numbers.formatDecimal(amortization.totalInterest, 0, 'COMMA', 0, 'POINT')}"/>
                 </b>
+
             </td>
             <td>
+                Monthly Payment: <b> <span th:text="${amortization.monthlyPayment}"/></b><br/>
                 Total Payment:<b><span th:text="${amortization.totalInterestLoanAmount}"/></b>
+            </td>
+            <td>
+                Total Principal:<br/><b><span th:text="${#numbers.formatDecimal(amortization.loanAmount, 0, 'COMMA', 0, 'POINT')}"/></b>
+            </td>
+            <td>
                 <a href="#" th:href="@{/amortizationPDF}">
                     <img width="40px" th:src="@{/assets/images/pdfIcon.png}" />
                 </a>
@@ -47,6 +70,8 @@
             <td>Number</td>
             <td>Date</td>
             <td>Interest</td>
+            <td>VAT on Interest</td>
+            <td>Interest on HT</td>
             <td>Payment</td>
             <td>Principal</td>
             <td>Balance</td>
@@ -55,7 +80,9 @@
             <td></td>
             <td th:text="${entry.monthNumber}"></td>
             <td th:text="${entry.date}"></td>
-            <td th:text="${entry.monthlyInterest}"></td>
+            <td th:text="${#numbers.formatDecimal(entry.monthlyInterest, 0, 'COMMA', 0, 'POINT')}"></td>
+            <td th:text="${#numbers.formatDecimal(entry.vATOnInterest, 0, 'COMMA', 0, 'POINT')}">   </td>
+            <td th:text="${#numbers.formatDecimal(entry.interestOnHT, 0, 'COMMA', 0, 'POINT')}">  </td>
             <td th:text="${entry.payment}"></td>
             <td th:text="${entry.principal}"></td>
             <td th:text="${entry.loanBalance}"></td>

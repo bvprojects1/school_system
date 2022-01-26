@@ -202,6 +202,7 @@ public class BVMicroUtils {
         return total;
     }
 
+
     public static String formatDate(Date date) {
         SimpleDateFormat formatter = new SimpleDateFormat("dd MMMM yyyy hh:mm");
         String format = formatter.format(date);

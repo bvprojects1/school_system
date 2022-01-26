@@ -5,6 +5,7 @@ import com.bitsvalley.micro.repositories.UserRepository;
 import com.bitsvalley.micro.services.*;
 import com.bitsvalley.micro.utils.AccountStatus;
 import com.bitsvalley.micro.utils.Amortization;
+import com.bitsvalley.micro.utils.AmortizationRowEntry;
 import com.bitsvalley.micro.utils.BVMicroUtils;
 import com.bitsvalley.micro.webdomain.LoanBilanzList;
 import com.bitsvalley.micro.webdomain.RuntimeSetting;
@@ -18,7 +19,9 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -89,12 +92,56 @@ public class LoanAccountController extends SuperController {
     @PostMapping(value = "/generatePaymentSchedule")
     public String generatePaymentSchedule(@ModelAttribute("loanAccount") LoanAccount loanAccount,
                                           ModelMap model, HttpServletRequest request) {
+
+        float interestTTC = calculateTTC(loanAccount, request);
+
+        double paymentTTC = interestService.monthlyPaymentAmortisedPrincipal(interestTTC, loanAccount.getTermOfLoan(), loanAccount.getLoanAmount());
         double payment = interestService.monthlyPaymentAmortisedPrincipal(loanAccount.getInterestRate(), loanAccount.getTermOfLoan(), loanAccount.getLoanAmount());
-        String report = "";
-        Amortization amortization = new Amortization(loanAccount.getLoanAmount(),loanAccount.getInterestRate(),loanAccount.getTermOfLoan(),payment);
-        model.put("amortization",amortization );
-        request.getSession().setAttribute("amortization",amortization);
+
+        Amortization amortizationTTC = new Amortization(loanAccount.getLoanAmount(),interestTTC,loanAccount.getTermOfLoan(),paymentTTC);
+        Amortization amortizationHT = new Amortization(loanAccount.getLoanAmount(),loanAccount.getInterestRate(),loanAccount.getTermOfLoan(),payment);
+
+        final List<AmortizationRowEntry> amortizationRowEntryListTTC = amortizationTTC.getAmortizationRowEntryList();
+        final List<AmortizationRowEntry> amortizationRowEntryListHT = amortizationHT.getAmortizationRowEntryList();
+        List<AmortizationRowEntry> finalAmortizationRowEntryListTTC = new ArrayList<AmortizationRowEntry>();
+        double vatOnInterestTotal = 0.0;
+        double interestOnHTTotal = 0.0;
+        for (int i = 0; i <  amortizationRowEntryListTTC.size(); i++) {
+
+            AmortizationRowEntry amortizationRowEntryTTC = amortizationRowEntryListTTC.get(i);
+            AmortizationRowEntry amortizationRowEntryHT = amortizationRowEntryListHT.get(i);
+
+            final double vatOnInterest = amortizationRowEntryTTC.getMonthlyInterest() - amortizationRowEntryListHT.get(i).getMonthlyInterest();
+
+            amortizationRowEntryTTC.setVATOnInterest(vatOnInterest);
+            amortizationRowEntryTTC.setInterestOnHT(amortizationRowEntryHT.getMonthlyInterest());
+
+            vatOnInterestTotal = vatOnInterest + vatOnInterestTotal;
+            interestOnHTTotal = interestOnHTTotal + amortizationRowEntryTTC.getInterestOnHT();
+
+            finalAmortizationRowEntryListTTC.add( amortizationRowEntryTTC );
+
+        }
+
+        amortizationTTC.setInterestVAT(amortizationTTC.getTotalInterest() - amortizationHT.getTotalInterest());
+
+        amortizationTTC.setAmortizationRowEntryList(finalAmortizationRowEntryListTTC);
+        amortizationTTC.setInterestVAT(vatOnInterestTotal);
+        amortizationTTC.setInterestHT(interestOnHTTotal);
+
+
+        model.put("amortization",amortizationTTC );
+        model.put("amortizationHT",amortizationHT );
+
+        model.put("amortization", amortizationTTC ); //TODO: DECIDE SESSION or REQUEST SCOPE
+        request.getSession().setAttribute("amortizationHT",amortizationTTC);
         return "amortizationReport";
+    }
+
+    private float calculateTTC(LoanAccount loanAccount, HttpServletRequest request) {
+        RuntimeSetting runtimeSetting = (RuntimeSetting)request.getSession().getAttribute("runtimeSettings");
+        BigDecimal multiply = new BigDecimal(loanAccount.getInterestRate()).multiply(new BigDecimal(runtimeSetting.getVatPercent()));
+        return multiply.floatValue() + loanAccount.getInterestRate();
     }
 
     @GetMapping(value = "/amortizationPDF")

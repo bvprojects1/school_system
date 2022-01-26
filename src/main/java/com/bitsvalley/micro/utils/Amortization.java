@@ -1,5 +1,7 @@
 package com.bitsvalley.micro.utils;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -19,6 +21,8 @@ public class Amortization
     private String startDate;
     private String monthlyPayment;
     private double totalInterest;
+    private double InterestHT;
+    private double InterestVAT;
     private String totalInterestLoanAmount;
     private String amortizationReport;
     private String interestRateString;
@@ -36,13 +40,17 @@ public class Amortization
 
     public Amortization(double loan, double rate, int months, double payment)
     {
+        BigDecimal bd = new BigDecimal(rate);
+        rate = bd.setScale(2, RoundingMode.HALF_UP).doubleValue();
+
         loanAmount = loan;
         loanBalance = loan;
         interestRate = rate*0.01;
         loanMonths = months;
         monthlyPayment = BVMicroUtils.formatCurrency(payment);
         startDate = BVMicroUtils.formatDateOnly(LocalDate.now().plusMonths(1));
-        interestRateString = rate+"%";
+
+        interestRateString = BVMicroUtils.formatCurrency(rate);
         getAmortizationReport(payment);
     }
 
@@ -92,7 +100,7 @@ public class Amortization
 
             amortizationRowEntry.setDate(BVMicroUtils.formatDateOnly(localDate.plusMonths(month)));
             amortizationRowEntry.setLoanBalance(BVMicroUtils.formatCurrency(loanBalance));
-            amortizationRowEntry.setMonthlyInterest( BVMicroUtils.formatCurrency(monthlyInterest));
+            amortizationRowEntry.setMonthlyInterest(monthlyInterest);
             amortizationRowEntry.setPrincipal(BVMicroUtils.formatCurrency(principal));
             amortizationRowEntry.setPayment(BVMicroUtils.formatCurrency(payment));
             amortizationRowEntry.setMonthNumber(month);
@@ -202,5 +210,21 @@ public class Amortization
 
     public void setInterestRateString(String interestRateString) {
         this.interestRateString = interestRateString;
+    }
+
+    public double getInterestHT() {
+        return InterestHT;
+    }
+
+    public void setInterestHT(double interestHT) {
+        InterestHT = interestHT;
+    }
+
+    public double getInterestVAT() {
+        return InterestVAT;
+    }
+
+    public void setInterestVAT(double interestVAT) {
+        InterestVAT = interestVAT;
     }
 }

@@ -16,7 +16,7 @@ public class RuntimeSetting {
     private String website;
     private int noOfAccounts;
     private String address;
-    private String vatPercent;
+    private Double vatPercent;
     private String unitSharePrice;
 
     public String getSlogan() {
@@ -131,15 +131,15 @@ public class RuntimeSetting {
         this.unionLogo = unionLogo;
     }
 
-    public String getVatPercent() {
-        return vatPercent;
-    }
-
-    public void setVatPercent(String vatPercent) {
-        this.vatPercent = vatPercent;
-    }
-
     public String getUnitSharePrice() { return unitSharePrice; }
 
     public void setUnitSharePrice(String unitSharePrice) { this.unitSharePrice = unitSharePrice; }
+
+    public Double getVatPercent() {
+        return vatPercent;
+    }
+
+    public void setVatPercent(Double vatPercent) {
+        this.vatPercent = vatPercent;
+    }
 }
