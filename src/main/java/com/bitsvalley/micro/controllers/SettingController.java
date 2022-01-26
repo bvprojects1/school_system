@@ -154,7 +154,7 @@ public class SettingController extends SuperController{
 
 
         RuntimeProperties vatPercent = runtimePropertiesRepository.findByPropertyName("vatPercent");
-        vatPercent.setPropertyValue(runtimeSetting.getVatPercent());
+        vatPercent.setPropertyValue(runtimeSetting.getVatPercent().toString());
         list.add(vatPercent);
 
 

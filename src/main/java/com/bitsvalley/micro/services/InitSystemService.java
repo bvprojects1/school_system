@@ -140,7 +140,7 @@ public class InitSystemService {
             }else if (rp.getPropertyName().equals("themeColor2")) {
                 runtime.setThemeColor2(rp.getPropertyValue());
             }else if (rp.getPropertyName().equals("vatPercent")) {
-                runtime.setVatPercent(rp.getPropertyValue());
+                runtime.setVatPercent(new Double(rp.getPropertyValue()));
             }else if(rp.getPropertyName().equals("unitSharePrice")){
                 runtime.setUnitSharePrice(rp.getPropertyValue());
             }

@@ -2,18 +2,20 @@ package com.bitsvalley.micro.utils;
 
 public class AmortizationRowEntry {
 
-    String monthlyInterest;
+    double monthlyInterest;
     String payment;
     String principal;
     String loanBalance;
     String date;
     int monthNumber;
+    double VATOnInterest;
+    double InterestOnHT;
 
-    public String getMonthlyInterest() {
+    public double getMonthlyInterest() {
         return monthlyInterest;
     }
 
-    public void setMonthlyInterest(String monthlyInterest) {
+    public void setMonthlyInterest(double monthlyInterest) {
         this.monthlyInterest = monthlyInterest;
     }
 
@@ -57,4 +59,19 @@ public class AmortizationRowEntry {
         this.monthNumber = monthNumber;
     }
 
+    public double getVATOnInterest() {
+        return VATOnInterest;
+    }
+
+    public void setVATOnInterest(double VATOnInterest) {
+        this.VATOnInterest = VATOnInterest;
+    }
+
+    public double getInterestOnHT() {
+        return InterestOnHT;
+    }
+
+    public void setInterestOnHT(double interestOnHT) {
+        InterestOnHT = interestOnHT;
+    }
 }
