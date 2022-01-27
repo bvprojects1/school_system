@@ -25,6 +25,8 @@ public class LoanAccount {
     private int glClass;
     private String intervalOfLoanPayment;
     private float interestRate;
+    private float interestRateTTC;
+    private float vatRate;
     private double minimumPayment;
     private String lastUpdatedBy;
     private Date lastUpdatedDate;
@@ -412,5 +414,21 @@ public class LoanAccount {
 
     public void setInterestOwed(double interestOwed) {
         this.interestOwed = interestOwed;
+    }
+
+    public float getInterestRateTTC() {
+        return interestRateTTC;
+    }
+
+    public void setInterestRateTTC(float interestRateTTC) {
+        this.interestRateTTC = interestRateTTC;
+    }
+
+    public float getVatRate() {
+        return vatRate;
+    }
+
+    public void setVatRate(float vatRate) {
+        this.vatRate = vatRate;
     }
 }

@@ -82,11 +82,12 @@
                         </select>
                         Loan Amount:<input class="selectAmount" type="number" th:field="*{loanAmount}" max="9000000"
                                            maxlength="10"/>
+
                         <br/>
                         <br/>
 
-                        Interest Rate:<input class="selectSmall" type="number" th:field="*{interestRate}" max="100"
-                                             maxlength="2"/>
+                        Interest Rate:<input class="selectSmall" type="text" th:field="*{interestRate}" max="100"
+                                             maxlength="5"/>
 
                         Term of Loan:<input class="selectSmall" type="number" th:field="*{termOfLoan}"/>
 
@@ -115,6 +116,11 @@
                             <option value="15 DAY">15 DAY</option>
                             <option value="OTHER">OTHER</option>
                         </select>
+
+                        <br/>
+                        <br/>
+
+                        VAT: <input type="text" disabled th:value="${session.runtimeSettings.vatPercent}"/>
 
                         <br/>
                         <br/>
@@ -169,8 +175,8 @@
                         </select>
                         <br/>
                         <br/>
-                        Interest Rate:<input type="text" th:field="*{interestRate}" max="100" maxlength="45"/>
-                        Term of Loan:<input type="number" th:field="*{termOfLoan}"/>VAT: <<input type="text" disabled th:value="${session.runtimeSettings.vatPercent}"/>
+                        Interest Rate:<input type="text" th:field="*{interestRate}" max="100" maxlength="5"/>
+                        Term of Loan:<input type="number" th:field="*{termOfLoan}"/>VAT: <input type="text" disabled th:value="${session.runtimeSettings.vatPercent}"/>
                         <br/>
                         <br/>
                         <button type="submit" class="btn btn-success">

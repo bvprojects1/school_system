@@ -9,7 +9,8 @@ public class AmortizationRowEntry {
     String date;
     int monthNumber;
     double VATOnInterest;
-    double InterestOnHT;
+    double interestOnHT;
+    double interestOnTTC;
 
     public double getMonthlyInterest() {
         return monthlyInterest;
@@ -68,10 +69,18 @@ public class AmortizationRowEntry {
     }
 
     public double getInterestOnHT() {
-        return InterestOnHT;
+        return interestOnHT;
     }
 
     public void setInterestOnHT(double interestOnHT) {
-        InterestOnHT = interestOnHT;
+        this.interestOnHT = interestOnHT;
+    }
+
+    public void setInterestOnTTC(double interestOnTTC) {
+        this.interestOnTTC = interestOnTTC;
+    }
+
+    public double getInterestOnTTC() {
+        return interestOnTTC;
     }
 }
