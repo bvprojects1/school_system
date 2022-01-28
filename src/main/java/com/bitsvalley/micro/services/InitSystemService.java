@@ -92,7 +92,7 @@ public class InitSystemService {
 
             RuntimeProperties vatPercent = new RuntimeProperties();
             vatPercent.setPropertyName("vatPercent");
-            vatPercent.setPropertyValue("0.195");
+            vatPercent.setPropertyValue("0.1925");
             runtimePropertiesList.add(vatPercent);
 
             RuntimeProperties unitSharePrice = new RuntimeProperties();

@@ -62,7 +62,6 @@ public class LoanAccount {
     private String country;
 
     private double totalInterestOnLoan;
-
     @OneToMany(cascade = CascadeType.ALL)
     private List<LoanAccountTransaction> loanAccountTransaction = new ArrayList<LoanAccountTransaction>();
 

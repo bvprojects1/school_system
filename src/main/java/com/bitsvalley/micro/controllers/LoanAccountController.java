@@ -167,6 +167,9 @@ public class LoanAccountController extends SuperController {
 //        User user = (User) request.getSession().getAttribute(BVMicroUtils.CUSTOMER_IN_USE);
 //        user = userRepository.findById(user.getId()).get();
 
+        String vatRate = request.getParameter("vatRate");
+        loanAccount.setVatRate(new Float(vatRate));
+
         Branch branchInfo = branchService.getBranchInfo(getLoggedInUserName());
         loanAccount.setBranchCode(new Long(branchInfo.getId()).toString());
         loanAccount.setBranchCode(branchInfo.getCode());

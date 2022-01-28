@@ -237,8 +237,11 @@
             <th>Notes</th>
             <th>Debit</th>
             <th>Credit</th>
+            <th></th>
             <th>Interest</th>
+            <th></th>
             <th>VAT</th>
+            <th></th>
             <th>
             </th>
             <td><a href="#" th:href="@{/statementLoanPDF/{id}(id=${loanAccountTransaction.loanAccount.id})}"><img
@@ -255,9 +258,11 @@
 
             <td th:text="${bilanz.loanAmount}"></td>
             <td th:text="${bilanz.amountReceived}"></td>
-
+            <td width="10"></td>
             <td th:text="${bilanz.interestAccrued}"></td>
+            <td width="10"></td>
             <td th:text="${bilanz.vatPercent}"></td>
+            <td width="10"></td>
             <td th:text="${bilanz.currentBalance}"></td>
             <td>
                 <a href="#" th:href="@{/createLoanAccountReceiptPdf/{id}(id=${bilanz.id})}">
