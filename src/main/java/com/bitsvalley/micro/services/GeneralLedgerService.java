@@ -374,6 +374,7 @@ public class GeneralLedgerService extends SuperService {
             GeneralLedger next = iterator.next();
             result.add(extracted(next));
         }
+        Collections.reverse(result);
         return result;
     }
 

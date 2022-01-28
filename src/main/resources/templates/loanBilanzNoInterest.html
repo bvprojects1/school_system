@@ -231,7 +231,9 @@
         <tr>
             <th>Date For Payment</th>
             <th>MOP</th>
+            <th></th>
             <th>Reference</th>
+            <th></th>
             <th>Agent</th>
             <th>Owner</th>
             <th>Notes</th>
@@ -251,7 +253,9 @@
         <tr th:each="bilanz : ${loanBilanzList.loanBilanzList}">
             <td th:text="${bilanz.createdDate}"></td>
             <td th:text="${bilanz.modeOfPayment}"></td>
+            <td width="10"></td>
             <td th:text="${bilanz.reference}"></td>
+            <td width="10"></td>
             <td th:text="${bilanz.agent}"></td>
             <td th:text="${bilanz.accountOwner}"></td>
             <td th:text="${bilanz.notes}"></td>
