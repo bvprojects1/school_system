@@ -82,7 +82,7 @@
 
 
                 Interest Rate:
-                <input class="selectSmall" type="text" th:field="*{interestRate}" max="100" maxlength="4"/>
+                <input class="selectSmall" type="text" th:field="*{interestRate}" max="100" maxlength="5"/>
 
                 <br/><br/>
             Minimum balance:
@@ -96,9 +96,9 @@
 
                 <textarea class="selectNormal" placeholder="Notes .." id="notes" rows="3" cols="70" th:field="*{notes}">
                 </textarea>
-
+                <br/>
                 <button type="submit" class="btn btn-success">Create Account</button>
-                <label title="Minimum Deposit is minimum amount that can be deposited in this amount. Minimum Balance is the amount that the account should not go below"> <img alt="not go below." width="50px" th:src="@{/assets/images/toolTip.png}"/></label>
+                <label title="Minimum Deposit is minimum amount that can be deposited in this account. Minimum Balance is the amount that the account should not go below"> <img alt="not go below." width="20px" th:src="@{/assets/images/toolTip.png}"/></label>
                 <br/><br/>
 
                 <!--                    Saving Interval:-->

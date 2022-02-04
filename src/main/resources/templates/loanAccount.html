@@ -82,11 +82,12 @@
                         </select>
                         Loan Amount:<input class="selectAmount" type="number" th:field="*{loanAmount}" max="9000000"
                                            maxlength="10"/>
+
                         <br/>
                         <br/>
 
-                        Interest Rate:<input class="selectSmall" type="number" th:field="*{interestRate}" max="100"
-                                             maxlength="2"/>
+                        Interest Rate:<input class="selectSmall" type="text" th:field="*{interestRate}" max="100"
+                                             maxlength="5"/>
 
                         Term of Loan:<input class="selectSmall" type="number" th:field="*{termOfLoan}"/>
 
@@ -116,6 +117,11 @@
                             <option value="OTHER">OTHER</option>
                         </select>
 
+                        <br/>
+                        <br/>
+
+<!--                         <input type="text" readonly name="vatRate1"  th:value="${session.runtimeSettings.vatPercent}"/>-->
+                        VAT:<input type="text" name="vatRate" readonly th:value="${session.runtimeSettings.vatPercent}"/>
                         <br/>
                         <br/>
 
@@ -169,8 +175,8 @@
                         </select>
                         <br/>
                         <br/>
-                        Interest Rate:<input type="text" th:field="*{interestRate}" max="100" maxlength="45"/>
-                        Term of Loan:<input type="number" th:field="*{termOfLoan}"/>VAT: <<input type="text" disabled th:value="${session.runtimeSettings.vatPercent}"/>
+                        Interest Rate:<input type="text" th:field="*{interestRate}" max="100" maxlength="5"/>
+                        Term of Loan:<input type="number" th:field="*{termOfLoan}"/>VAT: <input type="text" disabled th:value="${session.runtimeSettings.vatPercent}"/>
                         <br/>
                         <br/>
                         <button type="submit" class="btn btn-success">

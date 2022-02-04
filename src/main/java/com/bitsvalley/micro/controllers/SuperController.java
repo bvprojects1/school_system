@@ -1,10 +1,7 @@
 package com.bitsvalley.micro.controllers;
 
 import com.bitsvalley.micro.domain.*;
-import com.bitsvalley.micro.repositories.GeneralLedgerRepository;
-import com.bitsvalley.micro.repositories.SavingAccountTransactionRepository;
-import com.bitsvalley.micro.repositories.UserRepository;
-import com.bitsvalley.micro.repositories.UserRoleRepository;
+import com.bitsvalley.micro.repositories.*;
 import com.bitsvalley.micro.services.*;
 import com.bitsvalley.micro.utils.BVMicroUtils;
 import com.bitsvalley.micro.webdomain.CurrentBilanzList;
@@ -43,10 +40,19 @@ public class SuperController {
     private SavingAccountTransactionRepository savingAccountTransactionRepository;
 
     @Autowired
+    private ShareAccountTransactionRepository shareAccountTransactionRepository;
+
+    @Autowired
+    private CurrentAccountTransactionRepository currentAccountTransactionRepository;
+
+    @Autowired
     private SavingAccountService savingAccountService;
 
     @Autowired
     private LoanAccountService loanAccountService;
+
+    @Autowired
+    private LoanAccountTransactionRepository loanAccountTransactionRepository;
 
     @Autowired
     private CurrentAccountService currentAccountService;
@@ -81,10 +87,46 @@ public class SuperController {
                     aUser = byReference.get().getSavingAccount().getUser();
                 }
             }if(aUser==null){
+                Optional<LoanAccountTransaction> byReference
+                        = loanAccountTransactionRepository.findByReference(user.getUserName());
+                if(byReference.isPresent()){
+                    aUser = byReference.get().getLoanAccount().getUser();
+                }
+            }if(aUser==null){
                 LoanAccount byReference
                         = loanAccountService.findByAccountNumber(user.getUserName());
                 if( byReference != null ){
                     aUser = byReference.getUser();
+                }
+            }if(aUser==null){
+                Optional<LoanAccountTransaction> byReference
+                        = loanAccountTransactionRepository.findByReference(user.getUserName());
+                if(byReference.isPresent()){
+                    aUser = byReference.get().getLoanAccount().getUser();
+                }
+            }if(aUser==null){
+                CurrentAccount byReference
+                        = currentAccountService.findByAccountNumber(user.getUserName());
+                if( byReference != null ){
+                    aUser = byReference.getUser();
+                }
+            }if(aUser==null){
+                Optional<CurrentAccountTransaction> byReference
+                        = currentAccountTransactionRepository.findByReference(user.getUserName());
+                if(byReference.isPresent()){
+                    aUser = byReference.get().getCurrentAccount().getUser();
+                }
+            }if(aUser==null){
+                ShareAccount byReference
+                        = shareAccountService.findByAccountNumber(user.getUserName());
+                if( byReference != null ){
+                    aUser = byReference.getUser();
+                }
+            }if(aUser==null){
+                Optional<ShareAccountTransaction> byReference
+                        = shareAccountTransactionRepository.findByReference(user.getUserName());
+                if(byReference.isPresent()){
+                    aUser = byReference.get().getShareAccount().getUser();
                 }
             }
             if(aUser == null){ //LoanReference

@@ -26,6 +26,7 @@
                                     <div th:if="${#authorization.expression('hasAnyAuthority(''ROLE_CREATE_USER_ACCOUNT'')')} OR ${#authorization.expression('hasAnyAuthority(''ROLE_ADMIN'')')}">
                                         <a href="/registerUser"> <img width="5px" th:src="@{/assets/images/add.png}"/>
                                         </a>
+
                                     </div>
                                     <div th:unless="${#authorization.expression('hasAnyAuthority(''ROLE_CREATE_USER_ACCOUNT'')')} OR ${#authorization.expression('hasAnyAuthority(''ROLE_ADMIN'')')}">
                                         <a href=""> <img alt="Requires ROLE_CREATE_USER_ACCOUNT" width="5px"
@@ -34,7 +35,7 @@
                                     </div>
 
                                     <div th:if="${#authorization.expression('hasAnyAuthority(''ROLE_VIEW_ALL_ACCOUNTS'')')} OR ${#authorization.expression('hasAnyAuthority(''ROLE_ADMIN'')')}">
-                                        <a href="/findAllCustomers">See More ...</a>
+                                        <a href="/findAllCustomers">See More ...</a> <a href="/registerCustomer">Create Customer</a>
                                         <span class="far fa-user"></span>
                                     </div>
                                     <div th:unless="${#authorization.expression('hasAnyAuthority(''ROLE_VIEW_ALL_ACCOUNTS'')')} OR ${#authorization.expression('hasAnyAuthority(''ROLE_ADMIN'')')}">

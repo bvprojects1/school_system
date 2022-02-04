@@ -111,10 +111,18 @@ public class LoanAccountController extends SuperController {
             AmortizationRowEntry amortizationRowEntryTTC = amortizationRowEntryListTTC.get(i);
             AmortizationRowEntry amortizationRowEntryHT = amortizationRowEntryListHT.get(i);
 
-            final double vatOnInterest = amortizationRowEntryTTC.getMonthlyInterest() - amortizationRowEntryListHT.get(i).getMonthlyInterest();
+            RuntimeSetting runtimeSetting = (RuntimeSetting)request.getSession().getAttribute("runtimeSettings");
+            Double vatPercent = runtimeSetting.getVatPercent();
+            final double vatOnInterest = amortizationRowEntryTTC.getMonthlyInterest()/(1+vatPercent) ;
+            final double interestHT = (amortizationRowEntryTTC.getMonthlyInterest()/(1+vatPercent)) ;
 
             amortizationRowEntryTTC.setVATOnInterest(vatOnInterest);
-            amortizationRowEntryTTC.setInterestOnHT(amortizationRowEntryHT.getMonthlyInterest());
+
+            amortizationRowEntryTTC.setInterestOnTTC(amortizationRowEntryHT.getMonthlyInterest());
+            amortizationRowEntryTTC.setInterestOnHT(interestHT);
+
+            double diff = amortizationRowEntryTTC.getMonthlyInterest()-amortizationRowEntryTTC.getInterestOnHT();
+            amortizationRowEntryTTC.setVATOnInterest(diff);
 
             vatOnInterestTotal = vatOnInterest + vatOnInterestTotal;
             interestOnHTTotal = interestOnHTTotal + amortizationRowEntryTTC.getInterestOnHT();
@@ -159,6 +167,9 @@ public class LoanAccountController extends SuperController {
 //        User user = (User) request.getSession().getAttribute(BVMicroUtils.CUSTOMER_IN_USE);
 //        user = userRepository.findById(user.getId()).get();
 
+        String vatRate = request.getParameter("vatRate");
+        loanAccount.setVatRate(new Float(vatRate));
+
         Branch branchInfo = branchService.getBranchInfo(getLoggedInUserName());
         loanAccount.setBranchCode(new Long(branchInfo.getId()).toString());
         loanAccount.setBranchCode(branchInfo.getCode());
@@ -166,7 +177,11 @@ public class LoanAccountController extends SuperController {
 
 //        loanAccount.setTotalInterestOnLoan( );
 
-        double monthlyPayment = interestService.monthlyPaymentAmortisedPrincipal(loanAccount.getInterestRate(),
+        float interestTTC = calculateTTC(loanAccount, request);
+        loanAccount.setInterestRate(interestTTC);
+        loanAccountService.save(loanAccount);
+
+        double monthlyPayment = interestService.monthlyPaymentAmortisedPrincipal(interestTTC,
         loanAccount.getTermOfLoan(),loanAccount.getLoanAmount());
 
 //        Amortization amortization = new Amortization(loanAccount.getLoanAmount(),

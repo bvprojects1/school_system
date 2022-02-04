@@ -77,6 +77,10 @@ public class ShareAccountService extends SuperService{
         userRepository.save(user);
     }
 
+    public ShareAccount findByAccountNumber(String accountNumber) {
+        return shareAccountRepository.findByAccountNumber(accountNumber);
+    }
+
     public ShareAccountBilanzList getShareAccountBilanzByUser(User user) {
         User aUser = null;
         if (null != user.getUserName()) {

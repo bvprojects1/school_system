@@ -68,24 +68,24 @@
         <tr>
             <td></td>
             <td>Number</td>
-            <td>Date</td>
-            <td>Interest</td>
+            <td>Balance</td>
+            <td>Principal</td>
+            <td>Interest on TTC</td>
             <td>VAT on Interest</td>
             <td>Interest on HT</td>
             <td>Payment</td>
-            <td>Principal</td>
-            <td>Balance</td>
+            <td>Date</td>
         </tr>
         <tr th:each="entry : ${amortization.amortizationRowEntryList}">
             <td></td>
             <td th:text="${entry.monthNumber}"></td>
-            <td th:text="${entry.date}"></td>
+            <td th:text="${entry.loanBalance}"></td>
+            <td th:text="${entry.principal}"></td>
             <td th:text="${#numbers.formatDecimal(entry.monthlyInterest, 0, 'COMMA', 0, 'POINT')}"></td>
             <td th:text="${#numbers.formatDecimal(entry.vATOnInterest, 0, 'COMMA', 0, 'POINT')}">   </td>
             <td th:text="${#numbers.formatDecimal(entry.interestOnHT, 0, 'COMMA', 0, 'POINT')}">  </td>
             <td th:text="${entry.payment}"></td>
-            <td th:text="${entry.principal}"></td>
-            <td th:text="${entry.loanBalance}"></td>
+            <td th:text="${entry.date}"></td>
         </tr>
     </table>
 </section>

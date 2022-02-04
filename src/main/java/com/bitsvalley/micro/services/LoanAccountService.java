@@ -226,7 +226,7 @@ public class LoanAccountService extends SuperService {
         if (interestOwed <= loanAccountTransaction.getAmountReceived()) {
 
             loanAccountTransaction.setInterestPaid(interestOwed);
-            loanAccountTransaction.setVatPercent( 0.195*interestOwed );
+            loanAccountTransaction.setVatPercent( loanAccount.getVatRate()*interestOwed );
 
             if(loanAccountTransaction.getLoanAccount().isVatOption()){
                 loanAccountTransaction.setCurrentLoanAmount(

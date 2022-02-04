@@ -231,14 +231,19 @@
         <tr>
             <th>Date For Payment</th>
             <th>MOP</th>
+            <th></th>
             <th>Reference</th>
+            <th></th>
             <th>Agent</th>
             <th>Owner</th>
             <th>Notes</th>
             <th>Debit</th>
             <th>Credit</th>
+            <th></th>
             <th>Interest</th>
+            <th></th>
             <th>VAT</th>
+            <th></th>
             <th>
             </th>
             <td><a href="#" th:href="@{/statementLoanPDF/{id}(id=${loanAccountTransaction.loanAccount.id})}"><img
@@ -248,16 +253,20 @@
         <tr th:each="bilanz : ${loanBilanzList.loanBilanzList}">
             <td th:text="${bilanz.createdDate}"></td>
             <td th:text="${bilanz.modeOfPayment}"></td>
+            <td width="10"></td>
             <td th:text="${bilanz.reference}"></td>
+            <td width="10"></td>
             <td th:text="${bilanz.agent}"></td>
             <td th:text="${bilanz.accountOwner}"></td>
             <td th:text="${bilanz.notes}"></td>
 
             <td th:text="${bilanz.loanAmount}"></td>
             <td th:text="${bilanz.amountReceived}"></td>
-
+            <td width="10"></td>
             <td th:text="${bilanz.interestAccrued}"></td>
+            <td width="10"></td>
             <td th:text="${bilanz.vatPercent}"></td>
+            <td width="10"></td>
             <td th:text="${bilanz.currentBalance}"></td>
             <td>
                 <a href="#" th:href="@{/createLoanAccountReceiptPdf/{id}(id=${bilanz.id})}">

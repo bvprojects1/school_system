@@ -82,7 +82,7 @@
                     </td>
                     <td colspan="1">
                         <br>
-                        <font size="2"><b>Total Sum of amount entered for individual accounts must add
+                        <font size="2" color="green"><b>Total Sum of amount entered for individual accounts must add
                             up</b></font>
                     </td>
                 </tr>
@@ -94,13 +94,15 @@
                             Account Details:
                         </font>
                         <font size="4">
-                            <span th:text="${currentAccount.accountNumber}"/><span> <span> CURRENT ACCOUNT </span>
+                            <span th:text="${currentAccount.accountNumber}"/></span>
+                            <span> CURRENT ACCOUNT </span>
 <!--                            <br/>-->
 <!--                            <span th:text="${currentAccount.accountType.name}"/>-->
 
                         </font>
                         <input class="selectAmount" required type="text" th:name="${currentAccount.accountNumber}">
                         <span th:text="' Balance: '+${#numbers.formatDecimal(currentAccount.accountBalance, 0, 'COMMA', 0, 'POINT')}"/>
+
                         </div>
                     </td>
                 </tr>
@@ -121,12 +123,12 @@
                                 Account Number:
                             </font>
                             <font size="4"><span th:text="${savingAccount.accountNumber}"/>
-                                <span th:text="${savingAccount.accountType.name}"/>
                             </font>
 
                             <input class="selectAmount" required type="text" th:name="${savingAccount.accountNumber}">
 
                             <span th:text="' Balance: '+${#numbers.formatDecimal(savingAccount.accountBalance, 0, 'COMMA', 0, 'POINT')}"/>
+                            <span th:text="${savingAccount.accountType.name}"/>
 
                         </div>
                     </td>
@@ -149,10 +151,10 @@
                         </font>
                             <font size="4">
                                 <span th:text="${loanAccount.accountNumber}"/>
-                                <span th:text="${loanAccount.accountType}"/>
-                        </font>
+                            </font>
                         <input class="selectAmount" required type="text" th:name="${loanAccount.accountNumber}">
                         <span th:text="' Balance: '+${#numbers.formatDecimal(loanAccount.loanAmount, 0, 'COMMA', 0, 'POINT')}"/>
+                            <span th:text="${loanAccount.accountType}"/>
                         </div>
                     </td>
                 </tr>
