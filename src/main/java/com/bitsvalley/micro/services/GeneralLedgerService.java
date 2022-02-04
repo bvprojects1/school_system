@@ -898,8 +898,9 @@ public class GeneralLedgerService extends SuperService {
 
         List<String> paramValueString = newLedgerEntryDTO.getParamValueString();
         long originLedgerAccount = newLedgerEntryDTO.getOriginLedgerAccount();
-        LedgerAccount original = ledgerAccountRepository.findById(originLedgerAccount).get();
+//        LedgerAccount original = ledgerAccountRepository.findById(originLedgerAccount).get();
 
+//        if(newLedgerEntryDTO.get)
         newLedgerEntryDTO.setCreditOrDebit(BVMicroUtils.DEBIT);
         GeneralLedger generalLedger = recordGLFirstEntry(newLedgerEntryDTO, BVMicroUtils.formatDate(newLedgerEntryDTO.getRecordDate()), getLoggedInUserName());
 

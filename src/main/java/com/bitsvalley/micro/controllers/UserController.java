@@ -4,6 +4,7 @@ import com.bitsvalley.micro.domain.*;
 import com.bitsvalley.micro.repositories.UserRepository;
 import com.bitsvalley.micro.services.*;
 import com.bitsvalley.micro.utils.BVMicroUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.security.core.Authentication;
@@ -109,6 +110,73 @@ public class UserController extends SuperController{
         String aUserRole = (String) request.getParameter("aUserRole");
 //        ArrayList<UserRole> userRole = getUserRoleFromRequest(user, aUserRole);
         String gender = (String) request.getParameter("gender");
+
+        String perc1 = (String) request.getParameter("perc1");
+        String perc2 = (String) request.getParameter("perc2");
+        String perc3 = (String) request.getParameter("perc3");
+        String perc4 = (String) request.getParameter("perc4");
+        String perc5 = (String) request.getParameter("perc5");
+
+        String beneficiary1 = (String) request.getParameter("beneficiary1");
+        String beneficiary2 = (String) request.getParameter("beneficiary2");
+        String beneficiary3 = (String) request.getParameter("beneficiary3");
+        String beneficiary4 = (String) request.getParameter("beneficiary4");
+        String beneficiary5 = (String) request.getParameter("beneficiary5");
+
+        String relation1 = (String) request.getParameter("relation1");
+        String relation2 = (String) request.getParameter("relation2");
+        String relation3 = (String) request.getParameter("relation3");
+        String relation4 = (String) request.getParameter("relation4");
+        String relation5 = (String) request.getParameter("relation5");
+
+        ArrayList<Beneficiary> beneficiaryList = new ArrayList<Beneficiary>();
+
+        if(StringUtils.isNotEmpty(perc1) && StringUtils.isNotEmpty(beneficiary1)){
+            Beneficiary beneficiary = new Beneficiary();
+            beneficiary.setName(beneficiary1);
+            beneficiary.setPercentage(perc1);
+            beneficiary.setRelation(relation1);
+            beneficiaryList.add(beneficiary);
+        }
+
+        if(StringUtils.isNotEmpty(perc2) && StringUtils.isNotEmpty(beneficiary2)){
+            Beneficiary beneficiary = new Beneficiary();
+            beneficiary.setName(beneficiary2);
+            beneficiary.setPercentage(perc2);
+            beneficiary.setRelation(relation2);
+            beneficiaryList.add(beneficiary);
+        }
+
+        if(StringUtils.isNotEmpty(perc3) && StringUtils.isNotEmpty(beneficiary3)){
+            Beneficiary beneficiary = new Beneficiary();
+            beneficiary.setName(beneficiary3);
+            beneficiary.setPercentage(perc3);
+            beneficiary.setRelation(relation3);
+            beneficiaryList.add(beneficiary);
+        }
+
+        if(StringUtils.isNotEmpty(perc4) && StringUtils.isNotEmpty(beneficiary4)){
+            Beneficiary beneficiary = new Beneficiary();
+            beneficiary.setName(beneficiary4);
+            beneficiary.setPercentage(perc4);
+            beneficiary.setRelation(relation4);
+            beneficiaryList.add(beneficiary);
+        }
+
+        if(StringUtils.isNotEmpty(perc5) && StringUtils.isNotEmpty(beneficiary5)){
+            Beneficiary beneficiary = new Beneficiary();
+            beneficiary.setName(beneficiary5);
+            beneficiary.setPercentage(perc5);
+            beneficiary.setRelation(relation5);
+            beneficiaryList.add(beneficiary);
+        }
+
+        if(StringUtils.equals(aUserRole,"ROLE_CUSTOMER")){
+            user.setBeneficiary(beneficiaryList);
+        }else{
+            user.setBeneficiary(null);
+        }
+
         user.setGender(gender); //TODO: Check thymeleaf! should map automatically
         model.put("userRoleTemp", aUserRole);
         model.put("user", user);
@@ -194,12 +262,15 @@ public class UserController extends SuperController{
     public String editUserRoleForm(ModelMap model, HttpServletRequest req, @ModelAttribute("user") User user) {
 
         User aUser = userRepository.findById(user.getId()).get();
-//        String userRole = req.getParameter("aUserRole");
-
         String[] userRole = req.getParameterValues("aUserRole");
+        int length = userRole.length;
 
         List<UserRole> userRolesList = new ArrayList<UserRole>();
+        boolean userRoleCustomerExists = false;
         for (String newUserRole: userRole) {
+            if(StringUtils.equals("ROLE_CUSTOMER",newUserRole)){
+                userRoleCustomerExists = true;
+            }
             UserRole aUserRole = userRoleService.findUserRoleByName(newUserRole);
             if(null == aUserRole){
                 aUserRole = new UserRole();
@@ -207,6 +278,12 @@ public class UserController extends SuperController{
                 userRoleService.saveUserRole(aUserRole);
             }
             userRolesList.add(aUserRole);
+        }
+
+        if( length > 1 && userRoleCustomerExists ){
+            model.put("user", aUser);
+            model.put("updatedInfoError", "You cannot select ROLE_CUSTOMER");
+            return "editUserRole";
         }
 
         aUser.setUserRole(userRolesList);

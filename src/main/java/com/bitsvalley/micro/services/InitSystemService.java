@@ -37,12 +37,12 @@ public class InitSystemService {
 
             RuntimeProperties logo = new RuntimeProperties();
             logo.setPropertyName("logo");
-            logo.setPropertyValue("/images/logo.png");
+            logo.setPropertyValue("/Users/frusamachifen/logo.png");
             runtimePropertiesList.add(logo);
 
             RuntimeProperties unionLogo = new RuntimeProperties();
             unionLogo.setPropertyName("unionLogo");
-            unionLogo.setPropertyValue("/images/unionLogo.png");
+            unionLogo.setPropertyValue("/Users/frusamachifen/unionLogo.png");
             runtimePropertiesList.add(unionLogo);
 
             RuntimeProperties address = new RuntimeProperties();
