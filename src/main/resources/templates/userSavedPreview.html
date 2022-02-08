@@ -56,8 +56,8 @@
                         <label><p>Date of birth:</p></label>
                         <input type="text" th:field="*{dateOfBirth}" readonly/><br/>
 
-                        <label><p>Beneficiary:</p></label>
-                        <input type="text" th:field="*{beneficiary}" readonly/><br/>
+<!--                        <label><p>Beneficiary:</p></label>-->
+<!--                        <input type="text" th:field="*{beneficiary}" readonly/><br/>-->
 
 <!--                        <label><p>Beneficiary 2:</p></label>-->
 <!--                        <input type="text" th:field="*{beneficiary2}" readonly/><br/>-->
@@ -83,17 +83,28 @@
                         <label><p>Profession:</p></label>
                         <input type="text" th:field="*{profession}" readonly/><br/>
 
+                        <label><p>Identity Card Expiry:</p></label>
+                        <input type="text" th:field="*{identityCardExpiry}" readonly/><br/>
+
                         <label> <p>Account Locked:</p></label>
                         <input type="text" th:field="*{accountLocked}" readonly/><br/>
-
                         <br/>
+                        <br/>
+                        <br/>
+                        <label> <p>Beneficiaries:</p></label>
+                        <div th:each="aBeneficiary : ${user.beneficiary}">
+                            <span th:text="${aBeneficiary.name}"></span>
+                            <span th:text="${aBeneficiary.percentage}"></span>
+                            <span th:text="${aBeneficiary.relation}"></span>
+                        </div>
+
 <!--                        <label><b> Notes:</b></label>-->
 <!--                        <span th:text="${notes}"/>-->
 <!--                        <input type="hidden"  id="notes" rows="3" cols="30" th:field="*{notes}"/>-->
 
                         <input type="hidden" th:field="*{idFilePath}" readonly/><br/>
 
-                        <button type="submit" class="btn btn-success">Confirm and Save</button>
+                        <button type="submit" class="btn btn-success">CONFIRM AND SAVE</button>
                     </form>
                 </div>
             </div>

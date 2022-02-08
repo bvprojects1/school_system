@@ -14,11 +14,10 @@
                     <font size="4">Account Owner</font>
                     <br/>
                         <a href="#" th:href="@{/showCustomer/{id}(id=${session.customerInUse.id})}">
-                            <font color="gray" size="5">
-                                <b><span style th:text="${session.customerInUse.userName}"/></b>
+                            <font color="gray" size="4">
+                                <span style th:text="${session.customerInUse.gender +' '+session.customerInUse.firstName +' '+session.customerInUse.lastName }"/>
                             </font>
                         </a>
-
                     <button type="submit">
                         <a href="#" th:href="@{/file/{userName}(userName=${session.customerInUse.userName})}">
                             <font color="gray" size="2px">Upload I.D</font></a>

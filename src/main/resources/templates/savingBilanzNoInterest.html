@@ -187,10 +187,11 @@
         <tr>
             <td>Payment Date</td>
             <td>MOP</td>
-            <td width="10"></td>
+            <td width="10px"></td>
             <td>Reference</td>
-            <td width="10"></td>
+            <td width="10px"></td>
             <td>Agent</td>
+            <td width="10px"></td>
             <td>Owner</td>
             <td>Notes</td>
             <td>Debit</td>
@@ -204,10 +205,11 @@
         <tr th:each="bilanz : ${savingBilanzList.savingBilanzList}">
             <td th:text="${bilanz.createdDate}"></td>
             <td th:text="${bilanz.modeOfPayment}"></td>
-            <td width="10"></td>
+            <td width="10px"></td>
             <td th:text="${bilanz.reference}"></td>
-            <td width="10"></td>
+            <td width="10px"></td>
             <td th:text="${bilanz.agent}"></td>
+            <td width="10px"></td>
             <td th:text="${bilanz.accountOwner}"></td>
             <td th:text="${bilanz.notes}"></td>
             <td>

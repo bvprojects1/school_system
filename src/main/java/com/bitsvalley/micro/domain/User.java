@@ -30,7 +30,6 @@ public class User {
     private String password;
     private String notes;
     private String email;
-    private String beneficiary;
     private String dateOfBirth;
     private String idFilePath;
     private String identityCardNumber;
@@ -47,6 +46,9 @@ public class User {
     private List<CurrentAccount> currentAccount = new ArrayList<CurrentAccount>();
 
     @OneToMany(cascade = CascadeType.ALL)
+    private List<Beneficiary> beneficiary = new ArrayList<Beneficiary>();
+
+    @OneToMany(cascade = CascadeType.ALL)
     private List<LoanAccount> loanAccount = new ArrayList<LoanAccount>();
 
     @OneToMany(cascade = CascadeType.ALL)
@@ -57,7 +59,7 @@ public class User {
 
     private LocalDateTime accountBlockedDate;
     private boolean accountExpired;
-
+    private String identityCardExpiry;
     private Date lastUpdated;
     private Date created;
     private String createdBy;
@@ -206,13 +208,7 @@ public class User {
         this.created = created;
     }
 
-    public String getBeneficiary() {
-        return beneficiary;
-    }
 
-    public void setBeneficiary(String beneficiary) {
-        this.beneficiary = beneficiary;
-    }
 
     public String getDateOfBirth() {
         return dateOfBirth;
@@ -293,4 +289,21 @@ public class User {
     public void setNotes(String notes) {
         this.notes = notes;
     }
+
+    public List<Beneficiary> getBeneficiary() {
+        return beneficiary;
+    }
+
+    public void setBeneficiary(List<Beneficiary> beneficiary) {
+        this.beneficiary = beneficiary;
+    }
+
+    public String getIdentityCardExpiry() {
+        return identityCardExpiry;
+    }
+
+    public void setIdentityCardExpiry(String identityCardExpiry) {
+        this.identityCardExpiry = identityCardExpiry;
+    }
+
 }

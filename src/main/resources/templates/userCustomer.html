@@ -33,10 +33,11 @@
                             <div class="col-md-12">
 
                                 <label for="aUserRole">User Role:</label>
-                                <select  name="aUserRole" id="aUserRole">
-                                    <option class="selectNormal" value="ROLE_CUSTOMER">CUSTOMER</option>
+                                <select class="selectNormal" name="aUserRole" id="aUserRole">
+                                    <option value="ROLE_CUSTOMER">CUSTOMER</option>
                                 </select>
 
+                                <br/>
                                 <br/>
 
                                 <input type="text" name="userName" th:field="*{userName}" id="userName"
@@ -75,7 +76,7 @@
 
                                 <br/>
                                 <input type="text" name="telephone2" th:field="*{telephone2}" id="telephone2"
-                                       placeholder="Telephone 2" class="form-control" required>
+                                       placeholder="Telephone 2" class="form-control">
 
                                 <br/>
                                 <input type="text" name="address" th:field="*{address}" id="address"
@@ -88,27 +89,118 @@
 
                                 <br/>
                                 <input type="text" name="emailInput" th:field="*{email}" id="emailInout"
-                                       placeholder="Email" class="form-control" required>
+                                       placeholder="Email" class="form-control">
 
                                 <br/>
                                 <input type="password" name="passwordInput" th:field="*{password}" id="passwordInput"
                                        placeholder="Password" class="form-control" required>
 
                                 <br/>
-                                <input type="text" name="beneficiary" th:field="*{beneficiary}" id="beneficiary"
-                                       placeholder="Beneficiary Username" class="form-control" required>
+
+
+                                <input type="text" name="beneficiary1" id="beneficiary1"
+                                       placeholder="Beneficiary 1" class="selectNormal"/>
+
+                                <select class="selectNormal" name="relation1" id="relation1">
+                                    <option value="">-------</option>
+                                    <option value="Spouse">Spouse</option>
+                                    <option value="Son">Son</option>
+                                    <option value="Daughter">Daughter</option>
+                                    <option value="Friend">Friend</option>
+                                    <option value="Relation">Relation</option>
+                                    <option value="Other">Other</option>
+                                </select>
+
+                                <input class="selectNormal" type="text" name="perc1" id="perc1"
+                                       placeholder="Perc 1" max="100" maxlength="3">
+                                <br/>
+                                <br/>
+
+                                <input class="selectNormal" type="text" name="beneficiary2" id="beneficiary2"
+                                       placeholder="Beneficiary 2">
+
+                                <select class="selectNormal" name="relation2" id="relation2">
+                                    <option value="">-------</option>
+                                    <option value="Spouse">Spouse</option>
+                                    <option value="Son">Son</option>
+                                    <option value="Daughter">Daughter</option>
+                                    <option value="Friend">Friend</option>
+                                    <option value="Relation">Relation</option>
+                                    <option value="Other">Other</option>
+                                </select>
+
+                                <input class="selectNormal" type="text" name="perc2" id="perc2"
+                                       placeholder="Perc 2" max="100" maxlength="3" />
+                                <br/>
+                                <br/>
+
+                                <input class="selectNormal" type="text" name="beneficiary3" id="beneficiary3"
+                                       placeholder="Beneficiary 3" />
+
+                                <select class="selectNormal" name="relation3" id="relation3">
+                                    <option value="">-------</option>
+                                    <option value="Spouse">Spouse</option>
+                                    <option value="Son">Son</option>
+                                    <option value="Daughter">Daughter</option>
+                                    <option value="Friend">Friend</option>
+                                    <option value="Relation">Relation</option>
+                                    <option value="Other">Other</option>
+                                </select>
+
+                                <input class="selectNormal" type="text" name="perc3" id="perc3"
+                                       placeholder="Perc 3" max="100" maxlength="3"/>
+                                <br/>
+                                <br/>
+
+                                <input class="selectNormal" type="text" name="beneficiary4" id="beneficiary4"
+                                       placeholder="Beneficiary 4" max="100" maxlength="3"/>
+
+                                <select class="selectNormal" name="relation4" id="relation4">
+                                    <option value="">-------</option>
+                                    <option value="Spouse">Spouse</option>
+                                    <option value="Son">Son</option>
+                                    <option value="Daughter">Daughter</option>
+                                    <option value="Friend">Friend</option>
+                                    <option value="Relation">Relation</option>
+                                    <option value="Other">Other</option>
+                                </select>
+
+                                <input class="selectNormal" type="text" name="perc4" id="perc4"
+                                       placeholder="Perc 4" max="100" maxlength="3"/>
+                                <br/>
+                                <br/>
+
+                                <input type="text" name="beneficiary5" id="beneficiary5" class="selectNormal"
+                                       placeholder="Beneficiary 5"/>
+
+                                <select class="selectNormal" name="relation5" id="relation5">
+                                    <option value="">-------</option>
+                                    <option value="Spouse">Spouse</option>
+                                    <option value="Son">Son</option>
+                                    <option value="Daughter">Daughter</option>
+                                    <option value="Friend">Friend</option>
+                                    <option value="Relation">Relation</option>
+                                    <option value="Other">Other</option>
+                                </select>
+
+                                <input type="text" class="selectNormal" name="perc5" id="perc5"
+                                       placeholder="Perc 5" max="100" maxlength="3"/>
+                                <br/>
                                 <br/>
 
                                 <input type="text" name="identityCardNumber" th:field="*{identityCardNumber}" id="identityCardNumber"
-                                       placeholder="Identity Card No" class="form-control" required>
+                                       placeholder="Identity Card No" class="form-control"/>
                                 <br/>
 
+                                <input type="date" name="identityCardExpiry" th:field="*{identityCardExpiry}" id="identityCardExpiry"
+                                       placeholder="Identity Expiry" class="form-control"/>
+                                <br/>
 
                                 <label for="true">This new user CANNOT login</label><br/>
                                     False<input th:field="*{accountLocked}"  type="radio" id="false" name="accountLocked" value="false"
-                                           checked>
+                                           checked/>
                                     <br/>
-                                    True<input th:field="*{accountLocked}" type="radio" id="true" name="accountLocked" value="true">
+                                    True<input th:field="*{accountLocked}" type="radio" id="true" name="accountLocked" value="true"/>
 
                                 <br/>
                                 <br/>
