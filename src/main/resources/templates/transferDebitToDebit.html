@@ -20,10 +20,8 @@
                         </div>
 
                         <font size="2">Account Owner</font><br/>
-                        <font size="4">
-                            <a href="#" th:href="@{/showCustomer/{id}(id=${session.customerInUse.id})}">
-                                <span style th:text="${session.customerInUse.userName}"/>
-                            </a>
+                        <font color="gray" size="4">
+                            <span style th:text="${session.customerInUse.gender +' '+session.customerInUse.firstName +' '+session.customerInUse.lastName }"/>
                         </font>
                     </td>
                 </tr>

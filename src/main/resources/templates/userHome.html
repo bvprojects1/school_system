@@ -16,6 +16,8 @@
                         <a href="#" th:href="@{/showCustomer/{id}(id=${session.customerInUse.id})}">
                             <font color="gray" size="4">
                                 <span style th:text="${session.customerInUse.gender +' '+session.customerInUse.firstName +' '+session.customerInUse.lastName }"/>
+                                <br/>
+                                <span style th:text="${session.customerInUse.customerNumber}"/><br/>
                             </font>
                         </a>
                     <button type="submit">
@@ -56,7 +58,7 @@
 
 <!--                <div th:if="${#authorization.expression('hasAnyAuthority(''ROLE_VIEW_CUSTOMER_ACCOUNT_BALANCES'')')}">-->
 
-                <td colspan="3">
+                <td colspan="2">
                     <a th:if="${#authorization.expression('hasAnyAuthority(''ROLE_CUSTOMER_ACCOUNT_TYPE_TRANSFERS'')')}" href="#" th:href="@{/transferFromCurrentToCurrentForm}">
                         Current to Current <img width="30px" th:src="@{/assets/images/transfer.png}"/>
                     </a>
@@ -65,7 +67,7 @@
                     </div>
                 </td>
 
-                <td colspan="1">
+                <td colspan="2">
                     <a th:if="${#authorization.expression('hasAnyAuthority(''ROLE_CUSTOMER_ACCOUNT_TYPE_TRANSFERS'')')}" href="#" th:href="@{/transferFromCurrentToDebitForm}">
                         Current to Saving <img width="35px" th:src="@{/assets/images/transfer3.png}"/>
                     </a>
@@ -98,9 +100,7 @@
                     Account Number<br/>
                     <font size="2.5">Date Created</font>
                 </td>
-                <td>
-                    Account Type
-                </td>
+
                 <td>
                     Account Balance
                 </td>
@@ -135,7 +135,7 @@
                     </a><br/>
                     <font size="2"> <span th:text="${#dates.format(currentAccount.createdDate, 'dd-MMM-yyyy HH:mm')}"/></font>
                 </td>
-                <td> CURRENT ACCOUNT</td>
+
                 <td th:text="${#numbers.formatDecimal(currentAccount.accountBalance, 0, 'COMMA', 0, 'POINT')}"/>
 
                 <td th:text="${currentAccount.active}"/>

@@ -57,11 +57,8 @@
             </td>
             <td align="center">
                 <font size="2px"> Account Owner</font><br/>
-                <font color="#2d363f" size="4px">
-                    <a href="#"
-                       th:href="@{/showCustomer/{userid}(userid=${savingAccountTransaction.savingAccount.user.id})}">
-                        <div th:text="${savingAccountTransaction.savingAccount.user.lastName}"/>
-                    </a>
+                <font color="gray" size="4">
+                    <span style th:text="${session.customerInUse.gender +' '+session.customerInUse.firstName +' '+session.customerInUse.lastName }"/>
                 </font>
             </td>
 

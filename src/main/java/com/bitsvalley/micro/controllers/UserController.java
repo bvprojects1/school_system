@@ -16,6 +16,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
+import javax.persistence.criteria.CriteriaBuilder;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.ByteArrayInputStream;
@@ -92,6 +93,16 @@ public class UserController extends SuperController{
         user = getUserRoleFromRequest(user,aUserRole);
         String loggedInUserName = getLoggedInUserName();
         user.setCreatedBy(loggedInUserName);
+
+
+        // TODO: replace with count customers QUERY
+        ArrayList<UserRole> userRoleList = new ArrayList<UserRole>();
+        UserRole customer = userRoleService.findUserRoleByName("ROLE_CUSTOMER");
+        userRoleList.add(customer);
+        ArrayList<User> customerList = userService.findAllByUserRoleIn(userRoleList);
+        int generalCustomerCount = customerList.size() + 100000001;
+        user.setCustomerNumber( generalCustomerCount+"" );
+
         if(user.getId()>0){ //TODO: hmmm operations movin' accounts
             Optional<User> byId = userRepository.findById(user.getId());
             List<SavingAccount> savingAccount = byId.get().getSavingAccount();
@@ -108,8 +119,9 @@ public class UserController extends SuperController{
     @PostMapping(value = "/registerUserForm")
     public String registerUserForm(@ModelAttribute("user") User user, ModelMap model, HttpServletRequest request) {
         String aUserRole = (String) request.getParameter("aUserRole");
-//        ArrayList<UserRole> userRole = getUserRoleFromRequest(user, aUserRole);
         String gender = (String) request.getParameter("gender");
+
+        if(StringUtils.equals(aUserRole,"ROLE_CUSTOMER")){
 
         String perc1 = (String) request.getParameter("perc1");
         String perc2 = (String) request.getParameter("perc2");
@@ -129,6 +141,12 @@ public class UserController extends SuperController{
         String relation4 = (String) request.getParameter("relation4");
         String relation5 = (String) request.getParameter("relation5");
 
+            int percentage1 = 0;
+            int percentage2 = 0;
+            int percentage3 = 0;
+            int percentage4 = 0;
+            int percentage5 = 0;
+
         ArrayList<Beneficiary> beneficiaryList = new ArrayList<Beneficiary>();
 
         if(StringUtils.isNotEmpty(perc1) && StringUtils.isNotEmpty(beneficiary1)){
@@ -137,6 +155,7 @@ public class UserController extends SuperController{
             beneficiary.setPercentage(perc1);
             beneficiary.setRelation(relation1);
             beneficiaryList.add(beneficiary);
+            percentage1 = new Integer(perc1);
         }
 
         if(StringUtils.isNotEmpty(perc2) && StringUtils.isNotEmpty(beneficiary2)){
@@ -145,6 +164,7 @@ public class UserController extends SuperController{
             beneficiary.setPercentage(perc2);
             beneficiary.setRelation(relation2);
             beneficiaryList.add(beneficiary);
+            percentage2 = new Integer(perc2);
         }
 
         if(StringUtils.isNotEmpty(perc3) && StringUtils.isNotEmpty(beneficiary3)){
@@ -153,6 +173,7 @@ public class UserController extends SuperController{
             beneficiary.setPercentage(perc3);
             beneficiary.setRelation(relation3);
             beneficiaryList.add(beneficiary);
+            percentage3 = new Integer(perc3);
         }
 
         if(StringUtils.isNotEmpty(perc4) && StringUtils.isNotEmpty(beneficiary4)){
@@ -161,6 +182,7 @@ public class UserController extends SuperController{
             beneficiary.setPercentage(perc4);
             beneficiary.setRelation(relation4);
             beneficiaryList.add(beneficiary);
+            percentage4 = new Integer(perc4);
         }
 
         if(StringUtils.isNotEmpty(perc5) && StringUtils.isNotEmpty(beneficiary5)){
@@ -169,12 +191,17 @@ public class UserController extends SuperController{
             beneficiary.setPercentage(perc5);
             beneficiary.setRelation(relation5);
             beneficiaryList.add(beneficiary);
+            percentage5 = new Integer(perc5);
         }
 
-        if(StringUtils.equals(aUserRole,"ROLE_CUSTOMER")){
-            user.setBeneficiary(beneficiaryList);
-        }else{
-            user.setBeneficiary(null);
+            if( (100 == percentage1 + percentage2
+                    + percentage3 + percentage4
+                    + percentage5 ) ){
+                user.setBeneficiary(beneficiaryList);
+            }else{
+                model.addAttribute("error", "Beneficiary Percentage does not add up");
+                return "userCustomer";
+            }
         }
 
         user.setGender(gender); //TODO: Check thymeleaf! should map automatically
@@ -184,7 +211,6 @@ public class UserController extends SuperController{
     }
 
     private User getUserRoleFromRequest(User user, String aUserRoleInput) {
-
         UserRole aUserRole = userRoleService.findUserRoleByName(aUserRoleInput);
         if(aUserRole==null){
             aUserRole = new UserRole();

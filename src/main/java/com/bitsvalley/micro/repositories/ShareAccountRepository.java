@@ -8,7 +8,7 @@ public interface ShareAccountRepository extends CrudRepository<ShareAccount, Lon
 
     ShareAccount findByAccountNumber(String accountNumber);
 
-    @Query("SELECT COUNT(*) AS numberOfSavingAccount FROM ShareAccount")
-    int findAllCount();
+    @Query(value = "SELECT COUNT(*) AS numberOfShareAccount FROM ShareAccount sa where sa.branchCode = :branchCode")
+    int countNumberOfProductsCreatedInBranch(String branchCode);
 
 }

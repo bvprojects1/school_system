@@ -8,9 +8,10 @@
 <br/><br/><br/><br/><br/><br/>
 <table width="90%" class="center">
     <tr>
-        <td><font size="1.5">Account Owner</font><br/><font size="4"> <span style
-                                                                          th:text="${session.customerInUse.userName}"/>'s
-        </font>
+        <td><font size="1.5">Account Owner</font><br/>
+            <font color="gray" size="4">
+                <span style th:text="${session.customerInUse.gender +' '+session.customerInUse.firstName +' '+session.customerInUse.lastName }"/>
+            </font>
             <button type="submit"><a href="#" th:href="@{/file/{userName}(userName=${session.customerInUse.userName})}">Upload
                 I.D</a></button>
         </td>

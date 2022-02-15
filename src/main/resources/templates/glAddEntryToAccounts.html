@@ -47,31 +47,40 @@
         <br/>
 
         <form action="#" th:action="@{/userHomeLedgerEntryForm}" method="post" th:object="${ledgerEntryDTO}">
-            <table border="0" class="center" width="100%" cellpadding="5">
+            <table align="top" border="1" class="center" width="100%" cellpadding="5">
                 <tr>
-                    <td>
-                        <b>Select From</b><br/>
-                        <select class="selectNormal" th:field="*{originLedgerAccount}">
-                            <option th:each="i : ${originLedgerAccounts}"
-                                    th:value="${i.id}">
-                                <span th:text="${i.code}"/>
-                            </option>
-                        </select>
-                        <br/><font size="2"> (Opposite booking Type happens in various customer accounts)</font>
-                    </td>
-                    <td><b>Enter Amount</b><br/>
+                    <td style="width:50%"><b>Enter Amount</b><br/>
                         <input required class="selectAmount" name="glAccountAmount" type="text" th:field="*{ledgerAmount}"/>
+                        <br/>
+                        <font size="2">(Amount to be transfered between accounts )</font>
                     </td>
-                    <td><b>From User Accounts</b><br/>
+                    <td style="width:50%"><b>From User Accounts</b><br/>
                         <input class="selectAmount" name="fromAccountToLedger" type="checkbox" th:field="*{fromAccountToLedger}"/>
                         <br/><font size="2"> (Check to transfer from user account)</font>
                     </td>
-                    <td><b>Date</b><br/>
-                        <input required name="recordDate" type="date"/><br/>
-                        <font size="2"> Record entry date</font>
-                    </td>
                 </tr>
             </table>
+            <table align="top" border="1" class="center" width="100%" cellpadding="5">
+                <tr>
+                <td style="width:50%">
+                <b>Select From</b>
+                <br/>
+                <select class="selectNormal" th:field="*{originLedgerAccount}">
+                    <option th:each="i : ${originLedgerAccounts}"
+                            th:value="${i.id}">
+                        <span th:text="${i.code}"/>
+                    </option>
+                </select>
+                <br/>
+                    <font size="2"> (Opposite booking Type happens in various customer accounts)</font>
+                </td>
+                <td style="width:50%"><b>Date</b><br/>
+                    <input class="selectNormal" required name="recordDate" type="date"/><br/>
+                    <font size="2"> Record entry date</font>
+                </td>
+                </tr>
+            </table>
+
             <br/>
             <table border="0" class="center" width="100%" cellpadding="5">
                 <tr>
@@ -95,10 +104,8 @@
                         </font>
                         <font size="4">
                             <span th:text="${currentAccount.accountNumber}"/></span>
-                            <span> CURRENT ACCOUNT </span>
 <!--                            <br/>-->
 <!--                            <span th:text="${currentAccount.accountType.name}"/>-->
-
                         </font>
                         <input class="selectAmount" required type="text" th:name="${currentAccount.accountNumber}">
                         <span th:text="' Balance: '+${#numbers.formatDecimal(currentAccount.accountBalance, 0, 'COMMA', 0, 'POINT')}"/>

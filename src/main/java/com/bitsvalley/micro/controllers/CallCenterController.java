@@ -29,13 +29,16 @@ public class CallCenterController extends SuperController{
     @GetMapping(value = "/callcenter/{accountNumber}")
     public String showCustomer(@PathVariable("accountNumber") String accountNumber, ModelMap model, HttpServletRequest request) {
         List<CallCenter> callCenterList = callCenterRepository.findByAccountNumber(accountNumber);
-        Collections.reverse(callCenterList);
-        model.put("callCenterList", callCenterList);
 
-        String aAccountNumber = callCenterList.get(0).getAccountNumber();
-        String accountHolderName = callCenterList.get(0).getUserName();
-        model.put("accountNumber",aAccountNumber );
-        model.put("accountHolderName",accountHolderName );
+        if( callCenterList != null ){
+            Collections.reverse(callCenterList);
+            model.put("callCenterList", callCenterList);
+
+            String aAccountNumber = callCenterList.get(0).getAccountNumber();
+            String accountHolderName = callCenterList.get(0).getUserName();
+            model.put("accountNumber",aAccountNumber );
+            model.put("accountHolderName",accountHolderName );
+        }
         return "callCenter";
     }
 

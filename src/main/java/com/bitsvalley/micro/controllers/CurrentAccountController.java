@@ -70,7 +70,7 @@ public class CurrentAccountController extends SuperController {
 
 
     @PostMapping(value = "/registerCurrentAccountForm")
-    public String registerSavingAccount(@ModelAttribute("current") CurrentAccount currentAccount, ModelMap model, HttpServletRequest request) {
+    public String registerCurrentAccount(@ModelAttribute("current") CurrentAccount currentAccount, ModelMap model, HttpServletRequest request) {
         User user = (User) request.getSession().getAttribute(BVMicroUtils.CUSTOMER_IN_USE);
         user = userRepository.findById(user.getId()).get();
         Branch branchInfo = branchService.getBranchInfo(getLoggedInUserName());//TODO Create branch repo
@@ -83,6 +83,7 @@ public class CurrentAccountController extends SuperController {
 
         currentAccount.setAccountType(accountType);
         currentAccountService.createCurrentAccount(currentAccount, user);
+        callCenterService.callCenterCurrentAccount(currentAccount);
         return findUserByUserName(user, model, request);
     }
 

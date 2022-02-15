@@ -1,6 +1,7 @@
 package com.bitsvalley.micro.services;
 
 import com.bitsvalley.micro.domain.CallCenter;
+import com.bitsvalley.micro.domain.CurrentAccount;
 import com.bitsvalley.micro.domain.SavingAccount;
 import com.bitsvalley.micro.domain.User;
 import com.bitsvalley.micro.repositories.AccountTypeRepository;
@@ -75,6 +76,11 @@ public class CallCenterService extends SuperService{
     public void callCenterSavingAccount(SavingAccount savingAccount) {
         saveCallCenterLog("", savingAccount.getUser().getUserName(),
                 savingAccount.getAccountNumber(), BVMicroUtils.SAVING_ACCOUNT_CREATED);
+    }
+
+    public void callCenterCurrentAccount(CurrentAccount currentAccount) {
+        saveCallCenterLog("", currentAccount.getUser().getUserName(),
+                currentAccount.getAccountNumber(), BVMicroUtils.CURRENT_ACCOUNT_CREATED);
     }
 
     public void callCenterUserAccount(User user, String notes) {

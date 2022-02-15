@@ -76,16 +76,14 @@ public class CurrentAccountService extends SuperService {
         return currentAccountRepository.findByAccountNumber(accountNumber);
     }
 
-    public int findAllSavingAccountCount() {
-        return savingAccountRepository.findAllCount();
-    }
-
     public void createCurrentAccount(CurrentAccount currentAccount, User user) {
 
-        long count = currentAccountRepository.count();
+        int countNumberOfProductsInBranch =  1 + currentAccountRepository.countNumberOfProductsCreatedInBranch(user.getBranch().getCode());
 
-        currentAccount.setAccountNumber(BVMicroUtils.getCobacSavingsAccountNumber(currentAccount.getCountry(),
-                currentAccount.getProductCode(), currentAccount.getBranchCode(), count)); //TODO: Collision
+//      int numberOfCustomer = userRepository.countNumberOfCustomers(customerList);
+
+        currentAccount.setAccountNumber(BVMicroUtils.getCobacSavingsAccountNumber( currentAccount.getCountry(), currentAccount.getProductCode(), countNumberOfProductsInBranch, user.getCustomerNumber(), currentAccount.getBranchCode())); //TODO: Collision
+
         currentAccount.setAccountStatus(AccountStatus.ACTIVE);
         currentAccount.setCreatedBy(getLoggedInUserName());
         currentAccount.setCreatedDate(new Date(System.currentTimeMillis()));
@@ -102,24 +100,24 @@ public class CurrentAccountService extends SuperService {
         user = userRepository.findById(user.getId()).get();
         user.getCurrentAccount().add(currentAccount);
         userService.saveUser(user);
-//
+
 //        //TODO: Move to callCenter service
 //        callCenterService.callCenterUpdate(savingAccount);
 
     }
 
 
-    public CurrentBilanzList getCurrentAccountByUser(User user, boolean calculateInterest) {
-        User aUser = null;
-        if (null != user.getUserName()) {
-            aUser = userRepository.findByUserName(user.getUserName());
-        } else {
-            aUser = userRepository.findById(user.getId()).get();
-        }
-        ArrayList<User> userList = new ArrayList<User>();
-        userList.add(aUser);
-        return calculateUsersInterest(userList, calculateInterest);
-    }
+//    public CurrentBilanzList getCurrentAccountByUser(User user, boolean calculateInterest) {
+//        User aUser = null;
+//        if (null != user.getUserName()) {
+//            aUser = userRepository.findByUserName(user.getUserName());
+//        } else {
+//            aUser = userRepository.findById(user.getId()).get();
+//        }
+//        ArrayList<User> userList = new ArrayList<User>();
+//        userList.add(aUser);
+//        return calculateUsersInterest(userList, calculateInterest);
+//    }
 
     @Transactional
     public void createCurrentAccountTransaction(CurrentAccountTransaction currentAccountTransaction, CurrentAccount currentAccount) {
