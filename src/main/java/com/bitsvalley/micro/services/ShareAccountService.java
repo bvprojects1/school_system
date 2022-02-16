@@ -54,11 +54,24 @@ public class ShareAccountService extends SuperService{
     @Autowired
     private CurrentAccountRepository currentAccountRepository;
 
+    @Autowired
+    private UserRoleService userRoleService;
+
+    @Autowired
+    private UserService userService;
+
     public void createShareAccount(ShareAccount shareAccount, User user) {
 
-        long count = shareAccountRepository.count();
+        //TODO: REPLACE WITH DB QUERY
+        ArrayList<UserRole> userRoleList = new ArrayList<UserRole>();
+        UserRole customer = userRoleService.findUserRoleByName("ROLE_CUSTOMER");
+        userRoleList.add(customer);
+        ArrayList<User> customerList = userService.findAllByUserRoleIn(userRoleList);
+
+        int countNumberOfProductsInBranch = shareAccountRepository.countNumberOfProductsCreatedInBranch(user.getBranch().getCode());
         shareAccount.setAccountNumber(BVMicroUtils.getCobacSavingsAccountNumber(shareAccount.getCountry(),
-                shareAccount.getProductCode(), shareAccount.getBranchCode(), count));
+                shareAccount.getProductCode(),countNumberOfProductsInBranch, user.getCustomerNumber(), shareAccount.getBranchCode())); //TODO: Collision
+
         shareAccount.setAccountStatus(AccountStatus.PENDING_APPROVAL);
         shareAccount.setCreatedBy(getLoggedInUserName());
         Date date = new Date(System.currentTimeMillis());

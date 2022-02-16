@@ -123,7 +123,6 @@ public class LoanAccountService extends SuperService {
 
     @Transactional
     public void createLoanAccount(LoanAccount loanAccount, User user) {
-        int allCount = loanAccountRepository.findAllCount();
 
         String loggedInUserName = getLoggedInUserName();
         User aUser = userRepository.findByUserName(loggedInUserName);
@@ -133,8 +132,17 @@ public class LoanAccountService extends SuperService {
         loanAccount.setCountry(aUser.getBranch().getCountry());
         loanAccount.setBranchCode(aUser.getBranch().getCode());
         loanAccount.setCurrentLoanAmount(loanAccount.getLoanAmount());
+
+        ArrayList<UserRole> userRoleList = new ArrayList<UserRole>();
+        UserRole customer = userRoleService.findUserRoleByName("ROLE_CUSTOMER");
+        userRoleList.add(customer);
+        ArrayList<User> customerList = userService.findAllByUserRoleIn(userRoleList);
+
+        int countNumberOfProductsInBranch = loanAccountRepository.countNumberOfProductsCreatedInBranch(user.getBranch().getCode());
         loanAccount.setAccountNumber(BVMicroUtils.getCobacSavingsAccountNumber(loanAccount.getCountry(),
-                loanAccount.getProductCode(), loanAccount.getBranchCode(), allCount)); //TODO: Collision
+                loanAccount.getProductCode(),countNumberOfProductsInBranch, user.getCustomerNumber(), loanAccount.getBranchCode())); //TODO: Collision
+
+
         loanAccount.setAccountStatus(AccountStatus.PENDING_APPROVAL);
 
         Date dateNow = new Date(System.currentTimeMillis());

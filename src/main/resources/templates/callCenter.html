@@ -16,8 +16,13 @@
             <table border="0" width="90%" class="center">
                 <tr><td>
                      <font size="1.5px"> Account Number</font> <br/>
-                    <font color="#2d363f" size="4px"> <div th:text="${accountNumber}"></div>
-                    </font> </td>
+                    <a href="#" th:href="@{/showCustomer/{id}(id=${session.customerInUse.id})}">
+                    <font color="#2d363f" size="4px">
+                        <div th:text="${accountNumber}">
+                        </div>
+                    </font>
+                    </a>
+                </td>
                 <td>
                     <font color="#2d363f" size="1.5px">  Account Name </font> <br/>
                         <font color="#2d363f" size="4px"> <div th:text="${accountHolderName}"></div>

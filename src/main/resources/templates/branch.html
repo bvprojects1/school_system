@@ -33,51 +33,57 @@
                             <div class="col-md-12">
                                 <label for="country">Choose a Country:</label>
                                 <select class="selectMedium" name="country" id="country">
-                                        <option value="01">CAMEROON</option>
-                                        <option value="02">GABON</option>
+                                        <option value="100">CAMEROON</option>
+                                        <option value="200">GABON</option>
                                 </select>
                                 <br/>
                                 <br/>
+                                Code<br/>
                                 <input type="text" name="code" th:field="*{code}" id="code"
-                                       placeholder="code" class="form-control" required>
+                                       class="form-control" required>
                                 <br/>
 
+                                Name<br/>
                                 <input type="text" name="name" th:field="*{name}" id="name"
-                                       placeholder="name" class="form-control" required>
+                                       class="form-control" required>
                                 <br/>
+                                Street<br/>
                                 <input type="text" name="street" th:field="*{street}" id="street"
-                                       placeholder="Street" class="form-control" required>
+                                       class="form-control" required>
 
                                 <br/>
+                                City<br/>
                                 <input type="text" name="city" th:field="*{city}" id="city"
-                                       placeholder="city" class="form-control" required>
+                                       class="form-control" required>
 
                                 <br/>
+                                P. O. Box<br/>
                                 <input type="poBox" name="poBox" th:field="*{poBox}" id="poBox"
-                                       placeholder="PO Box" class="form-control">
+                                       class="form-control">
 
                                 <br/>
-                                <input type="text" name="telephone" th:field="*{telephone}" id="telephone"
-                                       placeholder="Telephone" class="form-control" required>
+                                Telephone<br/>
+                                <input type="text" name="telephone" th:field="*{telephone}" id="telephone" class="form-control" required>
                                 <br/>
 
+                                Fax<br/>
                                 <input type="text" name="fax" th:field="*{fax}" id="fax"
-                                       placeholder="fax" class="form-control">
+                                       class="form-control">
 
                                 <br/>
-
+                                Email<br/>
                                 <input type="email" name="email" th:field="*{email}" id="email"
-                                       placeholder="Email" class="form-control" required>
+                                       class="form-control" required>
 
                                 <br/>
-
+                                Contact Person<br/>
                                 <input type="text" name="contact" th:field="*{contact}" id="contact"
-                                       placeholder="contact" class="form-control" required>
+                                       class="form-control" required>
 
                                 <br/>
-
+                                Notes e.g Opening hours ..<br/>
                                 <input type="text" name="notes" th:field="*{notes}" id="notes"
-                                       placeholder="Notes e.g Opening hours .." class="form-control">
+                                       class="form-control">
                                 <br/>
 
                                 <input type="submit" class="btn-block btn contact-btn" value="CREATE BRANCH"/>

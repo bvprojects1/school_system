@@ -8,7 +8,7 @@ public interface SavingAccountRepository extends CrudRepository<SavingAccount, L
 
     SavingAccount findByAccountNumber(String accountNumber);
 
-    @Query("SELECT COUNT(*) AS numberOfSavingAccount FROM SavingAccount")
-    int findAllCount();
+    @Query(value = "SELECT COUNT(*) AS numberOfSavingAccount FROM SavingAccount sa where sa.branchCode = :branchCode")
+    int countNumberOfProductsCreatedInBranch(String branchCode);
 
 }

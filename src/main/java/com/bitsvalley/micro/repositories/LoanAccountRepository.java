@@ -10,10 +10,10 @@ public interface LoanAccountRepository extends CrudRepository<LoanAccount, Long>
 
     LoanAccount findByAccountNumber(String accountNumber);
 
-    @Query("SELECT COUNT(*) AS numberOfLoanAccount FROM LoanAccount")
-    int findAllCount();
-
     @Query(value = "SELECT *  FROM LOANACCOUNT la WHERE la.Account_Status != 0", nativeQuery = true)
     List<LoanAccount> findByStatusNotActive();
+
+    @Query(value = "SELECT COUNT(*) AS numberOfLoanAccount FROM LoanAccount la where la.branchCode = :branchCode")
+    int countNumberOfProductsCreatedInBranch(String branchCode);
 
 }

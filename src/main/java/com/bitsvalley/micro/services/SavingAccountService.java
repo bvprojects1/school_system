@@ -74,16 +74,17 @@ public class SavingAccountService extends SuperService {
         return savingAccountRepository.findByAccountNumber(accountNumber);
     }
 
-    public int findAllSavingAccountCount() {
-        return savingAccountRepository.findAllCount();
-    }
-
     public void createSavingAccount(SavingAccount savingAccount, User user) {
 
-        long count = savingAccountRepository.count();
+        ArrayList<UserRole> userRoleList = new ArrayList<UserRole>();
+        UserRole customer = userRoleService.findUserRoleByName("ROLE_CUSTOMER");
+        userRoleList.add(customer);
+        ArrayList<User> customerList = userService.findAllByUserRoleIn(userRoleList);
 
+        int countNumberOfProductsInBranch = savingAccountRepository.countNumberOfProductsCreatedInBranch(user.getBranch().getCode());
         savingAccount.setAccountNumber(BVMicroUtils.getCobacSavingsAccountNumber(savingAccount.getCountry(),
-                savingAccount.getProductCode(), savingAccount.getBranchCode(), count)); //TODO: Collision
+                savingAccount.getProductCode(),countNumberOfProductsInBranch, user.getCustomerNumber(), savingAccount.getBranchCode())); //TODO: Collision
+
         savingAccount.setAccountStatus(AccountStatus.ACTIVE);
         savingAccount.setCreatedBy(getLoggedInUserName());
         savingAccount.setCreatedDate(new Date(System.currentTimeMillis()));

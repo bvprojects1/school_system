@@ -20,6 +20,7 @@ public class User {
 
     @Column(unique = true)
     private String userName;
+    private String customerNumber;
     private String firstName;
     private String lastName;
     private String gender;
@@ -306,4 +307,11 @@ public class User {
         this.identityCardExpiry = identityCardExpiry;
     }
 
+    public String getCustomerNumber() {
+        return customerNumber;
+    }
+
+    public void setCustomerNumber(String customerNumber) {
+        this.customerNumber = customerNumber;
+    }
 }

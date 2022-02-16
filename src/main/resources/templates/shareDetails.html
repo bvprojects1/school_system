@@ -126,11 +126,9 @@
             <tr>
                 <td align="center" colspan="2">
                     <font size="4">Account Owner</font><br/>
-                    <font size="6">
-                        <a href="#" th:href="@{/showCustomer/{id}(id=${session.customerInUse.id})}">
-                            <span style th:text="${session.customerInUse.userName}"/>'s
-                        </a>
-                    </font>
+                    <font color="gray" size="4">
+                                <span style th:text="${session.customerInUse.gender +' '+session.customerInUse.firstName +' '+session.customerInUse.lastName }"/>
+                            </font>
                     <br/><br/>
                     <label> From Current Account:</label><br/>
                     <select class="selectNormal" th:field="*{transferFromAccount}">

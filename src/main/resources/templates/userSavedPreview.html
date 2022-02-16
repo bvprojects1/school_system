@@ -91,11 +91,12 @@
                         <br/>
                         <br/>
                         <br/>
-                        <label> <p>Beneficiaries:</p></label>
+                        <label> <p>Beneficiaries</p></label>
                         <div th:each="aBeneficiary : ${user.beneficiary}">
                             <span th:text="${aBeneficiary.name}"></span>
-                            <span th:text="${aBeneficiary.percentage}"></span>
+                            <span th:text="${aBeneficiary.percentage}"></span>%
                             <span th:text="${aBeneficiary.relation}"></span>
+                            <span th:text="${aBeneficiary.notes}"></span>
                         </div>
 
 <!--                        <label><b> Notes:</b></label>-->

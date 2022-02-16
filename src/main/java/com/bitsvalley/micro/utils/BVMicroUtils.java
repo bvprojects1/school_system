@@ -33,6 +33,7 @@ public class BVMicroUtils {
 
     public static final String SAVINGS_MINIMUM_BALANCE_ADDED_BY = "Savings minimum balance added by: ";
     public static final String SAVING_ACCOUNT_CREATED = "Saving account created ";
+    public static final String CURRENT_ACCOUNT_CREATED = "Current account created ";
 
     public static final String CURRENT = "CURRENT";
 
@@ -234,11 +235,25 @@ public class BVMicroUtils {
     }
 
 
-    public static String getCobacSavingsAccountNumber(String country, String productCode, String branch, long count) {
-        count = count + 1000000001;
-        String accountNumber = count + "";
-        accountNumber = accountNumber.replaceFirst("1", "");
-        accountNumber = country + productCode + accountNumber + branch;
+    public static String getCobacSavingsAccountNumber(String countryCode, String productCode,
+                                                      int numberOfProductsInBranch, String generalCustomerCount,
+                                                      String branch) {
+
+        //country code - 3 digits
+        //product code - 2 digits
+        //number of products for that branch - 5 digits
+        //customer number starting with 101 - 11 digit
+        //branch code 001 - 3 digit
+
+        String accountNumber = "101"+generalCustomerCount;
+        accountNumber = accountNumber.replaceFirst("1011", "101");
+
+        numberOfProductsInBranch = numberOfProductsInBranch + 100000;
+        String noOfProductsInBranch = numberOfProductsInBranch + "";
+        noOfProductsInBranch = noOfProductsInBranch.replaceFirst("1", "");
+
+        accountNumber = countryCode + productCode + noOfProductsInBranch + accountNumber + branch;
+
         return accountNumber;
     }
 
