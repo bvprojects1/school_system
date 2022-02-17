@@ -315,29 +315,29 @@ public class CurrentAccountService extends SuperService {
     }
 
 
-    public boolean checkDefaultLogic(SavingAccount savingAccount) {
-
-//        if(savingAccount.getAccountSavingType().getName().equals("GENERAL SAVINGS")){
-        List<SavingAccountTransaction> savingAccountTransactionList = savingAccount.getSavingAccountTransaction();
-
-        LocalDateTime currentDateCal = LocalDateTime.now();
-        Date input = savingAccount.getCreatedDate();
-        LocalDate createdLocalDate = input.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-
-
-        long monthsBetween = ChronoUnit.MONTHS.between(
-                YearMonth.from(LocalDate.of(createdLocalDate.getYear(), createdLocalDate.getMonth(),createdLocalDate.getDayOfMonth())),
-                YearMonth.from(LocalDate.of(currentDateCal.getYear() , currentDateCal.getMonth(),currentDateCal.getYear())));
-
-        if (monthsBetween >= savingAccountTransactionList.size()) {
-            CallCenter callCenter = new CallCenter();
-            callCenter.setNotes(BVMicroUtils.REGULAR_MONTHLY_PAYMENT_MISSING);
-            callCenter.setDate(new Date(System.currentTimeMillis()));
-            callCenter.setReference(savingAccount.getUser().getFirstName() + " " + savingAccount.getUser().getLastName());
-            callCenter.setAccountNumber(savingAccount.getAccountNumber());
-            callCenterService.callCenterSavingAccount(savingAccount);
-            return true;
-        }
+//    public boolean checkDefaultLogic(SavingAccount savingAccount) {
+//
+////        if(savingAccount.getAccountSavingType().getName().equals("GENERAL SAVINGS")){
+//        List<SavingAccountTransaction> savingAccountTransactionList = savingAccount.getSavingAccountTransaction();
+//
+//        LocalDateTime currentDateCal = LocalDateTime.now();
+//        Date input = savingAccount.getCreatedDate();
+//        LocalDate createdLocalDate = input.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+//
+//
+//        long monthsBetween = ChronoUnit.MONTHS.between(
+//                YearMonth.from(LocalDate.of(createdLocalDate.getYear(), createdLocalDate.getMonth(),createdLocalDate.getDayOfMonth())),
+//                YearMonth.from(LocalDate.of(currentDateCal.getYear() , currentDateCal.getMonth(),currentDateCal.getYear())));
+//
+//        if (monthsBetween >= savingAccountTransactionList.size()) {
+//            CallCenter callCenter = new CallCenter();
+//            callCenter.setNotes(BVMicroUtils.REGULAR_MONTHLY_PAYMENT_MISSING);
+//            callCenter.setDate(new Date(System.currentTimeMillis()));
+//            callCenter.setReference(savingAccount.getUser().getFirstName() + " " + savingAccount.getUser().getLastName());
+//            callCenter.setAccountNumber(savingAccount.getAccountNumber());
+//            callCenterService.callCenterSavingAccount(savingAccount);
+//            return true;
+//        }
 
 /*            if (savingAccount.getAccountMinBalance() > totalSaved){
                 CallCenter callCenter = new CallCenter();
@@ -350,8 +350,8 @@ public class CurrentAccountService extends SuperService {
             }*/
 
 //        }
-        return false;
-    }
+//        return false;
+//    }
 
     private String padding(int i) {
         if (i < 10)

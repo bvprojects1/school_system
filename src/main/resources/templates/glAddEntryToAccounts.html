@@ -16,7 +16,11 @@
                     <br/>
                     <font size="4">
                         <a href="#" th:href="@{/showCustomer/{id}(id=${session.customerInUse.id})}">
-                            <span style th:text="${session.customerInUse.userName}"/>
+
+                                <span style th:text="${session.customerInUse.gender +' '+session.customerInUse.firstName +' '+session.customerInUse.lastName }"/>
+                                <br/>
+                                <span style th:text="${session.customerInUse.customerNumber}"/><br/>
+
                         </a>
                     </font>
                     <button type="submit">

@@ -101,7 +101,7 @@ public class UserController extends SuperController{
         userRoleList.add(customer);
         ArrayList<User> customerList = userService.findAllByUserRoleIn(userRoleList);
         int generalCustomerCount = customerList.size() + 100000001;
-        user.setCustomerNumber( generalCustomerCount+"" );
+        user.setCustomerNumber( "10"+generalCustomerCount );
 
         if(user.getId()>0){ //TODO: hmmm operations movin' accounts
             Optional<User> byId = userRepository.findById(user.getId());
