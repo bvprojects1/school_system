@@ -32,10 +32,10 @@
                         <table width="20%" class="center" border="0px">
                             <tr><td>
                             <div class="col-md-12">
-                                <font color="brown" size="4px"> <span th:text="${errorUserCustomer}"/></font>
                                 <select class="selectMedium" name="aUserRole" id="aUserRole">
                                     <option value="ROLE_CUSTOMER">CUSTOMER</option>
                                 </select>
+                                <font color="brown" size="4px"> <span th:text="${errorUserCustomer}"/></font><br/>
                             </div>
                             </td></tr>
                         </table>
@@ -79,7 +79,7 @@
 
                                 Telephone 1<br/>
                                 <input type="text" name="telephone1" th:field="*{telephone1}" id="telephone1"
-                                       placeholder="Telephone 1" class="form-control" required>
+                                       class="form-control" required>
                                 <br/>
 
                                 Telephone 2<br/>
@@ -128,7 +128,7 @@
 
                                 Beneficiary 1<br/>
                                 <input type="text" name="beneficiary1" id="beneficiary1"
-                                       placeholder="Beneficiary 1" class="selectNormal125"/>
+                                       class="selectNormal125"/>
 
                                 <select class="selectNormal" name="relation1" id="relation1">
                                     <option value="">-------</option>
@@ -199,8 +199,7 @@
                                 <br/>
 
                                 Beneficiary 4<br/>
-                                <input class="selectNormal125" type="text" name="beneficiary4" id="beneficiary4"
-                                       max="100" maxlength="3"/>
+                                <input class="selectNormal125" type="text" name="beneficiary4" id="beneficiary4"/>
 
                                 <select class="selectNormal" name="relation4" id="relation4">
                                     <option value="">-------</option>

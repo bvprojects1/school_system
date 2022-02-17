@@ -97,6 +97,7 @@ public class SavingAccountService extends SuperService {
 
         savingAccount.setUser(user);
         savingAccountRepository.save(savingAccount);
+        callCenterService.callCenterSavingAccount(savingAccount);
 
         user = userRepository.findById(user.getId()).get();
         user.getSavingAccount().add(savingAccount);
@@ -332,7 +333,6 @@ public class SavingAccountService extends SuperService {
             callCenter.setDate(new Date(System.currentTimeMillis()));
             callCenter.setReference(savingAccount.getUser().getFirstName() + " " + savingAccount.getUser().getLastName());
             callCenter.setAccountNumber(savingAccount.getAccountNumber());
-            callCenterService.callCenterSavingAccount(savingAccount);
             return true;
         }
 

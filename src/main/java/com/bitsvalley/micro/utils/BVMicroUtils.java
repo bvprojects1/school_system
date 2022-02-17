@@ -236,7 +236,7 @@ public class BVMicroUtils {
 
 
     public static String getCobacSavingsAccountNumber(String countryCode, String productCode,
-                                                      int numberOfProductsInBranch, String generalCustomerCount,
+                                                      int numberOfProductsInBranch, String userAccountNumber,
                                                       String branch) {
 
         //country code - 3 digits
@@ -245,16 +245,15 @@ public class BVMicroUtils {
         //customer number starting with 101 - 11 digit
         //branch code 001 - 3 digit
 
-        String accountNumber = "101"+generalCustomerCount;
-        accountNumber = accountNumber.replaceFirst("1011", "101");
+//        accountNumber = accountNumber.replaceFirst("1011", "101");
 
         numberOfProductsInBranch = numberOfProductsInBranch + 100000;
         String noOfProductsInBranch = numberOfProductsInBranch + "";
         noOfProductsInBranch = noOfProductsInBranch.replaceFirst("1", "");
 
-        accountNumber = countryCode + productCode + noOfProductsInBranch + accountNumber + branch;
+        userAccountNumber = countryCode + productCode + noOfProductsInBranch + userAccountNumber + branch;
 
-        return accountNumber;
+        return userAccountNumber;
     }
 
 

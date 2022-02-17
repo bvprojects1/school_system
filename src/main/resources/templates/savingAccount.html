@@ -31,8 +31,10 @@
                     <br/>
 
                     <a href="#" th:href="@{/showCustomer/{id}(id=${session.customerInUse.id})}">
-                        <font color="gray" size="5">
-                            <b><span style th:text="${session.customerInUse.userName}"/></b>
+                        <font color="gray" size="4">
+                            <span style th:text="${session.customerInUse.gender +' '+session.customerInUse.firstName +' '+session.customerInUse.lastName }"/>
+                            <br/>
+                            <span style th:text="${session.customerInUse.customerNumber}"/><br/>
                         </font>
                     </a>
 
