@@ -109,7 +109,7 @@ public class LoanAccountService extends SuperService {
             callCenterService.callCenterShorteeUpdate(shorteeSavingAccount, loanAccount.getGuarantor1Amount1());
         }
 
-        if(savingAccountGuarantor != null && savingAccountGuarantor.getAccountNumber()!= null){
+        if(savingAccountGuarantor2 != null && savingAccountGuarantor2.getAccountNumber()!= null){
             SavingAccount shorteeSavingAccount = savingAccountService.findByAccountNumber(
                     savingAccountGuarantor2.getAccountNumber());
 
