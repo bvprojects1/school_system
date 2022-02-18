@@ -531,7 +531,7 @@ public class SavingAccountService extends SuperService {
         String loggedInUserName = getLoggedInUserName();
         Branch branchInfo = branchService.getBranchInfo(loggedInUserName);
 
-        SavingAccountTransaction savingAccountTransaction = getSavingAccount(fromAccountNumber, transferAmount, notes, branchInfo, BVMicroUtils.DEBIT_CURRENT_TRANSFER);
+        SavingAccountTransaction savingAccountTransaction = getSavingAccount(fromAccountNumber, transferAmount*-1, notes, branchInfo, BVMicroUtils.DEBIT_CURRENT_TRANSFER);
 
         CurrentAccountTransaction toCurrentAccountTransaction = getCurrentAccountTransaction(notes, branchInfo, toCurrentAccount, transferAmount, BVMicroUtils.DEBIT_CURRENT_TRANSFER);
         toCurrentAccount.getCurrentAccountTransaction().add(toCurrentAccountTransaction);
