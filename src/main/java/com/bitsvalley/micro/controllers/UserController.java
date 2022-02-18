@@ -141,6 +141,12 @@ public class UserController extends SuperController{
         String relation4 = (String) request.getParameter("relation4");
         String relation5 = (String) request.getParameter("relation5");
 
+            String notes1 = (String) request.getParameter("notes1");
+            String notes2 = (String) request.getParameter("notes2");
+            String notes3 = (String) request.getParameter("notes3");
+            String notes4 = (String) request.getParameter("notes4");
+            String notes5 = (String) request.getParameter("notes5");
+
             int percentage1 = 0;
             int percentage2 = 0;
             int percentage3 = 0;
@@ -154,6 +160,7 @@ public class UserController extends SuperController{
             beneficiary.setName(beneficiary1);
             beneficiary.setPercentage(perc1);
             beneficiary.setRelation(relation1);
+            beneficiary.setNotes(notes1);
             beneficiaryList.add(beneficiary);
             percentage1 = new Integer(perc1);
         }
@@ -163,6 +170,7 @@ public class UserController extends SuperController{
             beneficiary.setName(beneficiary2);
             beneficiary.setPercentage(perc2);
             beneficiary.setRelation(relation2);
+            beneficiary.setNotes(notes2);
             beneficiaryList.add(beneficiary);
             percentage2 = new Integer(perc2);
         }
@@ -172,6 +180,7 @@ public class UserController extends SuperController{
             beneficiary.setName(beneficiary3);
             beneficiary.setPercentage(perc3);
             beneficiary.setRelation(relation3);
+            beneficiary.setNotes(notes3);
             beneficiaryList.add(beneficiary);
             percentage3 = new Integer(perc3);
         }
@@ -181,6 +190,7 @@ public class UserController extends SuperController{
             beneficiary.setName(beneficiary4);
             beneficiary.setPercentage(perc4);
             beneficiary.setRelation(relation4);
+            beneficiary.setNotes(notes4);
             beneficiaryList.add(beneficiary);
             percentage4 = new Integer(perc4);
         }
@@ -190,6 +200,7 @@ public class UserController extends SuperController{
             beneficiary.setName(beneficiary5);
             beneficiary.setPercentage(perc5);
             beneficiary.setRelation(relation5);
+            beneficiary.setNotes(notes5);
             beneficiaryList.add(beneficiary);
             percentage5 = new Integer(perc5);
         }
@@ -199,7 +210,7 @@ public class UserController extends SuperController{
                     + percentage5 ) ){
                 user.setBeneficiary(beneficiaryList);
             }else{
-                model.addAttribute("error", "Beneficiary Percentage does not add up");
+                model.addAttribute("error", "Beneficiary Percentage does not add up to 100%");
                 return "userCustomer";
             }
         }
