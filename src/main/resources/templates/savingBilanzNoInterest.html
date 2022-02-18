@@ -126,6 +126,8 @@
                     <span
                             th:text="${#numbers.formatDecimal(savingAccountTransaction.savingAccount.minimumPayment, 0, 'COMMA', 0, 'POINT')}"/>(Minimum)
 
+<!--                        <input class="selectNormal" name="createdDate" type="date"/>-->
+
                     <br/> <br/>
                     <textarea class="selectNormal" placeholder="Enter Amount in letters ..." id="savingAmountInLetters" rows="1" cols="70"
                               th:field="*{savingAmountInLetters}" maxlength="255">

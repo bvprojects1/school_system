@@ -75,24 +75,27 @@ public class LoanAccountService extends SuperService {
     @NotNull
     @Transactional
     public LoanAccount createLoanAccount(User user, LoanAccount loanAccount,
-                                         SavingAccount savingAccountGuarantor) {
+                                         SavingAccount savingAccountGuarantor, SavingAccount savingAccountGuarantor2, SavingAccount savingAccountGuarantor3) {
         Date createdDate = new Date();
         String loggedInUserName = getLoggedInUserName();
         ShorteeAccount shorteeAccount = new ShorteeAccount();
+        ArrayList<ShorteeAccount> listShorteeAccount = new ArrayList<ShorteeAccount>();
 
-        if(savingAccountGuarantor.getAccountNumber()!= null){
+        if(savingAccountGuarantor != null && savingAccountGuarantor.getAccountNumber()!= null){
             SavingAccount shorteeSavingAccount = savingAccountService.findByAccountNumber(
                     savingAccountGuarantor.getAccountNumber());
-            shorteeAccount.setSavingAccount(shorteeSavingAccount);
 
+            shorteeAccount.setSavingAccount(shorteeSavingAccount);
             if( loanAccount.isBlockBalanceQuarantor()){
-                shorteeSavingAccount.setAccountMinBalance(
-                        shorteeSavingAccount.getAccountMinBalance() + loanAccount.getGuarantor1Amount1());
-                shorteeSavingAccount.setLastUpdatedDate(createdDate);
-                shorteeSavingAccount.setLastUpdatedBy(loggedInUserName);
-                shorteeSavingAccount.setAccountStatus(AccountStatus.SHORTEE_ACCOUNT);
-                shorteeSavingAccount.setAccountLocked(true);
-                savingAccountService.save(shorteeSavingAccount);
+                if(loanAccount.getGuarantor1Amount1() > 0 ){
+                    shorteeSavingAccount.setAccountMinBalance(
+                            shorteeSavingAccount.getAccountMinBalance() + loanAccount.getGuarantor1Amount1());
+                    shorteeSavingAccount.setLastUpdatedDate(createdDate);
+                    shorteeSavingAccount.setLastUpdatedBy(loggedInUserName);
+                    shorteeSavingAccount.setAccountStatus(AccountStatus.SHORTEE_ACCOUNT);
+                    shorteeSavingAccount.setAccountLocked(true);
+                    savingAccountService.save(shorteeSavingAccount);
+                }
             }
             shorteeAccount.setAmountShortee(loanAccount.getGuarantor1Amount1());
 
@@ -102,13 +105,69 @@ public class LoanAccountService extends SuperService {
             shorteeAccount.setCreatedBy(loggedInUserName);
             shorteeAccount.setLastUpdatedBy(loggedInUserName);
             shorteeAccountRepository.save(shorteeAccount);
-
-            ArrayList<ShorteeAccount> listShorteeAccount = new ArrayList<ShorteeAccount>();
             listShorteeAccount.add(shorteeAccount);
-            loanAccount.setShorteeAccounts(listShorteeAccount);
-
             callCenterService.callCenterShorteeUpdate(shorteeSavingAccount, loanAccount.getGuarantor1Amount1());
         }
+
+        if(savingAccountGuarantor != null && savingAccountGuarantor.getAccountNumber()!= null){
+            SavingAccount shorteeSavingAccount = savingAccountService.findByAccountNumber(
+                    savingAccountGuarantor2.getAccountNumber());
+
+            shorteeAccount.setSavingAccount(shorteeSavingAccount);
+            if( loanAccount.isBlockBalanceQuarantor()){
+                if(loanAccount.getGuarantor1Amount1() > 0 ){
+                    shorteeSavingAccount.setAccountMinBalance(
+                            shorteeSavingAccount.getAccountMinBalance() + loanAccount.getGuarantor1Amount1());
+                    shorteeSavingAccount.setLastUpdatedDate(createdDate);
+                    shorteeSavingAccount.setLastUpdatedBy(loggedInUserName);
+                    shorteeSavingAccount.setAccountStatus(AccountStatus.SHORTEE_ACCOUNT);
+                    shorteeSavingAccount.setAccountLocked(true);
+                    savingAccountService.save(shorteeSavingAccount);
+                }
+            }
+            shorteeAccount.setAmountShortee(loanAccount.getGuarantor1Amount2());
+
+            shorteeAccount.setCreatedDate(createdDate);
+            shorteeAccount.setLastUpdatedDate(createdDate);
+
+            shorteeAccount.setCreatedBy(loggedInUserName);
+            shorteeAccount.setLastUpdatedBy(loggedInUserName);
+            shorteeAccountRepository.save(shorteeAccount);
+            listShorteeAccount.add(shorteeAccount);
+            callCenterService.callCenterShorteeUpdate(shorteeSavingAccount, loanAccount.getGuarantor1Amount2());
+        }
+
+        if(savingAccountGuarantor3 != null && savingAccountGuarantor3.getAccountNumber()!= null){
+            SavingAccount shorteeSavingAccount = savingAccountService.findByAccountNumber(
+                    savingAccountGuarantor3.getAccountNumber());
+
+            shorteeAccount.setSavingAccount(shorteeSavingAccount);
+            if( loanAccount.isBlockBalanceQuarantor()){
+                if(loanAccount.getGuarantor1Amount3() > 0 ){
+                    shorteeSavingAccount.setAccountMinBalance(
+                            shorteeSavingAccount.getAccountMinBalance() + loanAccount.getGuarantor1Amount3());
+                    shorteeSavingAccount.setLastUpdatedDate(createdDate);
+                    shorteeSavingAccount.setLastUpdatedBy(loggedInUserName);
+                    shorteeSavingAccount.setAccountStatus(AccountStatus.SHORTEE_ACCOUNT);
+                    shorteeSavingAccount.setAccountLocked(true);
+                    savingAccountService.save(shorteeSavingAccount);
+                }
+            }
+            shorteeAccount.setAmountShortee(loanAccount.getGuarantor1Amount3());
+
+            shorteeAccount.setCreatedDate(createdDate);
+            shorteeAccount.setLastUpdatedDate(createdDate);
+
+            shorteeAccount.setCreatedBy(loggedInUserName);
+            shorteeAccount.setLastUpdatedBy(loggedInUserName);
+            shorteeAccountRepository.save(shorteeAccount);
+            listShorteeAccount.add(shorteeAccount);
+            callCenterService.callCenterShorteeUpdate(shorteeSavingAccount, loanAccount.getGuarantor1Amount3());
+        }
+
+
+        loanAccount.setShorteeAccounts(listShorteeAccount);
+
 
 
 
