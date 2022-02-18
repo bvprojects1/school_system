@@ -811,11 +811,11 @@ public class GeneralLedgerService extends SuperService {
                 ledgerAccount = updateGeneralLedger(savingAccountTransaction, BVMicroUtils.CHILDREN_SAVINGS, savingAccountTransaction.getSavingAmount() > 0 ? "CREDIT" : "DEBIT", savingAccountTransaction.getSavingAmount(), true);
                 savingAccountTransaction.setNotes(ledgerAccount.getCode() + " " + savingAccountTransaction.getNotes());
             } else if (StringUtils.equals(
-                    savingAccountTransaction.getSavingAccount().getAccountSavingType().getNumber(), "13")) {
+                    savingAccountTransaction.getSavingAccount().getAccountSavingType().getNumber(), "19")) {
                 ledgerAccount = updateGeneralLedger(savingAccountTransaction, BVMicroUtils.EDUCATION_SAVINGS, savingAccountTransaction.getSavingAmount() > 0 ? "CREDIT" : "DEBIT", savingAccountTransaction.getSavingAmount(), true);
                 savingAccountTransaction.setNotes(ledgerAccount.getCode() + " " + savingAccountTransaction.getNotes());
             } else if (StringUtils.equals(
-                    savingAccountTransaction.getSavingAccount().getAccountSavingType().getNumber(), "13")) {
+                    savingAccountTransaction.getSavingAccount().getAccountSavingType().getNumber(), "18")) {
                 ledgerAccount = updateGeneralLedger(savingAccountTransaction, BVMicroUtils.REAL_ESTATE_SAVINGS, savingAccountTransaction.getSavingAmount() > 0 ? "CREDIT" : "DEBIT", savingAccountTransaction.getSavingAmount(), true);
                 savingAccountTransaction.setNotes(ledgerAccount.getCode() + " " + savingAccountTransaction.getNotes());
             } else {
@@ -831,26 +831,27 @@ public class GeneralLedgerService extends SuperService {
 
 
     public void updateGLAfterCurrentAccountTransaction(CurrentAccountTransaction currentAccountTransaction) {
-
-        currentAccountTransaction.getNotes();
+        String notes = currentAccountTransaction.getNotes();
         if (currentAccountTransaction.getModeOfPayment().equals(BVMicroUtils.CASH)) {
-            currentAccountTransaction.setNotes(BVMicroUtils.CASH_GL_5001 + " " + currentAccountTransaction.getNotes());
+            currentAccountTransaction.setNotes(BVMicroUtils.CASH_GL_5001 + " " + notes);
             updateGeneralLedger(currentAccountTransaction, BVMicroUtils.CURRENT, currentAccountTransaction.getCurrentAmount() > 0 ? "CREDIT" : "DEBIT", currentAccountTransaction.getCurrentAmount(),  true);
-            currentAccountTransaction.setNotes(BVMicroUtils.CURRENT_GL_3004 + " " + currentAccountTransaction.getNotes());
+            currentAccountTransaction.setNotes(BVMicroUtils.CURRENT_GL_3004 + " " + notes);
             updateGeneralLedger(currentAccountTransaction, BVMicroUtils.CASH, currentAccountTransaction.getCurrentAmount() > 0 ? "DEBIT" : "CREDIT", currentAccountTransaction.getCurrentAmount(),  true);
+            currentAccountTransaction.setNotes(notes);
         }
     }
 
 
 
     public void updateGLAfterCurrentCurrentTransfer(CurrentAccountTransaction currentAccountTransaction) {
-
+        String notes = currentAccountTransaction.getNotes();
         currentAccountTransaction.getNotes();
         if (currentAccountTransaction.getModeOfPayment().equals(BVMicroUtils.CURRENT_CURRENT_TRANSFER)) {
             currentAccountTransaction.setNotes(BVMicroUtils.CURRENT_GL_3004 + " " + currentAccountTransaction.getNotes());
             updateGeneralLedger(currentAccountTransaction, BVMicroUtils.CURRENT, "DEBIT", currentAccountTransaction.getCurrentAmount(),  true);
             currentAccountTransaction.setNotes(BVMicroUtils.CURRENT_GL_3004 + " " + currentAccountTransaction.getNotes());
             updateGeneralLedger(currentAccountTransaction, BVMicroUtils.CURRENT, "CREDIT", currentAccountTransaction.getCurrentAmount(),  true);
+            currentAccountTransaction.setNotes(notes);
         }
     }
 
@@ -859,35 +860,40 @@ public class GeneralLedgerService extends SuperService {
         LedgerAccount ledgerAccount = determineLedgerAccount(savingType);
         String ledgerCode = ledgerAccount.getCode();
 
-        currentAccountTransaction.getNotes();
+        String notes = currentAccountTransaction.getNotes();
         if (currentAccountTransaction.getModeOfPayment().equals(BVMicroUtils.CURRENT_DEBIT_TRANSFER)) {
             currentAccountTransaction.setNotes(ledgerCode + " " + currentAccountTransaction.getNotes());
             updateGeneralLedger(currentAccountTransaction, BVMicroUtils.CURRENT, "DEBIT", currentAccountTransaction.getCurrentAmount(),  true);
             currentAccountTransaction.setNotes(BVMicroUtils.CURRENT_GL_3004 + " " + currentAccountTransaction.getNotes());
             updateGeneralLedger(currentAccountTransaction, ledgerCode, "CREDIT", -1*currentAccountTransaction.getCurrentAmount(),  true);
+            currentAccountTransaction.setNotes(notes);
         }
     }
 
     public void updateGLAfterDebitDebitTransfer(SavingAccountTransaction fromSavingAccountTransaction, SavingAccountTransaction toSavingAccountTransaction) {
         LedgerAccount fromLedgerAccount = determineLedgerAccount(fromSavingAccountTransaction.getSavingAccount().getProductCode());
         LedgerAccount toLedgerAccount = determineLedgerAccount(toSavingAccountTransaction.getSavingAccount().getProductCode());
-        fromSavingAccountTransaction.getNotes();
+        String fromNotes = fromSavingAccountTransaction.getNotes();
+        String toNotes = fromSavingAccountTransaction.getNotes();
         if (fromSavingAccountTransaction.getModeOfPayment().equals(BVMicroUtils.DEBIT_DEBIT_TRANSFER)) {
             fromSavingAccountTransaction.setNotes(BVMicroUtils.SAVINGS_GL_3003 + " " + fromSavingAccountTransaction.getNotes());
             updateGeneralLedger(fromSavingAccountTransaction,fromLedgerAccount.getCode() , "DEBIT", fromSavingAccountTransaction.getSavingAmount(), true);
             toSavingAccountTransaction.setNotes(BVMicroUtils.SAVINGS_GL_3003 + " " + toSavingAccountTransaction.getNotes());
             updateGeneralLedger(toSavingAccountTransaction, toLedgerAccount.getCode(), "CREDIT", toSavingAccountTransaction.getSavingAmount(), true);
+            fromSavingAccountTransaction.setNotes(fromNotes);
+            toSavingAccountTransaction.setNotes(toNotes);
         }
     }
 
     public void updateGLAfterDebitCurrentTransfer(SavingAccountTransaction savingAccountTransaction) {
         LedgerAccount savingLedgerAccount = determineLedgerAccount(savingAccountTransaction.getSavingAccount().getProductCode());
-        savingAccountTransaction.getNotes();
+        String notes = savingAccountTransaction.getNotes();
         if (savingAccountTransaction.getModeOfPayment().equals(BVMicroUtils.DEBIT_CURRENT_TRANSFER)) {
-            savingAccountTransaction.setNotes(savingLedgerAccount.getCode() + " " + savingAccountTransaction.getNotes());
+            savingAccountTransaction.setNotes(savingLedgerAccount.getCode() + " " + notes);
             updateGeneralLedger(savingAccountTransaction, BVMicroUtils.CURRENT_GL_3004, "DEBIT", savingAccountTransaction.getSavingAmount(), true);
-            savingAccountTransaction.setNotes(BVMicroUtils.CURRENT + " " + savingAccountTransaction.getNotes());
+            savingAccountTransaction.setNotes(BVMicroUtils.CURRENT + " " + notes);
             updateGeneralLedger(savingAccountTransaction, savingLedgerAccount.getCode(), "CREDIT", savingAccountTransaction.getSavingAmount(), true);
+            savingAccountTransaction.setNotes(notes);
         }
     }
 
@@ -895,7 +901,6 @@ public class GeneralLedgerService extends SuperService {
     public void updateGLAfterLedgerAccountMultipleAccountEntry(LedgerEntryDTO newLedgerEntryDTO) {
 
 //        String oppositeDirection = newLedgerEntryDTO.getReverse();
-
         List<String> paramValueString = newLedgerEntryDTO.getParamValueString();
         long originLedgerAccount = newLedgerEntryDTO.getOriginLedgerAccount();
 //        LedgerAccount original = ledgerAccountRepository.findById(originLedgerAccount).get();
@@ -1028,10 +1033,8 @@ public class GeneralLedgerService extends SuperService {
         } else if (productCode.equals("46")) {
             return ledgerAccountRepository.findByName(BVMicroUtils.REAL_ESTATE_LOAN);
         } else if (productCode.equals("47")) {
-            return ledgerAccountRepository.findByName(BVMicroUtils.REAL_ESTATE_SAVINGS);
-        } else if (productCode.equals("48")) {
             return ledgerAccountRepository.findByName(BVMicroUtils.OVERDRAFT_LOAN);
-        } else if (productCode.equals("45")) {
+        } else if (productCode.equals("48")) {
             return ledgerAccountRepository.findByName(BVMicroUtils.NJANGI_FINANCING);
         }
         return ledgerAccountRepository.findByName(BVMicroUtils.NO_NAME);

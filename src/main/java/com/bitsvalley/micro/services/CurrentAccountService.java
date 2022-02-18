@@ -123,7 +123,10 @@ public class CurrentAccountService extends SuperService {
     public void createCurrentAccountTransaction(CurrentAccountTransaction currentAccountTransaction, CurrentAccount currentAccount) {
 
         currentAccountTransaction.setCreatedBy(getLoggedInUserName());
-        currentAccountTransaction.setCreatedDate(LocalDateTime.now());
+        if(currentAccountTransaction.getCreatedDate() == null ){
+            currentAccountTransaction.setCreatedDate(LocalDateTime.now());
+        }
+
         currentAccountTransaction.setReference(BVMicroUtils.getSaltString());
 
         currentAccountTransactionRepository.save(currentAccountTransaction);
@@ -153,7 +156,9 @@ public class CurrentAccountService extends SuperService {
         currentAccountTransaction.setNotes("Transfer, loan init payment "+ loanAccountTransaction.getLoanAccount().getAccountNumber());
         currentAccountTransaction.setReference(BVMicroUtils.getSaltString());
         currentAccountTransaction.setCreatedBy(getLoggedInUserName());
+
         currentAccountTransaction.setCreatedDate(LocalDateTime.now());
+
         currentAccountTransactionRepository.save(currentAccountTransaction);
         currentAccount.getCurrentAccountTransaction().add(currentAccountTransaction);
         currentAccountRepository.save(currentAccount);

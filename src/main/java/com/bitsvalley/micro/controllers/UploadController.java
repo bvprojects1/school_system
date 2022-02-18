@@ -45,8 +45,8 @@ public class UploadController extends SuperController{
     @Autowired
     RuntimePropertiesRepository runtimePropertiesRepository;
 
-//    private final String UPLOAD_DIR = "/Users/frusamachifen/";
-    private final String UPLOAD_DIR = "c:\\images\\";
+//    private final String UPLOAD_DIR = "/Users/frusamachifen/bv_micro_workspace/bv_micro/src/main/webapp/assets/images/";
+    private final String UPLOAD_DIR = "c:\\bv_micro\\bv_micro\\src\\main\\webapp\\assets\\images\\";
 
     @GetMapping("/file")
     public String uploadFile(){
@@ -115,7 +115,7 @@ public class UploadController extends SuperController{
             return "redirect:/";
         }
         String fileName = StringUtils.cleanPath(file.getOriginalFilename());
-//        String rpath = request.getRealPath("/");
+//        String completePath = request.getContextPath();
         String completePath = UPLOAD_DIR +fileName;
         RuntimeProperties logo = runtimePropertiesRepository.findByPropertyName("logo");
         if(logo == null){

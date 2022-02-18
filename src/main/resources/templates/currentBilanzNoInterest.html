@@ -125,13 +125,15 @@
                     </select>
 
                     <br/><br/>
-                    <b>Enter Amount:
-                        <br/>
+                    <b>Enter Amount: <br/>
                     </b><input class="selectAmount" placeholder="Enter Amount" type="number"
                                                th:field="*{currentAmount}"
                                                value="${currentAccountTransaction.currentAmount}"/>
                     <span
                         th:text="${#numbers.formatDecimal(currentAccountTransaction.currentAccount.minimumPayment, 0, 'COMMA', 0, 'POINT')}"/>(Minimum)
+
+<!--                    <input class="selectNormal" name="createdDate" type="date"/>-->
+
                     <br/><br/>
                     <textarea class="selectNormal" placeholder="Enter Amount in letters ..." id="currentAmountInLetters" rows="1" cols="70"
                               th:field="*{currentAmountInLetters}" maxlength="255">

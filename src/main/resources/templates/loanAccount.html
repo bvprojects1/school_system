@@ -93,9 +93,27 @@
 
                         Term of Loan:<input class="selectSmall" type="number" th:field="*{termOfLoan}"/>
 
-                        Loan Guarantor 1 - Account No:<input class="selectNormal" type="text"
+
+                        VAT:<input type="text" class="selectNormal" name="vatRate" readonly th:value="${session.runtimeSettings.vatPercent}"/>
+
+                        <br/>
+                        <br/>
+                        <br/>
+
+                        Enter Guarantor Saving Account Numbers:
+                        <br/>
+                        1:<input class="selectNormal" type="text"
                                                              th:field="*{guarantorAccountNumber1}"
-                                                             maxlength="15"/>
+                                                             maxlength="24"/>
+
+                        2:<input class="selectNormal" type="text"
+                                                             th:field="*{guarantorAccountNumber2}"
+                                                             maxlength="24"/>
+
+                        3:<input class="selectNormal" type="text"
+                                                             th:field="*{guarantorAccountNumber3}"
+                                                             maxlength="24"/>
+                        <br/>
                         <br/>
                         <br/>
                         <!--                    Guarantor 2 - Acc #:<input type="text" th:field="*{guarantorAccountNumber2}"-->
@@ -119,11 +137,9 @@
                             <option value="OTHER">OTHER</option>
                         </select>
 
-                        <br/>
-                        <br/>
+
 
 <!--                         <input type="text" readonly name="vatRate1"  th:value="${session.runtimeSettings.vatPercent}"/>-->
-                        VAT:<input type="text" name="vatRate" readonly th:value="${session.runtimeSettings.vatPercent}"/>
                         <br/>
                         <br/>
 

@@ -100,6 +100,9 @@
                     Account Number<br/>
                     <font size="2.5">Date Created</font>
                 </td>
+                <td>
+                    Account Type
+                </td>
 
                 <td>
                     Account Balance
@@ -135,6 +138,7 @@
                     </a><br/>
                     <font size="2"> <span th:text="${#dates.format(currentAccount.createdDate, 'dd-MMM-yyyy HH:mm')}"/></font>
                 </td>
+                <td>CURRENT ACCOUNT</td>
 
                 <td th:text="${#numbers.formatDecimal(currentAccount.accountBalance, 0, 'COMMA', 0, 'POINT')}"/>
 
@@ -295,9 +299,9 @@
                     Current Balance
                 </td>
 
-                <td>
-                    Guarantor
-                </td>
+<!--                <td>-->
+<!--                    Guarantor-->
+<!--                </td>-->
 
                 <td>
                     Creator
@@ -326,11 +330,39 @@
 
                 <td th:text="${#numbers.formatDecimal(loanAccount.currentLoanAmount, 0, 'COMMA', 0, 'POINT')}"/>
 
-                <td><span th:text="${loanAccount.shorteeAccounts[0].savingAccount.accountNumber}"/>
+                <td>
+<!--                    <span th:if="${ loanAccount.shorteeAccounts[0].savingAccount != null }">-->
+<!--                        <span th:text="${loanAccount.shorteeAccounts[0].savingAccount.accountNumber}"/>-->
 
-                <br/>
-                    <span th:text="${loanAccount.shorteeAccounts[0].savingAccount.user.lastName}"/>,
-                    <span th:text="${loanAccount.shorteeAccounts[0].savingAccount.user.firstName}"/>
+<!--                        <br/>-->
+<!--                        <span th:text="${loanAccount.shorteeAccounts[0].savingAccount.user.lastName}"/>-->
+<!--                        <br/>-->
+
+<!--                        <span th:text="${loanAccount.shorteeAccounts[0].savingAccount.user.firstName}"/>-->
+<!--                    </span>-->
+<!--                    <br/>-->
+<!--                    <br/>-->
+<!--                    <span th:if="${loanAccount.shorteeAccounts[1].savingAccount != null}">-->
+<!--                        <span th:text="${loanAccount.shorteeAccounts[1].savingAccount.accountNumber}"/>-->
+
+<!--                        <br/>-->
+<!--                        <span th:text="${loanAccount.shorteeAccounts[1].savingAccount.user.lastName}"/>-->
+<!--                        <br/>-->
+
+<!--                        <span th:text="${loanAccount.shorteeAccounts[1].savingAccount.user.firstName}"/>-->
+<!--                    </span>-->
+<!--                    <br/>-->
+<!--                    <br/>-->
+<!--                    <span th:if="${loanAccount.shorteeAccounts[2].savingAccount != null}">-->
+<!--                        <span th:text="${loanAccount.shorteeAccounts[2].savingAccount.accountNumber}"/>-->
+
+<!--                        <br/>-->
+<!--                        <span th:text="${loanAccount.shorteeAccounts[2].savingAccount.user.lastName}"/>-->
+<!--                        <br/>-->
+
+<!--                        <span th:text="${loanAccount.shorteeAccounts[2].savingAccount.user.firstName}"/>-->
+<!--                    </span>-->
+
                 </td>
 
                 <td th:text="${loanAccount.createdBy}"/>

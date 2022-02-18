@@ -21,6 +21,7 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -245,6 +246,9 @@ public class CurrentAccountController extends SuperController {
         if(null == currentAccountTransaction.getAccountOwner()){
             currentAccountTransaction.setAccountOwner("false");
         }
+        String createdDate = request.getParameter("createdDate");
+//        currentAccountTransaction.setCreatedDate(BVMicroUtils.formatLocaleDate(createdDate));
+
         String currentAccountId = request.getParameter("currentAccountId");
         CurrentAccount currentAccount = currentAccountService.findById(new Long(currentAccountId)).get();
         currentAccountTransaction.setCurrentAccount(currentAccount);

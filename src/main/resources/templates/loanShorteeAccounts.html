@@ -77,6 +77,7 @@
             <th>
             </th>
         </tr>
+        <span th:if="${session.guarantor1 != null}">
         <tr>
             <td th:text="${session.guarantor1.accountNumber}"></td>
             <td th:text="${session.guarantor1.user.firstName}"></td>
@@ -95,41 +96,61 @@
                 <br/>
             </td>
             <td>
-                <br/>
-                <button type="submit" class="btn btn-success">
-                    Apply Loan Guarantees
-                </button>
 
                 <input type="hidden" name="vatOption" th:field="*{vatOption}"/>
                 <input type="hidden" name="blockBalanceQuarantor" th:field="*{blockBalanceQuarantor}"/>
                 <br/>
             </td>
         </tr>
-    <!--    <tr>-->
-    <!--        <td th:text="${guarantor2.accountNumber}"></td>-->
-    <!--        <td>-->
-    <!--            <div th:text="${guarantor2.defaultedPayment}"></div>-->
-    <!--            <div th:text="${guarantor2.productCode}"></div>-->
-    <!--        </td>-->
-    <!--        <td th:text="${guarantor2.accountMinBalance}"></td>-->
-    <!--        <td th:text="${guarantor2.accountBalance}"></td>-->
-    <!--        <td>-->
-    <!--            <input type="checkbox" name="shortee2Amount">-->
-    <!--        </td>-->
-    <!--    </tr>-->
-    <!--    <tr>-->
-    <!--        <td th:text="${guarantor3.accountNumber}"></td>-->
-    <!--        <td>-->
-    <!--            <div th:text="${guarantor3.defaultedPayment}"></div>-->
-    <!--            <div th:text="${guarantor3.productCode}"></div>-->
-    <!--        </td>-->
-    <!--        <td th:text="${guarantor3.accountMinBalance}"></td>-->
-    <!--        <td th:text="${guarantor3.accountBalance}"></td>-->
-    <!--        <td>-->
-    <!--            <input type="checkbox" name="shortee3Amount">-->
-    <!--        </td>-->
-    <!--    </tr>-->
-    <!--    <tr><td colspan="5" th:text="${loanAccount.loanAmount}"></td></tr>-->
+        </span>
+        <span th:if="${session.guarantor2 != null}">
+        <tr>
+            <td th:text="${session.guarantor2.accountNumber}"></td>
+            <td th:text="${session.guarantor2.user.firstName}"></td>
+            <td th:text="${session.guarantor2.user.lastName}"></td>
+            <td th:text="${session.guarantor2.defaultedPayment}"></td>
+            <td th:text="${session.guarantor2.productCode}"></td>
+            <td>
+                <span th:text="${#numbers.formatDecimal(session.guarantor2.accountBalance, 0, 'COMMA', 0, 'POINT')}"/>
+            </td>
+            <td>
+                <span th:text="${#numbers.formatDecimal(session.guarantor2.accountMinBalance, 0, 'COMMA', 0, 'POINT')}"/>
+            </td>
+            <td>
+                <br/>
+                Enter Amount: <input type="number" name="guarantor1Amount2" th:field="*{guarantor1Amount2}">
+                <br/>
+            </td>
+        </tr>
+        </span>
+        <span th:if="${session.guarantor3 != null}">
+        <tr>
+            <td th:text="${session.guarantor3.accountNumber}"></td>
+            <td th:text="${session.guarantor3.user.firstName}"></td>
+            <td th:text="${session.guarantor3.user.lastName}"></td>
+            <td th:text="${session.guarantor3.defaultedPayment}"></td>
+            <td th:text="${session.guarantor3.productCode}"></td>
+            <td>
+                <span th:text="${#numbers.formatDecimal(session.guarantor3.accountBalance, 0, 'COMMA', 0, 'POINT')}"/>
+            </td>
+            <td>
+                <span th:text="${#numbers.formatDecimal(session.guarantor3.accountMinBalance, 0, 'COMMA', 0, 'POINT')}"/>
+            </td>
+            <td>
+                <br/>
+                Enter Amount: <input type="number" name="guarantor1Amount3" th:field="*{guarantor1Amount3}">
+                <br/>
+            </td>
+        </tr>
+        </span>
+        <tr>
+            <td colspan="8">
+                <button type="submit" class="btn btn-success">
+                    Apply Loan Guarantees
+                </button>
+            </td>
+        </tr>
+
     </table>
 </form>
 

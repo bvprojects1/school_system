@@ -167,6 +167,16 @@ public class LoanAccountController extends SuperController {
 //        User user = (User) request.getSession().getAttribute(BVMicroUtils.CUSTOMER_IN_USE);
 //        user = userRepository.findById(user.getId()).get();
 
+        request.getSession().setAttribute("guarantor1",null);
+        request.getSession().setAttribute("guarantor2",null);
+        request.getSession().setAttribute("guarantor3",null);
+
+        if( (loanAccount.getLoanAmount()==0) || (loanAccount.getTermOfLoan() <= 0) || (loanAccount.getInterestRate() < 0)){
+            model.put("loanAccount", loanAccount);
+            model.put("error", "Enter correct loan parameters" );
+            return "loanAccount";
+        }
+
         String vatRate = request.getParameter("vatRate");
         loanAccount.setVatRate(new Float(vatRate));
 
@@ -201,13 +211,12 @@ public class LoanAccountController extends SuperController {
 
         AccountType accountType = accountTypeService.getAccountTypeByProductCode(loanAccount.getProductCode());
         loanAccount.setAccountType(accountType);
-
         String error = "";
 
         if(!StringUtils.isEmpty(loanAccount.getGuarantorAccountNumber1())){
             SavingAccount byAccountNumber1 = savingAccountService.findByAccountNumber(loanAccount.getGuarantorAccountNumber1());
             if(null == byAccountNumber1){
-                error = "Guarantor account number not valid";
+                error = "Guarantor account number 1 not valid";
                 model.put("loanAccount", loanAccount);
                 model.put("error", error );
                 return "loanAccount";
@@ -216,10 +225,24 @@ public class LoanAccountController extends SuperController {
         }
         if(!StringUtils.isEmpty(loanAccount.getGuarantorAccountNumber2())){
             SavingAccount byAccountNumber2 = savingAccountService.findByAccountNumber(loanAccount.getGuarantorAccountNumber2());
+            if(null == byAccountNumber2){
+                error = "Guarantor account number 2 not valid";
+                model.put("loanAccount", loanAccount);
+                model.put("error", error );
+                return "loanAccount";
+            }
+
             request.getSession().setAttribute("guarantor2",byAccountNumber2);
         }
         if(!StringUtils.isEmpty(loanAccount.getGuarantorAccountNumber3())){
             SavingAccount byAccountNumber3 = savingAccountService.findByAccountNumber(loanAccount.getGuarantorAccountNumber3());
+            if(null == byAccountNumber3){
+                error = "Guarantor account number 3 not valid";
+                model.put("loanAccount", loanAccount);
+                model.put("error", error );
+                return "loanAccount";
+            }
+
             request.getSession().setAttribute("guarantor3",byAccountNumber3);
         }
 
@@ -264,18 +287,29 @@ public class LoanAccountController extends SuperController {
 
         LoanAccount loanAccountSession = (LoanAccount)request.getSession().getAttribute("loanAccount");
 
-        loanAccountSession.setGuarantor1Amount1(loanAccount.getGuarantor1Amount1());
-        loanAccountSession.setGuarantorAccountNumber1(loanAccount.getGuarantorAccountNumber1());
+//        int total = loanAccount.getGuarantor1Amount1() +
+//                        loanAccount.getGuarantor1Amount2() +
+//                            loanAccount.getGuarantor1Amount3();
+//        if(loanAccount.getLoanAmount() != total){
+//            model.put("errorShorteeAmount","Shortee Amounts don't add up");
+//            return "loanShorteeAccounts";
+//        }
 
-        String loanShorteeMessage = getLoanShorteeMessage(loanAccountSession);
+        loanAccountSession.setGuarantor1Amount1(loanAccount.getGuarantor1Amount1());
+
+        loanAccountSession.setGuarantor1Amount2(loanAccount.getGuarantor1Amount2());
+
+        loanAccountSession.setGuarantor1Amount3(loanAccount.getGuarantor1Amount3());
+
+//        String loanShorteeMessage = getLoanShorteeMessage(loanAccountSession);
 
         request.getSession().setAttribute("loanAccount", loanAccountSession);
         model.put("loanAccount", loanAccountSession);
 
-        if(!StringUtils.isEmpty(loanShorteeMessage)){
-            model.put("errorShorteeAmount",loanShorteeMessage);
-            return "loanShorteeAccounts";
-        }
+//        if(!StringUtils.isEmpty(loanShorteeMessage)){
+//            model.put("errorShorteeAmount",loanShorteeMessage);
+//            return "loanShorteeAccounts";
+//        }
         return "loanShorteeReview";
     }
 
@@ -300,11 +334,13 @@ public class LoanAccountController extends SuperController {
 
         LoanAccount loanAccountSession = (LoanAccount)request.getSession().getAttribute("loanAccount");
         SavingAccount savingAccountGuarantor1Session = (SavingAccount)request.getSession().getAttribute("guarantor1");
+        SavingAccount savingAccountGuarantor2Session = (SavingAccount)request.getSession().getAttribute("guarantor2");
+        SavingAccount savingAccountGuarantor3Session = (SavingAccount)request.getSession().getAttribute("guarantor3");
 
 //        TODO:  create shortee, update minimum acc. balance on guarantor, call center log, GL entry
         User user = (User) request.getSession().getAttribute(BVMicroUtils.CUSTOMER_IN_USE);
         loanAccountService.createLoanAccount(user,
-                loanAccountSession, savingAccountGuarantor1Session);
+                loanAccountSession, savingAccountGuarantor1Session, savingAccountGuarantor2Session, savingAccountGuarantor3Session);
 
         return "loanCreated";
     }
@@ -366,7 +402,9 @@ public class LoanAccountController extends SuperController {
         LoanAccount aLoanAccount = loanAccount.get();
 
         loanAccountTransaction.setLoanAccount(aLoanAccount);
+
         loanAccountTransaction.setCreatedDate(LocalDateTime.now());
+
         loanAccountTransaction.setCreatedBy(getLoggedInUserName());
         loanAccountTransaction.setAccountOwner(aLoanAccount.getUser().getLastName() +", "+
                 aLoanAccount.getUser().getLastName());

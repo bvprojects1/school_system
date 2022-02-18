@@ -210,6 +210,13 @@ public class BVMicroUtils {
         return format;
     }
 
+//    public static LocalDateTime formatDateTimeFromString(String dateTime) {
+//        dateTime.replaceFirst()
+//        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss a");2022-02-10T19:59
+//        LocalDateTime localDateTime = LocalDateTime.parse(dateTime, formatter);
+//        return localDateTime;
+//    }
+
     public static Date formatDate(String date) {
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
         Date parse = null;

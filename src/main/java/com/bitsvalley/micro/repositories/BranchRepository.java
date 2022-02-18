@@ -10,5 +10,8 @@ public interface BranchRepository extends CrudRepository<Branch, Long> {
 
     List<Branch> findByName(String accountNumber);
 
+    Branch findByCode(String code);
+
+
 
 }
