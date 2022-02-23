@@ -31,9 +31,12 @@ public class SettingController extends SuperController{
 
     @GetMapping(value = "/initsettings")
     public String initSystem(ModelMap model, HttpServletRequest request) {
-        initSystemService.initSystem();
-        model.put("runtimeSetting",initSystemService.findAll());
-        return "settings";
+        if(getLoggedInUserName().equals("bitsv@ll3y")) {
+            initSystemService.initSystem();
+            model.put("runtimeSetting", initSystemService.findAll());
+            return "settings";
+        }
+        return "welcome";
     }
 
     @GetMapping(value = "/viewsettings")
