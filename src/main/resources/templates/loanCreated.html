@@ -84,18 +84,19 @@
                 <div class="error" th:text="${errorShorteeAmount}"/>
             </th>
         </tr>
-        <span th:if="${session.guarantor1 != null}">
-        <tr>
-            <td th:text="${session.guarantor1.accountNumber}"></td>
-            <td th:text="${session.guarantor1.user.firstName}"></td>
-            <td th:text="${session.guarantor1.user.lastName}"></td>
-            <td th:text="${session.guarantor1.defaultedPayment}"></td>
-            <td th:text="${session.guarantor1.productCode}"></td>
+<!--        <span th:if="${session.guarantor1 != null}">-->
+
+        <tr th:each="guarantor1: ${session.guarantor1}">
+            <td th:text="${guarantor1.accountNumber}"></td>
+            <td th:text="${guarantor1.user.firstName}"></td>
+            <td th:text="${guarantor1.user.lastName}"></td>
+            <td th:text="${guarantor1.defaultedPayment}"></td>
+            <td th:text="${guarantor1.productCode}"></td>
             <td>
-                <span th:text="${#numbers.formatDecimal(session.guarantor1.accountBalance, 0, 'COMMA', 0, 'POINT')}"/>
+                <span th:text="${#numbers.formatDecimal(guarantor1.accountBalance, 0, 'COMMA', 0, 'POINT')}"/>
             </td>
             <td>
-                <span th:text="${#numbers.formatDecimal(session.guarantor1.accountMinBalance, 0, 'COMMA', 0, 'POINT')}"/>
+                <span th:text="${#numbers.formatDecimal(guarantor1.accountMinBalance, 0, 'COMMA', 0, 'POINT')}"/>
             </td>
             <td>
                 <!--                Enter Amount: <input type="number" disabled name="guarantor1Amount1"-->

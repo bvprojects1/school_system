@@ -1,5 +1,6 @@
 package com.bitsvalley.micro.utils;
 
+import com.bitsvalley.micro.domain.User;
 import com.bitsvalley.micro.webdomain.RuntimeSetting;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -297,6 +298,10 @@ public class BVMicroUtils {
             return BVMicroUtils.CREDIT;
         }
         return BVMicroUtils.DEBIT;
+    }
+
+    public static String getFullName(User aUser) {
+        return aUser.getGender() + " " + aUser.getFirstName() + " " + aUser.getLastName();
     }
 
 //    @ResponseBody

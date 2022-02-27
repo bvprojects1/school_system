@@ -25,6 +25,7 @@
             <th> Loan Amount</th>
             <th> Loan Owner</th>
             <th> Account No.</th>
+            <th> Rate(%)</th>
             <th> Term</th>
             <th> Branch</th>
             <th> Status</th>
@@ -37,11 +38,11 @@
             <td>
                 <span th:text="${#numbers.formatDecimal(loan.loanAmount, 0, 'COMMA', 0, 'POINT')}"/>
             </td>
-            <td th:text="${loan.user.gender}  + ${loan.user.firstName} + ${loan.user.lastName}"></td>
+            <td th:text="${loan.user.gender}+'. '+ ${loan.user.firstName} +' '+ ${loan.user.lastName}"></td>
             <td th:text="${loan.accountNumber}"></td>
+            <td th:text="${loan.rate}"></td>
             <td th:text="${loan.termOfLoan}"></td>
             <td>
-<!--                <span th:text="${loan.country}"/>-->
                 <span th:text="${loan.branchCode}"/>
             </td>
             <td>

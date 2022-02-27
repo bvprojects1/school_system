@@ -109,27 +109,31 @@
                         <span th:text="${loan.termOfLoan}"/>
                     </font>
                 </td>
-                <td align="center"><font size="2"> Loan Shortee</font> <br/>
-                    nameeeeeeeeeee !!!!
-                    <span th:text="${#lists.size(loan.shorteeAccounts)"/>
-                    nameeeeeeeeeee !!!!
-<!--                    <span th:if="${#lists.size(loan.shorteeAccounts) > 0}"> -->
-<!--                        <font size="4px">-->
-<!--                            <span th:text="${loan.shorteeAccounts[0].savingAccount.user.gender}"/>-->
-<!--                            <span th:text="${loan.shorteeAccounts[0].savingAccount.user.lastName}"/>,-->
-<!--                            <span th:text="${loan.shorteeAccounts[0].savingAccount.user.firstName}"/>-->
-<!--                        </font>-->
-<!--                    </span>-->
+                <td align="center"><font size="2"> Loan Surety</font> <br/>
+            <table>
+                <tr th:each="surety: ${loan.shorteeAccounts}">
+                    <td>
+                        <span th:text="${surety.savingAccount.user.gender +'. '+ surety.savingAccount.user.firstName +' '+ surety.savingAccount.user.lastName}"></span>
+                            <br/>
+                            <span th:text="${#numbers.formatDecimal(surety.amountShortee, 0, 'COMMA', 0, 'POINT')}"/>
+                            <br/>
+                            <span th:text="${surety.savingAccount.accountNumber}">
+                            <br/>
+                            <br/>
+                            <br/>
+                        </span>
+                    </td>
+                </tr>
+            </table>
+
                 </td>
                 <td align="center"><font size="2"> Term of Loan</font><br/>
                     <font size="4px">
                         <div th:text="${loan.termOfLoan}"/>
                     </font>
                 </td>
-                <td align="center"><font size="2">Shortee Account Number</font><br/>
-<!--                    <font size="4px">-->
-<!--                        <span th:text="${loan.shorteeAccounts[0].savingAccount.accountNumber}"/>-->
-<!--                    </font>-->
+                <td align="center"><font size="2">Surety Assets</font><br/>
+<!--                    <span th:text="${loan.notes}"/>-->
                 </td>
                 <td align="center"><font size="2">Notes </font><br/>
                     <font size="4px">
