@@ -34,13 +34,12 @@
         <tr th:each="loan : ${loansList}">
             <td th:text="${loan.createdBy}"></td>
             <td th:text="${#dates.format(loan.createdDate, 'dd-MMM-yyyy HH:mm')}"></td>
-
             <td>
                 <span th:text="${#numbers.formatDecimal(loan.loanAmount, 0, 'COMMA', 0, 'POINT')}"/>
             </td>
             <td th:text="${loan.user.gender}+'. '+ ${loan.user.firstName} +' '+ ${loan.user.lastName}"></td>
             <td th:text="${loan.accountNumber}"></td>
-            <td th:text="${loan.rate}"></td>
+            <td th:text="${loan.interestRate}"></td>
             <td th:text="${loan.termOfLoan}"></td>
             <td>
                 <span th:text="${loan.branchCode}"/>
