@@ -134,7 +134,8 @@ public class PdfService {
                 "<b>RECEIPT FOR CURRENT ACCOUNT TRANSACTION</b></font>" +
                 "<table border=\"1\" width=\"100%\">" +
                 "<tr> <td><table><tr><td>" +
-                "<img width=\"75\" src=\""+ rt.getUnionLogo()+"\"/><br/> Reference No:"+ currentAccountTransaction.getReference() +
+//                "<img width=\"75\" src=\"file:/C:/images/logo.png\"/><br/> Reference No:"+ currentAccountTransaction.getReference() +
+                "<img width=\"75\" src=\"file:/"+rt.getUnionLogo()+"\"/><br/> Reference No:"+ currentAccountTransaction.getReference() +
                 "</td><td><b><font style=\"font-size:1.6em;color:black;\"> "+ rt.getBusinessName() +"</font></b><br/><br/>" + rt.getAddress()+"<br/>" +rt.getTelephone() +"<br/>" +rt.getEmail() +"<br/>" +
                 "</td></tr></table></td>" +
                 "<td>"+
@@ -142,7 +143,7 @@ public class PdfService {
                 "<br/>"+currentAccountTransaction.getModeOfPayment()+" from Account Owner:" + BVMicroUtils.formatCurrency(currentAccountTransaction.getCurrentAmount()) + "<br/>Date:" + BVMicroUtils.formatDateTime(currentAccountTransaction.getCreatedDate()) + "</td></tr>" +
                 "<tr><td>" +
                 "Account Number:" + currentAccountTransaction.getCurrentAccount().getAccountNumber()
-                + "<br/>Customer: <b>"+ currentAccountTransaction.getCurrentAccount().getUser().getGender() + ", " + currentAccountTransaction.getCurrentAccount().getUser().getFirstName() + " " + currentAccountTransaction.getCurrentAccount().getUser().getLastName() +
+                + "<br/>Customer: <b>"+ currentAccountTransaction.getCurrentAccount().getUser().getGender() + ". " + currentAccountTransaction.getCurrentAccount().getUser().getFirstName() + " " + currentAccountTransaction.getCurrentAccount().getUser().getLastName() +
                 "</b> </td>" +
                 "<td>Account Balance: <b>" + BVMicroUtils.formatCurrency(showAmount) + "</b><br/> Current Amount:<font style=\"font-size:1.6em;color:black;\">"
                 + BVMicroUtils.formatCurrency(currentAccountTransaction.getCurrentAmount()) + "</font></td></tr>" +
