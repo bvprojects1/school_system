@@ -124,8 +124,10 @@ public class RuntimeSetting {
     }
 
     public String getUnionLogo() {
+
         unionLogo.replace("\\", "/");
         unionLogo.replace("\\", "/");
+
         return unionLogo;
     }
 

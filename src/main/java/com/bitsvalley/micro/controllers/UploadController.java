@@ -46,7 +46,8 @@ public class UploadController extends SuperController{
     RuntimePropertiesRepository runtimePropertiesRepository;
 
 //    private final String UPLOAD_DIR = "/Users/frusamachifen/bv_micro_workspace/bv_micro/src/main/webapp/assets/images/";
-    private final String UPLOAD_DIR = "c:/images/";
+
+    private final String UPLOAD_DIR = "c:/pdfs/";
 
     @GetMapping("/file")
     public String uploadFile(){
