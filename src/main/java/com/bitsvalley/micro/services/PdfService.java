@@ -3,6 +3,7 @@ package com.bitsvalley.micro.services;
 
 import com.bitsvalley.micro.domain.*;
 import com.bitsvalley.micro.repositories.BranchRepository;
+import com.bitsvalley.micro.repositories.UserRepository;
 import com.bitsvalley.micro.utils.Amortization;
 import com.bitsvalley.micro.utils.AmortizationRowEntry;
 import com.bitsvalley.micro.utils.BVMicroUtils;
@@ -31,9 +32,14 @@ public class PdfService {
     @Autowired
     BranchRepository branchRepository;
 
+    @Autowired
+    UserRepository userRepository;
+
 
     public String generateTransactionReceiptPDF(SavingAccountTransaction savingAccountTransaction, RuntimeSetting rt) {
         Double showAmount = 0.0;
+        User aUser = userRepository.findByUserName(savingAccountTransaction.getCreatedBy());
+
         if( savingAccountTransaction.getAccountOwner() != null && StringUtils.equals("true",savingAccountTransaction.getAccountOwner())){
             showAmount = savingAccountTransaction.getSavingAccount().getAccountBalance();
         }
@@ -55,7 +61,7 @@ public class PdfService {
                 "<td>Account Balance: <b>" + BVMicroUtils.formatCurrency(showAmount) +"</b><br/> Saving Amount:<font style=\"font-size:1.6em;color:black;\">"
                 + BVMicroUtils.formatCurrency(savingAccountTransaction.getSavingAmount()) + "</font></td></tr>" +
                 "        <tr><td colspan=\"2\">" +
-                "Representative: <b>"+ savingAccountTransaction.getCreatedBy()+"</b><br/> Amount in Letters: <font color=\""+rt.getThemeColor()+"\" size=\"8px\"> "
+                "Representative: <b>"+ savingAccountTransaction.getCreatedBy()+"</b> - <br/> "+ BVMicroUtils.getFullName(aUser) +"<br/>"+ BVMicroUtils.getFullName(aUser) +"<br/> Amount in Letters: <font color=\""+rt.getThemeColor()+"\" size=\"8px\"> "
                 +savingAccountTransaction.getSavingAmountInLetters()+"</font><br/>Notes:"+savingAccountTransaction.getNotes()+"</td>\n" +
                 "    </tr></table>" +
                 "    <table  border=\"1\" width=\"100%\" class=\"center\">\n" +
@@ -81,6 +87,7 @@ public class PdfService {
     }
 
     public String generateShareDetailsPDF(ShareAccountTransaction shareAccountTransaction, RuntimeSetting rt) {
+        User aUser = userRepository.findByUserName(shareAccountTransaction.getCreatedBy());
         String currentBilanzNoInterest = "<html><head>" +
                 "</head><body><br/><br/><font style=\"font-size:1.4em;color:black;\">" +
                 "<b>RECEIPT FOR SHARE ACCOUNT TRANSACTION</b></font>" +
@@ -98,7 +105,7 @@ public class PdfService {
                 "<td>Total Share Balance: <b>" + BVMicroUtils.formatCurrency(shareAccountTransaction.getShareAccount().getAccountBalance()) + "</b><br/> Current Amount:<font style=\"font-size:1.6em;color:black;\">"
                 + BVMicroUtils.formatCurrency(shareAccountTransaction.getShareAmount()) + "</font></td></tr>" +
                 "        <tr><td>" +
-                "Representative: <b>" + shareAccountTransaction.getCreatedBy() + "</b></td><td> <font color=\"" + rt.getThemeColor() + "\" size=\"8px\"> "+
+                "Representative: <b>" + shareAccountTransaction.getCreatedBy() + "</b> - "+ BVMicroUtils.getFullName(aUser) +"<br/> </td><td> <font color=\"" + rt.getThemeColor() + "\" size=\"8px\"> "+
                 "</font><br/>Notes:"+shareAccountTransaction.getNotes()+"</td>\n" +
                 "    </tr></table>" +
                 "    <table  border=\"1\" width=\"100%\" class=\"center\">\n" +
@@ -118,8 +125,8 @@ public class PdfService {
     }
 
     public String generateCurrentTransactionReceiptPDF(CurrentAccountTransaction currentAccountTransaction, RuntimeSetting rt) {
-
         Double showAmount = 0.0;
+        User aUser = userRepository.findByUserName(currentAccountTransaction.getCreatedBy());
         if (currentAccountTransaction.getAccountOwner() != null && StringUtils.equals("true", currentAccountTransaction.getAccountOwner())) {
             showAmount = currentAccountTransaction.getCurrentAccount().getAccountBalance();
         }
@@ -127,7 +134,7 @@ public class PdfService {
                 "<b>RECEIPT FOR CURRENT ACCOUNT TRANSACTION</b></font>" +
                 "<table border=\"1\" width=\"100%\">" +
                 "<tr> <td><table><tr><td>" +
-                "<img width=\"75\" src=\""+ rt.getUnionLogo()+"\"/><br/> Reference No:"+ currentAccountTransaction.getReference() +
+                "<img width=\"75\" src=\"file:/"+rt.getUnionLogo()+"\"/><br/> Reference No:"+ currentAccountTransaction.getReference() +
                 "</td><td><b><font style=\"font-size:1.6em;color:black;\"> "+ rt.getBusinessName() +"</font></b><br/><br/>" + rt.getAddress()+"<br/>" +rt.getTelephone() +"<br/>" +rt.getEmail() +"<br/>" +
                 "</td></tr></table></td>" +
                 "<td>"+
@@ -140,7 +147,7 @@ public class PdfService {
                 "<td>Account Balance: <b>" + BVMicroUtils.formatCurrency(showAmount) + "</b><br/> Current Amount:<font style=\"font-size:1.6em;color:black;\">"
                 + BVMicroUtils.formatCurrency(currentAccountTransaction.getCurrentAmount()) + "</font></td></tr>" +
                 "        <tr><td>" +
-                "Representative: <b>" + currentAccountTransaction.getCreatedBy() + "</b></td><td> Amount in Letters: <font color=\"" + rt.getThemeColor() + "\" size=\"8px\"> "
+                "Representative: <b>" + currentAccountTransaction.getCreatedBy() + " - </b>"+ BVMicroUtils.getFullName(aUser) +"<br/></td><td> Amount in Letters: <font color=\"" + rt.getThemeColor() + "\" size=\"8px\"> "
                 + currentAccountTransaction.getCurrentAmountInLetters() + "</font><br/>Notes:"+currentAccountTransaction.getNotes()+"</td>\n" +
                 "    </tr></table>" +
                 "    <table  border=\"1\" width=\"100%\" class=\"center\">\n" +
@@ -238,7 +245,7 @@ public class PdfService {
 //    }
 
     public String generateLoanTransactionReceiptPDF(LoanAccountTransaction loanAccountTransaction, RuntimeSetting rt) {
-
+        User aUser = userRepository.findByUserName(loanAccountTransaction.getCreatedBy());
         String savingBilanzNoInterest = "<html><head>" +
                 "</head><body><br/><br/><font color=\"" + rt.getThemeColor() + "\" size=\"8px\"><b>RECEIPT FOR LOAN PAYMENT MADE</b></font>" +
                 "<table width=\"100%\">" +
@@ -250,7 +257,7 @@ public class PdfService {
                 "<td>Date:<br/><b>" + BVMicroUtils.formatDateTime(loanAccountTransaction.getCreatedDate()) + "</b></td>" +
                 "<td>Amount <b>" + BVMicroUtils.formatCurrency(loanAccountTransaction.getLoanAmount()) + "</b></td></tr>" +
                 "        <tr><td colspan=\"4\">" +
-                "Representative: <b>" + loanAccountTransaction.getCreatedBy() + "</b> </td>" +
+                "Representative: <b>" + loanAccountTransaction.getCreatedBy() + "</b> - "+ BVMicroUtils.getFullName(aUser) +"<br/></td>" +
                 "</tr>" +
                 "<tr><td></td>\n" +
                 "        <td colspan=\"4\">Amount in Letters: <font color=\"" + rt.getThemeColor() + "\" size=\"8px\"> " + loanAccountTransaction.getLoanAmountInLetters() + "</font></td>\n" +

@@ -12,7 +12,7 @@ public class RestController {
 
     private RestTemplate restTemplate = new RestTemplate();
 
-    @GetMapping("/gab")
+    @GetMapping("/momo")
     public ResponseEntity<?> getOrganizations() {
 
 //        String url = "https://erestaupos.kapava.com/restaurantsolutions/public/api/organizations";
