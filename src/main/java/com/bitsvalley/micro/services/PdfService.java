@@ -48,7 +48,7 @@ public class PdfService {
                 "<b>RECEIPT FOR SAVING ACCOUNT TRANSACTION</b></font>" +
                 "<table border=\"1\" width=\"100%\">" +
                 "<tr> <td><table><tr><td>" +
-                "<img width=\"75\" src=\""+ rt.getUnionLogo()+"\"/><br/> Reference No:"+ savingAccountTransaction.getReference() +
+                "<img width=\"75\" src=\"file:/"+rt.getUnionLogo()+"\"/><br/> Reference No:"+ savingAccountTransaction.getReference() +
                 "</td><td><b><font style=\"font-size:1.6em;color:black;\"> "+ rt.getBusinessName() +"</font></b><br/><br/>" + rt.getAddress()+"<br/>" +rt.getTelephone() +"<br/>" +rt.getEmail() +"<br/>" +
                 "</td></tr></table></td>" +
                 "<td>"+
@@ -92,7 +92,7 @@ public class PdfService {
                 "</head><body><br/><br/><font style=\"font-size:1.4em;color:black;\">" +
                 "<b>RECEIPT FOR SHARE ACCOUNT TRANSACTION</b></font>" +
                 "<table border=\"1\" width=\"100%\">" +
-                "<tr> <td><img width=\"75\" src=\"" + rt.getUnionLogo() + "\"/><br/> Reference No:" + shareAccountTransaction.getReference() +
+                "<tr> <td><img width=\"75\" src=\"file:/"+rt.getUnionLogo() + "\"/><br/> Reference No:" + shareAccountTransaction.getReference() +
                 "<br/>Date:<b>" + BVMicroUtils.formatDateTime(shareAccountTransaction.getCreatedDate()) + "</b> </td>" +
                 "<td>" +
                 "<b><font style=\"font-size:1.6em;color:black;\"> " + rt.getBusinessName() + "</font></b><br/> Branch No: " + shareAccountTransaction.getBranch() +
@@ -250,7 +250,7 @@ public class PdfService {
                 "</head><body><br/><br/><font color=\"" + rt.getThemeColor() + "\" size=\"8px\"><b>RECEIPT FOR LOAN PAYMENT MADE</b></font>" +
                 "<table width=\"100%\">" +
                 "<tr> <td> Form N. 120000029    </td>" +
-                "<td colspan=\"3\"><img width=\"125\" src=\"" + rt.getLogo() + "\"/><br/><b>" + rt.getBusinessName() + "</b><br/> BranchName <br/>" + rt.getAddress() + " " + rt.getTelephone() + "</td>" +
+                "<td colspan=\"3\"><img width=\"125\" src=\"file:/"+rt.getUnionLogo() + "\"/><br/><b>" + rt.getBusinessName() + "</b><br/> BranchName <br/>" + rt.getAddress() + " " + rt.getTelephone() + "</td>" +
                 "<td>" + loanAccountTransaction.getModeOfPayment() + " from Account Owner: <br/>" + loanAccountTransaction.getAccountOwner() + "</td></tr>" +
                 "        <tr><td colspan=\"3\">" +
                 "Account Number: " + loanAccountTransaction.getLoanAccount().getAccountNumber() + "<br/>Customer: <b>" + loanAccountTransaction.getLoanAccount().getUser().getLastName() + "," + loanAccountTransaction.getLoanAccount().getUser().getFirstName() + "</b> </td>" +
