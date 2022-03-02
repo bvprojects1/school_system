@@ -107,11 +107,16 @@
                 </font>
             </td>
             <td align="center">
+        <table><tr th:each="surety: ${loanAccountTransaction.loanAccount.shorteeAccounts}">
+            <td>
                 <font size="2px"> Guarantor</font><br/>
                 <font color="#2d363f" size="3px">
-                    <span th:text="${loanAccountTransaction.loanAccount.shorteeAccounts[0].savingAccount.user.lastName}"/>,
-                    <span th:text="${loanAccountTransaction.loanAccount.shorteeAccounts[0].savingAccount.user.firstName}"/>
+
+                    <span th:text="${surety.savingAccount.user.lastName}"/>,
+                    <span th:text="${surety.savingAccount.user.firstName}"/>
                 </font>
+            </td>
+        </tr></table>
             </td>
 
             <td align="center" colspan="2">
