@@ -33,6 +33,15 @@ public class ShareAccountTransaction {
     private String branchCode;
     private String branchCountry;
     private String shareAmountInLetters;
+    private String representative;
+
+    public String getRepresentative() {
+        return representative;
+    }
+
+    public void setRepresentative(String representative) {
+        this.representative = representative;
+    }
 
     @Column(unique = true)
     private String reference;

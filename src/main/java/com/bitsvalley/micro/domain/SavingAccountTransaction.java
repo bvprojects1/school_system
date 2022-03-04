@@ -37,6 +37,15 @@ public class SavingAccountTransaction {
     @Column(unique = true)
     private String reference;
     private int withdrawalDeposit;
+    private String representative;
+
+    public String getRepresentative() {
+        return representative;
+    }
+
+    public void setRepresentative(String representative) {
+        this.representative = representative;
+    }
 
     public String getAccountOwner() {
         return accountOwner;

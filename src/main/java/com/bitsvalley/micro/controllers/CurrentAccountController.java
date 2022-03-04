@@ -243,8 +243,12 @@ public class CurrentAccountController extends SuperController {
 //
     @PostMapping(value = "/registerCurrentAccountTransactionForm")
     public String registerCurrentAccountTransactionForm(ModelMap model, @ModelAttribute("currentAccountTransaction") CurrentAccountTransaction currentAccountTransaction, HttpServletRequest request) {
+        User user = (User) request.getSession().getAttribute(BVMicroUtils.CUSTOMER_IN_USE);
         if(null == currentAccountTransaction.getAccountOwner()){
             currentAccountTransaction.setAccountOwner("false");
+        }
+        if(StringUtils.isEmpty(currentAccountTransaction.getRepresentative())){
+            currentAccountTransaction.setRepresentative(BVMicroUtils.getFullName(user));
         }
         String createdDate = request.getParameter("createdDate");
 //        currentAccountTransaction.setCreatedDate(BVMicroUtils.formatLocaleDate(createdDate));
@@ -252,7 +256,7 @@ public class CurrentAccountController extends SuperController {
         String currentAccountId = request.getParameter("currentAccountId");
         CurrentAccount currentAccount = currentAccountService.findById(new Long(currentAccountId)).get();
         currentAccountTransaction.setCurrentAccount(currentAccount);
-        User user = (User) request.getSession().getAttribute(BVMicroUtils.CUSTOMER_IN_USE);
+
         currentAccountTransaction.setWithdrawalDeposit(1);
         String error = "";
 

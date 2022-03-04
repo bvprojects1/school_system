@@ -160,18 +160,25 @@
                     <input class="selectSmall" name="twentyFive" th:field="*{twentyFive}" type="number" min="0" max="999" maxlength="4"
                            size="4"/>25 &nbsp;
 
+
+                    <br/> <br/>
+                    <label for="true">Account Owner</label>
+                    <input class="selectSmall" th:field="*{accountOwner}" type="checkbox" id="true" name="accountOwner" value="true"
+                           checked>
+
+                    <label for="representative">Representative</label>
+                    <input style="width:30%" th:field="*{representative}" type="text" id="representative" name="representative" maxlength="48"/>
+
+
                     <input type="hidden" th:value="${currentAccountTransaction.currentAccount.id}"
                            th:attr="name='currentAccountId'"/>
                     <br/> <br/>
                     <textarea class="selectNormal" placeholder="Enter Notes ..." id="notes" rows="2" cols="70" th:field="*{notes}"
                               maxlength="255">
                 </textarea>
+                    <br/>
+                    <br/>
 
-                    <br/> <br/>
-
-                    <input class="selectSmall" th:field="*{accountOwner}" type="checkbox" id="true" name="accountOwner" value="true"
-                               checked>
-                    <label for="true">Account Owner:</label>
                     <button type="submit" class="btn btn-success"><b>SUBMIT TRANSACTION</b></button>
                     <br/><br/>
 
@@ -200,6 +207,7 @@
             <td>Notes</td>
             <td>Debit</td>
             <td>Credit</td>
+
             <td><font color="green" size="6px">
                 <div th:text="${currentBilanzList.totalCurrent}"/>
             </font></td>

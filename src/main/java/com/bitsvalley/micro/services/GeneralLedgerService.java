@@ -529,7 +529,7 @@ public class GeneralLedgerService extends SuperService {
         } else if (ledgerAccount != -1 && !agentUsername.equals("-1")) {
             glList = generalLedgerRepository.searchCriteriaWithCreatedByAndLedgerAccount(startDate, endDate, agentUsername, ledgerAccount);
         }
-
+        Collections.reverse(glList);
         List<GeneralLedgerWeb> generalLedgerWebs = mapperGeneralLedger(glList);
         GeneralLedgerBilanz generalLedgerBilanz = getGeneralLedgerBilanz(generalLedgerWebs);
         return generalLedgerBilanz;

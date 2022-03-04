@@ -52,7 +52,7 @@ public class PdfService {
                 "</td><td><b><font style=\"font-size:1.6em;color:black;\"> "+ rt.getBusinessName() +"</font></b><br/><br/>" + rt.getAddress()+"<br/>" +rt.getTelephone() +"<br/>" +rt.getEmail() +"<br/>" +
                 "</td></tr></table></td>" +
                 "<td>"+
-                " Branch No: "+savingAccountTransaction.getBranch()+
+                " Branch No: "+savingAccountTransaction.getBranchCode()+
                 "<br/>"+savingAccountTransaction.getModeOfPayment()+" Account Owner:" + BVMicroUtils.formatCurrency(savingAccountTransaction.getSavingAmount()) + "<br/>Date:" + BVMicroUtils.formatDateTime(savingAccountTransaction.getCreatedDate()) + "</td></tr>" +
                 "<tr><td>" +
                 "Account Number: "+ savingAccountTransaction.getSavingAccount().getAccountNumber()
@@ -61,7 +61,7 @@ public class PdfService {
                 "<td>Account Balance: <b>" + BVMicroUtils.formatCurrency(showAmount) +"</b><br/> Saving Amount:<font style=\"font-size:1.6em;color:black;\">"
                 + BVMicroUtils.formatCurrency(savingAccountTransaction.getSavingAmount()) + "</font></td></tr>" +
                 "        <tr><td colspan=\"2\">" +
-                "Representative: <b>"+ savingAccountTransaction.getCreatedBy()+"</b> - <br/> "+ BVMicroUtils.getFullName(aUser) +"<br/>"+ BVMicroUtils.getFullName(aUser) +"<br/> Amount in Letters: <font color=\""+rt.getThemeColor()+"\" size=\"8px\"> "
+                "Representative: <b>"+ savingAccountTransaction.getCreatedBy()+"</b> - <br/> "+ BVMicroUtils.getFullName(aUser) +"<br/> Amount in Letters: <font color=\""+rt.getThemeColor()+"\" size=\"8px\"> "
                 +savingAccountTransaction.getSavingAmountInLetters()+"</font><br/>Notes:"+savingAccountTransaction.getNotes()+"</td>\n" +
                 "    </tr></table>" +
                 "    <table  border=\"1\" width=\"100%\" class=\"center\">\n" +
@@ -95,7 +95,7 @@ public class PdfService {
                 "<tr> <td><img width=\"75\" src=\"file:/"+rt.getUnionLogo() + "\"/><br/> Reference No:" + shareAccountTransaction.getReference() +
                 "<br/>Date:<b>" + BVMicroUtils.formatDateTime(shareAccountTransaction.getCreatedDate()) + "</b> </td>" +
                 "<td>" +
-                "<b><font style=\"font-size:1.6em;color:black;\"> " + rt.getBusinessName() + "</font></b><br/> Branch No: " + shareAccountTransaction.getBranch() +
+                "<b><font style=\"font-size:1.6em;color:black;\"> " + rt.getBusinessName() + "</font></b><br/> Branch No: " + shareAccountTransaction.getBranchCode() +
                 "<br/>Address:" + rt.getAddress() + "<br/> Telephone:" + rt.getTelephone() +
                 "<br/>" + shareAccountTransaction.getModeOfPayment() + " Current Account" + BVMicroUtils.formatCurrency(shareAccountTransaction.getShareAmount()) + "</td></tr>" +
                 "<tr><td>" +
@@ -130,24 +130,26 @@ public class PdfService {
         if (currentAccountTransaction.getAccountOwner() != null && StringUtils.equals("true", currentAccountTransaction.getAccountOwner())) {
             showAmount = currentAccountTransaction.getCurrentAccount().getAccountBalance();
         }
-        String currentBilanzNoInterest = "<br/><br/><font style=\"font-size:1.4em;color:black;\">" +
+        String currentBilanzNoInterest = "<font style=\"font-size:1.4em;color:black;\">" +
                 "<b>RECEIPT FOR CURRENT ACCOUNT TRANSACTION</b></font>" +
                 "<table border=\"1\" width=\"100%\">" +
                 "<tr> <td><table><tr><td>" +
-                "<img width=\"75\" src=\"file:/"+rt.getUnionLogo()+"\"/><br/> Reference No:"+ currentAccountTransaction.getReference() +
-                "</td><td><b><font style=\"font-size:1.6em;color:black;\"> "+ rt.getBusinessName() +"</font></b><br/><br/>" + rt.getAddress()+"<br/>" +rt.getTelephone() +"<br/>" +rt.getEmail() +"<br/>" +
+                "<img width=\"75\" src=\"file:/"+rt.getUnionLogo()+"\"/><br/> Reference No:<br/>"+ currentAccountTransaction.getReference() +
+                "</td><td><b><font style=\"font-size:1.6em;color:black;\"> "+ rt.getBusinessName() +"</font></b><br/>" + rt.getAddress()+"<br/>" +rt.getTelephone() +"<br/>" +rt.getEmail() +"<br/>" +
                 "</td></tr></table></td>" +
                 "<td>"+
-                " Branch No: "+currentAccountTransaction.getBranch()+
-                "<br/>"+currentAccountTransaction.getModeOfPayment()+" from Account Owner:" + BVMicroUtils.formatCurrency(currentAccountTransaction.getCurrentAmount()) + "<br/>Date:" + BVMicroUtils.formatDateTime(currentAccountTransaction.getCreatedDate()) + "</td></tr>" +
+                " Branch No: "+currentAccountTransaction.getBranchCode()+
+                "<br/>"+currentAccountTransaction.getModeOfPayment()+":" + BVMicroUtils.formatCurrency(currentAccountTransaction.getCurrentAmount()) + "<br/>Customer Representative: "+currentAccountTransaction.getRepresentative()+"<br/>Date:" + BVMicroUtils.formatDateTime(currentAccountTransaction.getCreatedDate()) + "</td></tr>" +
                 "<tr><td>" +
                 "Account Number:" + currentAccountTransaction.getCurrentAccount().getAccountNumber()
-                + "<br/>Customer: <b>"+ currentAccountTransaction.getCurrentAccount().getUser().getGender() + ". " + currentAccountTransaction.getCurrentAccount().getUser().getFirstName() + " " + currentAccountTransaction.getCurrentAccount().getUser().getLastName() +
+
+                + "<br/>Customer: <b>"+ BVMicroUtils.getFullName(aUser)+
+
                 "</b> </td>" +
-                "<td>Account Balance: <b>" + BVMicroUtils.formatCurrency(showAmount) + "</b><br/> Current Amount:<font style=\"font-size:1.6em;color:black;\">"
+                "<td>Account Balance: <b>" + BVMicroUtils.formatCurrency(showAmount) + "</b><br/> Current Amount: <font style=\"font-size:1.6em;color:black;\">"
                 + BVMicroUtils.formatCurrency(currentAccountTransaction.getCurrentAmount()) + "</font></td></tr>" +
-                "        <tr><td>" +
-                "Representative: <b>" + currentAccountTransaction.getCreatedBy() + " - </b>"+ BVMicroUtils.getFullName(aUser) +"<br/></td><td> Amount in Letters: <font color=\"" + rt.getThemeColor() + "\" size=\"8px\"> "
+                "        <tr><td colspan=\"2\">" +
+                "Agent Representative: <b>" + currentAccountTransaction.getCreatedBy() + " - </b>"+ BVMicroUtils.getFullName(aUser) +"<br/>Amount in Letters: <font color=\"" + rt.getThemeColor() + "\" size=\"8px\"> "
                 + currentAccountTransaction.getCurrentAmountInLetters() + "</font><br/>Notes:"+currentAccountTransaction.getNotes()+"</td>\n" +
                 "    </tr></table>" +
                 "    <table  border=\"1\" width=\"100%\" class=\"center\">\n" +
@@ -165,84 +167,12 @@ public class PdfService {
                 "               25 x " + currentAccountTransaction.getTwentyFive() + " = <b>" + 25 * currentAccountTransaction.getTwentyFive() + "</b><br/>" +
                 "                </td>" +
                 "            </tr>" +
-                "        </table> <br/>" +
-                "       <table><tr><td>Cashier Signature: ------------------------------ Customer Signature: ------------------------------<br/> "+branchRepository.findByCode(currentAccountTransaction.getBranchCode()).getName() +"</td>" +
-                "</tr></table>" +
-                "<br/><br/>";
+                "        </table>" +
+                "       <table><tr><td><br/><br/>Cashier Signature: ------------------------------ Customer Signature: ------------------------------<br/> "+branchRepository.findByCode(currentAccountTransaction.getBranchCode()).getName() +"</td>" +
+                "</tr></table><br/>";
                 currentBilanzNoInterest = "<html><head></head><body>" + currentBilanzNoInterest + currentBilanzNoInterest+"</body></html>";
         return currentBilanzNoInterest;
     }
-//    public String generateCurrentTransactionReceiptPDF(CurrentAccountTransaction currentAccountTransaction, RuntimeSetting rt) {
-//
-//        String currentBilanzNoInterest = "<html><head>" +
-//                "</head><body><br/><br/><font color=\""+rt.getThemeColor()+"\" size=\"8px\"><b>RECEIPT FOR CURRENT ACCOUNT TRANSACTION</b></font>" +
-//                "<table width=\"100%\">" +
-//                "<tr> <td> Form N. 120000029    </td>" +
-//                "<td colspan=\"3\"><img width=\"125\" src=\""+ rt.getLogo()+"\"/><br/><b>"+ rt.getBusinessName() +"</b><br/> BranchName <br/>"+rt.getAddress()+" "+rt.getTelephone()+"</td>" +
-//                "<td>"+currentAccountTransaction.getModeOfPayment()+" from Account Owner: <br/>"+currentAccountTransaction.getAccountOwner()+"</td></tr>" +
-//                "        <tr><td>" +
-//                "Account Number: "+ currentAccountTransaction.getCurrentAccount().getAccountNumber() +"<br/>Customer: <b>"+currentAccountTransaction.getCurrentAccount().getUser().getLastName()+","+currentAccountTransaction.getCurrentAccount().getUser().getFirstName()+"</b> </td>" +
-//                "<td>Date:<br/><b>"+BVMicroUtils.formatDateTime(currentAccountTransaction.getCreatedDate())+"</b></td>" +
-//                "<td>Amount <b>"+BVMicroUtils.formatCurrency(currentAccountTransaction.getCurrentAmount())+"</b></td></tr>" +
-//                "        <tr><td>" +
-//                "Representative: <b>"+ currentAccountTransaction.getCreatedBy() +"</b> </td>" +
-//                "</tr>" +
-//                "<tr><td></td>\n" +
-//                "        <td>Amount in Letters: <font color=\""+rt.getThemeColor()+"\" size=\"8px\"> "+currentAccountTransaction.getCurrentAmountInLetters()+"</font></td>\n" +
-//                "        </tr></table><br/><br/><br/>" +
-//                "    <table border=\"0\" width=\"100\" class=\"center\">\n" +
-//                "            <tr>\n" +
-//                "                <th colspan=\"2\">Description</th>\n" +
-//                "                <th>Amount </th>\n" +
-//                "                <th>Charge</th>\n" +
-//                "                <th>Balance</th>\n" +
-//                "                <th></th>\n" +
-//                "            </tr>\n" +
-//                "            <tr>\n" +
-//                "                <td colspan=\"2\">CURRENT ACCOUNT - 20 </td>\n" +
-//                "                <td>"+BVMicroUtils.formatCurrency(currentAccountTransaction.getCurrentAmount())+"</td>\n" +
-//                "                <td>0</td>\n" +
-//                "                <td>1000</td>\n" +
-//                "                <td></td>\n" +
-//                "            </tr>" +
-//                "        </table>" +
-//                "<br/><br/><br/>" +
-//                "       <table width=\"100%\">" +
-//                "        <tr><td colspan=\"3\">" +
-//                "<img width=\"100px\" src=\"" +rt.getUnionLogo()+"\"/> </td>" +
-//                "<td>Customer Name:<b>"+currentAccountTransaction.getCurrentAccount().getUser().getFirstName() +" "+currentAccountTransaction.getCurrentAccount().getUser().getLastName() +"</b></td><td>Account No. <b>"+currentAccountTransaction.getCurrentAccount().getAccountNumber()+"</b></td></tr>" +
-//                "<tr><td></td>\n" +
-//                "        <td> <font color=\""+rt.getThemeColor()+"\" size=\"8px\"><b>RECEIPT FOR PAYMENT MADE</b></font></td>\n" +
-//                "        <td>Total: <font color=\""+rt.getThemeColor()+"\" size=\"8px\"><b>"+BVMicroUtils.formatCurrency(currentAccountTransaction.getCurrentAmount())+"</b>frs cfa</font></td>\n" +
-//                "        <td></td>\n" +
-//                "        <td></td>\n" +
-//                "        </tr></table><br/><br/><br/>Cash Breakdown" +
-//                "    <table  border=\"0\" width=\"100%\" class=\"center\">\n" +
-//                "            <tr>\n" +
-//                "                <th>Value</th>\n" +
-//                "                <th>Number</th>\n" +
-//                "                <th>Amount</th>\n" +
-//                "            </tr>\n" +
-//                "            <tr>\n" +
-//                "                <td>1000</td>\n" +
-//                "                <td>5</td>\n" +
-//                "                <td>5 000</td>\n" +
-//                "            </tr>" +
-//                "            <tr>" +
-//                "                <td></td>" +
-//                "                <td></td>" +
-//                "                <td></td></tr>" +
-//                "        </table>" +
-//                "<br/><br/><br/><br/><br/>" +
-//                "       <table><tr><td></td>" +
-//                "       <td>Agent Signature: --------------------------------<br/>Bamenda Branch, N W Region, Date</td>" +
-//                "       <td></td>" +
-//                "       <td></td>" +
-//                "       <td></td>" +
-//                "       <td>"+ BVMicroUtils.formatDate(new Date(System.currentTimeMillis())) +"</td></tr>" +
-//                "       </table></body></html>";
-//        return currentBilanzNoInterest;
-//    }
 
     public String generateLoanTransactionReceiptPDF(LoanAccountTransaction loanAccountTransaction, RuntimeSetting rt) {
         User aUser = userRepository.findByUserName(loanAccountTransaction.getCreatedBy());
