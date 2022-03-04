@@ -379,6 +379,8 @@ public class SavingAccountService extends SuperService {
 
         CurrentAccountTransaction currentAccountTransaction = getCurrentAccountTransaction(notes, branchInfo, fromCurrentAccount, transferAmount * -1, BVMicroUtils.CURRENT_LOAN_TRANSFER);
 
+        fromCurrentAccount.getCurrentAccountTransaction().add(currentAccountTransaction);
+        currentAccountRepository.save(fromCurrentAccount);
         if(!StringUtils.equals(loanAccount.getAccountStatus().name(),AccountStatus.ACTIVE.name())){
             return BVMicroUtils.LOAN_MUST_BE_IN_ACTIVE_STATE;
         }

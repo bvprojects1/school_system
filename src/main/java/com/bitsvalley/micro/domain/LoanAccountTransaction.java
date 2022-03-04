@@ -47,6 +47,15 @@ public class LoanAccountTransaction {
 
     @ManyToOne
     private LoanAccount loanAccount;
+    private String representative;
+
+    public String getRepresentative() {
+        return representative;
+    }
+
+    public void setRepresentative(String representative) {
+        this.representative = representative;
+    }
 
     public String getIncreaseGuarantorMinimum() {
         return increaseGuarantorMinimum;

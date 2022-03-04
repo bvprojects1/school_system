@@ -30,6 +30,7 @@ public class CurrentAccountTransaction {
     private int fifty;
     private int twentyFive;
     private String accountOwner;
+    private String representative;
     private long branch;
     private String branchCode;
     private String branchCountry;
@@ -40,6 +41,14 @@ public class CurrentAccountTransaction {
 
     @ManyToOne
     private CurrentAccount currentAccount;
+
+    public String getRepresentative() {
+        return representative;
+    }
+
+    public void setRepresentative(String representative) {
+        this.representative = representative;
+    }
 
     public String getAccountOwner() {
         return accountOwner;

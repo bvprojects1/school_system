@@ -153,6 +153,14 @@
                     &nbsp;
                     <input class="selectSmall" name="twentyFive" th:field="*{twentyFive}" type="number" min="0" max="999" maxlength="4"
                            size="4"/>25 &nbsp;
+                    <br/><br/>
+
+                    <label for="true">Account Owner</label>
+                    <input class="selectSmall" th:field="*{accountOwner}" type="checkbox" id="true" name="accountOwner" value="true"
+                           checked>
+
+                    <label for="representative">Representative</label>
+                    <input style="width:30%" th:field="*{representative}" type="text" id="representative" name="representative"/>
 
                     <input type="hidden" th:value="${savingAccountTransaction.savingAccount.id}"
                            th:attr="name='savingAccountId'"/>
@@ -160,13 +168,9 @@
                     <textarea class="selectNormal" placeholder="Enter Notes ..." id="notes" rows="2" cols="70" th:field="*{notes}"
                               maxlength="255">
                 </textarea>
-
                     <br/> <br/>
 
-                    <input class="selectSmall" th:field="*{accountOwner}" type="checkbox" id="true" name="accountOwner"
-                               value="true"
-                               checked>
-                    <font class="selectSmall">Account Owner:</font>
+
 
                     <button type="submit" class="btn btn-success"><b>SUBMIT TRANSACTION</b></button>
                     <br/><br/>

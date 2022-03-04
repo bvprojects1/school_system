@@ -1,0 +1,6 @@
+use balanz101db;
+#BLNZ-17
+ALTER TABLE loan_account_transaction ADD COLUMN representative VARCHAR (255);
+ALTER TABLE current_account_transaction ADD COLUMN representative VARCHAR (255);
+ALTER TABLE saving_account_transaction ADD COLUMN representative VARCHAR (255);
+

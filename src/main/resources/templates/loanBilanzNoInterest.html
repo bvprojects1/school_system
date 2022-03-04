@@ -195,10 +195,13 @@
                 </textarea>
 
                     <br/> <br/>
-                    <label for="true">Account Owner:</label>
-                    <input style="width:14px" th:field="*{accountOwner}" type="checkbox" id="true" name="accountOwner"
-                           value="true"
+                    <label for="true">Account Owner</label>
+                    <input class="selectSmall" th:field="*{accountOwner}" type="checkbox" id="true" name="accountOwner" value="true"
                            checked>
+
+                    <label for="representative">Representative</label>
+                    <input style="width:30%" th:field="*{representative}" type="text" id="representative" name="representative"/>
+
                     <label for="true">Increase Guarantor Minimum:</label>
                     <input style="width:14px" th:field="*{increaseGuarantorMinimum}" type="checkbox"
                            id="increaseGuarantorMinimum" name="increaseGuarantorMinimum" value="true"
