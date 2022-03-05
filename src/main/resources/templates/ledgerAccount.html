@@ -68,8 +68,6 @@
                         </form>
                         </div>
 
-
-
         </div>
     </div>
     <!--Project title area end-->
@@ -83,7 +81,17 @@
                     <table width="90%" class="center" border="0px">
                         <tr><th colspan="5"><h4>EXISTING LEDGER ACCOUNTS</h4></th></tr>
                         <tr th:each="aLedgerAccount : ${ledgerAccountList}">
-                            <td th:text="${aLedgerAccount.name}"></td>
+                            <td>
+                                <span th:text="${aLedgerAccount.name}"/>
+                                <div th:if="${#authorization.expression('hasAnyAuthority(''ROLE_UPDATE_GL_ACCOUNT_NAME'')')}">
+                                <form th:action="@{/updateLedgerAccountForm}" method="post">
+                                    <input type="text" name="accountName"/>
+                                    <input type="hidden" name="aLedgerAccountId" th:value="${aLedgerAccount.id}"/>
+                                    <input type="submit" name="Submit"/>
+                                </form>
+                                </div>
+
+                            </td>
                             <td th:text="${aLedgerAccount.code}"></td>
                             <td th:text="${aLedgerAccount.category}"> </td>
                             <td th:text="${aLedgerAccount.status}"> </td>

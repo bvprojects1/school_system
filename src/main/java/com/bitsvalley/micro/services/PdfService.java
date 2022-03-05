@@ -596,10 +596,11 @@ public class PdfService {
     public String generateAmortizationPDF(Amortization amortization, RuntimeSetting rt, String firstName) {
     return "<html><body>"+
     "<h3>LOAN PAYMENT DETAILS - AMORTIZATION REPORT</h3>"+
-    "<table width=\"100%\"><tr><td colspan=\"6\"><img width=\"100px\" src=\"" +rt.getLogo()+"\"/><br/><br/></td></tr><tr>" +
+    "<table border=\"1\" width=\"100%\"><tr><td colspan=\"6\"><img width=\"100px\" src=\"" +rt.getLogo()+"\"/><br/><br/></td></tr><tr>" +
+            "<td>Number: <br/><b> "+amortization.getLoanMonths()+"</b></td>"+
             "<td>Start Date:<br/><b> "+amortization.getStartDate()+"</b></td>"+
             "<td>Annual Rate: <br/><b> "+amortization.getInterestRateString()+"</b></td>"+
-            "<td>Number: <br/><b> "+amortization.getLoanMonths()+"</b></td>"+
+
             "<td>Monthly Payment: <br/><b>"+amortization.getMonthlyPayment()+"</b></td>"+
             "<td>Total Interest:<br/>"+
                 "<b>"+BVMicroUtils.formatCurrency(amortization.getTotalInterest())+"</b>"+

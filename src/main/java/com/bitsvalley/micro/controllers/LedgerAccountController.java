@@ -9,6 +9,7 @@ import com.bitsvalley.micro.repositories.UserRepository;
 import com.bitsvalley.micro.services.GeneralLedgerService;
 import com.bitsvalley.micro.services.SavingAccountService;
 import com.bitsvalley.micro.utils.BVMicroUtils;
+import com.bitsvalley.micro.webdomain.GeneralLedgerBilanz;
 import com.bitsvalley.micro.webdomain.LedgerEntryDTO;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -290,15 +291,30 @@ public class LedgerAccountController extends SuperController{
         ledgerAccount.setName(ledgerAccount.getCode());
         ledgerAccountRepository.save(ledgerAccount);
 
-//        ledgerAccount = new LedgerAccount();
-//        ledgerAccount.setName(BVMicroUtils.CASH_GL_5001);
-//        ledgerAccount.setCategory("5000 – 5999");
-//        ledgerAccount.setCode(BVMicroUtils.CASH_GL_5001);
-//        ledgerAccount.setStatus(BVMicroUtils.ACTIVE);
-//        ledgerAccountList.add(ledgerAccount);
-
         model.put("ledgerAccountList", ledgerAccountRepository.findAll());
         model.put("ledgerAccountInfo", "Created "+ledgerAccount.getName()+ " successfully ");
+        return "ledgerAccount";
+    }
+
+
+
+
+    @PostMapping(value = "/updateLedgerAccountForm")
+    public String updateLedgerAccountForm(HttpServletRequest request, ModelMap model ) {
+        String id = request.getParameter("aLedgerAccountId");
+        String newName =  request.getParameter("accountName");
+        LedgerAccount byId = ledgerAccountRepository.findById(new Long(id)).get();
+        int codeInNamePosition = byId.getCode().indexOf("_GL_");
+        String currentNameInCode = byId.getCode().substring(0, codeInNamePosition);
+
+//        byId.setName(newName);
+        String newCode = byId.getCode();
+        newCode = newCode.replaceFirst(currentNameInCode,newName);
+        byId.setCode(newCode);
+        ledgerAccountRepository.save(byId);
+        model.put("ledgerAccount",new LedgerAccount());
+        model.put("ledgerAccountList", ledgerAccountRepository.findAll());
+        model.put("ledgerAccountInfo", "Created "+ newCode + " successfully ");
         return "ledgerAccount";
     }
 
@@ -443,7 +459,6 @@ public class LedgerAccountController extends SuperController{
         model.put("glAddEntryTitle", " "+ BVMicroUtils.CASH_GL_5001 + " To "+ toLedgerAccount.getName());
         return "glAddEntry";
     }
-
 
 
     @PostMapping(value = "/addLedgerEntryFormReviewForm")

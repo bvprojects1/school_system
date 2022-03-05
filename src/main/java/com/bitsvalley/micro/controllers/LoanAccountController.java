@@ -137,7 +137,6 @@ public class LoanAccountController extends SuperController {
         amortizationTTC.setInterestVAT(vatOnInterestTotal);
         amortizationTTC.setInterestHT(interestOnHTTotal);
 
-
         model.put("amortization",amortizationTTC );
         model.put("amortizationHT",amortizationHT );
 
@@ -153,7 +152,7 @@ public class LoanAccountController extends SuperController {
     }
 
     @GetMapping(value = "/amortizationPDF")
-    public void generatePaymentSchedule(@SessionAttribute("amortization") Amortization amortization,
+    public void generatePaymentSchedule(@SessionAttribute("amortizationHT") Amortization amortization,
                                           HttpServletRequest request, HttpServletResponse response) throws IOException {
         RuntimeSetting runtimeSetting = (RuntimeSetting)request.getSession().getAttribute("runtimeSettings");
         String htmlInput = pdfService.generateAmortizationPDF(amortization, runtimeSetting, getLoggedInUserName());

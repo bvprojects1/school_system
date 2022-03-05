@@ -206,7 +206,7 @@ public class GeneralAccountController extends SuperController{
 
 
     @GetMapping(value = "/viewLedgerAccount/{id}")
-    public String ledgerAccount(@PathVariable("id") long id, ModelMap model, HttpServletRequest request) {
+    public String ledgerAccount(@PathVariable("id") long id, ModelMap model) {
 
         Iterable<LedgerAccount> all = ledgerAccountRepository.findAll();
 
@@ -216,6 +216,7 @@ public class GeneralAccountController extends SuperController{
         model.put("glSearchDTO",new GLSearchDTO());
         return "gls";
     }
+
 
 
     @GetMapping(value = "/findGlByType/{type}")
