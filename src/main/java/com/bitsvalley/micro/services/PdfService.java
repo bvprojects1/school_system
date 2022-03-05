@@ -142,7 +142,7 @@ public class PdfService {
                 " Branch No: "+currentAccountTransaction.getBranchCode()+
                 "<br/>"+currentAccountTransaction.getModeOfPayment()+":" + BVMicroUtils.formatCurrency(currentAccountTransaction.getCurrentAmount()) + currentAccountTransaction.getRepresentative()+"<br/>Date:" + BVMicroUtils.formatDateTime(currentAccountTransaction.getCreatedDate()) + "</td></tr>" +
                 "<tr><td>" +
-                "Account Number:" + currentAccountTransaction.getCurrentAccount().getAccountNumber()
+                "Account Number:" + BVMicroUtils.getFormatAccountNumber(currentAccountTransaction.getCurrentAccount().getAccountNumber())
 
                 + "<br/>Customer: <b>"+ BVMicroUtils.getFullName(currentAccountTransaction.getCurrentAccount().getUser())+
 

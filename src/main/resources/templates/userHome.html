@@ -128,7 +128,7 @@
                     <a th:href="@{/callcenter/{id}(id=${currentAccount.accountNumber})}" href="/callcenter">
 
                         <font size="4">
-                            <span th:text="${currentAccount.accountNumber}"/>
+                            <span th:text="${#strings.substring(currentAccount.accountNumber,0,5)} + ' ' +${#strings.substring(currentAccount.accountNumber,5,10)} + ' ' +${#strings.substring(currentAccount.accountNumber,10,21)} + ' ' +${#strings.substring(currentAccount.accountNumber,21,23)}"/>
                         </font>
                         <span th:if="${currentAccount.defaultedPayment}">
                             <font size="4" color="red">
@@ -231,7 +231,8 @@
                     <a th:href="@{/callcenter/{id}(id=${savingAccount.accountNumber})}" href="/callcenter">
 
                         <font size="4">
-                            <span th:text="${savingAccount.accountNumber}"/>
+                            <span th:text="${#strings.substring(savingAccount.accountNumber,0,5)} + ' ' +${#strings.substring(savingAccount.accountNumber,5,10)} + ' ' +${#strings.substring(savingAccount.accountNumber,10,21)} + ' ' +${#strings.substring(savingAccount.accountNumber,21,23)}"/>
+
                         </font>
                         <span th:if="${savingAccount.defaultedPayment}">
                             <font size="4" color="red">
@@ -318,7 +319,7 @@
             <tr th:each="loanAccount : ${session.customerInUse.loanAccount}">
                 <td>
                     <a th:href="@{/callcenter/{id}(id=${loanAccount.accountNumber})}" href="/callcenter">
-                        <div th:text="${loanAccount.accountNumber}"/>
+                        <span th:text="${#strings.substring(loanAccount.accountNumber,0,5)} + ' ' +${#strings.substring(loanAccount.accountNumber,5,10)} + ' ' +${#strings.substring(loanAccount.accountNumber,10,21)} + ' ' +${#strings.substring(loanAccount.accountNumber,21,23)}"/>
                     </a>
                     <br/>
                     <font size="2"><span th:text="${#dates.format(loanAccount.createdDate, 'dd-MMM-yyyy HH:mm')}"/></font>
@@ -331,37 +332,6 @@
                 <td th:text="${#numbers.formatDecimal(loanAccount.currentLoanAmount, 0, 'COMMA', 0, 'POINT')}"/>
 
                 <td>
-<!--                    <span th:if="${ loanAccount.shorteeAccounts[0].savingAccount != null }">-->
-<!--                        <span th:text="${loanAccount.shorteeAccounts[0].savingAccount.accountNumber}"/>-->
-
-<!--                        <br/>-->
-<!--                        <span th:text="${loanAccount.shorteeAccounts[0].savingAccount.user.lastName}"/>-->
-<!--                        <br/>-->
-
-<!--                        <span th:text="${loanAccount.shorteeAccounts[0].savingAccount.user.firstName}"/>-->
-<!--                    </span>-->
-<!--                    <br/>-->
-<!--                    <br/>-->
-<!--                    <span th:if="${loanAccount.shorteeAccounts[1].savingAccount != null}">-->
-<!--                        <span th:text="${loanAccount.shorteeAccounts[1].savingAccount.accountNumber}"/>-->
-
-<!--                        <br/>-->
-<!--                        <span th:text="${loanAccount.shorteeAccounts[1].savingAccount.user.lastName}"/>-->
-<!--                        <br/>-->
-
-<!--                        <span th:text="${loanAccount.shorteeAccounts[1].savingAccount.user.firstName}"/>-->
-<!--                    </span>-->
-<!--                    <br/>-->
-<!--                    <br/>-->
-<!--                    <span th:if="${loanAccount.shorteeAccounts[2].savingAccount != null}">-->
-<!--                        <span th:text="${loanAccount.shorteeAccounts[2].savingAccount.accountNumber}"/>-->
-
-<!--                        <br/>-->
-<!--                        <span th:text="${loanAccount.shorteeAccounts[2].savingAccount.user.lastName}"/>-->
-<!--                        <br/>-->
-
-<!--                        <span th:text="${loanAccount.shorteeAccounts[2].savingAccount.user.firstName}"/>-->
-<!--                    </span>-->
 
                 </td>
 
@@ -427,7 +397,7 @@
                 <td>
                     <a th:href="@{/shareDetailsAccNumber/{id}(id=${shareAccount.accountNumber})}" href="/shareDetails">
                         <font size="4">
-                            <span th:text="${shareAccount.accountNumber}"/>
+                            <span th:text="${#strings.substring(shareAccount.accountNumber,0,5)} + ' ' +${#strings.substring(shareAccount.accountNumber,5,10)} + ' ' +${#strings.substring(shareAccount.accountNumber,10,21)} + ' ' +${#strings.substring(shareAccount.accountNumber,21,23)}"/>
                         </font>
                     </a>
                 </td>
