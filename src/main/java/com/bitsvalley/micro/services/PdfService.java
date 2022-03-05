@@ -126,6 +126,7 @@ public class PdfService {
 
     public String generateCurrentTransactionReceiptPDF(CurrentAccountTransaction currentAccountTransaction, RuntimeSetting rt) {
         Double showAmount = 0.0;
+//        String representativeText = StringUtils.equals(currentAccountTransaction.getRepresentative(),BVMicroUtils.getFullName(currentAccountTransaction.getCurrentAccount().getUser()))?"":"<br/>Customer Representative: "+currentAccountTransaction.getRepresentative();
         User aUser = userRepository.findByUserName(currentAccountTransaction.getCreatedBy());
         if (currentAccountTransaction.getAccountOwner() != null && StringUtils.equals("true", currentAccountTransaction.getAccountOwner())) {
             showAmount = currentAccountTransaction.getCurrentAccount().getAccountBalance();
@@ -139,18 +140,17 @@ public class PdfService {
                 "</td></tr></table></td>" +
                 "<td>"+
                 " Branch No: "+currentAccountTransaction.getBranchCode()+
-                "<br/>"+currentAccountTransaction.getModeOfPayment()+":" + BVMicroUtils.formatCurrency(currentAccountTransaction.getCurrentAmount()) + "<br/>Customer Representative: "+currentAccountTransaction.getRepresentative()+"<br/>Date:" + BVMicroUtils.formatDateTime(currentAccountTransaction.getCreatedDate()) + "</td></tr>" +
+                "<br/>"+currentAccountTransaction.getModeOfPayment()+":" + BVMicroUtils.formatCurrency(currentAccountTransaction.getCurrentAmount()) + currentAccountTransaction.getRepresentative()+"<br/>Date:" + BVMicroUtils.formatDateTime(currentAccountTransaction.getCreatedDate()) + "</td></tr>" +
                 "<tr><td>" +
-                "Account Number:" + currentAccountTransaction.getCurrentAccount().getAccountNumber()
+                "Account Number:" + BVMicroUtils.getFormatAccountNumber(currentAccountTransaction.getCurrentAccount().getAccountNumber())
 
-                + "<br/>Customer: <b>"+ BVMicroUtils.getFullName(aUser)+
+                + "<br/>Customer: <b>"+ BVMicroUtils.getFullName(currentAccountTransaction.getCurrentAccount().getUser())+
 
                 "</b> </td>" +
                 "<td>Account Balance: <b>" + BVMicroUtils.formatCurrency(showAmount) + "</b><br/> Current Amount: <font style=\"font-size:1.6em;color:black;\">"
                 + BVMicroUtils.formatCurrency(currentAccountTransaction.getCurrentAmount()) + "</font></td></tr>" +
                 "        <tr><td colspan=\"2\">" +
-                "Agent Representative: <b>" + currentAccountTransaction.getCreatedBy() + " - </b>"+ BVMicroUtils.getFullName(aUser) +"<br/>Amount in Letters: <font color=\"" + rt.getThemeColor() + "\" size=\"8px\"> "
-                + currentAccountTransaction.getCurrentAmountInLetters() + "</font><br/>Notes:"+currentAccountTransaction.getNotes()+"</td>\n" +
+                "Agent Representative: <b>" + currentAccountTransaction.getCreatedBy() + " - </b>"+ BVMicroUtils.getFullName(aUser) +"<br/>Notes:"+currentAccountTransaction.getNotes()+"</td>\n" +
                 "    </tr></table>" +
                 "    <table  border=\"1\" width=\"100%\" class=\"center\">\n" +
                 "            <tr>\n" +
@@ -164,9 +164,9 @@ public class PdfService {
                 "               500 x " + currentAccountTransaction.getFiveHundred() + " = <b>" + 500 * currentAccountTransaction.getFiveHundred() + "</b>," +
                 "               100 x " + currentAccountTransaction.getOneHundred() + " = <b>" + 100 * currentAccountTransaction.getOneHundred() + "</b>," +
                 "               50 x " + currentAccountTransaction.getFifty() + " = <b>" + 50 * currentAccountTransaction.getFifty() + "</b>," +
-                "               25 x " + currentAccountTransaction.getTwentyFive() + " = <b>" + 25 * currentAccountTransaction.getTwentyFive() + "</b><br/>" +
-                "                </td>" +
-                "            </tr>" +
+                "               25 x " + currentAccountTransaction.getTwentyFive() + " = <b>" + 25 * currentAccountTransaction.getTwentyFive() + "</b>" +
+                "               Amount in Letters: <font color=\"" + rt.getThemeColor() + "\" size=\"8px\"> "
+                +               currentAccountTransaction.getCurrentAmountInLetters() + "</font> </td></tr>" +
                 "        </table>" +
                 "       <table><tr><td><br/><br/>Cashier Signature: ------------------------------ Customer Signature: ------------------------------<br/> "+branchRepository.findByCode(currentAccountTransaction.getBranchCode()).getName() +"</td>" +
                 "</tr></table><br/>";

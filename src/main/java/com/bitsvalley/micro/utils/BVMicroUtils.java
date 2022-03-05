@@ -291,6 +291,9 @@ public class BVMicroUtils {
     }
 
 
+    public static String getFormatAccountNumber(String accountNumber) {
+        return accountNumber.substring(0,5) + " " + accountNumber.substring(5,10) + " " + accountNumber.substring(10,21) + " "+ accountNumber.substring(21,23);
+    }
 
 
     public static String getOppositeCreditOrDebit(String creditOrDebit) {
