@@ -518,7 +518,15 @@ public class LoanAccountController extends SuperController {
 
     @GetMapping(value = "/transferToCurrent/{id}")
     public String transferToCurrent(@PathVariable("id") long id, ModelMap model) {
+
         LoanAccount loanAccount = loanAccountService.findById(id).get();
+
+        if(StringUtils.equals(loanAccount.getAccountStatus().name(), BVMicroUtils.ACTIVE)){
+            model.put("error","LOAN TRANSFER ALREADY PROCESSED");
+            model.put("loan",loanAccount);
+            return "loanDetails";
+        }
+
         loanAccount.setAccountStatus(AccountStatus.ACTIVE);
         loanAccount.setApprovedBy(getLoggedInUserName());
         loanAccount.setApprovedDate(new Date());
