@@ -24,7 +24,8 @@
     <table width="90%" class="center" border="0px">
         <tr>
             <td>
-                Customer Name: <span style th:text="${session.customerInUse.userName}"/>'s
+                Customer Name: <span style th:text="${session.customerInUse.gender +' '+session.customerInUse.firstName +' '+session.customerInUse.lastName }"/>
+
             </td>
         </tr>
 

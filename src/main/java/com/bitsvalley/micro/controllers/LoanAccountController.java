@@ -140,8 +140,9 @@ public class LoanAccountController extends SuperController {
         model.put("amortization",amortizationTTC );
         model.put("amortizationHT",amortizationHT );
 
-        model.put("amortization", amortizationTTC ); //TODO: DECIDE SESSION or REQUEST SCOPE
-        request.getSession().setAttribute("amortizationHT",amortizationTTC);
+//        model.put("amortization", amortizationTTC ); //TODO: DECIDE SESSION or REQUEST SCOPE
+        request.getSession().setAttribute("amortization",amortizationTTC);
+        request.getSession().setAttribute("amortizationHT",amortizationHT);
         return "amortizationReport";
     }
 
@@ -152,10 +153,10 @@ public class LoanAccountController extends SuperController {
     }
 
     @GetMapping(value = "/amortizationPDF")
-    public void generatePaymentSchedule(@SessionAttribute("amortizationHT") Amortization amortization,
+    public void generatePaymentSchedule(@SessionAttribute("amortizationHT") Amortization amortizationHT, @SessionAttribute("amortization") Amortization amortization,
                                           HttpServletRequest request, HttpServletResponse response) throws IOException {
         RuntimeSetting runtimeSetting = (RuntimeSetting)request.getSession().getAttribute("runtimeSettings");
-        String htmlInput = pdfService.generateAmortizationPDF(amortization, runtimeSetting, getLoggedInUserName());
+        String htmlInput = pdfService.generateAmortizationPDF(amortizationHT, amortization, runtimeSetting, getLoggedInUserName());
         response.setHeader("Content-disposition", "attachment;filename=" + "amortizationPDF.pdf");
         generateByteOutputStream(response, htmlInput);
     }

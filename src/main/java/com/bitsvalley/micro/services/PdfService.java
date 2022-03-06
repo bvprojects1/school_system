@@ -593,25 +593,48 @@ public class PdfService {
         return os;
     }
 
-    public String generateAmortizationPDF(Amortization amortization, RuntimeSetting rt, String firstName) {
+    public String generateAmortizationPDF(Amortization amortizationHT, Amortization amortization, RuntimeSetting rt, String firstName) {
     return "<html><body>"+
     "<h3>LOAN PAYMENT DETAILS - AMORTIZATION REPORT</h3>"+
-    "<table border=\"1\" width=\"100%\"><tr><td colspan=\"6\"><img width=\"100px\" src=\"" +rt.getLogo()+"\"/><br/><br/></td></tr><tr>" +
+    "<table border=\"0\" width=\"100%\"><tr><td colspan=\"6\"><img width=\"100px\" src=\"file:/"+rt.getUnionLogo()+"\"/><br/><br/></td></tr><tr>" +
+
+//            <td>Number: <br/><b> <span th:text="${amortization.loanMonths}"/></b></td>
+//            <td>Start Date:<br/><b> <span th:text="${amortization.startDate}"/></b></td>
+//            <td>Annual Rate HT: <b> <span th:text= "${amortizationHT.interestRate}"/></b><br/>
+//                Annual Rate TTC: <b> <span th:text="${amortization.interestRate}"/></b><br/>
+//
+//            </td>
+//            <td>
+//                VAT: <b> <span th:text="${session.runtimeSettings.vatPercent}"/></b>
+//                <br/>Total VAT Interest:
+//                <b>
+//                    <span th:text="${#numbers.formatDecimal(amortization.interestVAT, 0, 'COMMA', 0, 'POINT')}"/>
+//                </b>
+//            </td>
+//            <td>Total Interest:
+//                <b>
+//                    <span th:text="${#numbers.formatDecimal(amortization.totalInterest, 0, 'COMMA', 0, 'POINT')}"/>
+//                </b>
+
+
             "<td>Number: <br/><b> "+amortization.getLoanMonths()+"</b></td>"+
             "<td>Start Date:<br/><b> "+amortization.getStartDate()+"</b></td>"+
-            "<td>Annual Rate: <br/><b> "+amortization.getInterestRateString()+"</b></td>"+
-
-            "<td>Monthly Payment: <br/><b>"+amortization.getMonthlyPayment()+"</b></td>"+
+            "<td>Annual Rate HT: <br/><b> "+amortizationHT.getInterestRate()+
+                    "</b><br/>Annual Rate TTC: <br/><b> "+amortization.getInterestRate()+"</b></td>"+
+            "<td>VAT Interest: <br/><b>"+rt.getVatPercent()+"</b><br/>"+
+            "Total VAT Interest: <br/><b>"+BVMicroUtils.formatCurrency(amortization.getInterestHT())+"</b></td>"+
             "<td>Total Interest:<br/>"+
                 "<b>"+BVMicroUtils.formatCurrency(amortization.getTotalInterest())+"</b>"+
             "</td>" +
-            "<td>Total Payment:<br/><b>"+amortization.getTotalInterestLoanAmount()+"</b></td>"+
-            "</tr><tr>" +
-            "<td><br/><b>Number</b></td><td><br/><b>Date</b></td><td><br/><b>Interest</b></td><td><br/><b>Payment</b></td>"+
-            "<td><br/><b>Principal</b></td><td><br/><b>Balance</b></td></tr>"+
+            "<td>Monthly Payment:<br/><b>"+amortization.getMonthlyPayment()+"</b><br/> Total Payments:<b><br/>"+amortization.getTotalInterestLoanAmount()+"</b></td>"+
+            "<td>Loan Amount: <br/><b>"+BVMicroUtils.formatCurrency(amortization.getLoanAmount())+"</b></td>"+
+            "</tr></table>" +
+            "<table style= \"{tr:nth-child(even) = background-color: #c2ddf2;}\" width=\"100%\" border=\"1\"><tr><td><br/><b>Number</b></td><td><br/><b>Balance</b></td><td><br/><b>Principal</b></td><td><br/>" +
+            "<b>Interest On TTC</b></td><td><br/><b>VAT On Interest</b></td><td><br/><b>Interest On HT</b></td>"+
+            "<td><br/><b>Payment</b></td><td><br/><b>Due Date</b></td></tr>"+
             getAmortizationRow(amortization.getAmortizationRowEntryList())+
-            "<tr><td colspan=\"6\" align=\"center\"><br/> Prepared by "+ firstName +" <br/> Date: "+ BVMicroUtils.formatDate(new Date()) +"</td></tr>"+
-            "<tr><td colspan=\"6\" align=\"center\"><br/> This loan offer is valid till "+ LocalDateTime.now().plusDays(14).toString().substring(0,9) +"</td></tr>"+
+            "<tr><td colspan=\"8\" align=\"center\"><br/> Prepared by "+ firstName +" <br/> Date: "+ BVMicroUtils.formatDate(new Date()) +"</td></tr>"+
+            "<tr><td colspan=\"8\" align=\"center\"><br/> This loan offer is valid till "+ LocalDateTime.now().plusDays(14).toString().substring(0,9) +"</td></tr>"+
     "</table></body></html>";
     }
 
@@ -621,11 +644,13 @@ public class PdfService {
             row = row +
                     "<tr>" +
                     "<td>"+amortizationRowEntry.getMonthNumber()+"</td>" +
-                    "<td>"+amortizationRowEntry.getDate()+"</td>" +
-                    "<td>"+amortizationRowEntry.getMonthlyInterest()+"</td>" +
-                    "<td>"+amortizationRowEntry.getPayment()+"</td>" +
-                    "<td>"+amortizationRowEntry.getPrincipal()+"</td>" +
                     "<td>"+amortizationRowEntry.getLoanBalance()+"</td>" +
+                    "<td>"+amortizationRowEntry.getPrincipal()+"</td>" +
+                    "<td>"+BVMicroUtils.formatCurrency(amortizationRowEntry.getMonthlyInterest())+"</td>" +
+                    "<td>"+BVMicroUtils.formatCurrency(amortizationRowEntry.getVATOnInterest())+"</td>" +
+                    "<td>"+BVMicroUtils.formatCurrency(amortizationRowEntry.getInterestOnHT())+"</td>" +
+                    "<td>"+amortizationRowEntry.getPayment()+"</td>" +
+                    "<td>"+amortizationRowEntry.getDate()+"</td>" +
                     "</tr>";
         }
         return row;
