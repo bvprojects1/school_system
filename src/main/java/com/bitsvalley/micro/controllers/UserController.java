@@ -360,7 +360,7 @@ public class UserController extends SuperController{
             OutputStream responseOutputStream = response.getOutputStream();
             Optional<SavingAccountTransaction> savingAccountTransaction = savingAccountTransactionService.findById(new Long(id));
             SavingAccountTransaction aSavingAccountTransaction = savingAccountTransaction.get();
-            String htmlInput = pdfService.generateTransactionReceiptPDF(aSavingAccountTransaction,initSystemService.findAll());
+            String htmlInput = pdfService.generateSavingTransactionReceiptPDF(aSavingAccountTransaction,initSystemService.findAll());
             generateByteOutputStream(response,htmlInput);
 
     }

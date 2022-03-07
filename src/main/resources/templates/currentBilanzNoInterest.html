@@ -56,7 +56,7 @@
                 <font color="#2d363f" size="4px">
                     <a href="#"
                        th:href="@{/showCustomer/{userid}(userid=${currentAccountTransaction.currentAccount.user.id})}">
-                        <div th:text="${currentAccountTransaction.currentAccount.accountNumber}"/>
+                         <div th:text="${#strings.substring(currentAccountTransaction.currentAccount.accountNumber,0,5)} + ' ' +${#strings.substring(currentAccountTransaction.currentAccount.accountNumber,5,10)} + ' ' +${#strings.substring(currentAccountTransaction.currentAccount.accountNumber,10,21)} + ' ' +${#strings.substring(currentAccountTransaction.currentAccount.accountNumber,21,23)}"/>
                     </a>
                 </font>
             </td>
