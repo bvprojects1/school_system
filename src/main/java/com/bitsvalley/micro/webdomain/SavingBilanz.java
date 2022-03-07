@@ -21,6 +21,7 @@ public class SavingBilanz {
     String createdBy;
     String id;
     String accountOwner;
+    String representative;
 
     public String getBranch() {
         return branch;
@@ -172,5 +173,13 @@ public class SavingBilanz {
 
     public void setReference(String reference) {
         this.reference = reference;
+    }
+
+    public String getRepresentative() {
+        return representative;
+    }
+
+    public void setRepresentative(String representative) {
+        this.representative = representative;
     }
 }

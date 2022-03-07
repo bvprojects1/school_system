@@ -302,6 +302,7 @@ public class CurrentAccountService extends SuperService {
         currentBilanz.setModeOfPayment(currentAccountTransaction.getModeOfPayment());
         currentBilanz.setAccountOwner(currentAccountTransaction.getAccountOwner());
         currentBilanz.setBranch(currentAccountTransaction.getCurrentAccount().getBranchCode());
+        currentBilanz.setRepresentative(currentAccountTransaction.getRepresentative());
 
         if (calculateInterest) {
             currentBilanz.setInterestAccrued(

@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-
 <div th:insert="header::navbar"></div>
-<br/>
-<br/>
 
-<div class="container">
-    <section class="choosen-area-start space">
+
+<section class="contact-form-area-start space df-bg">
+    <!--Project title area start-->
+    <div class="project-title-area text-center">
+        <div class="col-md-12">
         <table style="border:0px" class="center" width="100%" cellpadding="5">
             <tr>
                 <td>
@@ -47,7 +47,7 @@
 
         <table border="0" class="center" width="100%" cellpadding="5">
             <tr>
-                <td colspan="2">
+                <td colspan="1">
                     <font size="5px" color="#738980">
                         <b>CURRENT ACCOUNT</b>
                     </font>
@@ -55,7 +55,7 @@
                         <img width="25px" th:src="@{/assets/images/add.png}"/>
                     </a><br/>
                 </td>
-
+                <td></td>
 <!--                <div th:if="${#authorization.expression('hasAnyAuthority(''ROLE_VIEW_CUSTOMER_ACCOUNT_BALANCES'')')}">-->
 
                 <td colspan="2">
@@ -165,7 +165,7 @@
         &nbsp;
         <table border="0" class="center" width="100%" cellpadding="5">
             <tr>
-                <td colspan="2">
+                <td colspan="1">
                     <font size="5px" color="#738980"> <b>SAVING ACCOUNTS</b> </font>
                     <span th:if="${createSavingAccountEligible}">
                         <a href="#" th:href="@{/registerSavingAccount}">
@@ -173,6 +173,7 @@
                         </a>
                     </span>
                 </td>
+                <td></td>
                 <td colspan="2">
                     <a th:if="${#authorization.expression('hasAnyAuthority(''ROLE_CUSTOMER_ACCOUNT_TYPE_TRANSFERS'')')}" href="#" th:href="@{/transferFromDebitToDebitForm}">
                         Saving to Saving <img width="30px" th:src="@{/assets/images/transfer.png}"/>
@@ -221,9 +222,10 @@
                 <td>
                     Creator
                 </td>
-
                 <td>
+                    Representative
                 </td>
+
             </tr>
 
             <tr th:each="savingAccount : ${session.customerInUse.savingAccount}">
@@ -254,7 +256,6 @@
 
                 <td th:text="${savingAccount.createdBy}"/>
 
-
                 <td>
                     <a href="#" th:href="@{/registerSavingAccountTransaction/{id}(id=${savingAccount.id})}">
                         <img width="30px" th:src="@{/assets/images/aLens.png}"/>
@@ -272,7 +273,7 @@
 
         <table border="0" class="center" width="100%" cellpadding="5">
             <tr>
-                <td colspan="8">
+                <td colspan="1">
                     <font size="5px" color="#738980">
                         <b>LOAN ACCOUNTS</b>
                     </font>
@@ -282,6 +283,9 @@
                             <img width="25px" th:src="@{/assets/images/add.png}"/>
                         </a>
                     </span>
+                </td>
+                <td colspan="8">
+
                 </td>
 
             </tr>
@@ -300,12 +304,10 @@
                     Current Balance
                 </td>
 
-<!--                <td>-->
-<!--                    Guarantor-->
-<!--                </td>-->
-
                 <td>
                     Creator
+                </td>
+                <td>
                 </td>
                 <td>
                     Annual Rate
@@ -332,11 +334,8 @@
                 <td th:text="${#numbers.formatDecimal(loanAccount.currentLoanAmount, 0, 'COMMA', 0, 'POINT')}"/>
 
                 <td>
-
                 </td>
-
                 <td th:text="${loanAccount.createdBy}"/>
-
                 <td>
                     <span th:text="${loanAccount.interestRate}"/>%
                     <br/>
@@ -358,7 +357,7 @@
 
         <table border="0" class="center" width="100%" cellpadding="5">
             <tr>
-                <td colspan="9">
+                <td colspan="1">
                     <font size="5px" color="#738980">
                         <b>SHARE ACCOUNT</b>
                     </font>
@@ -366,6 +365,7 @@
                         <img width="25px" th:src="@{/assets/images/add.png}"/>
                     </a><br/>
                 </td>
+                <td colspan="7"></td>
             </tr>
             <tr>
                 <td>
@@ -415,6 +415,8 @@
                 </td>
             </tr>
         </table>
+        </div>
+    </div>
     </section>
 </div>
 

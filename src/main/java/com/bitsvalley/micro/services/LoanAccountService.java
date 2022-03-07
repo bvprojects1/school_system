@@ -434,6 +434,7 @@ public class LoanAccountService extends SuperService {
         loanBilanz.setNotes(loanAccountTransaction.getNotes());
         loanBilanz.setAccountNumber(loanAccount.getAccountNumber());
         loanBilanz.setNoOfDays(calculateNoOfDays(loanAccountTransaction.getCreatedDate()));
+        loanBilanz.setRepresentative(loanAccountTransaction.getRepresentative());
 //
 //        int days = new Integer(loanBilanz.getNoOfDays());
 //        double intRate = new Double(loanBilanz.getInterestRate());

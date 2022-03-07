@@ -286,6 +286,7 @@ public class SavingAccountService extends SuperService {
         savingBilanz.setAgent(savingAccountTransaction.getCreatedBy());
         savingBilanz.setInterestRate("" + savingAccountTransaction.getSavingAccount().getInterestRate());
         savingBilanz.setSavingAmount(savingAccountTransaction.getSavingAmount());
+        savingBilanz.setRepresentative(savingAccountTransaction.getRepresentative());
 
         savingBilanz.setCreatedDate(BVMicroUtils.formatDateTime(savingAccountTransaction.getCreatedDate()));
         savingBilanz.setNotes(savingAccountTransaction.getNotes());

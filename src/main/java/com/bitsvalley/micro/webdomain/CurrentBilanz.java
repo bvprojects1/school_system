@@ -25,6 +25,15 @@ public class CurrentBilanz {
     String accountOwner;
     String amountReceived;
     String vatPercent;
+    String representative;
+
+    public String getRepresentative() {
+        return representative;
+    }
+
+    public void setRepresentative(String representative) {
+        this.representative = representative;
+    }
 
     public String getBranch() {
         return branch;
