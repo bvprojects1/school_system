@@ -249,7 +249,7 @@ public class PdfService {
 
             + "</b><br/>Customer: <b>"+ BVMicroUtils.getFullName(loanAccountTransaction.getLoanAccount().getUser())+
 
-            "</b> </td>" +
+            "</b> <br/>" +
 //            "<td>Loan Balance: <b>" + BVMicroUtils.formatCurrency(showAmount) + "</b><br/> Repayment Amount: <font style=\"font-size:1.6em;color:black;\">"
             "Repayment Amount: <font style=\"font-size:1.6em;color:black;\">"
             + BVMicroUtils.formatCurrency(loanAccountTransaction.getAmountReceived()) + "</font></td></tr>" +
