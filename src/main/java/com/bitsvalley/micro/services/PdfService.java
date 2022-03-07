@@ -58,7 +58,8 @@ public class PdfService {
                 + "</b><br/>Customer: <b>"+ BVMicroUtils.getFullName(savingAccountTransaction.getSavingAccount().getUser())+
 
                 "</b> </td>" +
-                "<td>Account Balance: <b>" + BVMicroUtils.formatCurrency(showAmount) + "</b><br/> Current Amount: <font style=\"font-size:1.6em;color:black;\">"
+//                "<td>Account Balance: <b>" + BVMicroUtils.formatCurrency(showAmount) + "</b><br/> Current Amount: <font style=\"font-size:1.6em;color:black;\">"
+                "<td>Current Amount: <font style=\"font-size:1.6em;color:black;\">"
                 + BVMicroUtils.formatCurrency(savingAccountTransaction.getSavingAmount()) + "</font></td></tr>" +
                 "        <tr><td colspan=\"2\">" +
                 "Agent Representative: <b>" + savingAccountTransaction.getCreatedBy() + " - </b>"+ BVMicroUtils.getFullName(aUser) +"<br/>Notes:"+savingAccountTransaction.getNotes()+"</td>\n" +
@@ -197,7 +198,8 @@ public class PdfService {
                 + "</b><br/>Customer: <b>"+ BVMicroUtils.getFullName(currentAccountTransaction.getCurrentAccount().getUser())+
 
                 "</b> </td>" +
-                "<td>Account Balance: <b>" + BVMicroUtils.formatCurrency(showAmount) + "</b><br/> Current Amount: <font style=\"font-size:1.6em;color:black;\">"
+//                "<td>Account Balance: <b>" + BVMicroUtils.formatCurrency(showAmount) + "</b><br/> Current Amount: <font style=\"font-size:1.6em;color:black;\">"
+                "<td>Current Amount: <font style=\"font-size:1.6em;color:black;\">"
                 + BVMicroUtils.formatCurrency(currentAccountTransaction.getCurrentAmount()) + "</font></td></tr>" +
                 "        <tr><td colspan=\"2\">" +
                 "Agent Representative: <b>" + currentAccountTransaction.getCreatedBy() + " - </b>"+ BVMicroUtils.getFullName(aUser) +"<br/>Notes:"+currentAccountTransaction.getNotes()+"</td>\n" +
@@ -248,7 +250,8 @@ public class PdfService {
             + "</b><br/>Customer: <b>"+ BVMicroUtils.getFullName(loanAccountTransaction.getLoanAccount().getUser())+
 
             "</b> </td>" +
-            "<td>Loan Balance: <b>" + BVMicroUtils.formatCurrency(showAmount) + "</b><br/> Repayment Amount: <font style=\"font-size:1.6em;color:black;\">"
+//            "<td>Loan Balance: <b>" + BVMicroUtils.formatCurrency(showAmount) + "</b><br/> Repayment Amount: <font style=\"font-size:1.6em;color:black;\">"
+            "Repayment Amount: <font style=\"font-size:1.6em;color:black;\">"
             + BVMicroUtils.formatCurrency(loanAccountTransaction.getAmountReceived()) + "</font></td></tr>" +
             "        <tr><td colspan=\"2\">" +
             "Agent Representative: <b>" + loanAccountTransaction.getCreatedBy() + " - </b>"+ BVMicroUtils.getFullName(aUser) +"<br/>Notes:"+loanAccountTransaction.getNotes()+"</td>\n" +
