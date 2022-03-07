@@ -30,7 +30,7 @@ public class CallCenterController extends SuperController{
     public String showCustomer(@PathVariable("accountNumber") String accountNumber, ModelMap model, HttpServletRequest request) {
         List<CallCenter> callCenterList = callCenterRepository.findByAccountNumber(accountNumber);
 
-        if( callCenterList != null ){
+        if( callCenterList != null && callCenterList.size() > 0){
             Collections.reverse(callCenterList);
             model.put("callCenterList", callCenterList);
 

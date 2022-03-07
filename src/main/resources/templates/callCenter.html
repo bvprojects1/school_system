@@ -18,8 +18,7 @@
                      <font size="1.5px"> Account Number</font> <br/>
                     <a href="#" th:href="@{/showCustomer/{id}(id=${session.customerInUse.id})}">
                     <font color="#2d363f" size="4px">
-                        <div th:text="${accountNumber}">
-                        </div>
+                        <span th:text="${#strings.substring(accountNumber,0,5)} + ' ' +${#strings.substring(accountNumber,5,10)} + ' ' +${#strings.substring(accountNumber,10,21)} + ' ' +${#strings.substring(accountNumber,21,23)}"/>
                     </font>
                     </a>
                 </td>
