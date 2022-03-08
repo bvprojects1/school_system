@@ -37,7 +37,7 @@ public class PdfService {
 
     public String generateSavingTransactionReceiptPDF(SavingAccountTransaction savingAccountTransaction, RuntimeSetting rt) {
         Double accountBalance = 0.0;
-        String representativeText = StringUtils.equals(savingAccountTransaction.getRepresentative(),BVMicroUtils.getFullName(savingAccountTransaction.getSavingAccount().getUser()))?"":"Customer Representative: "+savingAccountTransaction.getRepresentative();
+        String representativeText = StringUtils.equals(savingAccountTransaction.getRepresentative(),BVMicroUtils.getFullName(savingAccountTransaction.getSavingAccount().getUser()))?"":"Remittance: "+savingAccountTransaction.getRepresentative();
         User aUser = userRepository.findByUserName(savingAccountTransaction.getCreatedBy());
         if (savingAccountTransaction.getAccountOwner() != null && StringUtils.equals("true", savingAccountTransaction.getAccountOwner())) {
             accountBalance = savingAccountTransaction.getAccountBalance();
@@ -176,7 +176,7 @@ public class PdfService {
 
     public String generateCurrentTransactionReceiptPDF(CurrentAccountTransaction currentAccountTransaction, RuntimeSetting rt) {
         Double showAmount = 0.0;
-        String representativeText = StringUtils.equals(currentAccountTransaction.getRepresentative(),BVMicroUtils.getFullName(currentAccountTransaction.getCurrentAccount().getUser()))?"":"Customer Representative: "+currentAccountTransaction.getRepresentative();
+        String representativeText = StringUtils.equals(currentAccountTransaction.getRepresentative(),BVMicroUtils.getFullName(currentAccountTransaction.getCurrentAccount().getUser()))?"":"Remittance: "+currentAccountTransaction.getRepresentative();
         User aUser = userRepository.findByUserName(currentAccountTransaction.getCreatedBy());
         if (currentAccountTransaction.getAccountOwner() != null && StringUtils.equals("true", currentAccountTransaction.getAccountOwner())) {
             showAmount = currentAccountTransaction.getAccountBalance();
@@ -227,7 +227,7 @@ public class PdfService {
     public String generateLoanTransactionReceiptPDF(LoanAccountTransaction loanAccountTransaction, RuntimeSetting rt) {
 
     Double showAmount = 0.0;
-    String representativeText = StringUtils.equals(loanAccountTransaction.getRepresentative(),BVMicroUtils.getFullName(loanAccountTransaction.getLoanAccount().getUser()))?"":"Customer Representative: "+loanAccountTransaction.getRepresentative();
+    String representativeText = StringUtils.equals(loanAccountTransaction.getRepresentative(),BVMicroUtils.getFullName(loanAccountTransaction.getLoanAccount().getUser()))?"":"Remittance: "+loanAccountTransaction.getRepresentative();
     User aUser = userRepository.findByUserName(loanAccountTransaction.getCreatedBy());
         if (loanAccountTransaction.getAccountOwner() != null && StringUtils.equals("true", loanAccountTransaction.getAccountOwner())) {
         showAmount = loanAccountTransaction.getAccountBalance();
@@ -277,7 +277,7 @@ public class PdfService {
 
 //    public String generateLoanTransactionReceiptPDF_old(LoanAccountTransaction loanAccountTransaction, RuntimeSetting rt) {
 //        User aUser = userRepository.findByUserName(loanAccountTransaction.getCreatedBy());
-//        String representativeText = StringUtils.equals(loanAccountTransaction.getRepresentative(),BVMicroUtils.getFullName(loanAccountTransaction.getLoanAccount().getUser()))?"":"Customer Representative: "+loanAccountTransaction.getRepresentative();
+//        String representativeText = StringUtils.equals(loanAccountTransaction.getRepresentative(),BVMicroUtils.getFullName(loanAccountTransaction.getLoanAccount().getUser()))?"":"Remittance: "+loanAccountTransaction.getRepresentative();
 //
 //        String loanBilanzNoInterest = "<html><head>" +
 //                "</head><body><br/><br/>\"<font style=\"font-size:1.4em;color:black;\">\" +<b>RECEIPT FOR LOAN PAYMENT MADE</b></font>" +
