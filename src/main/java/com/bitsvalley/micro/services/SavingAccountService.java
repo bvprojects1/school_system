@@ -127,8 +127,19 @@ public class SavingAccountService extends SuperService {
         savingAccountTransaction.setReference(BVMicroUtils.getSaltString()); //Collision
         savingAccountTransaction.setCreatedBy(getLoggedInUserName());
         savingAccountTransaction.setCreatedDate(LocalDateTime.now());
+        savingAccountTransaction.setAccountBalance(calculateAccountBalance(savingAccountTransaction.getSavingAmount(),savingAccountTransaction.getSavingAccount()));
+
         savingAccountTransactionRepository.save(savingAccountTransaction);
         // generalLedgerService.updateSavingAccountTransaction(savingAccountTransaction);
+    }
+
+    private double calculateAccountBalance(double savingAmount, SavingAccount savingAccount) {
+
+            Double balance = 0.0;
+            for (SavingAccountTransaction transaction: savingAccount.getSavingAccountTransaction() ) {
+                balance = transaction.getSavingAmount() + balance;
+            }
+            return savingAmount + balance;
     }
 
     @Transactional
@@ -396,8 +407,7 @@ public class SavingAccountService extends SuperService {
         loanAccountTransaction.setBranchCode(branchInfo.getCode());
         loanAccountTransaction.setBranchCountry(branchInfo.getCountry());
         loanAccountTransaction.setAmountReceived(transferAmount);
-        loanAccountTransaction.setAccountOwner(loanAccount.getUser().getLastName() +", "+
-                loanAccount.getUser().getLastName());
+//        loanAccountTransaction.setAccountOwner(loanAccount.getUser().getLastName() +", "loanAccount.getUser().getLastName());
         loanAccountTransaction.setReference(BVMicroUtils.getSaltString());
         loanAccount = loanAccountService.createLoanAccountTransaction(loanAccountTransaction, loanAccount, BVMicroUtils.TRANSFER);
 

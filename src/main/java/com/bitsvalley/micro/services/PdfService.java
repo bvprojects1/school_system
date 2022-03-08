@@ -36,11 +36,11 @@ public class PdfService {
     UserRepository userRepository;
 
     public String generateSavingTransactionReceiptPDF(SavingAccountTransaction savingAccountTransaction, RuntimeSetting rt) {
-        Double showAmount = 0.0;
+        Double accountBalance = 0.0;
         String representativeText = StringUtils.equals(savingAccountTransaction.getRepresentative(),BVMicroUtils.getFullName(savingAccountTransaction.getSavingAccount().getUser()))?"":"Customer Representative: "+savingAccountTransaction.getRepresentative();
         User aUser = userRepository.findByUserName(savingAccountTransaction.getCreatedBy());
         if (savingAccountTransaction.getAccountOwner() != null && StringUtils.equals("true", savingAccountTransaction.getAccountOwner())) {
-            showAmount = savingAccountTransaction.getSavingAccount().getAccountBalance();
+            accountBalance = savingAccountTransaction.getAccountBalance();
         }
         String currentBilanzNoInterest = "<font style=\"font-size:1.4em;color:black;\">" +
                 "<b>RECEIPT FOR SAVING ACCOUNT TRANSACTION</b></font>" +
@@ -58,11 +58,10 @@ public class PdfService {
                 + "</b><br/>Customer: <b>"+ BVMicroUtils.getFullName(savingAccountTransaction.getSavingAccount().getUser())+
 
                 "</b> </td>" +
-//                "<td>Account Balance: <b>" + BVMicroUtils.formatCurrency(showAmount) + "</b><br/> Current Amount: <font style=\"font-size:1.6em;color:black;\">"
-                "<td>Current Amount: <font style=\"font-size:1.6em;color:black;\">"
+                "<td>Account Balance: <b>" + BVMicroUtils.formatCurrency(accountBalance) + "</b><br/> Current Amount: <font style=\"font-size:1.6em;color:black;\">"
                 + BVMicroUtils.formatCurrency(savingAccountTransaction.getSavingAmount()) + "</font></td></tr>" +
                 "        <tr><td colspan=\"2\">" +
-                "Agent Representative: <b>" + savingAccountTransaction.getCreatedBy() + " - </b>"+ BVMicroUtils.getFullName(aUser) +"<br/>Notes:"+savingAccountTransaction.getNotes()+"</td>\n" +
+                "Agent Representative: <b>" + BVMicroUtils.getFullName(aUser) +"</b><br/>Notes:"+savingAccountTransaction.getNotes()+"</td>\n" +
                 "    </tr></table>" +
                 "    <table  border=\"1\" width=\"100%\" class=\"center\">\n" +
                 "            <tr>\n" +
@@ -180,7 +179,7 @@ public class PdfService {
         String representativeText = StringUtils.equals(currentAccountTransaction.getRepresentative(),BVMicroUtils.getFullName(currentAccountTransaction.getCurrentAccount().getUser()))?"":"Customer Representative: "+currentAccountTransaction.getRepresentative();
         User aUser = userRepository.findByUserName(currentAccountTransaction.getCreatedBy());
         if (currentAccountTransaction.getAccountOwner() != null && StringUtils.equals("true", currentAccountTransaction.getAccountOwner())) {
-            showAmount = currentAccountTransaction.getCurrentAccount().getAccountBalance();
+            showAmount = currentAccountTransaction.getAccountBalance();
         }
         String currentBilanzNoInterest = "<font style=\"font-size:1.4em;color:black;\">" +
                 "<b>RECEIPT FOR CURRENT ACCOUNT TRANSACTION</b></font>" +
@@ -198,11 +197,10 @@ public class PdfService {
                 + "</b><br/>Customer: <b>"+ BVMicroUtils.getFullName(currentAccountTransaction.getCurrentAccount().getUser())+
 
                 "</b> </td>" +
-//                "<td>Account Balance: <b>" + BVMicroUtils.formatCurrency(showAmount) + "</b><br/> Current Amount: <font style=\"font-size:1.6em;color:black;\">"
-                "<td>Current Amount: <font style=\"font-size:1.6em;color:black;\">"
+                "<td>Account Balance: <b>" + BVMicroUtils.formatCurrency(showAmount) + "</b><br/> Current Amount: <font style=\"font-size:1.6em;color:black;\">"
                 + BVMicroUtils.formatCurrency(currentAccountTransaction.getCurrentAmount()) + "</font></td></tr>" +
                 "        <tr><td colspan=\"2\">" +
-                "Agent Representative: <b>" + currentAccountTransaction.getCreatedBy() + " - </b>"+ BVMicroUtils.getFullName(aUser) +"<br/>Notes:"+currentAccountTransaction.getNotes()+"</td>\n" +
+                "Agent Representative: <b>" + BVMicroUtils.getFullName(aUser) +"</b><br/>Notes:"+currentAccountTransaction.getNotes()+"</td>\n" +
                 "    </tr></table>" +
                 "    <table  border=\"1\" width=\"100%\" class=\"center\">\n" +
                 "            <tr>\n" +
@@ -232,7 +230,7 @@ public class PdfService {
     String representativeText = StringUtils.equals(loanAccountTransaction.getRepresentative(),BVMicroUtils.getFullName(loanAccountTransaction.getLoanAccount().getUser()))?"":"Customer Representative: "+loanAccountTransaction.getRepresentative();
     User aUser = userRepository.findByUserName(loanAccountTransaction.getCreatedBy());
         if (loanAccountTransaction.getAccountOwner() != null && StringUtils.equals("true", loanAccountTransaction.getAccountOwner())) {
-        showAmount = loanAccountTransaction.getLoanAccount().getCurrentLoanAmount();
+        showAmount = loanAccountTransaction.getAccountBalance();
     }
     String loanBilanzNoInterest = "<font style=\"font-size:1.4em;color:black;\">" +
             "<b>RECEIPT FOR LOAN ACCOUNT TRANSACTION</b></font>" +
@@ -249,12 +247,11 @@ public class PdfService {
 
             + "</b><br/>Customer: <b>"+ BVMicroUtils.getFullName(loanAccountTransaction.getLoanAccount().getUser())+
 
-            "</b> <br/>" +
-//            "<td>Loan Balance: <b>" + BVMicroUtils.formatCurrency(showAmount) + "</b><br/> Repayment Amount: <font style=\"font-size:1.6em;color:black;\">"
-            "Repayment Amount: <font style=\"font-size:1.6em;color:black;\">"
+            "</b> </td>" +
+            "<td>Loan Balance: <b>" + BVMicroUtils.formatCurrency(showAmount) + "</b><br/> Total Repayment Amount: <font style=\"font-size:1.6em;color:black;\">"
             + BVMicroUtils.formatCurrency(loanAccountTransaction.getAmountReceived()) + "</font></td></tr>" +
             "        <tr><td colspan=\"2\">" +
-            "Agent Representative: <b>" + loanAccountTransaction.getCreatedBy() + " - </b>"+ BVMicroUtils.getFullName(aUser) +"<br/>Notes:"+loanAccountTransaction.getNotes()+"</td>\n" +
+            "Agent Representative: <b>"+ BVMicroUtils.getFullName(aUser) +"</b><br/>Notes:"+loanAccountTransaction.getNotes()+"</td>\n" +
             "    </tr></table>" +
             "    <table  border=\"1\" width=\"100%\" class=\"center\">\n" +
             "            <tr>\n" +

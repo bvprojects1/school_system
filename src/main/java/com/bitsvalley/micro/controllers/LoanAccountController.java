@@ -406,8 +406,7 @@ public class LoanAccountController extends SuperController {
         loanAccountTransaction.setCreatedDate(LocalDateTime.now());
 
         loanAccountTransaction.setCreatedBy(getLoggedInUserName());
-        loanAccountTransaction.setAccountOwner(aLoanAccount.getUser().getLastName() +", "+
-                aLoanAccount.getUser().getLastName());
+//        loanAccountTransaction.setAccountOwner(aLoanAccount.getUser().getLastName() +", "aLoanAccount.getUser().getLastName());
         loanAccountTransaction.setReference(BVMicroUtils.getSaltString());
         User user = (User) request.getSession().getAttribute(BVMicroUtils.CUSTOMER_IN_USE);
         String error = "";

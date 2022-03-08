@@ -128,7 +128,7 @@ public class CurrentAccountService extends SuperService {
         }
 
         currentAccountTransaction.setReference(BVMicroUtils.getSaltString());
-
+        currentAccountTransaction.setAccountBalance(calculateAccountBalance(currentAccountTransaction.getCurrentAmount(),currentAccount));
         currentAccountTransactionRepository.save(currentAccountTransaction);
 
         currentAccountService.save(currentAccount);
@@ -136,6 +136,14 @@ public class CurrentAccountService extends SuperService {
         generalLedgerService.updateGLAfterCurrentAccountTransaction(currentAccountTransaction);
 
 //        generalLedgerService.updateCurrentAccountTransaction(currentAccountTransaction);
+    }
+
+    private double calculateAccountBalance(double currentAmount, CurrentAccount currentAccount) {
+        Double balance = 0.0;
+        for (CurrentAccountTransaction transaction: currentAccount.getCurrentAccountTransaction() ) {
+            balance = transaction.getCurrentAmount() + balance;
+        }
+        return currentAmount + balance;
     }
 
     @Transactional

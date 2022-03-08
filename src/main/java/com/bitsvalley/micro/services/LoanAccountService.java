@@ -316,11 +316,19 @@ public class LoanAccountService extends SuperService {
 //                    loanAccountTransaction.getAmountReceived() - interestOwed);
 //            loanAccountTransaction.setInterestPaid(interestOwed);
 //        }
+        loanAccountTransaction.setAccountBalance(loanAccountTransaction.getCurrentLoanAmount());
         loanAccountTransactionRepository.save(loanAccountTransaction);
-
 
         return loanAccount;
     }
+
+//    private double calculateAccountBalance(double amountReceived, LoanAccount loanAccount) {
+//        Double balance = 0.0;
+//        for (LoanAccountTransaction transaction: loanAccount.getLoanAccountTransaction() ) {
+//            balance = (balance + transaction.getInterestPaid() + transaction) - transaction.getAmountReceived();
+//        }
+//        return amountReceived + balance;
+//    }
 
 
     public LoanBilanzList calculateAccountBilanz(

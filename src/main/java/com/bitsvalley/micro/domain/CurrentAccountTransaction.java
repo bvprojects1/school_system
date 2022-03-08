@@ -15,6 +15,7 @@ public class CurrentAccountTransaction {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
+    private double accountBalance;
     private String createdBy;
     private LocalDateTime createdDate;
     private double currentAmount;
@@ -41,6 +42,14 @@ public class CurrentAccountTransaction {
 
     @ManyToOne
     private CurrentAccount currentAccount;
+
+    public double getAccountBalance() {
+        return accountBalance;
+    }
+
+    public void setAccountBalance(double accountBalance) {
+        this.accountBalance = accountBalance;
+    }
 
     public String getRepresentative() {
         return representative;

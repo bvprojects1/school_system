@@ -936,7 +936,7 @@ public class GeneralLedgerService extends SuperService {
                 savingAccountTransaction.setBranch(branchInfo.getId());
                 savingAccountTransaction.setBranchCode(branchInfo.getCode());
                 savingAccountTransaction.setBranchCountry(branchInfo.getCountry());
-                savingAccountTransaction.setAccountOwner(byAccountNumber.getUser().getLastName());
+//                savingAccountTransaction.setAccountOwner(byAccountNumber.getUser().getLastName());
                 savingAccountTransaction.setSavingAmountInLetters("SYSTEM");
                 savingAccountTransactionRepository.save(savingAccountTransaction);
                 byAccountNumber.getSavingAccountTransaction().add(savingAccountTransaction);
@@ -960,7 +960,7 @@ public class GeneralLedgerService extends SuperService {
                     currentAccountTransaction.setBranch(branchInfo.getId());
                     currentAccountTransaction.setBranchCode(branchInfo.getCode());
                     currentAccountTransaction.setBranchCountry(branchInfo.getCountry());
-                    currentAccountTransaction.setAccountOwner(byAccountNumber.getUser().getLastName());
+//                    currentAccountTransaction.setAccountOwner(byAccountNumber.getUser().getLastName());
                     currentAccountTransaction.setCurrentAmountInLetters("SYSTEM");
                     currentAccountTransactionRepository.save(currentAccountTransaction);
                     byAccountNumber.getCurrentAccountTransaction().add(currentAccountTransaction);
@@ -984,7 +984,7 @@ public class GeneralLedgerService extends SuperService {
                 loanAccountTransaction.setBranch(branchInfo.getId());
                 loanAccountTransaction.setBranchCode(branchInfo.getCode());
                 loanAccountTransaction.setBranchCountry(branchInfo.getCountry());
-                loanAccountTransaction.setAccountOwner(byAccountNumber.getUser().getLastName());
+//                loanAccountTransaction.setAccountOwner(byAccountNumber.getUser().getLastName());
                 loanAccountTransaction.setLoanAmountInLetters("SYSTEM");
                 loanAccountTransactionRepository.save(loanAccountTransaction);
                 updateGeneralLedger(loanAccountTransaction, ledgerAccount.getCode(), BVMicroUtils.CREDIT, loanAccountTransaction.getLoanAmount(), true);
