@@ -21,7 +21,6 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -108,146 +107,46 @@ public class CurrentAccountController extends SuperController {
     }
 
 
-
-
-
     @GetMapping(value = "/createCurrentAccountReceiptPdf/{id}")
     public void currentReceiptPDF(@PathVariable("id") long id, ModelMap model, HttpServletRequest request, HttpServletResponse response) throws IOException {
-        response.setHeader("Content-disposition","attachment;filename="+ "statementCurrent.pdf");
+        response.setHeader("Content-disposition", "attachment;filename=" + "statementCurrent.pdf");
 
         ByteArrayOutputStream byteArrayOutputStream = null;
         ByteArrayInputStream byteArrayInputStream = null;
-//        try {
+
         OutputStream responseOutputStream = response.getOutputStream();
         CurrentAccountTransaction currentAccountTransaction = currentAccountTransactionService.findById(new Long(id)).get();
         CurrentAccountTransaction aCurrentAccountTransaction = currentAccountTransaction;
-        String htmlInput = pdfService.generateCurrentTransactionReceiptPDF(aCurrentAccountTransaction,initSystemService.findAll());
-        generateByteOutputStream(response,htmlInput);
+        String htmlInput = pdfService.generateCurrentTransactionReceiptPDF(aCurrentAccountTransaction, initSystemService.findAll());
+        generateByteOutputStream(response, htmlInput);
 
     }
-
 
 
     @GetMapping(value = "/statementCurrentPDF/{id}")
     public void generateStatementPDF(@PathVariable("id") long id, ModelMap model, HttpServletRequest request, HttpServletResponse response) throws IOException {
 
-        response.setHeader("Content-disposition","attachment;filename="+ "currentCurrent.pdf");
+        response.setHeader("Content-disposition", "attachment;filename=" + "currentCurrent.pdf");
 //            OutputStream responseOutputStream = response.getOutputStream();
-            CurrentAccount currentAccount = currentAccountService.findById(new Long(id)).get();
-            CurrentBilanzList currentBilanzByUserList = currentAccountService.
-                    calculateAccountBilanz(currentAccount.getCurrentAccountTransaction(),false);
-            RuntimeSetting runtimeSetting = (RuntimeSetting)request.getSession().getAttribute("runtimeSettings");
-            String htmlInput = pdfService.generatePDFCurrentBilanzList(currentBilanzByUserList,
-                    currentAccount,runtimeSetting.getLogo(),
-                    initSystemService.findAll() );
-            generateByteOutputStream(response, htmlInput);
+        CurrentAccount currentAccount = currentAccountService.findById(new Long(id)).get();
+        CurrentBilanzList currentBilanzByUserList = currentAccountService.
+                calculateAccountBilanz(currentAccount.getCurrentAccountTransaction(), false);
+        RuntimeSetting runtimeSetting = (RuntimeSetting) request.getSession().getAttribute("runtimeSettings");
+        String htmlInput = pdfService.generatePDFCurrentBilanzList(currentBilanzByUserList,
+                currentAccount, runtimeSetting.getLogo(),
+                initSystemService.findAll());
+        generateByteOutputStream(response, htmlInput);
 
     }
 
 
-//    @GetMapping(value = "/transferFromSavingToLoanAccountsForm")
-//    public String transferBetweenAccounts(ModelMap model,
-//                                        HttpServletRequest request,
-//                                        HttpServletResponse response) {
-//        TransferBilanz transferBilanz = new TransferBilanz();
-//        transferBilanz.setTransferType(BVMicroUtils.DEBIT_LOAN_TRANSFER);
-//        model.put("transferBilanz", transferBilanz);
-//        return "transfer";
-//    }
-//
-//
-//    @GetMapping(value = "/transferFromDebitToDebitForm")
-//    public String transferFromDebitToDebitForm(ModelMap model,
-//                                               HttpServletRequest request) {
-//
-//        User user = (User) request.getSession().getAttribute(BVMicroUtils.CUSTOMER_IN_USE);
-//        if (user == null ) {
-//            model.addAttribute("user", new User());
-//            return "findCustomer";
-//        }
-//        try{
-//            user.getSavingAccount().size();
-//        }catch (RuntimeException exp){
-//            model.addAttribute("user", new User());
-//            return "findCustomer";
-//        }
-//        TransferBilanz transferBilanz = new TransferBilanz();
-//        transferBilanz.setTransferType(BVMicroUtils.DEBIT_DEBIT_TRANSFER);
-//        model.put("transferBilanz", transferBilanz );
-//        return "transferDebitToDebit";
-//    }
-//
-//
-//    @PostMapping(value = "/transferFromSavingToLoanAccountsForm")
-//    public String transferFromSavingToLoanAccountsForm(ModelMap model,
-//                                                       @ModelAttribute("transferBilanz") TransferBilanz transferBilanz) {
-//        //Validate transfer amount is available
-//
-//        model.put("fromTransferText",transferBilanz.getTransferFromAccount() );
-//        model.put("toTransferText",transferBilanz.getTransferToAccount() );
-//        model.put("transferAmount",BVMicroUtils.formatCurrency(transferBilanz.getTransferAmount()) );
-//        model.put("notes", transferBilanz.getNotes());
-//
-//        if(transferBilanz.getTransferType().equals(BVMicroUtils.DEBIT_LOAN_TRANSFER)) {
-//            savingAccountService.transferFromSavingToLoan(transferBilanz.getTransferFromAccount(),
-//                    transferBilanz.getTransferToAccount(),
-//                    transferBilanz.getTransferAmount(), transferBilanz.getNotes());
-//        }else{
-//            SavingAccount savingAccount = savingAccountService.transferFromDebitToDebit(transferBilanz.getTransferFromAccount(),
-//                    transferBilanz.getTransferToAccount(),
-//                    transferBilanz.getTransferAmount(), transferBilanz.getNotes());
-//
-//        }
-//
-//        return "transferConfirm";
-//    }
-//
-//
-//    @PostMapping(value = "/transferFromDebitToDebitFormReview")
-//    public String transferFromDebitToDebitFormReview(ModelMap model,
-//                                                             @ModelAttribute("transferBilanz") TransferBilanz transferBilanz) {
-//
-//        SavingAccount toAccount = savingAccountService.findByAccountNumber(transferBilanz.getTransferToAccount());
-//        if(null==toAccount){
-//            model.put("invalidToAccount","Please make sure Account Number is valid" );
-//            return "transferDebitToDebit";
-//        }
-//        model.put("transferBilanz", transferBilanz);
-//        SavingAccount fromAccount = savingAccountService.findByAccountNumber(transferBilanz.getTransferFromAccount());
-//
-//        model.put("transferType", transferBilanz.getTransferType());
-//        model.put("fromTransferText",fromAccount.getAccountType().getName() +" --- Balance " + BVMicroUtils.formatCurrency(fromAccount.getAccountBalance()) +"--- Minimum Balance "+ BVMicroUtils.formatCurrency(fromAccount.getAccountMinBalance()) );
-//        model.put("toTransferText",toAccount.getAccountType().getName() +" --- Balance " + BVMicroUtils.formatCurrency(toAccount.getAccountBalance()) +"--- Minimum Balance "+ BVMicroUtils.formatCurrency(toAccount.getAccountMinBalance()) );
-//        model.put("transferAmount", BVMicroUtils.formatCurrency(transferBilanz.getTransferAmount()));
-//        model.put("notes", transferBilanz.getNotes());
-//        return "transferReview";
-//    }
-//
-//    @PostMapping(value = "/transferFromSavingToLoanAccountsFormReview")
-//    public String transferFromSavingToLoanAccountsFormReview(ModelMap model,
-//                                                       @ModelAttribute("transferBilanz") TransferBilanz transferBilanz) {
-//        model.put("transferBilanz", transferBilanz);
-//        SavingAccount fromAccount= savingAccountService.findByAccountNumber(transferBilanz.getTransferFromAccount());
-//        LoanAccount toAccount = loanAccountService.findByAccountNumber(transferBilanz.getTransferToAccount());
-//
-//        model.put("transferType", BVMicroUtils.DEBIT_LOAN_TRANSFER);
-//        model.put("fromTransferText", fromAccount.getAccountType().getName() +" --- Balance " + BVMicroUtils.formatCurrency(fromAccount.getAccountBalance()) +"--- Minimum Balance "+ BVMicroUtils.formatCurrency(fromAccount.getAccountMinBalance()) );
-//        model.put("toTransferText", toAccount.getAccountType().getName() +" --- Balance " + BVMicroUtils.formatCurrency(toAccount.getCurrentLoanAmount()) +"--- Initial Loan "+ BVMicroUtils.formatCurrency(toAccount.getLoanAmount()) );
-//        model.put("transferAmount", transferBilanz.getTransferAmount() );
-//        model.put("notes", transferBilanz.getNotes());
-//
-//        return "transferReview";
-//    }
-//
-//
-//
     @PostMapping(value = "/registerCurrentAccountTransactionForm")
     public String registerCurrentAccountTransactionForm(ModelMap model, @ModelAttribute("currentAccountTransaction") CurrentAccountTransaction currentAccountTransaction, HttpServletRequest request) {
         User user = (User) request.getSession().getAttribute(BVMicroUtils.CUSTOMER_IN_USE);
-        if(null == currentAccountTransaction.getAccountOwner()){
+        if (null == currentAccountTransaction.getAccountOwner()) {
             currentAccountTransaction.setAccountOwner("false");
         }
-        if(StringUtils.isEmpty(currentAccountTransaction.getRepresentative())){
+        if (StringUtils.isEmpty(currentAccountTransaction.getRepresentative())) {
             currentAccountTransaction.setRepresentative(BVMicroUtils.getFullName(user));
         }
         String createdDate = request.getParameter("createdDate");
@@ -268,10 +167,9 @@ public class CurrentAccountController extends SuperController {
             }
         }
         String deposit_withdrawal = request.getParameter("deposit_withdrawal");
-        if(StringUtils.isEmpty( currentAccountTransaction.getModeOfPayment()) ){
+        if (StringUtils.isEmpty(currentAccountTransaction.getModeOfPayment())) {
             error = "Select Method of Payment - MOP";
-        }
-        else if(StringUtils.isEmpty(deposit_withdrawal)){
+        } else if (StringUtils.isEmpty(deposit_withdrawal)) {
             error = "Select Transaction Type";
         }
 
@@ -308,10 +206,10 @@ public class CurrentAccountController extends SuperController {
 
         callCenterService.saveCallCenterLog(currentAccountTransaction.getReference(),
                 username, currentAccount.getAccountNumber(),
-                "Current account transaction made "+ BVMicroUtils.formatCurrency(currentAccountTransaction.getCurrentAmount()));
+                "Current account transaction made " + BVMicroUtils.formatCurrency(currentAccountTransaction.getCurrentAmount()));
 
 
-        model.put("name", username );
+        model.put("name", username);
         model.put("billSelectionInfo", BVMicroUtils.formatCurrency(currentAccountTransaction.getCurrentAmount()) + " ---- PAYMENT HAS REGISTERED ----- ");
         model.put("currentBilanzList", currentBilanzByUserList);
         request.getSession().setAttribute("currentBilanzList", currentBilanzByUserList);
@@ -324,27 +222,7 @@ public class CurrentAccountController extends SuperController {
         return "currentBilanzNoInterest";
 
     }
-//
-//    @GetMapping(value = "/showUserSavingBilanz/{id}")
-//    public String showUserSavingBilanz(@PathVariable("id") long id, ModelMap model, HttpServletRequest request) {
-//        User user = (User) request.getSession().getAttribute(BVMicroUtils.CUSTOMER_IN_USE);
-//        SavingBilanzList savingBilanzByUserList = savingAccountService.getSavingBilanzByUser(user, true);
-//        model.put("name", getLoggedInUserName());
-//        model.put("savingBilanzList", savingBilanzByUserList);
-//        return "savingBilanz";
-//    }
-//
-//    @GetMapping(value = "/showSavingAccountBilanz/{accountId}")
-//    public String showSavingAccountBilanz(@PathVariable("accountId") long accountId, ModelMap model, HttpServletRequest request) {
-//        Optional<SavingAccount> byId = savingAccountService.findById(accountId);
-//        List<SavingAccountTransaction> savingAccountTransaction = byId.get().getSavingAccountTransaction();
-//        SavingBilanzList savingBilanzByUserList = savingAccountService.calculateAccountBilanz(savingAccountTransaction, true);
-//        model.put("name", getLoggedInUserName());
-//        model.put("savingBilanzList", savingBilanzByUserList);
-//        return "savingBilanz";
-//    }
-//
-//
+
     private void resetCurrentAccountTransaction(CurrentAccountTransaction sat) {
         sat.setCurrentAmount(0);
         sat.setFifty(0);
@@ -392,7 +270,5 @@ public class CurrentAccountController extends SuperController {
         s = s + qty;
         return s;
     }
-
-
 
 }

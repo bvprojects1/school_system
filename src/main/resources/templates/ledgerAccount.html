@@ -26,7 +26,7 @@
                                             <span><i class="fas fa-crosshairs"></i></span>
                                         </div>
 
-                                            <font color="gray;" size="4"> <b><span th:text="${ledgerAccountInfo}"/></b> </font>
+                                            <font color="red" size="4"> <span th:text="${ledgerAccountInfo}"/> </font>
                                         <br/>
                                     </td>
                                 </tr>
@@ -48,12 +48,12 @@
                             <br/>
                             <label for="status"><font size="4px"> Name</font></label>
                             <input type="text" name="name" th:field="*{name}" id="name"
-                                   placeholder="Name" class="form-control" required>
+                                   placeholder="e.g MEALS" class="form-control" required>
 
                             <br/>
                             <label for="status"><font size="4px"> Code</font></label>
                             <input type="text" name="code" th:field="*{code}" id="code"
-                                   placeholder="Code" class="form-control" required>
+                                   placeholder="e.d 4004" class="form-control" required>
                             <br/>
 
                             <label for="status"><font size="4px"> Active</font></label>
@@ -83,6 +83,7 @@
                         <tr th:each="aLedgerAccount : ${ledgerAccountList}">
                             <td>
                                 <span th:text="${aLedgerAccount.name}"/>
+                                <a th:href="@{/deleteGL/{id}(id=${aLedgerAccount.id})}">Delete this GL</a>
                                 <div th:if="${#authorization.expression('hasAnyAuthority(''ROLE_UPDATE_GL_ACCOUNT_NAME'')')}">
                                 <form th:action="@{/updateLedgerAccountForm}" method="post">
                                     <input type="text" name="accountName"/>

@@ -10,10 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.YearMonth;
-import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
 
@@ -80,8 +77,6 @@ public class CurrentAccountService extends SuperService {
 
         int countNumberOfProductsInBranch =  1 + currentAccountRepository.countNumberOfProductsCreatedInBranch(user.getBranch().getCode());
 
-//      int numberOfCustomer = userRepository.countNumberOfCustomers(customerList);
-
         currentAccount.setAccountNumber(BVMicroUtils.getCobacSavingsAccountNumber( currentAccount.getCountry(), currentAccount.getProductCode(), countNumberOfProductsInBranch, user.getCustomerNumber(), currentAccount.getBranchCode())); //TODO: Collision
 
         currentAccount.setAccountStatus(AccountStatus.ACTIVE);
@@ -105,19 +100,6 @@ public class CurrentAccountService extends SuperService {
 //        callCenterService.callCenterUpdate(savingAccount);
 
     }
-
-
-//    public CurrentBilanzList getCurrentAccountByUser(User user, boolean calculateInterest) {
-//        User aUser = null;
-//        if (null != user.getUserName()) {
-//            aUser = userRepository.findByUserName(user.getUserName());
-//        } else {
-//            aUser = userRepository.findById(user.getId()).get();
-//        }
-//        ArrayList<User> userList = new ArrayList<User>();
-//        userList.add(aUser);
-//        return calculateUsersInterest(userList, calculateInterest);
-//    }
 
     @Transactional
     public void createCurrentAccountTransaction(CurrentAccountTransaction currentAccountTransaction, CurrentAccount currentAccount) {

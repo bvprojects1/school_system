@@ -242,18 +242,7 @@ public class UserController extends SuperController{
 
     @GetMapping(value = "/findAllCustomers")
     public String findUserByUserRole(ModelMap model) {
-//        String authority = getAuthorityString();
-//        if( authority.equals("ROLE_AGENT") ){
-//            model.put("userList", getAllCustomers() );
-//        }else if(authority.equals("ROLE_MANAGER") || authority.equals("ROLE_VIEW_ALL_ACCOUNTS")){
             model.put("userList", getAllUsers() );
-//        }
-//        else if (authority.equals("ROLE_ADMIN")){
-//            model.put("userList", getAllUsers() );
-//        }else{
-//            model.put("userList", getAllCustomers() );
-//        }
-//        model.put("name", getLoggedInUserName());
         return "customers";
     }
 
@@ -334,15 +323,12 @@ public class UserController extends SuperController{
     public String lockAccount(@PathVariable("id") long id, ModelMap model,
                                  HttpServletRequest request,
                             HttpServletResponse response) throws IOException {
-//        if(getAuthorityString().equals("ROLE_MANAGER")){
             Optional<User> userById = userRepository.findById(id);
             User user = userById.get();
             user.setAccountLocked(!user.isAccountLocked());
             userService.saveUser(user);
             String blocked = user.isAccountLocked()?"Blocked":"UnBlocked";
             callCenterService.callCenterUserAccount(user, "Account has been switched "+ "Account is now "+ blocked +"by " + getLoggedInUserName());
-
-//        };
         model.put("userList", getAllUsers() );
         model.put("name", getLoggedInUserName());
         return "customers";
@@ -356,13 +342,11 @@ public class UserController extends SuperController{
 
         ByteArrayOutputStream byteArrayOutputStream = null;
         ByteArrayInputStream byteArrayInputStream = null;
-//        try {
             OutputStream responseOutputStream = response.getOutputStream();
             Optional<SavingAccountTransaction> savingAccountTransaction = savingAccountTransactionService.findById(new Long(id));
             SavingAccountTransaction aSavingAccountTransaction = savingAccountTransaction.get();
             String htmlInput = pdfService.generateSavingTransactionReceiptPDF(aSavingAccountTransaction,initSystemService.findAll());
             generateByteOutputStream(response,htmlInput);
-
     }
 
 }

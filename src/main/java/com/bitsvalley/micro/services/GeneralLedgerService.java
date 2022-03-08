@@ -74,17 +74,6 @@ public class GeneralLedgerService extends SuperService {
     }
 
 
-
-//    public void updateSavingAccountTransaction(SavingAccountTransaction savingAccountTransaction) {
-//        GeneralLedger generalLedger = savingAccountGLMapper(savingAccountTransaction);
-//        generalLedgerRepository.save(generalLedger);
-//    }
-
-//    public void updateCurrentAccountTransaction(CurrentAccountTransaction currentAccountTransaction) {
-//        GeneralLedger generalLedger = currentAccountGLMapper(currentAccountTransaction);
-//        generalLedgerRepository.save(generalLedger);
-//    }
-
     public void updateGLWithCurrentLoanAccountTransaction(LoanAccountTransaction loanAccountTransaction) {
         updateGeneralLedger(loanAccountTransaction, BVMicroUtils.LOAN, BVMicroUtils.DEBIT, loanAccountTransaction.getLoanAmount(), true);
         updateGeneralLedger(loanAccountTransaction, BVMicroUtils.CURRENT, BVMicroUtils.CREDIT, loanAccountTransaction.getLoanAmount(), true);
@@ -251,10 +240,6 @@ public class GeneralLedgerService extends SuperService {
         generalLedgerRepository.save(generalLedger);
     }
 
-//    public void updateLoanAccountCreation(LoanAccount loanAccount) {
-//        GeneralLedger generalLedger = loanAccountGLMapper(loanAccount);
-//        generalLedgerRepository.save(generalLedger);
-//    }
 
     private GeneralLedger loanAccountGLMapper(LoanAccount loanAccount) {
         GeneralLedger gl = new GeneralLedger();
@@ -354,16 +339,10 @@ public class GeneralLedgerService extends SuperService {
         gl.setType(savingAccountTransaction.getSavingAmount() >= 0 ? "CREDIT" : "DEBIT");
         return gl;
     }
-//
-//    private String getGeneralLedgerType(double amount) {
-//            return amount>0?GeneralLedgerType.DEBIT.name():GeneralLedgerType.CREDIT.name();
-//    }
 
     public GeneralLedgerBilanz findAll() {
         Iterable<GeneralLedger> glIterable = generalLedgerRepository.findAll();
         List<GeneralLedgerWeb> generalLedgerWebs = mapperGeneralLedger(glIterable);
-//        List<GeneralLedgerWeb> result = new ArrayList<GeneralLedgerWeb>();
-//        glIterable.forEach(result::add);
         return getGeneralLedgerBilanz(generalLedgerWebs);
     }
 
@@ -443,17 +422,6 @@ public class GeneralLedgerService extends SuperService {
         return getGeneralLedgerBilanz(generalLedgerWebList);
     }
 
-//    public GeneralLedgerBilanz findGLByAccountLedger(Long ledgerAccountId) {
-//        LedgerAccount byId = ledgerAccountRepository.findById(ledgerAccountId).get();
-//
-//        List<GeneralLedger> glByType = generalLedgerService.findGLByAccountLedger(byId);
-//        List<GeneralLedgerWeb> generalLedgerWebList = new ArrayList<GeneralLedgerWeb>();
-//        for ( GeneralLedger aGeneralLedger : glByType ) {
-//            generalLedgerWebList.add(extracted(aGeneralLedger));
-//        }
-//        Collections.reverse( generalLedgerWebList );
-//        return getGeneralLedgerBilanz( generalLedgerWebList );
-//    }
 
     public TrialBalanceBilanz getCurrentTrialBalance(LocalDateTime startDate, LocalDateTime endDate ){
 
@@ -711,7 +679,6 @@ public class GeneralLedgerService extends SuperService {
         LedgerAccount ledgerAccount = ledgerAccountRepository.findById(ledgerAccountId).get();
         List<GeneralLedger> glList = ledgerAccount.getGeneralLedger();
 
-//        List<GeneralLedger> glList = generalLedgerRepository.searchCriteriaWithLedgerAccount(  ledgerAccountId );
         List<GeneralLedgerWeb> generalLedgerWebs = mapperGeneralLedger(glList);
         GeneralLedgerBilanz generalLedgerBilanz = getGeneralLedgerBilanz(generalLedgerWebs);
         return generalLedgerBilanz;
@@ -771,9 +738,7 @@ public class GeneralLedgerService extends SuperService {
     public void updateGLAfterSavingAccountTransaction(SavingAccountTransaction savingAccountTransaction) {
         savingAccountTransaction.getNotes();
         LedgerAccount ledgerAccount;
-//        if(savingAccountTransaction.getSavingAmount()<0){
-//            savingAccountTransaction.setSavingAmount(savingAccountTransaction.getSavingAmount()*-1);
-//        }
+
         if (savingAccountTransaction.getModeOfPayment().equals(BVMicroUtils.CASH)) {
             savingAccountTransaction.setNotes(BVMicroUtils.CASH_GL_5001 + " " + savingAccountTransaction.getNotes());
         }else if (savingAccountTransaction.getModeOfPayment().equals(BVMicroUtils.TRANSFER)) {

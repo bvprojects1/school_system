@@ -63,25 +63,6 @@ public class LedgerAccountController extends SuperController{
             ledgerAccount.setCreatedDate(new Date());
             ledgerAccountList.add(ledgerAccount);
 
-
-//            ledgerAccount = new LedgerAccount();
-//            ledgerAccount.setName(BVMicroUtils.RETIREMENT_SAVINGS);
-//            ledgerAccount.setCategory("3000 – 3999");
-//            ledgerAccount.setCode(BVMicroUtils.RETIREMENT_SAVINGS+"_"+BVMicroUtils.GL_3005);
-//            ledgerAccount.setStatus(BVMicroUtils.ACTIVE);
-//            ledgerAccount.setCreatedBy(BVMicroUtils.INIT_SYSTEM);
-//            ledgerAccount.setCreatedDate(new Date());
-//            ledgerAccountList.add(ledgerAccount);
-//
-//            ledgerAccount = new LedgerAccount();
-//            ledgerAccount.setName(BVMicroUtils.DAILY_SAVINGS);
-//            ledgerAccount.setCategory("3000 – 3999");
-//            ledgerAccount.setCode(BVMicroUtils.DAILY_SAVINGS+"_"+BVMicroUtils.GL_3006);
-//            ledgerAccount.setStatus(BVMicroUtils.ACTIVE);
-//            ledgerAccount.setCreatedBy(BVMicroUtils.INIT_SYSTEM);
-//            ledgerAccount.setCreatedDate(new Date());
-//            ledgerAccountList.add(ledgerAccount);
-
             ledgerAccount = new LedgerAccount();
             ledgerAccount.setName(BVMicroUtils.LOAN);
             ledgerAccount.setCategory("3000 – 3999");
@@ -127,8 +108,6 @@ public class LedgerAccountController extends SuperController{
             ledgerAccount.setCreatedDate(new Date());
             ledgerAccountList.add(ledgerAccount);
 
-
-
             ledgerAccount = new LedgerAccount();
             ledgerAccount.setName(BVMicroUtils.CURRENT);
             ledgerAccount.setCode(BVMicroUtils.CURRENT+"_"+BVMicroUtils.GL_3004);
@@ -163,13 +142,6 @@ public class LedgerAccountController extends SuperController{
             ledgerAccount.setCategory("3000 – 3999");
             ledgerAccount.setStatus(BVMicroUtils.ACTIVE);
             ledgerAccountList.add(ledgerAccount);
-
-//            ledgerAccount = new LedgerAccount();
-//            ledgerAccount.setName(BVMicroUtils.MEDICAL_SAVINGS);
-//            ledgerAccount.setCode(BVMicroUtils.MEDICAL_SAVINGS+"_"+ BVMicroUtils.GL_3009);
-//            ledgerAccount.setCategory("3000 – 3999");
-//            ledgerAccount.setStatus(BVMicroUtils.ACTIVE);
-//            ledgerAccountList.add(ledgerAccount);
 
             ledgerAccount = new LedgerAccount();
             ledgerAccount.setName(BVMicroUtils.SOCIAL_SAVINGS);
@@ -287,7 +259,7 @@ public class LedgerAccountController extends SuperController{
         if(null == ledgerAccount.getStatus()) ledgerAccount.setStatus(BVMicroUtils.INACTIVE);
         ledgerAccount.setStatus(ledgerAccount.getStatus().equals("true")?"ACTIVE":"INACTIVE");
 
-        ledgerAccount.setCode(ledgerAccount.getName()+"_"+ledgerAccount.getCode());
+        ledgerAccount.setCode(ledgerAccount.getName()+"_GL_"+ledgerAccount.getCode());
         ledgerAccount.setName(ledgerAccount.getCode());
         ledgerAccountRepository.save(ledgerAccount);
 
@@ -328,6 +300,19 @@ public class LedgerAccountController extends SuperController{
         model.put("originLedgerAccount", originLedgerAccount);
         model.put("glAddEntryTitle", "Transfer Between GL Account");
         return "glAddEntry";
+    }
+
+
+    @GetMapping(value = "/deleteGL/{id}")
+    public String deleteGL(@PathVariable("id") long id, ModelMap model) {
+        LedgerAccount ledgerAccount = ledgerAccountRepository.findById(id).get();
+        ledgerAccountRepository.delete(ledgerAccount);
+        Iterable<LedgerAccount> all = ledgerAccountRepository.findAll();
+
+        model.put("ledgerAccountInfo","Deleted " + ledgerAccount.getName() + " "+ledgerAccount.getCode());
+        model.put("ledgerAccount",new LedgerAccount());
+        model.put("ledgerAccountList", all);
+        return "ledgerAccount";
     }
 
 

@@ -192,26 +192,13 @@ public class SuperController {
 
 
     public ArrayList<String> getAllNonCustomers() {
-
-//        ArrayList<UserRole> userRoleList = new ArrayList<UserRole>();
-//        UserRole customer = userRoleService.findUserRoleByName("ROLE_CUSTOMER");
-//        userRoleList.add(customer);
         ArrayList<String> customerList = generalLedgerRepository.findAllDistinctByCreatedBy();
-//        ArrayList<User> customerList = userService.findAllByUserNotRoleIn(userRoleList);
         return customerList;
 
     }
 
     public ArrayList<String> getGLEntryUsers() {
-
-//        ArrayList<String> roles = new ArrayList<String>();
-//        roles.add("ROLE_CUSTOMER");
-//        ArrayList<UserRole> userRoleList = userRoleRepository.findByNameNotIn(roles);
-
-//        ArrayList<User> nonCustomerList = userService.findDistinctByUserRoleIn(userRoleList);
-
         ArrayList<String> distinctByUser = generalLedgerRepository.findAllDistinctByCreatedBy();
-
         return distinctByUser;
     }
 
