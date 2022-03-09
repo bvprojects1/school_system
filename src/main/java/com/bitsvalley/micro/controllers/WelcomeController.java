@@ -93,19 +93,6 @@ public class WelcomeController extends SuperController{
                 loanBilanzByUserList.setLoanBilanzList(new ArrayList<LoanBilanz>());
                 loanBilanzByUserList.setCurrentLoanBalance("0");
             }
-//            if(null == savingBilanzByUserList || savingBilanzByUserList.getSavingBilanzList() == null
-//                    ||  savingBilanzByUserList.getSavingBilanzList().size() == 0 ){ //first time login
-//                savingBilanzByUserList = new SavingBilanzList();
-//                savingBilanzByUserList.setSavingBilanzList(new ArrayList<SavingBilanz>());
-//                savingBilanzByUserList.setTotalSaving("0");
-//            }
-//            if(null == savingBilanzByUserList || savingBilanzByUserList.getSavingBilanzList() == null
-//                    ||  savingBilanzByUserList.getSavingBilanzList().size() == 0 ){ //first time login
-//                savingBilanzByUserList = new SavingBilanzList();
-//                savingBilanzByUserList.setSavingBilanzList(new ArrayList<SavingBilanz>());
-//                savingBilanzByUserList.setTotalSaving("0");
-//            }
-
 
             request.getSession().setAttribute("savingBilanzList",savingBilanzByUserList);
             request.getSession().setAttribute("loanBilanzList",loanBilanzByUserList);
@@ -144,9 +131,7 @@ public class WelcomeController extends SuperController{
     @GetMapping(value = "/getImage")
     @ResponseBody
     public byte[] getImage(HttpServletRequest request) throws IOException {
-//        String rpath = request.getRealPath("/");
         User user = (User)request.getSession().getAttribute(BVMicroUtils.CUSTOMER_IN_USE);
-//        rpath = rpath + "assets/images/"+user.getIdFilePath(); // whatever path you used for storing the file
         Path path = Paths.get(user.getIdFilePath());
         byte[] data = Files.readAllBytes(path);
         return data;

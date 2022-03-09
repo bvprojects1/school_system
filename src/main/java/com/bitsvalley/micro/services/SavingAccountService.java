@@ -102,7 +102,7 @@ public class SavingAccountService extends SuperService {
         user = userRepository.findById(user.getId()).get();
         user.getSavingAccount().add(savingAccount);
         userService.saveUser(user);
-//
+
 //        //TODO: Move to callCenter service
 //        callCenterService.callCenterUpdate(savingAccount);
 
@@ -127,8 +127,19 @@ public class SavingAccountService extends SuperService {
         savingAccountTransaction.setReference(BVMicroUtils.getSaltString()); //Collision
         savingAccountTransaction.setCreatedBy(getLoggedInUserName());
         savingAccountTransaction.setCreatedDate(LocalDateTime.now());
+        savingAccountTransaction.setAccountBalance(calculateAccountBalance(savingAccountTransaction.getSavingAmount(),savingAccountTransaction.getSavingAccount()));
+
         savingAccountTransactionRepository.save(savingAccountTransaction);
         // generalLedgerService.updateSavingAccountTransaction(savingAccountTransaction);
+    }
+
+    private double calculateAccountBalance(double savingAmount, SavingAccount savingAccount) {
+
+            Double balance = 0.0;
+            for (SavingAccountTransaction transaction: savingAccount.getSavingAccountTransaction() ) {
+                balance = transaction.getSavingAmount() + balance;
+            }
+            return savingAmount + balance;
     }
 
     @Transactional
@@ -192,11 +203,7 @@ public class SavingAccountService extends SuperService {
         for (int k = 0; k < savingAccountTransactions.size(); k++) {
             final SavingAccountTransaction savingAccountTransaction = savingAccountTransactions.get(k);
             SavingBilanz savingBilanz = new SavingBilanz();
-//                    if(savingAccountTransaction.getSavingAmount() <= 0){
-//                        //calculate negative saving interest
-//                    }else{
             savingBilanz = calculateInterest(savingAccountTransaction, calculateInterest);
-//                    }
             currentSaved = currentSaved + savingAccountTransaction.getSavingAmount();
             savingBilanz.setCurrentBalance(BVMicroUtils.formatCurrency(currentSaved));
             savingBilanzsList.getSavingBilanzList().add(savingBilanz);
@@ -234,8 +241,7 @@ public class SavingAccountService extends SuperService {
                 double accountTotalSaved = 0.0;
                 for (int k = 0; k < savingAccountTransactions.size(); k++) {
                     final SavingAccountTransaction savingAccountTransaction = savingAccountTransactions.get(k);
-//                    if (savingAccountTransaction.getSavingAmount() <= 0)
-//                        continue;
+
                     SavingBilanz savingBilanz = calculateInterest(savingAccountTransaction, calculateInterest);
                     currentSaved = currentSaved + savingAccountTransaction.getSavingAmount();
                     savingBilanz.setCurrentBalance(BVMicroUtils.formatCurrency(currentSaved));
@@ -247,7 +253,6 @@ public class SavingAccountService extends SuperService {
                                     savingAccountTransaction.getSavingAccount().getInterestRate(),
                                     savingAccountTransaction.getCreatedDate(),
                                     savingAccountTransaction.getSavingAmount());
-//                    }
                 }
                 savingAccount.setAccountBalance(accountTotalSaved);
                 if(!defaultedPayments){
@@ -286,6 +291,7 @@ public class SavingAccountService extends SuperService {
         savingBilanz.setAgent(savingAccountTransaction.getCreatedBy());
         savingBilanz.setInterestRate("" + savingAccountTransaction.getSavingAccount().getInterestRate());
         savingBilanz.setSavingAmount(savingAccountTransaction.getSavingAmount());
+        savingBilanz.setRepresentative(savingAccountTransaction.getRepresentative());
 
         savingBilanz.setCreatedDate(BVMicroUtils.formatDateTime(savingAccountTransaction.getCreatedDate()));
         savingBilanz.setNotes(savingAccountTransaction.getNotes());
@@ -395,8 +401,7 @@ public class SavingAccountService extends SuperService {
         loanAccountTransaction.setBranchCode(branchInfo.getCode());
         loanAccountTransaction.setBranchCountry(branchInfo.getCountry());
         loanAccountTransaction.setAmountReceived(transferAmount);
-        loanAccountTransaction.setAccountOwner(loanAccount.getUser().getLastName() +", "+
-                loanAccount.getUser().getLastName());
+//        loanAccountTransaction.setAccountOwner(loanAccount.getUser().getLastName() +", "loanAccount.getUser().getLastName());
         loanAccountTransaction.setReference(BVMicroUtils.getSaltString());
         loanAccount = loanAccountService.createLoanAccountTransaction(loanAccountTransaction, loanAccount, BVMicroUtils.TRANSFER);
 
@@ -416,50 +421,6 @@ public class SavingAccountService extends SuperService {
         return "true";
     }
 
-//    public String transferFromSavingToLoan(String fromAccountNumber,
-//                                         String toAccountNumber,
-//                                         double transferAmount,
-//                                         String notes) {
-//        LocalDateTime now = LocalDateTime.now();
-//        String loggedInUserName = getLoggedInUserName();
-//        Branch branchInfo = branchService.getBranchInfo(loggedInUserName);
-//
-//        SavingAccount savingAccount = findByAccountNumber(fromAccountNumber);
-//        SavingAccountTransaction savingAccountTransaction = getSavingAccountTransaction(notes, branchInfo, savingAccount, transferAmount * -1, BVMicroUtils.DEBIT_LOAN_TRANSFER);
-//
-//        LoanAccount loanAccount = loanAccountService.findByAccountNumber(toAccountNumber);
-//        if(!StringUtils.equals(loanAccount.getAccountStatus().name(),AccountStatus.ACTIVE.name())){
-//            return BVMicroUtils.LOAN_MUST_BE_IN_ACTIVE_STATE;
-//        }
-//        LoanAccountTransaction loanAccountTransaction = new LoanAccountTransaction();
-//        loanAccountTransaction.setLoanAccount(loanAccount);
-//
-//        loanAccountTransaction.setCreatedDate(now);
-//        loanAccountTransaction.setCreatedBy(loggedInUserName);
-//        loanAccountTransaction.setNotes(notes);
-//
-//        loanAccountTransaction.setBranch(branchInfo.getId());
-//        loanAccountTransaction.setBranchCode(branchInfo.getCode());
-//        loanAccountTransaction.setBranchCountry(branchInfo.getCountry());
-//        loanAccountTransaction.setAmountReceived(transferAmount);
-//        loanAccountTransaction.setAccountOwner(loanAccount.getUser().getLastName() +", "+
-//                loanAccount.getUser().getLastName());
-//        loanAccountTransaction.setReference(BVMicroUtils.getSaltString());
-//        loanAccountService.createLoanAccountTransaction(loanAccountTransaction, loanAccount, BVMicroUtils.TRANSFER);
-//
-//        savingAccount.getSavingAccountTransaction().add(savingAccountTransaction);
-//        savingAccountRepository.save(savingAccount);
-//
-//        //Update shortee accounts min balance
-//        List<ShorteeAccount> shorteeAccounts = loanAccount.getShorteeAccounts();
-//        ShorteeAccount shorteeAccount = shorteeAccounts.get(0);
-//        SavingAccount shorteeSavingAccount = shorteeAccount.getSavingAccount();
-//        shorteeSavingAccount.setAccountMinBalance(shorteeSavingAccount.getAccountMinBalance()-loanAccountTransaction.getAmountReceived());
-//        savingAccountRepository.save(shorteeSavingAccount);
-//
-//        generalLedgerService.updateGLAfterLoanAccountTransferRepayment(loanAccountTransaction);
-//        return "true";
-//    }
 
     @NotNull
     public SavingAccountTransaction getSavingAccountTransaction(String notes, Branch branchInfo, SavingAccount savingAccount, double v, String modeOfPayment) {

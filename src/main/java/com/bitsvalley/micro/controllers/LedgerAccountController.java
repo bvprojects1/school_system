@@ -9,6 +9,7 @@ import com.bitsvalley.micro.repositories.UserRepository;
 import com.bitsvalley.micro.services.GeneralLedgerService;
 import com.bitsvalley.micro.services.SavingAccountService;
 import com.bitsvalley.micro.utils.BVMicroUtils;
+import com.bitsvalley.micro.webdomain.GeneralLedgerBilanz;
 import com.bitsvalley.micro.webdomain.LedgerEntryDTO;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,25 +63,6 @@ public class LedgerAccountController extends SuperController{
             ledgerAccount.setCreatedDate(new Date());
             ledgerAccountList.add(ledgerAccount);
 
-
-//            ledgerAccount = new LedgerAccount();
-//            ledgerAccount.setName(BVMicroUtils.RETIREMENT_SAVINGS);
-//            ledgerAccount.setCategory("3000 – 3999");
-//            ledgerAccount.setCode(BVMicroUtils.RETIREMENT_SAVINGS+"_"+BVMicroUtils.GL_3005);
-//            ledgerAccount.setStatus(BVMicroUtils.ACTIVE);
-//            ledgerAccount.setCreatedBy(BVMicroUtils.INIT_SYSTEM);
-//            ledgerAccount.setCreatedDate(new Date());
-//            ledgerAccountList.add(ledgerAccount);
-//
-//            ledgerAccount = new LedgerAccount();
-//            ledgerAccount.setName(BVMicroUtils.DAILY_SAVINGS);
-//            ledgerAccount.setCategory("3000 – 3999");
-//            ledgerAccount.setCode(BVMicroUtils.DAILY_SAVINGS+"_"+BVMicroUtils.GL_3006);
-//            ledgerAccount.setStatus(BVMicroUtils.ACTIVE);
-//            ledgerAccount.setCreatedBy(BVMicroUtils.INIT_SYSTEM);
-//            ledgerAccount.setCreatedDate(new Date());
-//            ledgerAccountList.add(ledgerAccount);
-
             ledgerAccount = new LedgerAccount();
             ledgerAccount.setName(BVMicroUtils.LOAN);
             ledgerAccount.setCategory("3000 – 3999");
@@ -126,8 +108,6 @@ public class LedgerAccountController extends SuperController{
             ledgerAccount.setCreatedDate(new Date());
             ledgerAccountList.add(ledgerAccount);
 
-
-
             ledgerAccount = new LedgerAccount();
             ledgerAccount.setName(BVMicroUtils.CURRENT);
             ledgerAccount.setCode(BVMicroUtils.CURRENT+"_"+BVMicroUtils.GL_3004);
@@ -162,13 +142,6 @@ public class LedgerAccountController extends SuperController{
             ledgerAccount.setCategory("3000 – 3999");
             ledgerAccount.setStatus(BVMicroUtils.ACTIVE);
             ledgerAccountList.add(ledgerAccount);
-
-//            ledgerAccount = new LedgerAccount();
-//            ledgerAccount.setName(BVMicroUtils.MEDICAL_SAVINGS);
-//            ledgerAccount.setCode(BVMicroUtils.MEDICAL_SAVINGS+"_"+ BVMicroUtils.GL_3009);
-//            ledgerAccount.setCategory("3000 – 3999");
-//            ledgerAccount.setStatus(BVMicroUtils.ACTIVE);
-//            ledgerAccountList.add(ledgerAccount);
 
             ledgerAccount = new LedgerAccount();
             ledgerAccount.setName(BVMicroUtils.SOCIAL_SAVINGS);
@@ -286,19 +259,34 @@ public class LedgerAccountController extends SuperController{
         if(null == ledgerAccount.getStatus()) ledgerAccount.setStatus(BVMicroUtils.INACTIVE);
         ledgerAccount.setStatus(ledgerAccount.getStatus().equals("true")?"ACTIVE":"INACTIVE");
 
-        ledgerAccount.setCode(ledgerAccount.getName()+"_"+ledgerAccount.getCode());
+        ledgerAccount.setCode(ledgerAccount.getName()+"_GL_"+ledgerAccount.getCode());
         ledgerAccount.setName(ledgerAccount.getCode());
         ledgerAccountRepository.save(ledgerAccount);
 
-//        ledgerAccount = new LedgerAccount();
-//        ledgerAccount.setName(BVMicroUtils.CASH_GL_5001);
-//        ledgerAccount.setCategory("5000 – 5999");
-//        ledgerAccount.setCode(BVMicroUtils.CASH_GL_5001);
-//        ledgerAccount.setStatus(BVMicroUtils.ACTIVE);
-//        ledgerAccountList.add(ledgerAccount);
-
         model.put("ledgerAccountList", ledgerAccountRepository.findAll());
         model.put("ledgerAccountInfo", "Created "+ledgerAccount.getName()+ " successfully ");
+        return "ledgerAccount";
+    }
+
+
+
+
+    @PostMapping(value = "/updateLedgerAccountForm")
+    public String updateLedgerAccountForm(HttpServletRequest request, ModelMap model ) {
+        String id = request.getParameter("aLedgerAccountId");
+        String newName =  request.getParameter("accountName");
+        LedgerAccount byId = ledgerAccountRepository.findById(new Long(id)).get();
+        int codeInNamePosition = byId.getCode().indexOf("_GL_");
+        String currentNameInCode = byId.getCode().substring(0, codeInNamePosition);
+
+//        byId.setName(newName);
+        String newCode = byId.getCode();
+        newCode = newCode.replaceFirst(currentNameInCode,newName);
+        byId.setCode(newCode);
+        ledgerAccountRepository.save(byId);
+        model.put("ledgerAccount",new LedgerAccount());
+        model.put("ledgerAccountList", ledgerAccountRepository.findAll());
+        model.put("ledgerAccountInfo", "Created "+ newCode + " successfully ");
         return "ledgerAccount";
     }
 
@@ -312,6 +300,19 @@ public class LedgerAccountController extends SuperController{
         model.put("originLedgerAccount", originLedgerAccount);
         model.put("glAddEntryTitle", "Transfer Between GL Account");
         return "glAddEntry";
+    }
+
+
+    @GetMapping(value = "/deleteGL/{id}")
+    public String deleteGL(@PathVariable("id") long id, ModelMap model) {
+        LedgerAccount ledgerAccount = ledgerAccountRepository.findById(id).get();
+        ledgerAccountRepository.delete(ledgerAccount);
+        Iterable<LedgerAccount> all = ledgerAccountRepository.findAll();
+
+        model.put("ledgerAccountInfo","Deleted " + ledgerAccount.getName() + " "+ledgerAccount.getCode());
+        model.put("ledgerAccount",new LedgerAccount());
+        model.put("ledgerAccountList", all);
+        return "ledgerAccount";
     }
 
 
@@ -443,7 +444,6 @@ public class LedgerAccountController extends SuperController{
         model.put("glAddEntryTitle", " "+ BVMicroUtils.CASH_GL_5001 + " To "+ toLedgerAccount.getName());
         return "glAddEntry";
     }
-
 
 
     @PostMapping(value = "/addLedgerEntryFormReviewForm")

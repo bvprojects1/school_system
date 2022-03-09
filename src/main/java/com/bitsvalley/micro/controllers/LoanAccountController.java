@@ -137,12 +137,12 @@ public class LoanAccountController extends SuperController {
         amortizationTTC.setInterestVAT(vatOnInterestTotal);
         amortizationTTC.setInterestHT(interestOnHTTotal);
 
-
         model.put("amortization",amortizationTTC );
         model.put("amortizationHT",amortizationHT );
 
-        model.put("amortization", amortizationTTC ); //TODO: DECIDE SESSION or REQUEST SCOPE
-        request.getSession().setAttribute("amortizationHT",amortizationTTC);
+//        model.put("amortization", amortizationTTC ); //TODO: DECIDE SESSION or REQUEST SCOPE
+        request.getSession().setAttribute("amortization",amortizationTTC);
+        request.getSession().setAttribute("amortizationHT",amortizationHT);
         return "amortizationReport";
     }
 
@@ -153,10 +153,10 @@ public class LoanAccountController extends SuperController {
     }
 
     @GetMapping(value = "/amortizationPDF")
-    public void generatePaymentSchedule(@SessionAttribute("amortization") Amortization amortization,
+    public void generatePaymentSchedule(@SessionAttribute("amortizationHT") Amortization amortizationHT, @SessionAttribute("amortization") Amortization amortization,
                                           HttpServletRequest request, HttpServletResponse response) throws IOException {
         RuntimeSetting runtimeSetting = (RuntimeSetting)request.getSession().getAttribute("runtimeSettings");
-        String htmlInput = pdfService.generateAmortizationPDF(amortization, runtimeSetting, getLoggedInUserName());
+        String htmlInput = pdfService.generateAmortizationPDF(amortizationHT, amortization, runtimeSetting, getLoggedInUserName());
         response.setHeader("Content-disposition", "attachment;filename=" + "amortizationPDF.pdf");
         generateByteOutputStream(response, htmlInput);
     }
@@ -164,8 +164,6 @@ public class LoanAccountController extends SuperController {
 
     @PostMapping(value = "/registerLoanAccountForm")
     public String registerLoanAccountForm(@ModelAttribute("loanAccount") LoanAccount loanAccount, ModelMap model, HttpServletRequest request) {
-//        User user = (User) request.getSession().getAttribute(BVMicroUtils.CUSTOMER_IN_USE);
-//        user = userRepository.findById(user.getId()).get();
 
         request.getSession().setAttribute("guarantor1",null);
         request.getSession().setAttribute("guarantor2",null);
@@ -185,30 +183,13 @@ public class LoanAccountController extends SuperController {
         loanAccount.setBranchCode(branchInfo.getCode());
         loanAccount.setCountry(branchInfo.getCountry());
 
-//        loanAccount.setTotalInterestOnLoan( );
-
         float interestTTC = calculateTTC(loanAccount, request);
         loanAccount.setInterestRate(interestTTC);
         loanAccountService.save(loanAccount);
 
         double monthlyPayment = interestService.monthlyPaymentAmortisedPrincipal(interestTTC,
         loanAccount.getTermOfLoan(),loanAccount.getLoanAmount());
-
-//        Amortization amortization = new Amortization(loanAccount.getLoanAmount(),
-//                loanAccount.getInterestRate()*.01,
-//                loanAccount.getTermOfLoan(),monthlyPayment);
-
         loanAccount.setMonthlyPayment(new Double(monthlyPayment).intValue());
-
-//         interestService.calculateInterestAccruedMonthCompounded(
-//              loanAccount.getInterestRate(),
-//                 loanAccount.getTermOfLoan(),
-//                 loanAccount.getLoanAmount()));
-
-//        currentAccountTransaction.getCurrentAccount().getInterestRate(),
-//                currentAccountTransaction.getCreatedDate(),
-//                currentAccountTransaction.getCurrentAmount());
-
         AccountType accountType = accountTypeService.getAccountTypeByProductCode(loanAccount.getProductCode());
         loanAccount.setAccountType(accountType);
         String error = "";
@@ -286,30 +267,11 @@ public class LoanAccountController extends SuperController {
                                     HttpServletRequest request) {
 
         LoanAccount loanAccountSession = (LoanAccount)request.getSession().getAttribute("loanAccount");
-
-//        int total = loanAccount.getGuarantor1Amount1() +
-//                        loanAccount.getGuarantor1Amount2() +
-//                            loanAccount.getGuarantor1Amount3();
-//        if(loanAccount.getLoanAmount() != total){
-//            model.put("errorShorteeAmount","Shortee Amounts don't add up");
-//            return "loanShorteeAccounts";
-//        }
-
         loanAccountSession.setGuarantor1Amount1(loanAccount.getGuarantor1Amount1());
-
         loanAccountSession.setGuarantor1Amount2(loanAccount.getGuarantor1Amount2());
-
         loanAccountSession.setGuarantor1Amount3(loanAccount.getGuarantor1Amount3());
-
-//        String loanShorteeMessage = getLoanShorteeMessage(loanAccountSession);
-
         request.getSession().setAttribute("loanAccount", loanAccountSession);
         model.put("loanAccount", loanAccountSession);
-
-//        if(!StringUtils.isEmpty(loanShorteeMessage)){
-//            model.put("errorShorteeAmount",loanShorteeMessage);
-//            return "loanShorteeAccounts";
-//        }
         return "loanShorteeReview";
     }
 
@@ -406,8 +368,7 @@ public class LoanAccountController extends SuperController {
         loanAccountTransaction.setCreatedDate(LocalDateTime.now());
 
         loanAccountTransaction.setCreatedBy(getLoggedInUserName());
-        loanAccountTransaction.setAccountOwner(aLoanAccount.getUser().getLastName() +", "+
-                aLoanAccount.getUser().getLastName());
+//        loanAccountTransaction.setAccountOwner(aLoanAccount.getUser().getLastName() +", "aLoanAccount.getUser().getLastName());
         loanAccountTransaction.setReference(BVMicroUtils.getSaltString());
         User user = (User) request.getSession().getAttribute(BVMicroUtils.CUSTOMER_IN_USE);
         String error = "";
@@ -519,7 +480,15 @@ public class LoanAccountController extends SuperController {
 
     @GetMapping(value = "/transferToCurrent/{id}")
     public String transferToCurrent(@PathVariable("id") long id, ModelMap model) {
+
         LoanAccount loanAccount = loanAccountService.findById(id).get();
+
+        if(StringUtils.equals(loanAccount.getAccountStatus().name(), BVMicroUtils.ACTIVE)){
+            model.put("error","LOAN TRANSFER ALREADY PROCESSED");
+            model.put("loan",loanAccount);
+            return "loanDetails";
+        }
+
         loanAccount.setAccountStatus(AccountStatus.ACTIVE);
         loanAccount.setApprovedBy(getLoggedInUserName());
         loanAccount.setApprovedDate(new Date());
@@ -540,15 +509,12 @@ public class LoanAccountController extends SuperController {
     }
 
 
-
     @PostMapping(value = "/updateTrxDateForm")
     public String updateTrxDateForm(ModelMap model, @ModelAttribute("loanAccountTransaction")
             LoanAccountTransaction loanAccountTransaction, HttpServletRequest request) {
         String transaction = request.getParameter("transactionID");
         String dateChange = request.getParameter("dateChange");
         LoanAccountTransaction loanAccountTransaction1 = loanAccountTransactionService.updateDateForTest(transaction, dateChange);
-
-
 
         return showLoanAccountBilanz(loanAccountTransaction1.getLoanAccount().getId(), model);
     }

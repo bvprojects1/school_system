@@ -174,8 +174,6 @@ public class ShareAccountController extends SuperController {
     public String shareAccounts(ModelMap model, HttpServletRequest request) {
         Iterable<ShareAccount> shares = shareAccountRepository.findAll();
         Iterator<ShareAccount> iterator = shares.iterator();
-//        ArrayList<ShareAccount> branchList = new ArrayList<>();
-//        iterator.forEachRemaining(branchList::add);
         model.put("shareAccountsList", iterator);
         return "shareAccounts";
     }
@@ -188,10 +186,8 @@ public class ShareAccountController extends SuperController {
 
         ByteArrayOutputStream byteArrayOutputStream = null;
         ByteArrayInputStream byteArrayInputStream = null;
-//        try {
         OutputStream responseOutputStream = response.getOutputStream();
         ShareAccount shareAccount = shareAccountRepository.findById(new Long(id)).get();
-
         String htmlInput = pdfService.generateShareDetailsPDF(shareAccount.getShareAccountTransaction().get(0),initSystemService.findAll());
         generateByteOutputStream(response,htmlInput);
 

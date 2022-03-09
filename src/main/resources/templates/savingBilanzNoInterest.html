@@ -1,12 +1,13 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-
 <div th:insert="header::navbar"></div>
-<br/>
-<br/>
-<br/><br/><br/><br/>
-<div class="container">
+
+
+<section class="contact-form-area-start space df-bg">
+    <!--Project title area start-->
+    <div class="project-title-area text-center">
+    <div class="col-md-12">
     <table class="center" width="100%" border="0">
         <tr>
             <td align="center">
@@ -55,7 +56,8 @@
                 <font color="#2d363f" size="4px">
                     <a href="#"
                        th:href="@{/showCustomer/{userid}(userid=${savingAccountTransaction.savingAccount.user.id})}">
-                        <div th:text="${savingAccountTransaction.savingAccount.accountNumber}"/>
+                        <div th:text="${#strings.substring(savingAccountTransaction.savingAccount.accountNumber,0,5)} + ' ' +${#strings.substring(savingAccountTransaction.savingAccount.accountNumber,5,10)} + ' ' +${#strings.substring(savingAccountTransaction.savingAccount.accountNumber,10,21)} + ' ' +${#strings.substring(savingAccountTransaction.savingAccount.accountNumber,21,23)}"/>
+
                     </a>
                 </font>
             </td>
@@ -101,8 +103,9 @@
                 <td width="10%">
                 </td>
                 <td>
+                    <br/>
                     <font size="5" color="green"><b> MAKE A SAVING ACCOUNT TRANSACTION</b></font>
-                    <br/> <br/>
+                    <br/>
                     <select class="selectNormal" name="deposit_withdrawal">
                         <option value="">Select A Transaction Type</option>
                         <option value="DEPOSIT">DEPOSIT</option>
@@ -203,6 +206,7 @@
             <td>Notes</td>
             <td>Debit</td>
             <td>Credit</td>
+            <td>Representative</td>
             <td><font color="green" size="6px">
                 <div th:text="${savingBilanzList.totalSaving}"/>
             </font></td>
@@ -225,6 +229,7 @@
             <td>
                 <span th:if="${bilanz.savingAmount} < 0" th:text="${#numbers.formatDecimal(bilanz.savingAmount, 0, 'COMMA', 0, 'POINT')}"/>
             </td>
+            <td th:text="${bilanz.representative}"></td>
             <td th:text="${bilanz.currentBalance}"></td>
             <td>
                 <a href="#" th:href="@{/createSavingAccountReceiptPdf/{id}(id=${bilanz.id})}">
@@ -234,7 +239,8 @@
         </tr>
     </table>
 </div>
-<br/> <br/>
+    </div>
+</section>
 
 <div th:insert="footer::navbar"></div>
 

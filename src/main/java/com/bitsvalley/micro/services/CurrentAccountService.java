@@ -10,10 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.YearMonth;
-import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
 
@@ -80,8 +77,6 @@ public class CurrentAccountService extends SuperService {
 
         int countNumberOfProductsInBranch =  1 + currentAccountRepository.countNumberOfProductsCreatedInBranch(user.getBranch().getCode());
 
-//      int numberOfCustomer = userRepository.countNumberOfCustomers(customerList);
-
         currentAccount.setAccountNumber(BVMicroUtils.getCobacSavingsAccountNumber( currentAccount.getCountry(), currentAccount.getProductCode(), countNumberOfProductsInBranch, user.getCustomerNumber(), currentAccount.getBranchCode())); //TODO: Collision
 
         currentAccount.setAccountStatus(AccountStatus.ACTIVE);
@@ -106,19 +101,6 @@ public class CurrentAccountService extends SuperService {
 
     }
 
-
-//    public CurrentBilanzList getCurrentAccountByUser(User user, boolean calculateInterest) {
-//        User aUser = null;
-//        if (null != user.getUserName()) {
-//            aUser = userRepository.findByUserName(user.getUserName());
-//        } else {
-//            aUser = userRepository.findById(user.getId()).get();
-//        }
-//        ArrayList<User> userList = new ArrayList<User>();
-//        userList.add(aUser);
-//        return calculateUsersInterest(userList, calculateInterest);
-//    }
-
     @Transactional
     public void createCurrentAccountTransaction(CurrentAccountTransaction currentAccountTransaction, CurrentAccount currentAccount) {
 
@@ -128,7 +110,7 @@ public class CurrentAccountService extends SuperService {
         }
 
         currentAccountTransaction.setReference(BVMicroUtils.getSaltString());
-
+        currentAccountTransaction.setAccountBalance(calculateAccountBalance(currentAccountTransaction.getCurrentAmount(),currentAccount));
         currentAccountTransactionRepository.save(currentAccountTransaction);
 
         currentAccountService.save(currentAccount);
@@ -136,6 +118,14 @@ public class CurrentAccountService extends SuperService {
         generalLedgerService.updateGLAfterCurrentAccountTransaction(currentAccountTransaction);
 
 //        generalLedgerService.updateCurrentAccountTransaction(currentAccountTransaction);
+    }
+
+    private double calculateAccountBalance(double currentAmount, CurrentAccount currentAccount) {
+        Double balance = 0.0;
+        for (CurrentAccountTransaction transaction: currentAccount.getCurrentAccountTransaction() ) {
+            balance = transaction.getCurrentAmount() + balance;
+        }
+        return currentAmount + balance;
     }
 
     @Transactional
@@ -302,6 +292,7 @@ public class CurrentAccountService extends SuperService {
         currentBilanz.setModeOfPayment(currentAccountTransaction.getModeOfPayment());
         currentBilanz.setAccountOwner(currentAccountTransaction.getAccountOwner());
         currentBilanz.setBranch(currentAccountTransaction.getCurrentAccount().getBranchCode());
+        currentBilanz.setRepresentative(currentAccountTransaction.getRepresentative());
 
         if (calculateInterest) {
             currentBilanz.setInterestAccrued(

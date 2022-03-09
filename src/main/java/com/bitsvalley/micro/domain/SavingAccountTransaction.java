@@ -15,6 +15,7 @@ public class SavingAccountTransaction {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
+    private double accountBalance;
     private String createdBy;
     private LocalDateTime createdDate;
     private double savingAmount;
@@ -221,5 +222,13 @@ public class SavingAccountTransaction {
 
     public void setWithdrawalDeposit(int withdrawalDeposit) {
         this.withdrawalDeposit = withdrawalDeposit;
+    }
+
+    public double getAccountBalance() {
+        return accountBalance;
+    }
+
+    public void setAccountBalance(double accountBalance) {
+        this.accountBalance = accountBalance;
     }
 }

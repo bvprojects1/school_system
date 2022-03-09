@@ -63,7 +63,7 @@
                     <h3>EXISTING LEDGER ACCOUNTS</h3>
                     <table width="100%" class="center" border="0px">
                         <tr th:each="aLedgerAccount : ${ledgerAccountList}">
-                            <td th:text="${aLedgerAccount.name}"></td>
+                            <td><a href="#" th:href="@{/editLedgerAccount/{id}(id=${aLedgerAccount.id})}"> <span th:text="${aLedgerAccount.name}"/></td>
                             <td th:text="${aLedgerAccount.code}"></td>
                             <td th:text="${aLedgerAccount.category}"> </td>
                             <td th:text="${aLedgerAccount.status}"> </td>
