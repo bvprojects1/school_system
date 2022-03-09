@@ -957,7 +957,7 @@ public class GeneralLedgerService extends SuperService {
                 loanAccountTransaction.setBranchCountry(branchInfo.getCountry());
                 loanAccountTransaction.setAccountOwner("false");
                 loanAccountTransaction.setLoanAmountInLetters("SYSTEM");
-                loanAccountTransaction.setRepresentative(generalLedger.get );
+                loanAccountTransaction.setRepresentative("GL TRANSFER" );
 
                 loanAccountService.updateInterestOwedPayment(byAccountNumber,loanAccountTransaction);
                 loanAccountService.calculateAccountBilanz(byAccountNumber.getLoanAccountTransaction(), true);
