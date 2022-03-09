@@ -962,7 +962,7 @@ public class GeneralLedgerService extends SuperService {
                 loanAccountService.updateInterestOwedPayment(byAccountNumber,loanAccountTransaction);
                 loanAccountService.calculateAccountBilanz(byAccountNumber.getLoanAccountTransaction(), true);
 
-                updateGeneralLedger(loanAccountTransaction, ledgerAccount.getCode(), BVMicroUtils.CREDIT, loanAccountTransaction.getLoanAmount(), true);
+                updateGeneralLedger(loanAccountTransaction, ledgerAccount.getCode(), BVMicroUtils.CREDIT, loanAccountTransaction.getAmountReceived(), true);
                 byAccountNumber.getLoanAccountTransaction().add(loanAccountTransaction);
                 loanAccountRepository.save(byAccountNumber);
             }
