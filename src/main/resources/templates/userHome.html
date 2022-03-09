@@ -307,8 +307,7 @@
                 <td>
                     Creator
                 </td>
-                <td>
-                </td>
+
                 <td>
                     Annual Rate
                     <br/>
@@ -333,8 +332,7 @@
 
                 <td th:text="${#numbers.formatDecimal(loanAccount.currentLoanAmount, 0, 'COMMA', 0, 'POINT')}"/>
 
-                <td>
-                </td>
+
                 <td th:text="${loanAccount.createdBy}"/>
                 <td>
                     <span th:text="${loanAccount.interestRate}"/>%

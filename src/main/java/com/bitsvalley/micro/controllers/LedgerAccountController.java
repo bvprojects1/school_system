@@ -317,7 +317,7 @@ public class LedgerAccountController extends SuperController{
 
 
     @GetMapping(value = "/userHomeLedgerEntry")
-    public String userHomeLedgerEntry( ModelMap model, HttpServletRequest request) {
+    public String userHomeLedgerEntry( ModelMap model) {
         Iterable<LedgerAccount> originLedgerAccounts = ledgerAccountRepository.findAll();
 
         model.put("ledgerEntryDTO", new LedgerEntryDTO());
@@ -369,7 +369,8 @@ public class LedgerAccountController extends SuperController{
             }else{
                 generalLedgerService.updateGLAfterLedgerAccountMultipleAccountEntry(ledgerEntryDTO);
             }
-        return "glAddEntryToAccounts";
+        model.put("glAddEntryToAccountsInfo", "TRANSFER WAS SUCCESSFULL");
+        return userHomeLedgerEntry(model);
     }
 
 

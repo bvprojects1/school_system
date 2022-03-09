@@ -61,6 +61,9 @@ public class GeneralLedgerService extends SuperService {
     @Autowired
     private BranchService branchService;
 
+    @Autowired
+    LoanAccountService loanAccountService;
+
     public List<GeneralLedger> findByAccountNumber(String accountNumber) {
         return generalLedgerRepository.findByAccountNumber(accountNumber);
     }
@@ -193,7 +196,7 @@ public class GeneralLedgerService extends SuperService {
         generalLedger.setType(creditDebit);
         generalLedger.setAmount(amount);
         extractClassCodeFromCode(generalLedger, ledgerAccount);
-        generalLedgerRepository.save(generalLedger);
+            generalLedgerRepository.save(generalLedger);
         return ledgerAccount;
     }
 
@@ -300,26 +303,28 @@ public class GeneralLedgerService extends SuperService {
     }
 
 
-    private GeneralLedger currentAccountGLMapper(CurrentAccountTransaction savingAccountTransaction, boolean generalGL) {
+    private GeneralLedger currentAccountGLMapper(CurrentAccountTransaction currentAccountTransaction, boolean generalGL) {
         GeneralLedger gl = new GeneralLedger();
 
         if (!generalGL) {
-            gl.setAccountNumber(savingAccountTransaction.getCurrentAccount().getAccountNumber());
+            gl.setAccountNumber(currentAccountTransaction.getCurrentAccount().getAccountNumber());
         } else {
             gl.setAccountNumber(null);
         }
 
-        gl.setAmount(savingAccountTransaction.getCurrentAmount());
-        Date date = new Date();
+        gl.setAmount(currentAccountTransaction.getCurrentAmount());
+        Date date = BVMicroUtils.convertToDate(currentAccountTransaction.getCreatedDate());
         gl.setDate(date);
         gl.setCreatedDate(date);
+        gl.setLastUpdatedDate(date);
         gl.setLastUpdatedDate(new Date(System.currentTimeMillis()));
-        gl.setNotes(savingAccountTransaction.getNotes());
-        gl.setReference(savingAccountTransaction.getReference());
-        gl.setLastUpdatedBy(savingAccountTransaction.getCreatedBy());
-        gl.setCreatedBy(savingAccountTransaction.getCreatedBy());
+        gl.setNotes(currentAccountTransaction.getNotes());
+        gl.setReference(currentAccountTransaction.getReference());
+        gl.setLastUpdatedBy(currentAccountTransaction.getCreatedBy());
+        gl.setCreatedBy(currentAccountTransaction.getCreatedBy());
         gl.setGlClass(3); //TODO Saving which class in GL ?
-        gl.setType(savingAccountTransaction.getCurrentAmount() <= 0 ? "CREDIT" : "DEBIT");
+        gl.setType(GeneralLedgerType.CREDIT.name());
+//        gl.setType(currentAccountTransaction.getCurrentAmount() <= 0 ? "CREDIT" : "DEBIT");
         return gl;
     }
 
@@ -341,7 +346,7 @@ public class GeneralLedgerService extends SuperService {
     }
 
     public GeneralLedgerBilanz findAll() {
-        Iterable<GeneralLedger> glIterable = generalLedgerRepository.findAll();
+        Iterable<GeneralLedger> glIterable = generalLedgerRepository.findAllOldestFirst();
         List<GeneralLedgerWeb> generalLedgerWebs = mapperGeneralLedger(glIterable);
         return getGeneralLedgerBilanz(generalLedgerWebs);
     }
@@ -353,7 +358,6 @@ public class GeneralLedgerService extends SuperService {
             GeneralLedger next = iterator.next();
             result.add(extracted(next));
         }
-        Collections.reverse(result);
         return result;
     }
 
@@ -883,7 +887,8 @@ public class GeneralLedgerService extends SuperService {
             accountAmount = s[1];
             ++i;
             LedgerAccount ledgerAccount = determineLedgerAccount(accountNumber);
-            final Integer productCode = new Integer(accountNumber.substring(2, 4));
+            final Integer productCode = new Integer(accountNumber.substring(3, 5));
+//            accountNumber = accountNumber.substring(10, 21);
             if( productCode > 9 && productCode < 20){
 
                 SavingAccount byAccountNumber = savingAccountRepository.findByAccountNumber(accountNumber);
@@ -938,8 +943,9 @@ public class GeneralLedgerService extends SuperService {
                 LoanAccountTransaction loanAccountTransaction = new LoanAccountTransaction();
                 loanAccountTransaction.setLoanAccount(byAccountNumber);
                 loanAccountTransaction.setWithdrawalDeposit(1);
-                loanAccountTransaction.setLoanAmount(new Double(accountAmount));
-                loanAccountTransaction.setNotes("GL Account to transfer");
+//                loanAccountTransaction.setLoanAmount(new Double(accountAmount));
+                loanAccountTransaction.setAmountReceived(new Double(accountAmount));
+                loanAccountTransaction.setNotes(" GL Account to transfer");
                 loanAccountTransaction.setCreatedBy(getLoggedInUserName());
                 loanAccountTransaction.setReference(generalLedger.getReference()+"_"+i);
                 Date date = BVMicroUtils.formatDate(newLedgerEntryDTO.getRecordDate());
@@ -949,9 +955,13 @@ public class GeneralLedgerService extends SuperService {
                 loanAccountTransaction.setBranch(branchInfo.getId());
                 loanAccountTransaction.setBranchCode(branchInfo.getCode());
                 loanAccountTransaction.setBranchCountry(branchInfo.getCountry());
-//                loanAccountTransaction.setAccountOwner(byAccountNumber.getUser().getLastName());
+                loanAccountTransaction.setAccountOwner("false");
                 loanAccountTransaction.setLoanAmountInLetters("SYSTEM");
-                loanAccountTransactionRepository.save(loanAccountTransaction);
+                loanAccountTransaction.setRepresentative(generalLedger.get );
+
+                loanAccountService.updateInterestOwedPayment(byAccountNumber,loanAccountTransaction);
+                loanAccountService.calculateAccountBilanz(byAccountNumber.getLoanAccountTransaction(), true);
+
                 updateGeneralLedger(loanAccountTransaction, ledgerAccount.getCode(), BVMicroUtils.CREDIT, loanAccountTransaction.getLoanAmount(), true);
                 byAccountNumber.getLoanAccountTransaction().add(loanAccountTransaction);
                 loanAccountRepository.save(byAccountNumber);
@@ -962,7 +972,7 @@ public class GeneralLedgerService extends SuperService {
     public LedgerAccount determineLedgerAccount(String accountNumber) {
         String productCode = accountNumber;
         if(StringUtils.isNotEmpty(accountNumber) && accountNumber.length()!=2){
-            productCode = accountNumber.substring(2, 4);
+            productCode = accountNumber.substring(3, 5);
         }
 
         if (productCode.equals("20")) {

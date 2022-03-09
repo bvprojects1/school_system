@@ -53,7 +53,9 @@
         <form action="#" th:action="@{/userHomeLedgerEntryForm}" method="post" th:object="${ledgerEntryDTO}">
             <table align="top" border="1" class="center" width="100%" cellpadding="5">
                 <tr>
-                    <td style="width:50%"><b>Enter Amount</b><br/>
+                    <td style="width:50%">
+                        <font color="gray" size="12px"> <span th:text="${glAddEntryToAccountsInfo}"/></font>
+                        <b>Enter Amount</b><br/>
                         <input required class="selectAmount" name="glAccountAmount" type="text" th:field="*{ledgerAmount}"/>
                         <br/>
                         <font size="2">(Amount to be transfered between accounts )</font>
@@ -157,15 +159,17 @@
                     <td width="10%"></td>
                     <td colspan="4">
                         <div th:each="loanAccount : ${session.customerInUse.loanAccount}">
-                        <font size="2">
-                            Account Number:
-                        </font>
-                            <font size="4">
-                                <span th:text="${loanAccount.accountNumber}"/>
-                            </font>
-                        <input class="selectAmount" required type="text" th:name="${loanAccount.accountNumber}">
-                        <span th:text="' Balance: '+${#numbers.formatDecimal(loanAccount.loanAmount, 0, 'COMMA', 0, 'POINT')}"/>
-                            <span th:text="${loanAccount.accountType.name}"/>
+                            <span th:if="${loanAccount.accountStatus.name == 'ACTIVE'}">
+                                <font size="2">
+                                    Account Number:
+                                </font>
+                                    <font size="4">
+                                        <span th:text="${loanAccount.accountNumber}"/>
+                                    </font>
+                                <input class="selectAmount" required type="text" th:name="${loanAccount.accountNumber}">
+                                <span th:text="' Balance: '+${#numbers.formatDecimal(loanAccount.loanAmount, 0, 'COMMA', 0, 'POINT')}"/>
+                                <span th:text="${loanAccount.accountType.name}"/>
+                            </span>
                         </div>
                     </td>
                 </tr>
