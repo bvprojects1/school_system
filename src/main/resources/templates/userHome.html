@@ -93,6 +93,11 @@
                     <div th:unless="${#authorization.expression('hasAnyAuthority(''ROLE_CUSTOMER_ACCOUNT_TYPE_TRANSFERS'')')}" href="">
                         Loan re-payment <img width="40px" th:src="@{/assets/images/transferLoan.png}"/> <label title="Requires ROLE_CUSTOMER_ACCOUNT_TYPE_TRANSFERS"> <img width="30px" th:src="@{/assets/images/toolTip.png}"/> </label>
                     </div>
+
+                    <a th:if="${#authorization.expression('hasAnyAuthority(''ROLE_CUSTOMER_ACCOUNT_TYPE_TRANSFERS'')')}" href="#" th:href="@{/glAddEntryFromCurrentAccount}">
+                        Ledgers Transfer <img width="35px" th:src="@{/assets/images/transfer.png}"/>
+                    </a>
+
                 </td>
             </tr>
             <tr>
@@ -198,7 +203,7 @@
                         Account Ledger Transfers <img width="35px" th:src="@{/assets/images/transfer3.png}"/>
                     </a>
 
-                    <a th:if="${#authorization.expression('hasAnyAuthority(''ROLE_CUSTOMER_ACCOUNT_TYPE_TRANSFERS'')')}" href="#" th:href="@{/glAddEntryFromAccount}">
+                    <a th:if="${#authorization.expression('hasAnyAuthority(''ROLE_CUSTOMER_ACCOUNT_TYPE_TRANSFERS'')')}" href="#" th:href="@{/glAddEntryFromSavingAccount}">
                          Ledgers Transfer <img width="35px" th:src="@{/assets/images/transfer.png}"/>
                     </a>
 

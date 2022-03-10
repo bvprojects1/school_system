@@ -325,13 +325,22 @@ public class LedgerAccountController extends SuperController{
         return "glAddEntryToAccounts";
     }
 
-    @GetMapping(value = "/glAddEntryFromAccount")
-    public String glAddEntryFromAccount( ModelMap model) {
+    @GetMapping(value = "/glAddEntryFromCurrentAccount")
+    public String glAddEntryFromCurrentAccount( ModelMap model) {
         Iterable<LedgerAccount> originLedgerAccounts = ledgerAccountRepository.findAll();
 
         model.put("ledgerEntryDTO", new LedgerEntryDTO());
         model.put("originLedgerAccounts", originLedgerAccounts);
-        return "glAddEntryFromAccount";
+        return "glAddEntryFromCurrentAccount";
+    }
+
+    @GetMapping(value = "/glAddEntryFromSavingAccount")
+    public String glAddEntryFromSavingAccount( ModelMap model) {
+        Iterable<LedgerAccount> originLedgerAccounts = ledgerAccountRepository.findAll();
+
+        model.put("ledgerEntryDTO", new LedgerEntryDTO());
+        model.put("originLedgerAccounts", originLedgerAccounts);
+        return "glAddEntryFromSavingAccount";
 
     }
 
@@ -356,7 +365,7 @@ public class LedgerAccountController extends SuperController{
                 fromTotal = new Double(paramValue);
                 continue;
             }
-            if(parameterName.equals("originLedgerAccount") ){
+            if(parameterName.equals("originLedgerAccount") || parameterName.equals("notes") ){
                 continue;
             }
 
@@ -379,7 +388,7 @@ public class LedgerAccountController extends SuperController{
             generalLedgerService.updateGLAfterLedgerAccountMultipleGLEntry(ledgerEntryDTO);
         }
         model.put("glAddEntryFromAccountsInfo", "TRANSFER WAS SUCCESSFULL");
-        return glAddEntryFromAccount(model);
+        return glAddEntryFromCurrentAccount(model);
     }
 
 

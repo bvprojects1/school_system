@@ -24,6 +24,8 @@ public class BVMicroUtils {
 
     public static final String TRANSFER = "TRANSFER";
     public static final String CURRENT_TO_GL_TRANSFER = "CURRENT_TO_GL_TRANSFER";
+    public static final String SAVING_TO_GL_TRANSFER = "SAVING_TO_GL_TRANSFER";
+
     public static final String CURRENT_LOAN_TRANSFER = "CURRENT_LOAN_TRANSFER";
     public static final String SAVING_SHARE_TRANSFER = "SAVING_SHARE_TRANSFER";
     public static final String DEBIT_DEBIT_TRANSFER = "DEBIT_DEBIT_TRANSFER";

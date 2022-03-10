@@ -50,19 +50,20 @@
         </table>
         <!-- END -->
         <br/>
+        <font size="4px" color="green"><b>SAVING ACCOUNT TRANSFER TO GL ACCOUNTS</b></font>
         <font color="gray" size="8px"> <span th:text="${glAddEntryFromAccountsInfo}"/></font>
         <form action="#" th:action="@{/userHomeLedgerEntryFromAccountForm}" method="post" th:object="${ledgerEntryDTO}">
             <table align="top" border="1" class="center" width="100%" cellpadding="5">
                 <tr>
-                    <td style="width:50%">
+                    <td style="width:33%">
                         <b>Enter Amount</b><br/>
                         <input required class="selectAmount" name="glAccountAmount" type="text"
                                th:field="*{ledgerAmount}"/>
                         <br/>
-                        <font size="2">(Amount to be transfered from Current account )</font>
+                        <font size="2">(Amount to be transfered from Saving account )</font>
 
                     </td>
-                    <td style="width:50%">
+                    <td>
 
                         <b>Date</b><br/>
                         <input class="selectNormal" required name="recordDate" type="date"/><br/>
@@ -71,15 +72,19 @@
                         <!--                        <input class="selectAmount" name="fromAccountToLedger" type="checkbox" th:field="*{fromAccountToLedger}"/>-->
                         <!--                        <br/><font size="2"> (Check to transfer from user account)</font>-->
                     </td>
+                    <td>
+                        <label><b> Notes:</b></label><br/>
+                        <textarea class="selectNormal" id="notes" rows="3" cols="40" th:field="*{notes}"/>
+                    </td>
                 </tr>
             </table>
-            <table align="top" border="1" class="center" width="100%" cellpadding="5">
+            <table align="top" border="0" class="center" width="100%" cellpadding="5">
                 <tr>
                     <td style="width:50%" colspan="2">
                         <b>Select From</b>
                         <br/>
                         <select class="selectNormal" th:field="*{originLedgerAccount}">
-                            <option th:each="i : ${session.customerInUse.currentAccount}"
+                            <option th:each="i : ${session.customerInUse.savingAccount}"
                                     th:value="${i.id}">
                                 <span th:text="${'Account Number: ' + i.accountNumber + '  Balance: ' + #numbers.formatDecimal(i.accountBalance, 0, 'COMMA', 0, 'POINT')+ '  Minimum Balance: ' + #numbers.formatDecimal(i.accountMinBalance, 0, 'COMMA', 0, 'POINT')}"/>
                             </option>
@@ -87,9 +92,6 @@
                         <br/>
                         <font size="2"> (Opposite booking Type happens in various GL accounts)</font>
                     </td>
-                    <!--                <td style="width:50%">-->
-                    <!--                    -->
-                    <!--                </td>-->
                 </tr>
             </table>
 
@@ -103,9 +105,10 @@
                     </td>
                     <td colspan="1">
                         <br>
-                        <font size="2" color="green"><b>Total Sum of amount entered for individual GL accounts must add
-                            up to amount entered above</b></font>
+                        <font size="3" color="green">Total Sum of amount entered for individual GL accounts must add
+                            up to amount entered above</font>
                     </td>
+
                 </tr>
                 <tr>
                     <td width="10%"></td>
@@ -120,6 +123,7 @@
                         </div>
                         <br/>
                     </td>
+
                 </tr>
             </table>
 
