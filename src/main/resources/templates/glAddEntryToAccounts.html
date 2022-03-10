@@ -49,12 +49,11 @@
         </table>
         <!-- END -->
         <br/>
-
+        <font color="gray" size="8px"> <span th:text="${glAddEntryToAccountsInfo}"/></font>
         <form action="#" th:action="@{/userHomeLedgerEntryForm}" method="post" th:object="${ledgerEntryDTO}">
             <table align="top" border="1" class="center" width="100%" cellpadding="5">
                 <tr>
                     <td style="width:50%">
-                        <font color="gray" size="8px"> <span th:text="${glAddEntryToAccountsInfo}"/></font><br/>
                         <b>Enter Amount</b><br/>
                         <input required class="selectAmount" name="glAccountAmount" type="text" th:field="*{ledgerAmount}"/>
                         <br/>

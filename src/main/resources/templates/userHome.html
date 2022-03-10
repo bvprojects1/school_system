@@ -197,6 +197,11 @@
                     <a th:if="${#authorization.expression('hasAnyAuthority(''ROLE_CUSTOMER_ACCOUNT_TYPE_TRANSFERS'')')}" href="#" th:href="@{/userHomeLedgerEntry}">
                         Account Ledger Transfers <img width="35px" th:src="@{/assets/images/transfer3.png}"/>
                     </a>
+
+                    <a th:if="${#authorization.expression('hasAnyAuthority(''ROLE_CUSTOMER_ACCOUNT_TYPE_TRANSFERS'')')}" href="#" th:href="@{/glAddEntryFromAccount}">
+                         Ledgers Transfer <img width="35px" th:src="@{/assets/images/transfer.png}"/>
+                    </a>
+
                 </td>
             </tr>
             <tr>

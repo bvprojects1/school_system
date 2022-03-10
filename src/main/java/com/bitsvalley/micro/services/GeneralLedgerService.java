@@ -64,6 +64,9 @@ public class GeneralLedgerService extends SuperService {
     @Autowired
     LoanAccountService loanAccountService;
 
+    @Autowired
+    CurrentAccountService currentAccountService;
+
     public List<GeneralLedger> findByAccountNumber(String accountNumber) {
         return generalLedgerRepository.findByAccountNumber(accountNumber);
     }
@@ -808,6 +811,10 @@ public class GeneralLedgerService extends SuperService {
             updateGeneralLedger(currentAccountTransaction, BVMicroUtils.CASH, currentAccountTransaction.getCurrentAmount() > 0 ? "DEBIT" : "CREDIT", currentAccountTransaction.getCurrentAmount(),  true);
             currentAccountTransaction.setNotes(notes);
         }
+        if (currentAccountTransaction.getModeOfPayment().equals(BVMicroUtils.CURRENT_TO_GL_TRANSFER)) {
+            currentAccountTransaction.setNotes( notes );
+            updateGeneralLedger(currentAccountTransaction, BVMicroUtils.CURRENT_GL_3004, currentAccountTransaction.getCurrentAmount() > 0 ? "CREDIT" : "DEBIT", currentAccountTransaction.getCurrentAmount(),  true);
+        }
     }
 
 
@@ -863,6 +870,50 @@ public class GeneralLedgerService extends SuperService {
             savingAccountTransaction.setNotes(BVMicroUtils.CURRENT + " " + notes);
             updateGeneralLedger(savingAccountTransaction, savingLedgerAccount.getCode(), "CREDIT", savingAccountTransaction.getSavingAmount(), true);
             savingAccountTransaction.setNotes(notes);
+        }
+    }
+
+
+    @Transactional
+    public void updateGLAfterLedgerAccountMultipleGLEntry(LedgerEntryDTO newLedgerEntryDTO) {
+
+//      String oppositeDirection = newLedgerEntryDTO.getReverse();
+        List<String> paramValueString = newLedgerEntryDTO.getParamValueString();
+        long originCurrentAccount = newLedgerEntryDTO.getOriginLedgerAccount();
+        CurrentAccount currentAccount = currentAccountRepository.findById(originCurrentAccount).get();
+
+        CurrentAccountTransaction currentAccountTransaction = new CurrentAccountTransaction();
+        currentAccountTransaction.setAccountOwner("false");
+        currentAccountTransaction.setCurrentAmount(newLedgerEntryDTO.getLedgerAmount());
+        currentAccountTransaction.setRepresentative(getLoggedInUserName());
+        currentAccountTransaction.setCurrentAccount(currentAccount);
+        currentAccountTransaction.setWithdrawalDeposit(-1);
+        currentAccountTransaction.setModeOfPayment(BVMicroUtils.CURRENT_TO_GL_TRANSFER);
+        currentAccountTransaction.setCurrentAmount(currentAccountTransaction.getCurrentAmount() * -1);
+        if(StringUtils.isNotEmpty(currentAccountService.withdrawalAllowed(currentAccountTransaction))){
+            // TODO: Move this check to controller
+        }
+        Branch branchInfo = branchService.getBranchInfo(getLoggedInUserName());
+        currentAccountTransaction.setBranch(branchInfo.getId());
+        currentAccountTransaction.setBranchCode(branchInfo.getCode());
+        currentAccountTransaction.setBranchCountry(branchInfo.getCountry());
+        currentAccountTransaction.setCreatedDate(BVMicroUtils.formatLocaleDate(newLedgerEntryDTO.getRecordDate()));
+        currentAccount.getCurrentAccountTransaction().add(currentAccountTransaction);
+        currentAccountService.createCurrentAccountTransaction(currentAccountTransaction,currentAccount);
+
+        newLedgerEntryDTO.setCreditOrDebit(BVMicroUtils.CREDIT);
+//        LedgerAccount ledgerAccount = null;
+        String ledgerAccountId = "";
+        String accountAmount = "";
+        int i = 0;
+        for (String aString : paramValueString) {
+            String[] s = aString.split("_");
+            ledgerAccountId = s[0];
+            accountAmount = s[1];
+            newLedgerEntryDTO.setOriginLedgerAccount(new Long(ledgerAccountId));
+            newLedgerEntryDTO.setLedgerAmount(new Double(accountAmount));
+            ++i;
+            recordGLFirstEntry(newLedgerEntryDTO,BVMicroUtils.formatDate(newLedgerEntryDTO.getRecordDate()), getLoggedInUserName());
         }
     }
 
@@ -967,6 +1018,11 @@ public class GeneralLedgerService extends SuperService {
                 loanAccountRepository.save(byAccountNumber);
             }
         }
+    }
+
+    public LedgerAccount determineLedgerAccount(Long id) {
+        LedgerAccount byId = ledgerAccountRepository.findById(id).get();
+        return byId;
     }
 
     public LedgerAccount determineLedgerAccount(String accountNumber) {
