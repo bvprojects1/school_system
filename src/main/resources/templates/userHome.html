@@ -95,7 +95,7 @@
                     </div>
 
                     <a th:if="${#authorization.expression('hasAnyAuthority(''ROLE_CUSTOMER_ACCOUNT_TYPE_TRANSFERS'')')}" href="#" th:href="@{/glAddEntryFromCurrentAccount}">
-                        Ledgers Transfer <img width="35px" th:src="@{/assets/images/transfer.png}"/>
+                        Account Ledgers Transfer <img width="35px" th:src="@{/assets/images/transfer.png}"/>
                     </a>
 
                 </td>
@@ -200,11 +200,11 @@
                 </td>
                 <td colspan="2">
                     <a th:if="${#authorization.expression('hasAnyAuthority(''ROLE_CUSTOMER_ACCOUNT_TYPE_TRANSFERS'')')}" href="#" th:href="@{/userHomeLedgerEntry}">
-                        Account Ledger Transfers <img width="35px" th:src="@{/assets/images/transfer3.png}"/>
+                         Ledger Account Transfers <img width="35px" th:src="@{/assets/images/transfer3.png}"/>
                     </a>
 
                     <a th:if="${#authorization.expression('hasAnyAuthority(''ROLE_CUSTOMER_ACCOUNT_TYPE_TRANSFERS'')')}" href="#" th:href="@{/glAddEntryFromSavingAccount}">
-                         Ledgers Transfer <img width="35px" th:src="@{/assets/images/transfer.png}"/>
+                        Account Ledgers Transfer <img width="35px" th:src="@{/assets/images/transfer.png}"/>
                     </a>
 
                 </td>

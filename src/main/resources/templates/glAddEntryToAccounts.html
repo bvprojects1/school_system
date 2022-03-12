@@ -59,9 +59,9 @@
                         <br/>
                         <font size="2">(Amount to be transfered between accounts )</font>
                     </td>
-                    <td style="width:50%"><b>From User Accounts</b><br/>
-                        <input class="selectAmount" name="fromAccountToLedger" type="checkbox" th:field="*{fromAccountToLedger}"/>
-                        <br/><font size="2"> (Check to transfer from user account)</font>
+                    <td style="width:50%"><b>Date</b><br/>
+                        <input class="selectNormal" required name="recordDate" type="date"/><br/>
+                        <font size="2"> Record entry date</font>
                     </td>
                 </tr>
             </table>
@@ -79,10 +79,7 @@
                 <br/>
                     <font size="2"> (Opposite booking Type happens in various customer accounts)</font>
                 </td>
-                <td style="width:50%"><b>Date</b><br/>
-                    <input class="selectNormal" required name="recordDate" type="date"/><br/>
-                    <font size="2"> Record entry date</font>
-                </td>
+
                 </tr>
             </table>
 
