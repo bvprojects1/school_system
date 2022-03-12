@@ -18,6 +18,9 @@ public interface GeneralLedgerRepository extends CrudRepository<GeneralLedger, L
 
     List<GeneralLedger> findGLByType(String type);
 
+    @Query(value = "SELECT * FROM GENERALLEGDER ORDER BY CREATED_DATE DESC ", nativeQuery = true)
+    List<GeneralLedger> findAllOldestFirst();
+
     @Query(value = "SELECT * FROM GENERALLEGDER gl WHERE gl.created_date BETWEEN :startDate AND :endDate", nativeQuery = true)
     List<GeneralLedger> searchCriteriaStartEndDate(String startDate, String endDate);
 

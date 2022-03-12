@@ -317,13 +317,78 @@ public class LedgerAccountController extends SuperController{
 
 
     @GetMapping(value = "/userHomeLedgerEntry")
-    public String userHomeLedgerEntry( ModelMap model, HttpServletRequest request) {
+    public String userHomeLedgerEntry( ModelMap model) {
         Iterable<LedgerAccount> originLedgerAccounts = ledgerAccountRepository.findAll();
 
         model.put("ledgerEntryDTO", new LedgerEntryDTO());
         model.put("originLedgerAccounts", originLedgerAccounts);
         return "glAddEntryToAccounts";
+    }
 
+    @GetMapping(value = "/glAddEntryFromCurrentAccount")
+    public String glAddEntryFromCurrentAccount( ModelMap model) {
+        Iterable<LedgerAccount> originLedgerAccounts = ledgerAccountRepository.findAll();
+
+        model.put("ledgerEntryDTO", new LedgerEntryDTO());
+        model.put("originLedgerAccounts", originLedgerAccounts);
+        return "glAddEntryFromCurrentAccount";
+    }
+
+    @GetMapping(value = "/glAddEntryFromSavingAccount")
+    public String glAddEntryFromSavingAccount( ModelMap model) {
+        Iterable<LedgerAccount> originLedgerAccounts = ledgerAccountRepository.findAll();
+
+        model.put("ledgerEntryDTO", new LedgerEntryDTO());
+        model.put("originLedgerAccounts", originLedgerAccounts);
+        return "glAddEntryFromSavingAccount";
+
+    }
+
+
+    @PostMapping(value = "/userHomeLedgerEntryFromAccountForm")
+    public String userHomeLedgerEntryFromAccountForm( ModelMap model, HttpServletRequest request, @ModelAttribute("ledgerEntryDTO") LedgerEntryDTO ledgerEntryDTO) {
+//        LedgerEntryDTO newLedgerEntryDTO = new LedgerEntryDTO();
+        double fromTotal = 0.0;
+        double toTotal = 0.0;
+        Date recordDate = null;
+
+        Enumeration<String> parameterNames = request.getParameterNames();
+        while(parameterNames.hasMoreElements()) {
+            String parameterName = (String) parameterNames.nextElement();
+            String paramValue = request.getParameter(parameterName);
+            if(StringUtils.equals(parameterName, "recordDate")){
+                recordDate = BVMicroUtils.formatDate(paramValue);
+                ledgerEntryDTO.setRecordDate(paramValue);
+                continue;
+            }
+            if(parameterName.equals("ledgerAmount") || parameterName.equals("glAccountAmount") ){
+                fromTotal = new Double(paramValue);
+                continue;
+            }
+            if(parameterName.equals("originLedgerAccount") || parameterName.equals("notes") ){
+                continue;
+            }
+
+            if(parameterName.equals("fromAccountToLedger") || parameterName.equals("_fromAccountToLedger")){
+                continue;
+            }
+            if(StringUtils.isNotEmpty(paramValue)){
+                toTotal = toTotal + new Double(paramValue);
+                String pair = parameterName+"_"+paramValue;
+                ledgerEntryDTO.getParamValueString().add(pair);
+            }
+        }
+        if(toTotal != fromTotal){
+            Iterable<LedgerAccount> originLedgerAccounts = ledgerAccountRepository.findAll();
+            model.put("error", "Amounts entered do not add up");
+            model.put("ledgerEntryDTO", ledgerEntryDTO);
+            model.put("originLedgerAccounts", originLedgerAccounts);
+            return "glAddEntryToAccounts";
+        }else{
+            generalLedgerService.updateGLAfterLedgerAccountMultipleGLEntry(ledgerEntryDTO);
+        }
+        model.put("glAddEntryFromAccountsInfo", "TRANSFER WAS SUCCESSFULL");
+        return glAddEntryFromCurrentAccount(model);
     }
 
 
@@ -369,7 +434,8 @@ public class LedgerAccountController extends SuperController{
             }else{
                 generalLedgerService.updateGLAfterLedgerAccountMultipleAccountEntry(ledgerEntryDTO);
             }
-        return "glAddEntryToAccounts";
+        model.put("glAddEntryToAccountsInfo", "TRANSFER WAS SUCCESSFULL");
+        return userHomeLedgerEntry(model);
     }
 
 

@@ -140,7 +140,12 @@
             <td width="10"></td>
             <td>
                 <div th:if="${gl.type == 'DEBIT'}">
-                    <span th:text="${#numbers.formatDecimal(gl.amount, 0, 'COMMA', 0, 'POINT')}"></span>
+                    <div th:if="${gl.amount < 0}">
+                        <span th:text="${#numbers.formatDecimal(gl.amount*-1, 0, 'COMMA', 0, 'POINT')}"></span>
+                    </div>
+                    <div th:unless="${gl.amount < 0}">
+                        <span th:text="${#numbers.formatDecimal(gl.amount, 0, 'COMMA', 0, 'POINT')}"></span>
+                    </div>
                 </div>
             </td>
             <td width="10">
@@ -148,7 +153,15 @@
             </td>
             <td>
                 <div th:if="${gl.type == 'CREDIT'}">
-                    <span th:text="${#numbers.formatDecimal(gl.amount, 0, 'COMMA', 0, 'POINT')}"></span>
+<!--                    <span th:text="${#numbers.formatDecimal(gl.amount, 0, 'COMMA', 0, 'POINT')}"></span>-->
+
+                    <div th:if="${gl.amount < 0}">
+                        <span th:text="${#numbers.formatDecimal(gl.amount*-1, 0, 'COMMA', 0, 'POINT')}"></span>
+                    </div>
+                    <div th:unless="${gl.amount < 0}">
+                        <span th:text="${#numbers.formatDecimal(gl.amount, 0, 'COMMA', 0, 'POINT')}"></span>
+                    </div>
+
                 </div>
             </td>
             <td width="10"></td>

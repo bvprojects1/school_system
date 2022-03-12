@@ -99,8 +99,6 @@ public class WelcomeController extends SuperController{
             request.getSession().setAttribute("currentBilanzList",currentBilanzByUserList);
             request.getSession().setAttribute("shareAccountBilanzList",shareAccountBilanzList);
 
-
-            request.getSession().setAttribute("savingBilanzList",savingBilanzByUserList);
             return "userHome";
         }else{
             ArrayList<com.bitsvalley.micro.domain.UserRole> customerRole = new ArrayList<com.bitsvalley.micro.domain.UserRole>();

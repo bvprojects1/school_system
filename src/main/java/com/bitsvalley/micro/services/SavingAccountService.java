@@ -130,10 +130,10 @@ public class SavingAccountService extends SuperService {
         savingAccountTransaction.setAccountBalance(calculateAccountBalance(savingAccountTransaction.getSavingAmount(),savingAccountTransaction.getSavingAccount()));
 
         savingAccountTransactionRepository.save(savingAccountTransaction);
-        // generalLedgerService.updateSavingAccountTransaction(savingAccountTransaction);
+         generalLedgerService.updateGLAfterSavingAccountTransaction(savingAccountTransaction);
     }
 
-    private double calculateAccountBalance(double savingAmount, SavingAccount savingAccount) {
+    public double calculateAccountBalance(double savingAmount, SavingAccount savingAccount) {
 
             Double balance = 0.0;
             for (SavingAccountTransaction transaction: savingAccount.getSavingAccountTransaction() ) {
@@ -154,7 +154,7 @@ public class SavingAccountService extends SuperService {
 
     @Transactional
     public void createSavingAccountTransaction(SavingAccountTransaction savingAccountTransaction, SavingAccount savingAccount) {
-        //Get id of savingAccount transaction
+        //Get id of savingAccount transactions
         createSavingAccountTransaction(savingAccountTransaction);
         if (savingAccount.getSavingAccountTransaction() != null) {
             savingAccount.getSavingAccountTransaction().add(savingAccountTransaction);

@@ -83,8 +83,9 @@
                         <tr th:each="aLedgerAccount : ${ledgerAccountList}">
                             <td>
                                 <span th:text="${aLedgerAccount.name}"/>
-                                <a th:href="@{/deleteGL/{id}(id=${aLedgerAccount.id})}">Delete this GL</a>
+
                                 <div th:if="${#authorization.expression('hasAnyAuthority(''ROLE_UPDATE_GL_ACCOUNT_NAME'')')}">
+                                <a th:href="@{/deleteGL/{id}(id=${aLedgerAccount.id})}">Delete this GL</a>
                                 <form th:action="@{/updateLedgerAccountForm}" method="post">
                                     <input type="text" name="accountName"/>
                                     <input type="hidden" name="aLedgerAccountId" th:value="${aLedgerAccount.id}"/>
