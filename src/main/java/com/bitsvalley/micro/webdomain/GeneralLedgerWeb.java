@@ -15,6 +15,7 @@ public class GeneralLedgerWeb {
         private String accountNumber;
         private String createdBy;
         private String lastUpdatedBy;
+        private String representative;
         private Date createdDate;
         private Date lastUpdatedDate;
         private double amount;
@@ -128,4 +129,13 @@ public class GeneralLedgerWeb {
     public void setLedgerAccount(LedgerAccount ledgerAccount) {
         this.ledgerAccount = ledgerAccount;
     }
+
+    public String getRepresentative() {
+        return representative;
+    }
+
+    public void setRepresentative(String representative) {
+        this.representative = representative;
+    }
+
 }

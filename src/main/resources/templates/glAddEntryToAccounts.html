@@ -80,6 +80,11 @@
                     <font size="2"> (Opposite booking Type happens in various customer accounts)</font>
                 </td>
 
+                    <td style="width:50%">
+                        <label><b> Notes:</b></label><br/>
+                        <textarea class="selectNormal" id="notes" rows="3" cols="40" th:field="*{notes}"/>
+                    </td>
+
                 </tr>
             </table>
 
@@ -93,8 +98,8 @@
                     </td>
                     <td colspan="1">
                         <br>
-                        <font size="2" color="green"><b>Total Sum of amount entered for individual accounts must add
-                            up</b></font>
+                        <font size="3" color="green">Total Sum of amount entered for individual accounts must add
+                            up</font>
                     </td>
                 </tr>
                 <tr>
@@ -111,7 +116,7 @@
                         </font>
                         <input class="selectAmount" required type="text" th:name="${currentAccount.accountNumber}">
                         <span th:text="' Balance: '+${#numbers.formatDecimal(currentAccount.accountBalance, 0, 'COMMA', 0, 'POINT')}"/>
-                            <span>CURRENT ACCOUNT</span>>
+                            <span>CURRENT ACCOUNT</span>
                         </div>
                     </td>
                 </tr>

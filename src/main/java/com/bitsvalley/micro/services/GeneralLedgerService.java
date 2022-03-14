@@ -283,6 +283,7 @@ public class GeneralLedgerService extends SuperService {
         gl.setLastUpdatedDate(new Date(System.currentTimeMillis()));
         gl.setNotes(loanAccountTransaction.getNotes());
         gl.setReference(loanAccountTransaction.getReference());
+        gl.setRepresentative(loanAccountTransaction.getRepresentative());
         gl.setLastUpdatedBy(loanAccountTransaction.getCreatedBy());
         gl.setCreatedBy(loanAccountTransaction.getCreatedBy());
         return gl;
@@ -302,6 +303,7 @@ public class GeneralLedgerService extends SuperService {
 
         gl.setLastUpdatedDate(new Date(System.currentTimeMillis()));
         gl.setNotes(shareAccountTransaction.getNotes());
+        gl.setRepresentative(shareAccountTransaction.getRepresentative());
         gl.setReference(shareAccountTransaction.getReference());
         gl.setLastUpdatedBy(shareAccountTransaction.getCreatedBy());
         gl.setCreatedBy(shareAccountTransaction.getCreatedBy());
@@ -328,6 +330,7 @@ public class GeneralLedgerService extends SuperService {
         gl.setReference(currentAccountTransaction.getReference());
         gl.setLastUpdatedBy(currentAccountTransaction.getCreatedBy());
         gl.setCreatedBy(currentAccountTransaction.getCreatedBy());
+        gl.setRepresentative(currentAccountTransaction.getRepresentative());
         gl.setGlClass(3); //TODO Saving which class in GL ?
         gl.setType(GeneralLedgerType.CREDIT.name());
 //        gl.setType(currentAccountTransaction.getCurrentAmount() <= 0 ? "CREDIT" : "DEBIT");
@@ -346,6 +349,7 @@ public class GeneralLedgerService extends SuperService {
         gl.setReference(savingAccountTransaction.getReference());
         gl.setLastUpdatedBy(savingAccountTransaction.getCreatedBy());
         gl.setCreatedBy(savingAccountTransaction.getCreatedBy());
+        gl.setRepresentative(savingAccountTransaction.getRepresentative());
         gl.setGlClass(3); //TODO Saving which class in GL ?
         gl.setType(savingAccountTransaction.getSavingAmount() >= 0 ? "CREDIT" : "DEBIT");
         return gl;
@@ -386,6 +390,7 @@ public class GeneralLedgerService extends SuperService {
         generalLedgerWeb.setGlClass(next.getGlClass());
         generalLedgerWeb.setLastUpdatedDate(next.getLastUpdatedDate());
         generalLedgerWeb.setNotes(next.getNotes());
+        generalLedgerWeb.setRepresentative(next.getRepresentative());
         generalLedgerWeb.setAmount(next.getAmount());
         generalLedgerWeb.setLastUpdatedBy(next.getLastUpdatedBy());
         generalLedgerWeb.setType(next.getType());
@@ -416,8 +421,6 @@ public class GeneralLedgerService extends SuperService {
         bilanz.setTotal(debitTotal - creditTotal);
         bilanz.setDebitTotal(debitTotal);
         bilanz.setCreditTotal(creditTotal);
-
-        Collections.reverse(generalLedgerList);
         bilanz.setGeneralLedgerWeb(generalLedgerList);
         return bilanz;
     }
@@ -428,7 +431,7 @@ public class GeneralLedgerService extends SuperService {
         for (GeneralLedger aGeneralLedger : glByType) {
             generalLedgerWebList.add(extracted(aGeneralLedger));
         }
-        Collections.reverse(generalLedgerWebList);
+//        Collections.reverse(generalLedgerWebList);
         return getGeneralLedgerBilanz(generalLedgerWebList);
     }
 
@@ -507,7 +510,7 @@ public class GeneralLedgerService extends SuperService {
         } else if (ledgerAccount != -1 && !agentUsername.equals("-1")) {
             glList = generalLedgerRepository.searchCriteriaWithCreatedByAndLedgerAccount(startDate, endDate, agentUsername, ledgerAccount);
         }
-        Collections.reverse(glList);
+//        Collections.reverse(glList);
         List<GeneralLedgerWeb> generalLedgerWebs = mapperGeneralLedger(glList);
         GeneralLedgerBilanz generalLedgerBilanz = getGeneralLedgerBilanz(generalLedgerWebs);
         return generalLedgerBilanz;
@@ -987,7 +990,7 @@ public class GeneralLedgerService extends SuperService {
                 savingAccountTransaction.setSavingAccount(byAccountNumber);
                 savingAccountTransaction.setWithdrawalDeposit(1);
                 savingAccountTransaction.setSavingAmount(new Double(accountAmount));
-                savingAccountTransaction.setNotes("GL Account to transfer");
+                savingAccountTransaction.setNotes("GL Account to transfer" + newLedgerEntryDTO.getNotes());
                 savingAccountTransaction.setCreatedBy(getLoggedInUserName());
                 savingAccountTransaction.setReference(generalLedger.getReference()+"_"+i);
                 Date date = BVMicroUtils.formatDate(newLedgerEntryDTO.getRecordDate());
@@ -1011,7 +1014,7 @@ public class GeneralLedgerService extends SuperService {
                     currentAccountTransaction.setCurrentAccount(byAccountNumber);
                     currentAccountTransaction.setWithdrawalDeposit(1);
                     currentAccountTransaction.setCurrentAmount(new Double(accountAmount));
-                    currentAccountTransaction.setNotes("GL Account to transfer");
+                    currentAccountTransaction.setNotes("GL Account to transfer.  " + newLedgerEntryDTO.getNotes());
                     currentAccountTransaction.setCreatedBy(getLoggedInUserName());
                     currentAccountTransaction.setReference(generalLedger.getReference()+"_"+i);
                     Date date = BVMicroUtils.formatDate(newLedgerEntryDTO.getRecordDate());
@@ -1036,7 +1039,7 @@ public class GeneralLedgerService extends SuperService {
                 loanAccountTransaction.setWithdrawalDeposit(1);
 //                loanAccountTransaction.setLoanAmount(new Double(accountAmount));
                 loanAccountTransaction.setAmountReceived(new Double(accountAmount));
-                loanAccountTransaction.setNotes(" GL Account to transfer");
+                loanAccountTransaction.setNotes("GL Account to transfer. "  + newLedgerEntryDTO.getNotes());
                 loanAccountTransaction.setCreatedBy(getLoggedInUserName());
                 loanAccountTransaction.setReference(generalLedger.getReference()+"_"+i);
                 Date date = BVMicroUtils.formatDate(newLedgerEntryDTO.getRecordDate());

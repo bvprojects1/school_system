@@ -8,3 +8,5 @@ ALTER TABLE loan_account_transaction ADD COLUMN accountBalance DOUBLE;
 ALTER TABLE current_account_transaction ADD COLUMN accountBalance DOUBLE;
 ALTER TABLE saving_account_transaction ADD COLUMN accountBalance DOUBLE;
 ALTER TABLE share_account_transaction ADD COLUMN accountBalance DOUBLE;
+
+ALTER TABLE generallegder ADD COLUMN representative VARCHAR (255);

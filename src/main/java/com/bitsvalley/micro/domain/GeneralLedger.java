@@ -25,6 +25,15 @@ public class GeneralLedger {
     private double amount;
     private Date date;
     private String notes;
+    private String representative;
+
+    public String getRepresentative() {
+        return representative;
+    }
+
+    public void setRepresentative(String representative) {
+        this.representative = representative;
+    }
 
     @OneToOne(cascade = CascadeType.ALL)
     private LedgerAccount ledgerAccount;

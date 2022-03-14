@@ -100,7 +100,13 @@
                     <td>
                         <font color="#2d363f" size="1.5px"> TOTAL </font> <br/>
                         <font color="#2d363f" size="4px">
-                            <div th:text="${#numbers.formatDecimal(generalLedgerBilanz.total, 0, 'COMMA', 0, 'POINT')}"></div>
+
+                        <span th:if="${generalLedgerBilanz.total < 0}">
+                            <div th:text="${#numbers.formatDecimal(generalLedgerBilanz.total*-1, 0, 'COMMA', 0, 'POINT')}"></div>
+                        </span>
+                        <span th:unless="${generalLedgerBilanz.total < 0}">
+                             <div th:text="${#numbers.formatDecimal(generalLedgerBilanz.total, 0, 'COMMA', 0, 'POINT')}"></div>
+                        </span>
                         </font>
                     </td>
                 </tr>
@@ -121,7 +127,7 @@
             <th><a href="#" th:href="@{/findGlByType/{type}(type='DEBIT')}">DEBIT</a></th>
             <th width="10"></th>
             <th><a href="#" th:href="@{/findGlByType/{type}(type='CREDIT')}">CREDIT</a></th>
-            <th width="10"></th>
+            <th>Representative</th>
             <th><a href="#" th:href="@{/gl}">Balance</a></th>
         </tr>
         <tr th:each="gl : ${generalLedgerBilanz.generalLedgerWeb}">
@@ -164,8 +170,19 @@
 
                 </div>
             </td>
-            <td width="10"></td>
-            <td><span th:text="${#numbers.formatDecimal(gl.currentTotal, 0, 'COMMA', 0, 'POINT')}"/></td>
+            <td>
+                <span th:if="${gl.representative != null}">
+                    <span th:text="${gl.representative}" />
+                </span>
+            </td>
+            <td>
+                <div th:if="${gl.currentTotal < 0}">
+                    <span th:text="${#numbers.formatDecimal(gl.currentTotal*-1, 0, 'COMMA', 0, 'POINT')}"></span>
+                </div>
+                <div th:unless="${gl.currentTotal < 0}">
+                    <span th:text="${#numbers.formatDecimal(gl.currentTotal, 0, 'COMMA', 0, 'POINT')}"></span>
+                </div>
+            </td>
         </tr>
     </table>
 </section>
