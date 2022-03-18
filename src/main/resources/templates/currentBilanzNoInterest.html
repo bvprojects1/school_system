@@ -7,44 +7,8 @@
 <section class="contact-form-area-start space df-bg">
     <!--Project title area start-->
     <div class="project-title-area text-center">
+    <div th:insert="summary::navbar"></div>
     <div class="col-md-12">
-    <table class="center" width="100%" border="0">
-        <tr>
-            <td align="center">
-                <font size="2px">Name</font> <br/>
-
-                <font size="4">
-                    <a href="#" th:href="@{/showCustomer/{id}(id=${session.customerInUse.id})}">
-
-                            <span style th:text="${session.customerInUse.gender +' '+session.customerInUse.firstName +' '+session.customerInUse.lastName }"/>
-                            <br/>
-                            <span style th:text="${session.customerInUse.customerNumber}"/><br/>
-
-                    </a>
-                </font>
-
-                <button style="font-face: 'Comic Sans MS'; font-size: larger; color: teal; background-color: #FFFFC0; border: 3pt ridge lightgrey"
-                        type="submit">
-                    <a href="#" th:href="@{/file/{userName}(userName=${session.customerInUse.userName})}"><font size="2px">Upload I.D</font></a>
-                </button>
-                <a href="#" th:href="@{/reloadUser}"><img width="40px" th:src="@{/getImage}"/> </a>
-            </td>
-            <td align="center">
-                <font size="2px">Current</font> <br/> <font color="#77adbf" size="6px">
-                <div th:text="${currentBilanzList.totalCurrent}"/>
-            </font></td>
-            <td align="center">
-                <font size="2px">Current</font> <br/> <font size="6"> 0</font></td>
-            <td align="center">
-                <font size="2px">Loan</font> <br/> <font size="6"> 0</font></td>
-            <td align="center">
-                <font size="2px"> Shares </font> <br/> <font size="6" color="#A57C00">0 </font></td>
-        </tr>
-    </table>
-
-<br/>
-<br/>
-
     <table border="0" width="90%" class="center">
         <tr>
             <td align="center">
@@ -62,11 +26,11 @@
                 </font>
             </td>
             <td align="center">
-                <font size="2px"> Account Owner</font><br/>
-                <font color="#2d363f" size="4px">
+                <font size="2px"> Member Since</font><br/>
+                <font size="4px">
                     <a href="#"
                        th:href="@{/showCustomer/{userid}(userid=${currentAccountTransaction.currentAccount.user.id})}">
-                        <div th:text="${currentAccountTransaction.currentAccount.user.lastName}"/>
+                        <div th:text="${#dates.format(currentAccountTransaction.currentAccount.user.created, 'dd-MMM-yyyy HH:mm')}"/>
                     </a>
                 </font>
             </td>
@@ -89,26 +53,19 @@
             </td>
         </tr>
     </table>
-    <br/> <br/> <br/> <br/>
+
     <form action="#" th:action="@{/registerCurrentAccountTransactionForm}" method="post"
           th:object="${currentAccountTransaction}">
 
         <table border="0" width="100%" class="center">
             <tr>
-                <th width="10%">
-                </th>
-                <th>
+                <td width="10%">
+                </td>
+                <td>
                     <font size="6" color="gray"><div class="error" th:text="${billSelectionError}"/>
                         <span th:text="${billSelectionInfo}"/>
                         <span th:text="${error}"/>
                     </font>
-                </th>
-            </tr>
-            <tr>
-                <td width="10%">
-                </td>
-                <td>
-                    <br/>
                     <font size="5" color="green"><b> MAKE A CURRENT ACCOUNT TRANSACTION</b></font>
                     <br/>
                     <select class="selectNormal" name="deposit_withdrawal">
@@ -209,10 +166,10 @@
             <td>Notes</td>
             <td>Debit</td>
             <td>Credit</td>
-            <td>Representative</td>
             <td><font color="green" size="6px">
                 <div th:text="${currentBilanzList.totalCurrent}"/>
             </font></td>
+            <td>Representative</td>
             <td></td>
         </tr>
 
@@ -224,13 +181,13 @@
             <td th:text="${bilanz.accountOwner}"></td>
             <td th:text="${bilanz.notes}"></td>
             <td>
-                <span th:if="${bilanz.currentAmount} > 0" th:text="${#numbers.formatDecimal(bilanz.currentAmount, 0, 'COMMA', 0, 'POINT')}"/>
-            </td>
-            <td>
                 <span th:if="${bilanz.currentAmount} < 0" th:text="${#numbers.formatDecimal(bilanz.currentAmount, 0, 'COMMA', 0, 'POINT')}"/>
             </td>
-            <td th:text="${bilanz.representative}"></td>
+            <td>
+                <span th:if="${bilanz.currentAmount} > 0" th:text="${#numbers.formatDecimal(bilanz.currentAmount, 0, 'COMMA', 0, 'POINT')}"/>
+            </td>
             <td th:text="${bilanz.currentBalance}"></td>
+            <td th:text="${bilanz.representative}"></td>
             <td>
                 <a href="#" th:href="@{/createCurrentAccountReceiptPdf/{id}(id=${bilanz.id})}">
                     <img width="30px" th:src="@{/assets/images/pdfIcon.png}"/>

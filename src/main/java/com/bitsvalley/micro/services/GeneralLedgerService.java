@@ -101,16 +101,16 @@ public class GeneralLedgerService extends SuperService {
 //      GeneralLedger generalLedger = null;
 
         //DEBIT CASH RECEIVED
-        updateGeneralLedger(loanAccountTransaction, BVMicroUtils.CASH, BVMicroUtils.DEBIT, loanAccountTransaction.getAmountReceived(), true);
+        updateGeneralLedger(loanAccountTransaction, BVMicroUtils.CASH, BVMicroUtils.CREDIT, loanAccountTransaction.getAmountReceived(), true);
 
-        updateGeneralLedger(loanAccountTransaction, BVMicroUtils.LOAN_INTEREST, BVMicroUtils.CREDIT, loanAccountTransaction.getInterestPaid(), true);
+        updateGeneralLedger(loanAccountTransaction, BVMicroUtils.LOAN_INTEREST, BVMicroUtils.DEBIT, loanAccountTransaction.getInterestPaid(), true);
 
         //CREDIT VAT PAID
         if(loanAccountTransaction.getLoanAccount().isVatOption()){
-            updateGeneralLedger(loanAccountTransaction, BVMicroUtils.VAT, BVMicroUtils.CREDIT, loanAccountTransaction.getVatPercent(), true);
+            updateGeneralLedger(loanAccountTransaction, BVMicroUtils.VAT, BVMicroUtils.DEBIT, loanAccountTransaction.getVatPercent(), true);
         }
 
-        loanAccountTransaction.setNotes(BVMicroUtils.CASH_GL_5001 + " " + loanAccountTransaction.getNotes());
+        loanAccountTransaction.setNotes( loanAccountTransaction.getNotes());
 
         //PRINCIPAL PAID
         double amount = loanAccountTransaction.getAmountReceived() - loanAccountTransaction.getInterestPaid();
@@ -120,30 +120,30 @@ public class GeneralLedgerService extends SuperService {
 //        LedgerAccount ledgerAccount;
         if (StringUtils.equals(
                 loanAccountTransaction.getLoanAccount().getAccountType().getNumber(), "41")) {
-            updateGeneralLedger(loanAccountTransaction, BVMicroUtils.SHORT_TERM_LOAN, loanAccountTransaction.getAmountReceived() > 0 ? "CREDIT" : "DEBIT", amount, true);
+            updateGeneralLedger(loanAccountTransaction, BVMicroUtils.SHORT_TERM_LOAN, loanAccountTransaction.getAmountReceived() > 0 ? "DEBIT" : "CREDIT", amount, true);
         } else if (StringUtils.equals(
                 loanAccountTransaction.getLoanAccount().getAccountType().getNumber(), "42")) {
-            updateGeneralLedger(loanAccountTransaction, BVMicroUtils.CONSUMPTION_LOAN, loanAccountTransaction.getAmountReceived() > 0 ? "CREDIT" : "DEBIT", amount, true);
+            updateGeneralLedger(loanAccountTransaction, BVMicroUtils.CONSUMPTION_LOAN, loanAccountTransaction.getAmountReceived() > 0 ? "DEBIT" : "CREDIT", amount, true);
         } else if (StringUtils.equals(
                 loanAccountTransaction.getLoanAccount().getAccountType().getNumber(), "43")) {
-            updateGeneralLedger(loanAccountTransaction, BVMicroUtils.AGRICULTURE_LOAN, loanAccountTransaction.getAmountReceived() > 0 ? "CREDIT" : "DEBIT", amount, true);
+            updateGeneralLedger(loanAccountTransaction, BVMicroUtils.AGRICULTURE_LOAN, loanAccountTransaction.getAmountReceived() > 0 ? "DEBIT" : "CREDIT", amount, true);
         } else if (StringUtils.equals(
                 loanAccountTransaction.getLoanAccount().getAccountType().getNumber(), "44")) {
-            updateGeneralLedger(loanAccountTransaction, BVMicroUtils.BUSINESS_INVESTMENT_LOAN, loanAccountTransaction.getAmountReceived() > 0 ? "CREDIT" : "DEBIT", amount, true);
+            updateGeneralLedger(loanAccountTransaction, BVMicroUtils.BUSINESS_INVESTMENT_LOAN, loanAccountTransaction.getAmountReceived() > 0 ? "DEBIT" : "CREDIT", amount, true);
         } else if (StringUtils.equals(
                 loanAccountTransaction.getLoanAccount().getAccountType().getNumber(), "45")) {
-            updateGeneralLedger(loanAccountTransaction, BVMicroUtils.SCHOOL_FEES_LOAN, loanAccountTransaction.getAmountReceived() > 0 ? "CREDIT" : "DEBIT", amount, true);
+            updateGeneralLedger(loanAccountTransaction, BVMicroUtils.SCHOOL_FEES_LOAN, loanAccountTransaction.getAmountReceived() > 0 ? "DEBIT" : "CREDIT", amount, true);
         } else if (StringUtils.equals(
                 loanAccountTransaction.getLoanAccount().getAccountType().getNumber(), "46")) {
-            updateGeneralLedger(loanAccountTransaction, BVMicroUtils.REAL_ESTATE_LOAN, loanAccountTransaction.getAmountReceived() > 0 ? "CREDIT" : "DEBIT", amount, true);
+            updateGeneralLedger(loanAccountTransaction, BVMicroUtils.REAL_ESTATE_LOAN, loanAccountTransaction.getAmountReceived() > 0 ? "DEBIT" : "CREDIT", amount, true);
         } else if (StringUtils.equals(
                 loanAccountTransaction.getLoanAccount().getAccountType().getNumber(), "47")) {
-            updateGeneralLedger(loanAccountTransaction, BVMicroUtils.SCHOOL_FEES_LOAN, loanAccountTransaction.getAmountReceived() > 0 ? "CREDIT" : "DEBIT", amount, true);
+            updateGeneralLedger(loanAccountTransaction, BVMicroUtils.SCHOOL_FEES_LOAN, loanAccountTransaction.getAmountReceived() > 0 ? "DEBIT" : "CREDIT", amount, true);
         } else if (StringUtils.equals(
                 loanAccountTransaction.getLoanAccount().getAccountType().getNumber(), "48")) {
-            updateGeneralLedger(loanAccountTransaction, BVMicroUtils.REAL_ESTATE_LOAN, loanAccountTransaction.getAmountReceived() > 0 ? "CREDIT" : "DEBIT", amount, true);
+            updateGeneralLedger(loanAccountTransaction, BVMicroUtils.REAL_ESTATE_LOAN, loanAccountTransaction.getAmountReceived() > 0 ? "DEBIT" : "CREDIT", amount, true);
         } else {
-            updateGeneralLedger(loanAccountTransaction, BVMicroUtils.LOAN, loanAccountTransaction.getAmountReceived() > 0 ? "CREDIT" : "DEBIT", amount, true);
+            updateGeneralLedger(loanAccountTransaction, BVMicroUtils.LOAN, loanAccountTransaction.getAmountReceived() > 0 ? "DEBIT" : "CREDIT", amount, true);
         }
     }
 
@@ -415,10 +415,10 @@ public class GeneralLedgerService extends SuperService {
                 debitTotal = debitTotal + current.getAmount();
                 currentTotal = currentTotal + current.getAmount();
             }
-            current.setCurrentTotal(debitTotal - creditTotal);
+            current.setCurrentTotal( creditTotal - debitTotal);
         }
 
-        bilanz.setTotal(debitTotal - creditTotal);
+        bilanz.setTotal(creditTotal - debitTotal);
         bilanz.setDebitTotal(debitTotal);
         bilanz.setCreditTotal(creditTotal);
         bilanz.setGeneralLedgerWeb(generalLedgerList);
@@ -760,47 +760,47 @@ public class GeneralLedgerService extends SuperService {
 
             if (StringUtils.equals(
                     savingAccountTransaction.getSavingAccount().getAccountSavingType().getNumber(), "11")) {
-                ledgerAccount = updateGeneralLedger(savingAccountTransaction, BVMicroUtils.GENERAL_SAVINGS, savingAccountTransaction.getSavingAmount() > 0 ? "CREDIT" : "DEBIT", savingAccountTransaction.getSavingAmount(), true);
+                ledgerAccount = updateGeneralLedger(savingAccountTransaction, BVMicroUtils.GENERAL_SAVINGS, savingAccountTransaction.getSavingAmount() > 0 ? "DEBIT" : "CREDIT", savingAccountTransaction.getSavingAmount(), true);
                 savingAccountTransaction.setNotes(savingAccountTransaction.getNotes());
 
             } else if (StringUtils.equals(
                     savingAccountTransaction.getSavingAccount().getAccountSavingType().getNumber(), "12")) {
-                ledgerAccount = updateGeneralLedger(savingAccountTransaction, BVMicroUtils.RETIREMENT_SAVINGS, savingAccountTransaction.getSavingAmount() > 0 ? "CREDIT" : "DEBIT", savingAccountTransaction.getSavingAmount(), true);
+                ledgerAccount = updateGeneralLedger(savingAccountTransaction, BVMicroUtils.RETIREMENT_SAVINGS, savingAccountTransaction.getSavingAmount() > 0 ? "DEBIT" : "CREDIT", savingAccountTransaction.getSavingAmount(), true);
                 savingAccountTransaction.setNotes( savingAccountTransaction.getNotes());
             } else if (StringUtils.equals(
                     savingAccountTransaction.getSavingAccount().getAccountSavingType().getNumber(), "13")) {
-                ledgerAccount = updateGeneralLedger(savingAccountTransaction, BVMicroUtils.DAILY_SAVINGS, savingAccountTransaction.getSavingAmount() > 0 ? "CREDIT" : "DEBIT", savingAccountTransaction.getSavingAmount(), true);
+                ledgerAccount = updateGeneralLedger(savingAccountTransaction, BVMicroUtils.DAILY_SAVINGS, savingAccountTransaction.getSavingAmount() > 0 ? "DEBIT" : "CREDIT", savingAccountTransaction.getSavingAmount(), true);
                 savingAccountTransaction.setNotes( savingAccountTransaction.getNotes());
             } else if (StringUtils.equals(
                     savingAccountTransaction.getSavingAccount().getAccountSavingType().getNumber(), "14")) {
-                ledgerAccount = updateGeneralLedger(savingAccountTransaction, BVMicroUtils.MEDICAL_SAVINGS, savingAccountTransaction.getSavingAmount() > 0 ? "CREDIT" : "DEBIT", savingAccountTransaction.getSavingAmount(), true);
+                ledgerAccount = updateGeneralLedger(savingAccountTransaction, BVMicroUtils.MEDICAL_SAVINGS, savingAccountTransaction.getSavingAmount() > 0 ? "DEBIT" : "CREDIT", savingAccountTransaction.getSavingAmount(), true);
                 savingAccountTransaction.setNotes(savingAccountTransaction.getNotes());
             } else if (StringUtils.equals(
                     savingAccountTransaction.getSavingAccount().getAccountSavingType().getNumber(), "15")) {
-                ledgerAccount = updateGeneralLedger(savingAccountTransaction, BVMicroUtils.BUSINESS_SAVINGS, savingAccountTransaction.getSavingAmount() > 0 ? "CREDIT" : "DEBIT", savingAccountTransaction.getSavingAmount(), true);
+                ledgerAccount = updateGeneralLedger(savingAccountTransaction, BVMicroUtils.BUSINESS_SAVINGS, savingAccountTransaction.getSavingAmount() > 0 ? "DEBIT" : "CREDIT", savingAccountTransaction.getSavingAmount(), true);
                 savingAccountTransaction.setNotes( savingAccountTransaction.getNotes());
             } else if (StringUtils.equals(
                     savingAccountTransaction.getSavingAccount().getAccountSavingType().getNumber(), "16")) {
-                ledgerAccount = updateGeneralLedger(savingAccountTransaction, BVMicroUtils.SOCIAL_SAVINGS, savingAccountTransaction.getSavingAmount() > 0 ? "CREDIT" : "DEBIT", savingAccountTransaction.getSavingAmount(), true);
+                ledgerAccount = updateGeneralLedger(savingAccountTransaction, BVMicroUtils.SOCIAL_SAVINGS, savingAccountTransaction.getSavingAmount() > 0 ? "DEBIT" : "CREDIT", savingAccountTransaction.getSavingAmount(), true);
                 savingAccountTransaction.setNotes(savingAccountTransaction.getNotes());
             } else if (StringUtils.equals(
                     savingAccountTransaction.getSavingAccount().getAccountSavingType().getNumber(), "17")) {
-                ledgerAccount = updateGeneralLedger(savingAccountTransaction, BVMicroUtils.CHILDREN_SAVINGS, savingAccountTransaction.getSavingAmount() > 0 ? "CREDIT" : "DEBIT", savingAccountTransaction.getSavingAmount(), true);
+                ledgerAccount = updateGeneralLedger(savingAccountTransaction, BVMicroUtils.CHILDREN_SAVINGS, savingAccountTransaction.getSavingAmount() > 0 ? "DEBIT" : "CREDIT", savingAccountTransaction.getSavingAmount(), true);
                 savingAccountTransaction.setNotes( savingAccountTransaction.getNotes());
             } else if (StringUtils.equals(
                     savingAccountTransaction.getSavingAccount().getAccountSavingType().getNumber(), "19")) {
-                ledgerAccount = updateGeneralLedger(savingAccountTransaction, BVMicroUtils.EDUCATION_SAVINGS, savingAccountTransaction.getSavingAmount() > 0 ? "CREDIT" : "DEBIT", savingAccountTransaction.getSavingAmount(), true);
+                ledgerAccount = updateGeneralLedger(savingAccountTransaction, BVMicroUtils.EDUCATION_SAVINGS, savingAccountTransaction.getSavingAmount() > 0 ? "DEBIT" : "CREDIT", savingAccountTransaction.getSavingAmount(), true);
                 savingAccountTransaction.setNotes(savingAccountTransaction.getNotes());
             } else if (StringUtils.equals(
                     savingAccountTransaction.getSavingAccount().getAccountSavingType().getNumber(), "18")) {
-                ledgerAccount = updateGeneralLedger(savingAccountTransaction, BVMicroUtils.REAL_ESTATE_SAVINGS, savingAccountTransaction.getSavingAmount() > 0 ? "CREDIT" : "DEBIT", savingAccountTransaction.getSavingAmount(), true);
+                ledgerAccount = updateGeneralLedger(savingAccountTransaction, BVMicroUtils.REAL_ESTATE_SAVINGS, savingAccountTransaction.getSavingAmount() > 0 ? "DEBIT" : "CREDIT", savingAccountTransaction.getSavingAmount(), true);
                 savingAccountTransaction.setNotes(savingAccountTransaction.getNotes());
             } else {
-                ledgerAccount = updateGeneralLedger(savingAccountTransaction, BVMicroUtils.SAVINGS, savingAccountTransaction.getSavingAmount() > 0 ? "CREDIT" : "DEBIT", savingAccountTransaction.getSavingAmount(), true);
+                ledgerAccount = updateGeneralLedger(savingAccountTransaction, BVMicroUtils.SAVINGS, savingAccountTransaction.getSavingAmount() > 0 ? "DEBIT" : "CREDIT", savingAccountTransaction.getSavingAmount(), true);
                 savingAccountTransaction.setNotes(savingAccountTransaction.getNotes());
             }
 
-            updateGeneralLedger(savingAccountTransaction, BVMicroUtils.CASH, savingAccountTransaction.getSavingAmount() > 0 ? "DEBIT" : "CREDIT", savingAccountTransaction.getSavingAmount(), true);
+            updateGeneralLedger(savingAccountTransaction, BVMicroUtils.CASH, savingAccountTransaction.getSavingAmount() > 0 ? "CREDIT" : "DEBIT", savingAccountTransaction.getSavingAmount(), true);
 
 
     }
@@ -810,15 +810,15 @@ public class GeneralLedgerService extends SuperService {
     public void updateGLAfterCurrentAccountTransaction(CurrentAccountTransaction currentAccountTransaction) {
         String notes = currentAccountTransaction.getNotes();
         if (currentAccountTransaction.getModeOfPayment().equals(BVMicroUtils.CASH)) {
-            currentAccountTransaction.setNotes(BVMicroUtils.CASH_GL_5001 + " " + notes);
-            updateGeneralLedger(currentAccountTransaction, BVMicroUtils.CURRENT, currentAccountTransaction.getCurrentAmount() > 0 ? "CREDIT" : "DEBIT", currentAccountTransaction.getCurrentAmount(),  true);
-            currentAccountTransaction.setNotes(BVMicroUtils.CURRENT_GL_3004 + " " + notes);
-            updateGeneralLedger(currentAccountTransaction, BVMicroUtils.CASH, currentAccountTransaction.getCurrentAmount() > 0 ? "DEBIT" : "CREDIT", currentAccountTransaction.getCurrentAmount(),  true);
+            currentAccountTransaction.setNotes( notes);
+            updateGeneralLedger(currentAccountTransaction, BVMicroUtils.CURRENT, currentAccountTransaction.getCurrentAmount() > 0 ? "DEBIT" : "CREDIT", currentAccountTransaction.getCurrentAmount(),  true);
+            currentAccountTransaction.setNotes(notes);
+            updateGeneralLedger(currentAccountTransaction, BVMicroUtils.CASH, currentAccountTransaction.getCurrentAmount() > 0 ? "CREDIT" : "DEBIT", currentAccountTransaction.getCurrentAmount(),  true);
             currentAccountTransaction.setNotes(notes);
         }
         if (currentAccountTransaction.getModeOfPayment().equals(BVMicroUtils.CURRENT_TO_GL_TRANSFER)) {
             currentAccountTransaction.setNotes( notes );
-            updateGeneralLedger(currentAccountTransaction, BVMicroUtils.CURRENT_GL_3004, currentAccountTransaction.getCurrentAmount() > 0 ? "CREDIT" : "DEBIT", currentAccountTransaction.getCurrentAmount(),  true);
+            updateGeneralLedger(currentAccountTransaction, BVMicroUtils.CURRENT_GL_3004, currentAccountTransaction.getCurrentAmount() > 0 ? "DEBIT" : "CREDIT", currentAccountTransaction.getCurrentAmount(),  true);
         }
 
     }

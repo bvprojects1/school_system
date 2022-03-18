@@ -3,49 +3,13 @@
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <div th:insert="header::navbar"></div>
 
-
 <section class="contact-form-area-start space df-bg">
     <!--Project title area start-->
     <div class="project-title-area text-center">
+        <div th:insert="summary::navbar"></div>
         <div class="col-md-12">
-        <table style="border:0px" class="center" width="100%" cellpadding="5">
-            <tr>
-                <td>
-                    <font size="4">Account Owner</font>
-                    <br/>
-                        <a href="#" th:href="@{/showCustomer/{id}(id=${session.customerInUse.id})}">
-                            <font color="gray" size="4">
-                                <span style th:text="${session.customerInUse.gender +' '+session.customerInUse.firstName +' '+session.customerInUse.lastName }"/>
-                                <br/>
-                                <span style th:text="${session.customerInUse.customerNumber}"/><br/>
-                            </font>
-                        </a>
-                    <button type="submit">
-                        <a href="#" th:href="@{/file/{userName}(userName=${session.customerInUse.userName})}">
-                            <font color="gray" size="2px">Upload I.D</font></a>
-                    </button>
-                    <a href="#" th:href="@{/reloadUser}">
-                        <img width="40px" th:src="@{/getImage}"/>
-                    </a>
-                    <br/>
-                <td></td>
-                <td> Saving <br/>
-                    <font color="gray" size="4px">
-                        <div th:text="${session.savingBilanzList.totalSaving}"/>
-                    </font>
-                </td>
-                <td> Loan<br/>
-                    <font size="4px" color="gray">
-                        <div th:text="${session.loanBilanzList.currentLoanBalance}"/>
-                    </font></td>
-                <td> Current<br/> <font size="4px" color="gray"> <span th:text="${session.currentBilanzList.totalCurrent}"/></font></td>
-                <td> Shares<br/> <font size="4px" color="gray"> <span th:text="${session.shareAccountBilanzList.totalShare}"/></font></td>
-            </tr>
-        </table>
         <!-- END -->
-        <br/>
-
-        <table border="0" class="center" width="100%" cellpadding="5">
+        <table border="1" class="center" width="100%" cellpadding="5">
             <tr>
                 <td colspan="1">
                     <font size="5px" color="#738980">
@@ -85,7 +49,7 @@
 <!--                </div>-->
                 <!--                ADD THIS TO ADD ROLE RESTRICTION --  END arsene ----->
 
-                <td colspan="1">
+                <td colspan="2">
                     <a th:if="${#authorization.expression('hasAnyAuthority(''ROLE_CUSTOMER_ACCOUNT_TYPE_TRANSFERS'')')}" href="#" th:href="@{/transferFromCurrentToLoanAccountsForm}">
                         Loan re-payment <img width="40px" th:src="@{/assets/images/transferLoan.png}"/>
                     </a>
@@ -119,9 +83,6 @@
                     Description
                 </td>
                 <td>
-                    Created
-                </td>
-                <td>
                     Creator
                 </td>
 
@@ -151,8 +112,6 @@
 
                 <td th:text="${currentAccount.notes}"/>
 
-                <td th:text="${#dates.format(currentAccount.createdDate, 'dd-MMM-yyyy HH:mm')}"/>
-
                 <td th:text="${currentAccount.createdBy}"/>
 
                 <td>
@@ -168,7 +127,7 @@
         </table>
         <br/> <br/>
         &nbsp;
-        <table border="0" class="center" width="100%" cellpadding="5">
+        <table border="1" class="center" width="100%" cellpadding="5">
             <tr>
                 <td colspan="1">
                     <font size="5px" color="#738980"> <b>SAVING ACCOUNTS</b> </font>
@@ -232,9 +191,7 @@
                 <td>
                     Creator
                 </td>
-                <td>
-                    Representative
-                </td>
+
 
             </tr>
 
@@ -281,7 +238,7 @@
 
         <br/> <br/>
 
-        <table border="0" class="center" width="100%" cellpadding="5">
+        <table border="1" class="center" width="100%" cellpadding="5">
             <tr>
                 <td colspan="1">
                     <font size="5px" color="#738980">
@@ -363,7 +320,7 @@
         <br/><br/>
 
 
-        <table border="0" class="center" width="100%" cellpadding="5">
+        <table border="1" class="center" width="100%" cellpadding="5">
             <tr>
                 <td colspan="1">
                     <font size="5px" color="#738980">
