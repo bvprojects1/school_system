@@ -199,9 +199,10 @@ nav.main-menu-area {
 .navigation-area-start {
     position: fixed;
     width: 100%;
+    height:40px;
     z-index: 999;
     top: 39px;
-    background: #0d0117;
+    background: #c2dbe4
     transition: 0.4s ease-in-out
 }
 
@@ -235,7 +236,7 @@ ul.main-menu li a {
     color: #35312e;
     font-family: 'Kanit', sans-serif;
     font-size: 17px;
-    padding: 35.8px 16px;
+    /*padding: 35.8px 16px;*/
     text-transform: capitalize;
     font-weight: 400;
     transition: 0.3s ease-in-out;
@@ -557,7 +558,7 @@ section.slider-area-start,
  09 - SERVICES CSS
 ==================================================*/
 .service-area-start {
-    padding-bottom: 70px
+    padding-bottom: 10px
 }
 
 .single-service-content {
@@ -1113,7 +1114,7 @@ footer.footer-area-start {
 .footer-content-area-start {
     border-top: 1px solid #6c6666;
     border-bottom: 1px solid #6c6666;
-    padding: 35px 0px 50px 0px;
+    /*padding: 35px 0px 50px 0px;*/
 }
 
 .single-footer-widget .team-member-social-icon a,

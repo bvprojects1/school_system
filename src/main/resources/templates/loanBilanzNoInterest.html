@@ -3,12 +3,12 @@
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
 <div th:insert="header::navbar"></div>
-<br/>
-<br/>
+
 <body>
 
-<br/><br/><br/><br/>
 <div class="container">
+    <br/><br/>
+    <div th:insert="summary::navbar"></div>
     <table width="100%" border="0">
         <tr>
             <td align="center">
@@ -22,16 +22,26 @@
                     </font>
                 </a>
             </td>
-            <td align="center"><font size="2px">Monthly Payment</font> <br/>
-                <font color="#2d363f" size="4px">
-                    <span th:text="${#numbers.formatDecimal(loanAccountTransaction.loanAccount.monthlyPayment, 0, 'COMMA', 0, 'POINT')}"/>
+
+            <td align="center">
+                <font size="2px"> Account Number</font><br/>
+                <font color="#2d363f" size="3px">
+                    <a href="#"
+                       th:href="@{/showCustomer/{userid}(userid=${loanAccountTransaction.loanAccount.user.id})}">
+                        <div th:text="${#strings.substring(loanAccountTransaction.loanAccount.accountNumber,0,5)} + ' ' +${#strings.substring(loanAccountTransaction.loanAccount.accountNumber,5,10)} + ' ' +${#strings.substring(loanAccountTransaction.loanAccount.accountNumber,10,21)} + ' ' +${#strings.substring(loanAccountTransaction.loanAccount.accountNumber,21,23)}"/>
+
+                    </a>
                 </font>
             </td>
             <td align="center">
-                <font color="#2d363f" size="2px">Loan Term</font>
-                <br/>
-                <font color="#2d363f" size="4px">
-                    <span th:text="${loanBilanzList.loanBilanzList[0].monthYearOfLastPayment}"/></font></td>
+                <font size="2px"> Member Since</font><br/>
+                <font size="3px">
+                    <div th:text="${#dates.format(loanAccountTransaction.loanAccount.user.created, 'dd-MMM-yyyy HH:mm')}"/>
+                </font>
+            </td>
+
+
+
             <td align="center"><font size="2px">Initial Loan Amount</font> <br/>
                 <font color="#2d363f" size="4px">
                     <span th:text="${loanAccountTransaction.loanAmount}"/>
@@ -51,25 +61,20 @@
                 <div th:text="${loanAccountTransaction.loanAccount.accountType.name}"/>
             </font>
             </td>
-            <td align="center">
-                <font size="2px"> Account Number</font><br/>
-                <font color="#2d363f" size="3px">
-                    <a href="#"
-                       th:href="@{/showCustomer/{userid}(userid=${loanAccountTransaction.loanAccount.user.id})}">
-                        <div th:text="${#strings.substring(loanAccountTransaction.loanAccount.accountNumber,0,5)} + ' ' +${#strings.substring(loanAccountTransaction.loanAccount.accountNumber,5,10)} + ' ' +${#strings.substring(loanAccountTransaction.loanAccount.accountNumber,10,21)} + ' ' +${#strings.substring(loanAccountTransaction.loanAccount.accountNumber,21,23)}"/>
 
-                    </a>
+
+            <td align="center"><font size="2px">Monthly Payment</font> <br/>
+                <font color="#2d363f" size="4px">
+                    <span th:text="${#numbers.formatDecimal(loanAccountTransaction.loanAccount.monthlyPayment, 0, 'COMMA', 0, 'POINT')}"/>
                 </font>
             </td>
             <td align="center">
-                <font size="2px"> Account Owner</font><br/>
-                <font color="#2d363f" size="3px">
-                    <a href="#"
-                       th:href="@{/showCustomer/{userid}(userid=${loanAccountTransaction.loanAccount.user.id})}">
-                        <div th:text="${loanAccountTransaction.loanAccount.user.lastName}"/>
-                    </a>
-                </font>
+                <font color="#2d363f" size="2px">Loan Term</font>
+                <br/>
+                <font color="#2d363f" size="4px">
+                    <span th:text="${loanBilanzList.loanBilanzList[0].monthYearOfLastPayment}"/></font>
             </td>
+
 
             <td align="center">
                 <font size="2px"> Rate</font><br/><font color="#2d363f" size="3px"><span

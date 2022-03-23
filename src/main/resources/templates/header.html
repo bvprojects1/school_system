@@ -154,22 +154,35 @@
         <div class="navigation-area-start shadow">
             <div class="container">
                 <div class="row">
-                    <div class="col-md-3 col-5 col-sm-5">
-                        <div class="logo-area">
-                            <br/>
-                            <!--                            &#45;&#45;<div th:text="${session.customerInUse.idFilePath}"/>&#45;&#45;-->
-                            <a href="index.html"><img th:src="@{/getLogoImage}"/> </a>
-<!--                                                        <a href="index.html"><img th:src="@{/assets/images/logo.jpeg}"/> </a>-->
-                        </div>
-                    </div>
+<!--                    <div class="col-md-3 col-5 col-sm-5">-->
+<!--                        <div class="logo-area">-->
+<!--                            <br/>-->
+<!--                            &lt;!&ndash;                            &#45;&#45;<div th:text="${session.customerInUse.idFilePath}"/>&#45;&#45;&ndash;&gt;-->
+<!--&lt;!&ndash;                            <a href="index.html"><img width="80px" th:src="@{/getLogoImage}"/> </a>&ndash;&gt;-->
+<!--&lt;!&ndash;                                                        <a href="index.html"><img th:src="@{/assets/images/logo.jpeg}"/> </a>&ndash;&gt;-->
+<!--                        </div>-->
+<!--                    </div>-->
                     <!--Logo area end-->
-                    <div class="col-md-9 col-7 col-sm-7">
+                    <div class="col-md-12 col-9 col-sm-9">
                         <nav class="main-menu-area">
                             <ul class="main-menu" id="mobile-menu">
                                 <!--                                <li> Welcome-->
                                 <!--                                    <span sec:authentication="name"></span>,</li>-->
-                                <li><a th:href="@{/welcomeGlobal}">
-                                    <span sec:authentication="name"></span> <i class="fas fa-angle-down"></i></a>
+                                <li><img width="100px" th:src="@{/getLogoImage}"/></li>
+                                <li th:if="${#authorization.expression('hasAnyAuthority(''ROLE_AGENT'')')} OR ${#authorization.expression('hasAnyAuthority(''ROLE_MANAGER'')')}">
+                                    <form action="#" th:action="@{/findUserByUserName}" method="post">
+                                        <font color="brown" size="3px"> <span th:text="${error}"/></font>
+                                        <input class="selectSearch" id="filter" name="userName" type="text" placeholder="Search..." />
+                                        <i id="filtersubmit" class="fa fa-search"></i>
+
+                                        <input style="size:30px;font-size:14pt;color:white;background-color:green;border:4px solid #white;padding:3px"
+                                               type="submit" value="Submit">
+                                    </form>
+                                </li>
+                                <li>
+                                <a th:href="@{/welcomeGlobal}">
+                                    <span sec:authentication="name"></span> <i class="fas fa-angle-down"></i>
+                                </a>
                                     <ul class="sub-menu">
 <!--                                        <li class="drop-list"><a th:href="@{/logout}" href="/Logout"><i-->
 <!--                                                class="fas fa-sign-out-alt"></i>Logout</a>-->
@@ -185,17 +198,20 @@
 <!--                                        <li><a href="blank.html">Blank Page</a></li>-->
                                     </ul>
                                 </li>
-                                <li><a th:href="@{/welcomeGlobal}">Home</a></li>
-                                <li th:if="${#authorization.expression('hasAnyAuthority(''ROLE_AGENT'')')} OR ${#authorization.expression('hasAnyAuthority(''ROLE_MANAGER'')')}">
-                                    <form action="#" th:action="@{/findUserByUserName}" method="post">
-                                        <font color="brown" size="3px"> <span th:text="${error}"/></font><br/>
-                                        <input class="selectSearch" id="filter" name="userName" type="text" placeholder="Search..." />
-                                        <i id="filtersubmit" class="fa fa-search"></i>
 
-                                        <input style="size:30px;font-size:14pt;color:white;background-color:green;border:4px solid #white;padding:3px"
-                                               type="submit" value="Submit">
-                                    </form>
-                                </li>
+<!--                                <li><a th:href="@{/welcomeGlobal}">Home</a></li>-->
+                                <li><a th:href="@{/welcomeGlobal}"><font size="4" color="#008001"> HOME </font> </a></li>
+<!--                                <li th:if="${#authorization.expression('hasAnyAuthority(''ROLE_AGENT'')')} OR ${#authorization.expression('hasAnyAuthority(''ROLE_MANAGER'')')}">-->
+<!--                                    <form action="#" th:action="@{/findUserByUserName}" method="post">-->
+<!--                                        <font color="brown" size="3px"> <span th:text="${error}"/></font>-->
+<!--                                        <input class="selectSearch" id="filter2" name="userName" type="text" placeholder="Search..." />-->
+<!--                                        <i id="filtersubmit2" class="fa fa-search"></i>-->
+
+<!--                                        <input style="size:30px;font-size:14pt;color:white;background-color:green;border:4px solid #white;padding:3px"-->
+<!--                                               type="submit" value="Submit">-->
+<!--                                    </form>-->
+<!--                                </li>-->
+
 <!--                                <li>-->
 <!--                                    <a th:href="@{/logout}" href="/Logout">Logout</a>-->
 <!--                                </li>-->

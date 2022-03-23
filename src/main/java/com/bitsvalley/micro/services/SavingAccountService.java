@@ -163,7 +163,6 @@ public class SavingAccountService extends SuperService {
             savingAccount.getSavingAccountTransaction().add(savingAccountTransaction);
         }
         save(savingAccount);
-        generalLedgerService.updateGLAfterSavingAccountTransaction(savingAccountTransaction);
     }
 
 

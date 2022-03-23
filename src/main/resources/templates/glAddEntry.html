@@ -22,14 +22,14 @@
                 <tr>
                     <td align="center" colspan="2">
                         <b><font size="4" color="red"><span  th:text="${error}"/></font></b><br/>
-                        <font size="6"> <span th:text="${originLedgerAccount.name}"/>
+                        <font size="6"> <span th:text="${originLedgerAccount.code}"/>
                         </font>
 <!--                        <input type="hidden" th:value="${originLedgerAccount.id}"-->
 <!--                               th:attr="name='originLedgerAccountId'" th:field="*{originLedgerAccount}"/>-->
 
                         <select hidden name="originLedgerAccount" id="origin" th:field="*{originLedgerAccount}">
                             <option th:value="${originLedgerAccount.id}">
-                                <span th:text="${originLedgerAccount.name}"/>
+                                <span th:text="${originLedgerAccount.code}"/>
                             </option>
                         </select>
                         <br/>
@@ -46,7 +46,7 @@
                             <select class="selectNormal" th:field="*{destinationLedgerAccount}">
                                 <option th:each="i : ${destinationLedgerAccounts}"
                                         th:value="${i.id}">
-                                    <span th:text="${i.name}"/>
+                                    <span th:text="${i.code}"/>
                                 </option>
                             </select><br/>(Opposite booking Type happens here)
                         <br/>

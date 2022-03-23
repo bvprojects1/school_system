@@ -9,12 +9,13 @@ import java.util.Date;
  * 21.08.2021
  */
 public class GeneralLedgerWeb {
-
+        private String userId;
         private String type;
         private String reference;
         private String accountNumber;
         private String createdBy;
         private String lastUpdatedBy;
+        private String representative;
         private Date createdDate;
         private Date lastUpdatedDate;
         private double amount;
@@ -23,6 +24,7 @@ public class GeneralLedgerWeb {
         private int glClass;
         private double currentTotal;
         private LedgerAccount ledgerAccount;
+
 
         public String getType() {
             return type;
@@ -128,4 +130,13 @@ public class GeneralLedgerWeb {
     public void setLedgerAccount(LedgerAccount ledgerAccount) {
         this.ledgerAccount = ledgerAccount;
     }
+
+    public String getRepresentative() {
+        return representative;
+    }
+
+    public void setRepresentative(String representative) {
+        this.representative = representative;
+    }
+
 }

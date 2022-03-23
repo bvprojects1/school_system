@@ -81,18 +81,18 @@ public class WelcomeController extends SuperController{
             ShareAccountBilanzList shareAccountBilanzList = shareAccountService.getShareAccountBilanzByUser(aUser);
 
             Collections.reverse(savingBilanzByUserList.getSavingBilanzList()); //TODO: reverse during search?
-            if(null == savingBilanzByUserList || savingBilanzByUserList.getSavingBilanzList() == null
-                    ||  savingBilanzByUserList.getSavingBilanzList().size() == 0 ){ //first time login
-                savingBilanzByUserList = new SavingBilanzList();
-                savingBilanzByUserList.setSavingBilanzList(new ArrayList<SavingBilanz>());
-                savingBilanzByUserList.setTotalSaving("0");
-            }
-            if(null == loanBilanzByUserList || loanBilanzByUserList.getLoanBilanzList() == null
-                    ||  loanBilanzByUserList.getLoanBilanzList().size() == 0 ){ //first time login
-                loanBilanzByUserList = new LoanBilanzList();
-                loanBilanzByUserList.setLoanBilanzList(new ArrayList<LoanBilanz>());
-                loanBilanzByUserList.setCurrentLoanBalance("0");
-            }
+//            if(null == savingBilanzByUserList || savingBilanzByUserList.getSavingBilanzList() == null
+//                    ||  savingBilanzByUserList.getSavingBilanzList().size() == 0 ){ //first time login
+//                savingBilanzByUserList = new SavingBilanzList();
+//                savingBilanzByUserList.setSavingBilanzList(new ArrayList<SavingBilanz>());
+//                savingBilanzByUserList.setTotalSaving("0");
+//            }
+//            if(null == loanBilanzByUserList || loanBilanzByUserList.getLoanBilanzList() == null
+//                    ||  loanBilanzByUserList.getLoanBilanzList().size() == 0 ){ //first time login
+//                loanBilanzByUserList = new LoanBilanzList();
+//                loanBilanzByUserList.setLoanBilanzList(new ArrayList<LoanBilanz>());
+//                loanBilanzByUserList.setCurrentLoanBalance("0");
+//            }
 
             request.getSession().setAttribute("savingBilanzList",savingBilanzByUserList);
             request.getSession().setAttribute("loanBilanzList",loanBilanzByUserList);

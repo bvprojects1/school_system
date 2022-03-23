@@ -12,6 +12,8 @@ import com.bitsvalley.micro.services.GeneralLedgerService;
 import com.bitsvalley.micro.utils.BVMicroUtils;
 import com.bitsvalley.micro.webdomain.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,6 +21,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import javax.annotation.security.RolesAllowed;
 import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -178,7 +181,8 @@ public class GeneralAccountController extends SuperController {
 
     }
 
-
+//    @PreAuthorize("hasRole('ROLE_CUSTOMER')")
+//    @RolesAllowed("ROLE_CUSTOMER")
     @GetMapping(value = "/gl")
     public String showAllGL(ModelMap model, HttpServletRequest request) {
         GeneralLedgerBilanz generalLedgerBilanz = generalLedgerService.findAll();

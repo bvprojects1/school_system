@@ -7,53 +7,20 @@
 <section class="contact-form-area-start space df-bg">
     <!--Project title area start-->
     <div class="project-title-area text-center">
+    <div th:insert="summary::navbar"></div>
     <div class="col-md-12">
-    <table class="center" width="100%" border="0">
-        <tr>
-            <td align="center">
-                <font size="2px">Username</font> <br/>
-
-                <font size="4">
-                    <a href="#" th:href="@{/showCustomer/{id}(id=${session.customerInUse.id})}">
-                        <font color="gray" size="4">
-                            <span style th:text="${session.customerInUse.gender +' '+session.customerInUse.firstName +' '+session.customerInUse.lastName }"/>
-                            <br/>
-                            <span style th:text="${session.customerInUse.customerNumber}"/><br/>
-                        </font>
-                    </a>
-                </font>
-
-                <button style="font-face: 'Comic Sans MS'; font-size: larger; color: teal; background-color: #FFFFC0; border: 3pt ridge lightgrey"
-                        type="submit">
-                    <a href="#" th:href="@{/file/{userName}(userName=${session.customerInUse.userName})}"><font
-                            size="2px">Upload I.D</font></a>
-                </button>
-                <a href="#" th:href="@{/reloadUser}"><img width="40px" th:src="@{/getImage}"/> </a>
-            </td>
-            <td align="center">
-                <font size="2px">Saving</font> <br/> <font color="#77adbf" size="6px">
-                <div th:text="${savingBilanzList.totalSaving}"/>
-            </font></td>
-            <td align="center">
-                <font size="2px">Current</font> <br/> <font size="6"> 0</font></td>
-            <td align="center">
-                <font size="2px">Loan</font> <br/> <font size="6"> 0</font></td>
-            <td align="center">
-                <font size="2px"> Retirement saving </font> <br/> <font size="6" color="#A57C00">0 </font></td>
-        </tr>
-    </table>
 
     <table border="0" width="90%" class="center">
 
         <tr>
             <td align="center">
-                <font size="2px"> Account Type</font><font color="#2d363f" size="4px">
+                <font size="2px"> Account Type</font><font color="#2d363f" size="3px">
                 <div th:text="${savingAccountTransaction.savingAccount.accountType.name}"/>
             </font>
             </td>
             <td align="center">
                 <font size="2px"> Account Number</font><br/>
-                <font color="#2d363f" size="4px">
+                <font color="#2d363f" size="3px">
                     <a href="#"
                        th:href="@{/showCustomer/{userid}(userid=${savingAccountTransaction.savingAccount.user.id})}">
                         <div th:text="${#strings.substring(savingAccountTransaction.savingAccount.accountNumber,0,5)} + ' ' +${#strings.substring(savingAccountTransaction.savingAccount.accountNumber,5,10)} + ' ' +${#strings.substring(savingAccountTransaction.savingAccount.accountNumber,10,21)} + ' ' +${#strings.substring(savingAccountTransaction.savingAccount.accountNumber,21,23)}"/>
@@ -62,31 +29,34 @@
                 </font>
             </td>
             <td align="center">
-                <font size="2px"> Account Owner</font><br/>
-                <font color="gray" size="4">
-                    <span style th:text="${session.customerInUse.gender +' '+session.customerInUse.firstName +' '+session.customerInUse.lastName }"/>
+                <font size="2px"> Member Since</font><br/>
+                <font color="gray" size="3">
+                    <span th:text="${#dates.format(savingAccountTransaction.savingAccount.user.created, 'dd-MMM-yyyy HH:mm')}"/>
                 </font>
             </td>
 
             <td align="center">
-                <font size="2px"> Rate</font><font color="#2d363f" size="4px">
+                <font size="2px"> Rate</font>
+                <font color="#2d363f" size="3px">
                 <div th:text="${savingAccountTransaction.savingAccount.interestRate}"/>
             </font>
             </td>
             <td align="center">
-                <font size="2px"> Min. Balance</font><font color="#2d363f" size="4px">
-                <div th:text="${#numbers.formatDecimal(savingAccountTransaction.savingAccount.accountMinBalance, 0, 'COMMA', 0, 'POINT')}"/>
-            </font>
+                <font size="2px"> Min. Balance</font>
+                <font color="#2d363f" size="3px">
+                    <div th:text="${#numbers.formatDecimal(savingAccountTransaction.savingAccount.accountMinBalance, 0, 'COMMA', 0, 'POINT')}"/>
+                </font>
             </td>
 
             <td align="center">
-                <font size="2px"> Notes</font><font color="#2d363f" size="4px">
+                <font size="2px"> Notes</font>
+                <font color="#2d363f" size="3px">
                 <div th:text="${savingAccountTransaction.savingAccount.notes}"/>
             </font>
             </td>
         </tr>
     </table>
-    <br/> <br/>
+
     <form action="#" th:action="@{/registerSavingAccountTransactionForm}" method="post"
           th:object="${savingAccountTransaction}">
 
@@ -206,10 +176,11 @@
             <td>Notes</td>
             <td>Debit</td>
             <td>Credit</td>
-            <td>Representative</td>
+
             <td><font color="green" size="6px">
                 <div th:text="${savingBilanzList.totalSaving}"/>
             </font></td>
+            <td>Representative</td>
             <td></td>
         </tr>
 
@@ -224,13 +195,14 @@
             <td th:text="${bilanz.accountOwner}"></td>
             <td th:text="${bilanz.notes}"></td>
             <td>
-                <span th:if="${bilanz.savingAmount} > 0" th:text="${#numbers.formatDecimal(bilanz.savingAmount, 0, 'COMMA', 0, 'POINT')}"/>
-            </td>
-            <td>
                 <span th:if="${bilanz.savingAmount} < 0" th:text="${#numbers.formatDecimal(bilanz.savingAmount, 0, 'COMMA', 0, 'POINT')}"/>
             </td>
-            <td th:text="${bilanz.representative}"></td>
+            <td>
+                <span th:if="${bilanz.savingAmount} > 0" th:text="${#numbers.formatDecimal(bilanz.savingAmount, 0, 'COMMA', 0, 'POINT')}"/>
+            </td>
+
             <td th:text="${bilanz.currentBalance}"></td>
+            <td th:text="${bilanz.representative}"></td>
             <td>
                 <a href="#" th:href="@{/createSavingAccountReceiptPdf/{id}(id=${bilanz.id})}">
                     <img width="30px" th:src="@{/assets/images/pdfIcon.png}"/>

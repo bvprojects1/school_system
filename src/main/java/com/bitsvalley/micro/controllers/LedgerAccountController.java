@@ -412,7 +412,7 @@ public class LedgerAccountController extends SuperController{
                     fromTotal = new Double(paramValue);
                     continue;
                 }
-                if(parameterName.equals("originLedgerAccount") ){
+                if(parameterName.equals("originLedgerAccount") || parameterName.equals("notes")){
                     continue;
                 }
 

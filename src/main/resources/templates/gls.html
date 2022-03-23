@@ -8,9 +8,6 @@
     <!--Project title area start-->
     <div class="project-title-area text-center">
         <div class="col-md-12">
-            <br/>
-            <br/>
-            <br/>
                 <table width="90%" class="center" border="0px">
                     <tr>
                         <td align="center">
@@ -88,19 +85,37 @@
                     <td>
                         <font size="1.5px"> DEBIT</font> <br/>
                         <font color="#2d363f" size="4px">
-                            <div th:text="${#numbers.formatDecimal(generalLedgerBilanz.debitTotal, 0, 'COMMA', 0, 'POINT')}"></div>
+                            <span th:if="${generalLedgerBilanz.debitTotal < 0}">
+                                <div th:text="${#numbers.formatDecimal(generalLedgerBilanz.debitTotal*-1, 0, 'COMMA', 0, 'POINT')}">
+                                </div>
+                            </span>
+                            <span th:unless="${generalLedgerBilanz.debitTotal < 0}">
+                                <div th:text="${#numbers.formatDecimal(generalLedgerBilanz.debitTotal, 0, 'COMMA', 0, 'POINT')}">
+                                </div>
+                            </span>
                         </font></td>
                     <td width="5"></td>
                     <td>
                         <font color="#2d363f" size="1.5px"> CREDIT </font> <br/>
                         <font color="#2d363f" size="4px">
-                            <div th:text="${#numbers.formatDecimal(generalLedgerBilanz.creditTotal, 0, 'COMMA', 0, 'POINT')}"></div>
+                            <span th:if="${generalLedgerBilanz.creditTotal < 0}">
+                                <div th:text="${#numbers.formatDecimal(generalLedgerBilanz.creditTotal*-1, 0, 'COMMA', 0, 'POINT')}"></div>
+                            </span>
+                            <span th:unless="${generalLedgerBilanz.debitTotal < 0}">
+                                <div th:text="${#numbers.formatDecimal(generalLedgerBilanz.creditTotal, 0, 'COMMA', 0, 'POINT')}"></div>
+                            </span>
                         </font>
                     </td>
                     <td>
                         <font color="#2d363f" size="1.5px"> TOTAL </font> <br/>
                         <font color="#2d363f" size="4px">
-                            <div th:text="${#numbers.formatDecimal(generalLedgerBilanz.total, 0, 'COMMA', 0, 'POINT')}"></div>
+
+                        <span th:if="${generalLedgerBilanz.total < 0}">
+                            <div th:text="${#numbers.formatDecimal(generalLedgerBilanz.total*-1, 0, 'COMMA', 0, 'POINT')}"></div>
+                        </span>
+                        <span th:unless="${generalLedgerBilanz.total < 0}">
+                             <div th:text="${#numbers.formatDecimal(generalLedgerBilanz.total, 0, 'COMMA', 0, 'POINT')}"></div>
+                        </span>
                         </font>
                     </td>
                 </tr>
@@ -117,12 +132,14 @@
             <th>Ledger</th>
             <th>Notes</th>
             <th>Creator</th>
+            <th>Account Number</th>
             <th width="10"></th>
             <th><a href="#" th:href="@{/findGlByType/{type}(type='DEBIT')}">DEBIT</a></th>
-            <th width="10"></th>
+
             <th><a href="#" th:href="@{/findGlByType/{type}(type='CREDIT')}">CREDIT</a></th>
-            <th width="10"></th>
+
             <th><a href="#" th:href="@{/gl}">Balance</a></th>
+            <th>Representative</th>
         </tr>
         <tr th:each="gl : ${generalLedgerBilanz.generalLedgerWeb}">
             <td>
@@ -137,7 +154,9 @@
             <td th:text="${gl?.ledgerAccount?.code}"></td>
             <td th:text="${gl.notes}"></td>
             <td th:text="${gl.createdBy}"></td>
-            <td width="10"></td>
+            <td>
+               <span th:text="${#strings.substring(gl.accountNumber,0,5)} + ' ' +${#strings.substring(gl.accountNumber,5,10)} + ' ' +${#strings.substring(gl.accountNumber,10,21)} + ' ' +${#strings.substring(gl.accountNumber,21,23)}"/>
+            </td>
             <td>
                 <div th:if="${gl.type == 'DEBIT'}">
                     <div th:if="${gl.amount < 0}">
@@ -149,7 +168,6 @@
                 </div>
             </td>
             <td width="10">
-
             </td>
             <td>
                 <div th:if="${gl.type == 'CREDIT'}">
@@ -161,11 +179,21 @@
                     <div th:unless="${gl.amount < 0}">
                         <span th:text="${#numbers.formatDecimal(gl.amount, 0, 'COMMA', 0, 'POINT')}"></span>
                     </div>
-
                 </div>
             </td>
-            <td width="10"></td>
-            <td><span th:text="${#numbers.formatDecimal(gl.currentTotal, 0, 'COMMA', 0, 'POINT')}"/></td>
+            <td>
+                <div th:if="${gl.currentTotal < 0}">
+                    <span th:text="${#numbers.formatDecimal(gl.currentTotal*-1, 0, 'COMMA', 0, 'POINT')}"></span>
+                </div>
+                <div th:unless="${gl.currentTotal < 0}">
+                    <span th:text="${#numbers.formatDecimal(gl.currentTotal, 0, 'COMMA', 0, 'POINT')}"></span>
+                </div>
+            </td>
+            <td>
+                <span th:if="${gl.representative != null}">
+                    <span th:text="${gl.representative}" />
+                </span>
+            </td>
         </tr>
     </table>
 </section>

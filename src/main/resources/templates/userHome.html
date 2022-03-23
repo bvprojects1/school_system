@@ -3,51 +3,15 @@
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <div th:insert="header::navbar"></div>
 
-
 <section class="contact-form-area-start space df-bg">
     <!--Project title area start-->
     <div class="project-title-area text-center">
+        <div th:insert="summary::navbar"></div>
         <div class="col-md-12">
-        <table style="border:0px" class="center" width="100%" cellpadding="5">
-            <tr>
-                <td>
-                    <font size="4">Account Owner</font>
-                    <br/>
-                        <a href="#" th:href="@{/showCustomer/{id}(id=${session.customerInUse.id})}">
-                            <font color="gray" size="4">
-                                <span style th:text="${session.customerInUse.gender +' '+session.customerInUse.firstName +' '+session.customerInUse.lastName }"/>
-                                <br/>
-                                <span style th:text="${session.customerInUse.customerNumber}"/><br/>
-                            </font>
-                        </a>
-                    <button type="submit">
-                        <a href="#" th:href="@{/file/{userName}(userName=${session.customerInUse.userName})}">
-                            <font color="gray" size="2px">Upload I.D</font></a>
-                    </button>
-                    <a href="#" th:href="@{/reloadUser}">
-                        <img width="40px" th:src="@{/getImage}"/>
-                    </a>
-                    <br/>
-                <td></td>
-                <td> Saving <br/>
-                    <font color="gray" size="4px">
-                        <div th:text="${session.savingBilanzList.totalSaving}"/>
-                    </font>
-                </td>
-                <td> Loan<br/>
-                    <font size="4px" color="gray">
-                        <div th:text="${session.loanBilanzList.currentLoanBalance}"/>
-                    </font></td>
-                <td> Current<br/> <font size="4px" color="gray"> <span th:text="${session.currentBilanzList.totalCurrent}"/></font></td>
-                <td> Shares<br/> <font size="4px" color="gray"> <span th:text="${session.shareAccountBilanzList.totalShare}"/></font></td>
-            </tr>
-        </table>
         <!-- END -->
-        <br/>
-
         <table border="0" class="center" width="100%" cellpadding="5">
             <tr>
-                <td colspan="1">
+                <td colspan="1" align="left">
                     <font size="5px" color="#738980">
                         <b>CURRENT ACCOUNT</b>
                     </font>
@@ -85,7 +49,7 @@
 <!--                </div>-->
                 <!--                ADD THIS TO ADD ROLE RESTRICTION --  END arsene ----->
 
-                <td colspan="1">
+                <td colspan="2">
                     <a th:if="${#authorization.expression('hasAnyAuthority(''ROLE_CUSTOMER_ACCOUNT_TYPE_TRANSFERS'')')}" href="#" th:href="@{/transferFromCurrentToLoanAccountsForm}">
                         Loan re-payment <img width="40px" th:src="@{/assets/images/transferLoan.png}"/>
                     </a>
@@ -95,7 +59,7 @@
                     </div>
 
                     <a th:if="${#authorization.expression('hasAnyAuthority(''ROLE_CUSTOMER_ACCOUNT_TYPE_TRANSFERS'')')}" href="#" th:href="@{/glAddEntryFromCurrentAccount}">
-                        Ledgers Transfer <img width="35px" th:src="@{/assets/images/transfer.png}"/>
+                        Account Ledgers Transfer <img width="35px" th:src="@{/assets/images/transfer.png}"/>
                     </a>
 
                 </td>
@@ -117,9 +81,6 @@
                 </td>
                 <td>
                     Description
-                </td>
-                <td>
-                    Created
                 </td>
                 <td>
                     Creator
@@ -151,13 +112,11 @@
 
                 <td th:text="${currentAccount.notes}"/>
 
-                <td th:text="${#dates.format(currentAccount.createdDate, 'dd-MMM-yyyy HH:mm')}"/>
-
                 <td th:text="${currentAccount.createdBy}"/>
 
                 <td>
                     <a href="#" th:href="@{/registerCurrentAccountTransaction/{id}(id=${currentAccount.id})}">
-                        <img width="30px" th:src="@{/assets/images/aLens.png}"/>
+                        Make A Deposit/Withdrawal<img width="30px" th:src="@{/assets/images/aLens.png}"/>
                     </a>
                     <a href="#" th:href="@{/showCurrentAccountBilanz/{accountId}(accountId=${currentAccount.id})}">
                         <img width="30px" th:src="@{/assets/images/aPercent.png}"/>
@@ -170,7 +129,7 @@
         &nbsp;
         <table border="0" class="center" width="100%" cellpadding="5">
             <tr>
-                <td colspan="1">
+                <td colspan="1" align="left">
                     <font size="5px" color="#738980"> <b>SAVING ACCOUNTS</b> </font>
                     <span th:if="${createSavingAccountEligible}">
                         <a href="#" th:href="@{/registerSavingAccount}">
@@ -200,11 +159,11 @@
                 </td>
                 <td colspan="2">
                     <a th:if="${#authorization.expression('hasAnyAuthority(''ROLE_CUSTOMER_ACCOUNT_TYPE_TRANSFERS'')')}" href="#" th:href="@{/userHomeLedgerEntry}">
-                        Account Ledger Transfers <img width="35px" th:src="@{/assets/images/transfer3.png}"/>
+                         Ledger Account Transfers <img width="35px" th:src="@{/assets/images/transfer3.png}"/>
                     </a>
 
                     <a th:if="${#authorization.expression('hasAnyAuthority(''ROLE_CUSTOMER_ACCOUNT_TYPE_TRANSFERS'')')}" href="#" th:href="@{/glAddEntryFromSavingAccount}">
-                         Ledgers Transfer <img width="35px" th:src="@{/assets/images/transfer.png}"/>
+                        Account Ledgers Transfer <img width="35px" th:src="@{/assets/images/transfer.png}"/>
                     </a>
 
                 </td>
@@ -233,7 +192,7 @@
                     Creator
                 </td>
                 <td>
-                    Representative
+
                 </td>
 
             </tr>
@@ -268,7 +227,7 @@
 
                 <td>
                     <a href="#" th:href="@{/registerSavingAccountTransaction/{id}(id=${savingAccount.id})}">
-                        <img width="30px" th:src="@{/assets/images/aLens.png}"/>
+                        Make A Deposit/Withdrawal<img width="30px" th:src="@{/assets/images/aLens.png}"/>
                     </a>
 
                     <a href="#" th:href="@{/showSavingAccountBilanz/{accountId}(accountId=${savingAccount.id})}">
@@ -283,7 +242,7 @@
 
         <table border="0" class="center" width="100%" cellpadding="5">
             <tr>
-                <td colspan="1">
+                <td colspan="1" align="left">
                     <font size="5px" color="#738980">
                         <b>LOAN ACCOUNTS</b>
                     </font>
@@ -351,7 +310,7 @@
                 </td>
                 <td>
                     <a href="#" th:href="@{/registerLoanAccountTransaction/{id}(id=${loanAccount.id})}">
-                        <img width="30px" th:src="@{/assets/images/aLens.png}"/>
+                        Loan details/ Make payments<img width="30px" th:src="@{/assets/images/aLens.png}"/>
                     </a>
                     <a href="#" th:href="@{/showLoanAccountBilanz/{accountId}(accountId=${loanAccount.id})}">
                         <img width="30px" th:src="@{/assets/images/aPercent.png}"/>
@@ -365,7 +324,7 @@
 
         <table border="0" class="center" width="100%" cellpadding="5">
             <tr>
-                <td colspan="1">
+                <td colspan="1" align="left">
                     <font size="5px" color="#738980">
                         <b>SHARE ACCOUNT</b>
                     </font>
