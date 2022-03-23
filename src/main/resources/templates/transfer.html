@@ -10,6 +10,7 @@
     <!-- Contact form area start -->
     <section class="contact-form-area-start space df-bg">
         <form action="#" th:action="@{/transferFromCurrentToLoanAccountsFormReview}" method="post" th:object="${transferBilanz}">
+            <div th:insert="summary::navbar"></div>
             <table class="center" width="100%" border="0">
                 <tr>
                     <td align="center">
@@ -17,16 +18,15 @@
                             <h4>TRANSFER FROM CURRENT TO LOAN ACCOUNT</h4>
                             <span><i class="fas fa-crosshairs"></i></span>
                         </div>
-                        <font size="4">Account Owner</font><br/>
-                        <font color="gray" size="4">
-                            <span style th:text="${session.customerInUse.gender +' '+session.customerInUse.firstName +' '+session.customerInUse.lastName }"/>
-                        </font>
+<!--                        <font size="4">Account Owner</font><br/>-->
+<!--                        <font color="gray" size="4">-->
+<!--                            <span style th:text="${session.customerInUse.gender +' '+session.customerInUse.firstName +' '+session.customerInUse.lastName }"/>-->
+<!--                        </font>-->
                     </td>
                 </tr>
                 <tr>
                     <td align="center" colspan="2">
 
-                        <br/><br/>
                         <label> <b>From Account:</b></label><br/>
                         <select class="selectNormal" th:field="*{transferFromAccount}">
                             <option th:each="i : ${session.customerInUse.currentAccount}"

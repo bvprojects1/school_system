@@ -9,9 +9,9 @@
         <div th:insert="summary::navbar"></div>
         <div class="col-md-12">
         <!-- END -->
-        <table border="1" class="center" width="100%" cellpadding="5">
+        <table border="0" class="center" width="100%" cellpadding="5">
             <tr>
-                <td colspan="1">
+                <td colspan="1" align="left">
                     <font size="5px" color="#738980">
                         <b>CURRENT ACCOUNT</b>
                     </font>
@@ -116,7 +116,7 @@
 
                 <td>
                     <a href="#" th:href="@{/registerCurrentAccountTransaction/{id}(id=${currentAccount.id})}">
-                        <img width="30px" th:src="@{/assets/images/aLens.png}"/>
+                        Make A Deposit/Withdrawal<img width="30px" th:src="@{/assets/images/aLens.png}"/>
                     </a>
                     <a href="#" th:href="@{/showCurrentAccountBilanz/{accountId}(accountId=${currentAccount.id})}">
                         <img width="30px" th:src="@{/assets/images/aPercent.png}"/>
@@ -127,9 +127,9 @@
         </table>
         <br/> <br/>
         &nbsp;
-        <table border="1" class="center" width="100%" cellpadding="5">
+        <table border="0" class="center" width="100%" cellpadding="5">
             <tr>
-                <td colspan="1">
+                <td colspan="1" align="left">
                     <font size="5px" color="#738980"> <b>SAVING ACCOUNTS</b> </font>
                     <span th:if="${createSavingAccountEligible}">
                         <a href="#" th:href="@{/registerSavingAccount}">
@@ -191,7 +191,9 @@
                 <td>
                     Creator
                 </td>
+                <td>
 
+                </td>
 
             </tr>
 
@@ -225,7 +227,7 @@
 
                 <td>
                     <a href="#" th:href="@{/registerSavingAccountTransaction/{id}(id=${savingAccount.id})}">
-                        <img width="30px" th:src="@{/assets/images/aLens.png}"/>
+                        Make A Deposit/Withdrawal<img width="30px" th:src="@{/assets/images/aLens.png}"/>
                     </a>
 
                     <a href="#" th:href="@{/showSavingAccountBilanz/{accountId}(accountId=${savingAccount.id})}">
@@ -238,9 +240,9 @@
 
         <br/> <br/>
 
-        <table border="1" class="center" width="100%" cellpadding="5">
+        <table border="0" class="center" width="100%" cellpadding="5">
             <tr>
-                <td colspan="1">
+                <td colspan="1" align="left">
                     <font size="5px" color="#738980">
                         <b>LOAN ACCOUNTS</b>
                     </font>
@@ -308,7 +310,7 @@
                 </td>
                 <td>
                     <a href="#" th:href="@{/registerLoanAccountTransaction/{id}(id=${loanAccount.id})}">
-                        <img width="30px" th:src="@{/assets/images/aLens.png}"/>
+                        Loan details/ Make payments<img width="30px" th:src="@{/assets/images/aLens.png}"/>
                     </a>
                     <a href="#" th:href="@{/showLoanAccountBilanz/{accountId}(accountId=${loanAccount.id})}">
                         <img width="30px" th:src="@{/assets/images/aPercent.png}"/>
@@ -320,9 +322,9 @@
         <br/><br/>
 
 
-        <table border="1" class="center" width="100%" cellpadding="5">
+        <table border="0" class="center" width="100%" cellpadding="5">
             <tr>
-                <td colspan="1">
+                <td colspan="1" align="left">
                     <font size="5px" color="#738980">
                         <b>SHARE ACCOUNT</b>
                     </font>

@@ -25,18 +25,20 @@
     <table width="90%" class="center" border="0px">
 
             <tr th:each="branch : ${branchList}">
-            <td th:text="${branch.name}"></td>
-            <td th:text="${branch.code}"></td>
-            <td>
-                <div th:text="${branch.street}"></div>
-            </td>
-            <td th:text="${branch.city}"></td>
-            <td th:text="${branch.telephone}"></td>
-            <td th:text="${branch.fax}"></td>
-            <td th:text="${branch.contact}"></td>
-            <td>
-                <a href="#" th:href="@{/branch/{id}(id=${branch.id})}">See more ...</a>
-            </td>
+                <span th:unless="${branch.name == 'admin'}">
+                    <td th:text="${branch.name}"></td>
+                    <td th:text="${branch.code}"></td>
+                    <td>
+                        <div th:text="${branch.street}"></div>
+                    </td>
+                    <td th:text="${branch.city}"></td>
+                    <td th:text="${branch.telephone}"></td>
+                    <td th:text="${branch.fax}"></td>
+                    <td th:text="${branch.contact}"></td>
+                    <td>
+                        <a href="#" th:href="@{/branch/{id}(id=${branch.id})}">See more ...</a>
+                    </td>
+                </span>
         </tr>
     </table>
 

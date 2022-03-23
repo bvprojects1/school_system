@@ -23,11 +23,11 @@
                                     <i class="far fa-user"></i>
                                     <h4> USERS</h4>
                                     <p>View existing Users</p>
-                                    <div th:if="${#authorization.expression('hasAnyAuthority(''ROLE_CREATE_USER_ACCOUNT'')')} OR ${#authorization.expression('hasAnyAuthority(''ROLE_ADMIN'')')}">
-                                        <a href="/registerUser"> <img width="5px" th:src="@{/assets/images/add.png}"/>
-                                        </a>
+<!--                                    <div th:if="${#authorization.expression('hasAnyAuthority(''ROLE_CREATE_USER_ACCOUNT'')')} OR ${#authorization.expression('hasAnyAuthority(''ROLE_ADMIN'')')}">-->
+<!--                                        <a href="/registerUser"> Register User-->
+<!--                                        </a>-->
 
-                                    </div>
+<!--                                    </div>-->
                                     <div th:unless="${#authorization.expression('hasAnyAuthority(''ROLE_CREATE_USER_ACCOUNT'')')} OR ${#authorization.expression('hasAnyAuthority(''ROLE_ADMIN'')')}">
                                         <a href=""> <img alt="Requires ROLE_CREATE_USER_ACCOUNT" width="5px"
                                                          th:src="@{/assets/images/add.png}"/> </a>

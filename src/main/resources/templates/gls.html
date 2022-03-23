@@ -132,9 +132,10 @@
             <th>Ledger</th>
             <th>Notes</th>
             <th>Creator</th>
+            <th>Account Number</th>
             <th width="10"></th>
             <th><a href="#" th:href="@{/findGlByType/{type}(type='DEBIT')}">DEBIT</a></th>
-            <th width="10"></th>
+
             <th><a href="#" th:href="@{/findGlByType/{type}(type='CREDIT')}">CREDIT</a></th>
 
             <th><a href="#" th:href="@{/gl}">Balance</a></th>
@@ -153,7 +154,9 @@
             <td th:text="${gl?.ledgerAccount?.code}"></td>
             <td th:text="${gl.notes}"></td>
             <td th:text="${gl.createdBy}"></td>
-            <td width="10"></td>
+            <td>
+               <span th:text="${#strings.substring(gl.accountNumber,0,5)} + ' ' +${#strings.substring(gl.accountNumber,5,10)} + ' ' +${#strings.substring(gl.accountNumber,10,21)} + ' ' +${#strings.substring(gl.accountNumber,21,23)}"/>
+            </td>
             <td>
                 <div th:if="${gl.type == 'DEBIT'}">
                     <div th:if="${gl.amount < 0}">

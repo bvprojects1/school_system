@@ -74,6 +74,7 @@ public class SuperController {
 
 
     public String  findUserByUserName(User user, ModelMap model, HttpServletRequest request) {
+        user.setUserName(user.getUserName().replaceAll("\\s",""));
         User aUser = userService.findUserByUserName(user.getUserName());
         if(aUser == null){
             SavingAccount savingAccount = savingAccountService.findByAccountNumber(user.getUserName());

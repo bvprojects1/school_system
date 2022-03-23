@@ -1,44 +1,52 @@
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <style>
+    tr:nth-child(even) {background-color: red;}
+    </style>
+</head>
 
 <div class="container">
     <div th:fragment="navbar" class="navbar">
         <table border="0" class="center" width="100%" cellpadding="5">
+            <tr><td colspan="5"> </td></tr>
             <tr>
-                <td width="50%">
-
+                <td width="50%" align="left">
+                    <font size="4px" color="#8b232e"><b>ACCOUNTS SUMMARY</b></font>
                 </td>
                 <td width="20%" align="left">
-                    <font size="3">Account Owner</font>
-                    <br/>
+
                     <a href="#" th:href="@{/showCustomer/{id}(id=${session.customerInUse.id})}">
-                        <font color="gray" size="3px">
+                        <font size="3px" color="#101011">
                             <span style th:text="${session.customerInUse.gender +' '+session.customerInUse.firstName +' '+session.customerInUse.lastName }"/>
                             <br/>
-                            <span style th:text="${session.customerInUse.customerNumber}"/><br/>
+                            <span style th:text="${session.customerInUse.customerNumber}"/>
                         </font>
                     </a>
+
                     <button type="submit">
-                        <a href="#" th:href="@{/file/{userName}(userName=${session.customerInUse.userName})}">
-                            <font color="gray" size="2px">Upload I.D</font></a>
+                        <font size="2px" color="green"> <a href="#" th:href="@{/file/{userName}(userName=${session.customerInUse.userName})}">
+                            Upload I.D</a></font>
                     </button>
-                    <a href="#" th:href="@{/reloadUser}">
-                        <img width="30px" th:src="@{/getImage}"/>
-                    </a>
+                    <font size="2px" color="#101011">
+                        <a href="#" th:href="@{/reloadUser}">
+                            <img width="30px" th:src="@{/getImage}"/>
+                        </a>
+                    </font>
 
                 </td>
                 <td>
-                    <font size="3"> Saving </font><br/>
-                    <font color="gray" size="3px">
+                    <font size="3px"  color="#101011"> Saving </font><br/>
+                    <font size="3px"  color="#101011">
                         <div th:text="${session.savingBilanzList.totalSaving}"/>
                     </font>
                 </td>
-                <td><font size="3px"> Loan</font><br/>
-                    <font size="3px" color="gray">
+                <td><font size="3px"  color="#101011"> Loan</font><br/>
+                    <font size="3px" color="#101011">
                         <div th:text="${session.loanBilanzList.currentLoanBalance}"/>
                     </font></td>
-                <td><font size="3"> Current</font><br/> <font size="3px" color="gray"> <span th:text="${session.currentBilanzList.totalCurrent}"/></font></td>
-                <td><font size="3"> Shares</font><br/> <font size="3px" color="gray"> <span th:text="${session.shareAccountBilanzList.totalShare}"/></font></td>
+                <td><font size="3" color="#101011"> Current</font><br/> <font size="3px" color="#101011"> <span th:text="${session.currentBilanzList.totalCurrent}"/></font></td>
+                <td><font size="3" color="#101011"> Shares</font><br/> <font size="3px" color="#101011"> <span th:text="${session.shareAccountBilanzList.totalShare}"/></font></td>
             </tr>
         </table>
     </div>

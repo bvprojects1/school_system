@@ -9,7 +9,7 @@ import java.util.Date;
  * 21.08.2021
  */
 public class GeneralLedgerWeb {
-
+        private String userId;
         private String type;
         private String reference;
         private String accountNumber;
@@ -24,6 +24,7 @@ public class GeneralLedgerWeb {
         private int glClass;
         private double currentTotal;
         private LedgerAccount ledgerAccount;
+
 
         public String getType() {
             return type;
