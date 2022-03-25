@@ -7,14 +7,14 @@
 <br/>
 <br/>
 <div th:insert="summary::navbar"></div>
-<!--<div class="container">-->
+<div class="container">
 <!--    <section class="contact-form-area-start space df-bg">-->
 
         <form action="#" th:action="@{/transferFromCurrentToCurrentFormReview}" method="post" th:object="${transferBilanz}">
             <table class="center" width="100%" border="0">
                 <tr>
                     <td align="center">
-                        <h4>TRANSFER BETWEEN CURRENT ACCOUNTS</h4>
+                        <h3>TRANSFER BETWEEN CURRENT ACCOUNTS</h3>
 <!--                        <div class="project-title-content">-->
 
 <!--                            <span><i class="fas fa-crosshairs"></i></span>-->
@@ -40,7 +40,7 @@
                             </option>
                         </select>
 
-                        <br/><br/>
+                        <br/>
 
                         <font size="4"> <div class="error" th:text="${invalidToAccount}"/> </font>
                             <font size="4px"> To Account:</font><br/>
@@ -69,6 +69,6 @@
             </table>
         </form>
 <!--    </section>-->
-<!--</div>-->
+</div>
 <div th:insert="footer::navbar"></div>
 </html>

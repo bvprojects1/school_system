@@ -5,26 +5,29 @@
 <div th:insert="header::navbar"></div>
 <br/>
 <br/>
+<br/>
+<div th:insert="summary::navbar"></div>
 
 <div class="container">
-    <!-- Contact form area start -->
-    <section class="contact-form-area-start space df-bg">
+<!--    &lt;!&ndash; Contact form area start &ndash;&gt;-->
+<!--    <section class="contact-form-area-start space df-bg">-->
         <form action="#" th:action="@{/transferFromSavingToLoanAccountsForm}" method="post" th:object="${transferBilanz}">
             <table class="center" width="100%" border="0">
                 <tr>
                     <td align="center">
-                        <div class="project-title-content">
-                            <h4>SUMMARY OF TRANSFER - REVIEW</h4>
-                            <span><i class="fas fa-crosshairs"></i></span>
-                        </div>
+                        <h4>SUMMARY OF TRANSFER - REVIEW</h4>
+<!--                        <div class="project-title-content">-->
+<!--                            <h4>SUMMARY OF TRANSFER - REVIEW</h4>-->
+<!--                            <span><i class="fas fa-crosshairs"></i></span>-->
+<!--                        </div>-->
                     </td>
                 </tr>
                 <tr>
                     <td align="center" colspan="2">
-                        <font size="4">Account Owner</font><br/>
-                        <font color="gray" size="4">
-                            <span style th:text="${session.customerInUse.gender +' '+session.customerInUse.firstName +' '+session.customerInUse.lastName }"/>
-                        </font>
+<!--                        <font size="4">Account Owner</font><br/>-->
+<!--                        <font color="gray" size="4">-->
+<!--                            <span style th:text="${session.customerInUse.gender +' '+session.customerInUse.firstName +' '+session.customerInUse.lastName }"/>-->
+<!--                        </font>-->
                         <br/><br/>
                         <label> <b>From Account:</b></label><br/>
                         <span class="selectNormal" th:text="${fromTransferText}"/>
@@ -57,63 +60,10 @@
                 </tr>
             </table>
         </form>
-        <br/><br/><br/>
+        <br/>
 
 
-
-<!--        <form action="#" th:action="@{/transferFromSavingToLoanAccountsForm}" method="post" th:object="${transferBilanz}">-->
-<!--            <table class="center" width="100%" border="1">-->
-<!--                <tr>-->
-<!--                    <td align="center">-->
-<!--                        <div class="project-title-content">-->
-<!--                            <h3>TRANSFER FROM SAVING TO LOAN ACCOUNT</h3>-->
-<!--                            <span><i class="fas fa-crosshairs"></i></span>-->
-<!--                        </div>-->
-<!--                    </td>-->
-<!--                </tr>-->
-<!--                <tr>-->
-<!--                    <td align="center" colspan="2">-->
-<!--                        <font size="1.5">Account Owner</font><br/>-->
-<!--                        <font size="4">-->
-<!--                            <span style th:text="${session.customerInUse.userName}"/>'s-->
-<!--                        </font>-->
-<!--                        <br/><br/>-->
-<!--                        <label> From Account:</label>-->
-<!--                        <select th:field="*{fromAccount}">-->
-<!--                            <option th:each="i : ${transferFromAccount}"-->
-<!--                                    th:value="${i.id}"-->
-<!--                                    th:text="${i.accountType}+ &#45;&#45;&#45;&#45;Balance + ${i.currentBalance} + &#45;&#45;&#45;&#45;MinimumBalance + ${i.accountMinimumBalance}">-->
-<!--                            </option>-->
-<!--                        </select>-->
-<!--                        <br/>-->
-<!--                        <br/>-->
-<!--                        <label> To Account:</label>-->
-<!--                        <select th:field="*{toAccount}">-->
-<!--                            <option th:each="i : ${transferToAccount}"-->
-<!--                                    th:value="${i.id}"-->
-<!--                                    th:text="${i.accountType}+ &#45;&#45;&#45;&#45;Balance + ${i.currentBalance} + &#45;&#45;&#45;&#45;InitialLoanAmount + ${i.loanAmount}">-->
-<!--                            </option>-->
-<!--                        </select>-->
-<!--                        <br/>-->
-<!--                        <br/>-->
-<!--                        <label> Enter Amount:</label>-->
-<!--                        <input size="6" name="transferAmount" type="number" value=""/>-->
-<!--                        <br/>-->
-<!--                        <br/>-->
-<!--                        <label> Notes:</label>-->
-<!--                        <textarea id="notes" rows="3" cols="30" th:field="*{notes}">-->
-<!--                        </textarea>-->
-<!--                        <button type="submit" class="btn btn-success">-->
-<!--                            Submit Transfer-->
-<!--                        </button>-->
-<!--                        <br/>-->
-<!--                        <br/>-->
-<!--                    </td>-->
-<!--                </tr>-->
-<!--            </table>-->
-<!--        </form>-->
-
-    </section>
+<!--    </section>-->
 </div>
 <div th:insert="footer::navbar"></div>
 </html>
