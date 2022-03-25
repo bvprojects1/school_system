@@ -5,25 +5,27 @@
 <div th:insert="header::navbar"></div>
 <br/>
 <br/>
+<br/>
+<div th:insert="summary::navbar"></div>
 
-<div class="container">
-    <!-- Contact form area start -->
-    <section class="contact-form-area-start space df-bg">
+<!--<div class="container">-->
+<!--    &lt;!&ndash; Contact form area start &ndash;&gt;-->
+<!--    <section class="contact-form-area-start space df-bg">-->
 
         <form action="#" th:action="@{/transferFromDebitToCurrentFormReview}" method="post" th:object="${transferBilanz}">
             <table class="center" width="100%" border="0">
                 <tr>
                     <td align="center">
-                        <div class="project-title-content">
+<!--                        <div class="project-title-content">-->
                             <h4>TRANSFER FROM SAVING TO CURRENT ACCOUNT</h4>
-                            <span><i class="fas fa-crosshairs"></i></span>
-                        </div>
+<!--                            <span><i class="fas fa-crosshairs"></i></span>-->
+<!--                        </div>-->
 
-                        <font size="2px"> Account Owner</font> <br/>
-                        <font color="gray" size="4">
-                            <span style th:text="${session.customerInUse.gender +' '+session.customerInUse.firstName +' '+session.customerInUse.lastName }"/>
-                        </font>
-                        <br/><br/>
+<!--                        <font size="2px"> Account Owner</font> <br/>-->
+<!--                        <font color="gray" size="4">-->
+<!--                            <span style th:text="${session.customerInUse.gender +' '+session.customerInUse.firstName +' '+session.customerInUse.lastName }"/>-->
+<!--                        </font>-->
+<!--                        <br/><br/>-->
 
                     </td>
                 </tr>
@@ -66,7 +68,7 @@
                 </tr>
             </table>
         </form>
-    </section>
-</div>
+<!--    </section>-->
+<!--</div>-->
 <div th:insert="footer::navbar"></div>
 </html>

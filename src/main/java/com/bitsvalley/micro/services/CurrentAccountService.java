@@ -129,7 +129,7 @@ public class CurrentAccountService extends SuperService {
     }
 
     @Transactional
-    public void createCurrentAccountTransaction(CurrentAccount currentAccount, LoanAccountTransaction loanAccountTransaction) {
+    public void createCurrentAccountTransaction(CurrentAccount currentAccount, LoanAccountTransaction loanAccountTransaction, String modeOfPayment) {
 
         String loggedInUserName = getLoggedInUserName();
         Branch branchInfo = branchService.getBranchInfo(loggedInUserName);
@@ -138,7 +138,7 @@ public class CurrentAccountService extends SuperService {
         CurrentAccountTransaction currentAccountTransaction = new CurrentAccountTransaction();
         currentAccountTransaction.setCurrentAmount(loanAccountTransaction.getLoanAmount());
         currentAccountTransaction.setCurrentAmountInLetters(BVMicroUtils.TRANSFER);
-        currentAccountTransaction.setModeOfPayment(BVMicroUtils.TRANSFER);
+        currentAccountTransaction.setModeOfPayment(modeOfPayment);
         currentAccountTransaction.setBranch(branchInfo.getId());
         currentAccountTransaction.setBranchCode(branchInfo.getCode());
         currentAccountTransaction.setBranchCountry(branchInfo.getCountry());
@@ -152,8 +152,6 @@ public class CurrentAccountService extends SuperService {
         currentAccountTransactionRepository.save(currentAccountTransaction);
         currentAccount.getCurrentAccountTransaction().add(currentAccountTransaction);
         currentAccountRepository.save(currentAccount);
-
-//        generalLedgerService.updateCurrentAccountTransaction(currentAccountTransaction);?
 
     }
 
@@ -383,8 +381,7 @@ public class CurrentAccountService extends SuperService {
         LoanAccountTransaction loanAccountTransaction =
                 loanAccountTransactionService.createLoanAccountTransaction(loanAccount);
 
-//        currentAccountService.getCurrentAccountByUser();
-        currentAccountService.createCurrentAccountTransaction(currentAccount, loanAccountTransaction);//
+        currentAccountService.createCurrentAccountTransaction(currentAccount, loanAccountTransaction, BVMicroUtils.CURRENT_LOAN_TRANSFER);//
 
         // Update new loan account transaction
         loanAccountTransaction.setAmountReceived(loanAccount.getLoanAmount());

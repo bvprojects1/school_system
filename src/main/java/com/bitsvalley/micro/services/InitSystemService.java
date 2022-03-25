@@ -117,7 +117,7 @@ public class InitSystemService {
             RuntimeProperties rp = iterator.next();
             if (rp.getPropertyName().equals("Business Name")) {
                 runtime.setBusinessName(rp.getPropertyValue());
-            } else if (rp.getPropertyName().equals("slogan")) {
+            } else if (rp.getPropertyName().equals("Slogan")) {
                 runtime.setSlogan(rp.getPropertyValue());
             } else if (rp.getPropertyName().equals("logo")) {
                 runtime.setLogo(rp.getPropertyValue());
