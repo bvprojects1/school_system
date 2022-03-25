@@ -846,7 +846,7 @@ public class GeneralLedgerService extends SuperService {
             currentAccountTransaction.setNotes(ledgerAccount.getCode() + " " + currentAccountTransaction.getNotes());
             updateGeneralLedger(currentAccountTransaction, BVMicroUtils.CURRENT, "CREDIT", currentAccountTransaction.getCurrentAmount(),  true);
 
-            savingAccountTransaction.setSavingAmount(savingAccountTransaction.getSavingAmount()*-1); //testing
+            savingAccountTransaction.setSavingAmount(savingAccountTransaction.getSavingAmount()); //testing
             updateGLAfterSavingAccountTransaction(savingAccountTransaction,"DEBIT");
             currentAccountTransaction.setNotes( currentAccountTransaction.getNotes());
 
