@@ -8,14 +8,13 @@
 
 <div class="container">
     <div th:fragment="navbar" class="navbar">
-        <table border="0" class="center" width="100%" cellpadding="5">
+        <table  style="border-style: solid; border:0; border-width: 4px" class="center" width="100%" cellpadding="5">
             <tr><td colspan="5"> </td></tr>
             <tr>
-                <td width="50%" align="left">
-                    <font size="4px" color="#8b232e"><b>ACCOUNTS SUMMARY</b></font>
+                <td bgcolor="#a5c26d" width="70%" align="left">
+                    <font size="5px" color="gray"><b>ACCOUNTS SUMMARY</b></font>
                 </td>
-                <td width="20%" align="left">
-
+                <td width="10%" bgcolor="#a5c26d" align="left">
                     <a href="#" th:href="@{/showCustomer/{id}(id=${session.customerInUse.id})}">
                         <font size="3px" color="#101011">
                             <span style th:text="${session.customerInUse.gender +' '+session.customerInUse.firstName +' '+session.customerInUse.lastName }"/>
@@ -23,7 +22,6 @@
                             <span style th:text="${session.customerInUse.customerNumber}"/>
                         </font>
                     </a>
-
                     <button type="submit">
                         <font size="2px" color="green"> <a href="#" th:href="@{/file/{userName}(userName=${session.customerInUse.userName})}">
                             Upload I.D</a></font>
@@ -33,20 +31,19 @@
                             <img width="30px" th:src="@{/getImage}"/>
                         </a>
                     </font>
-
                 </td>
-                <td>
+                <td bgcolor="#a5c26d" width="5%">
                     <font size="3px"  color="#101011"> Saving </font><br/>
                     <font size="3px"  color="#101011">
                         <div th:text="${session.savingBilanzList.totalSaving}"/>
                     </font>
                 </td>
-                <td><font size="3px"  color="#101011"> Loan</font><br/>
+                <td bgcolor="#a5c26d" width="5%"><font size="3px"  color="#101011"> Loan</font><br/>
                     <font size="3px" color="#101011">
                         <div th:text="${session.loanBilanzList.currentLoanBalance}"/>
                     </font></td>
-                <td><font size="3" color="#101011"> Current</font><br/> <font size="3px" color="#101011"> <span th:text="${session.currentBilanzList.totalCurrent}"/></font></td>
-                <td><font size="3" color="#101011"> Shares</font><br/> <font size="3px" color="#101011"> <span th:text="${session.shareAccountBilanzList.totalShare}"/></font></td>
+                <td bgcolor="#a5c26d" width="5%"><font size="3" color="#101011"> Current</font><br/> <font size="3px" color="#101011"> <span th:text="${session.currentBilanzList.totalCurrent}"/></font></td>
+                <td bgcolor="#a5c26d" width="5%"><font size="3" color="#101011"> Shares</font><br/> <font size="3px" color="#101011"> <span th:text="${session.shareAccountBilanzList.totalShare}"/></font></td>
             </tr>
         </table>
     </div>

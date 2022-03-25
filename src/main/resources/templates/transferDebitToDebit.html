@@ -5,24 +5,25 @@
 <div th:insert="header::navbar"></div>
 <br/>
 <br/>
+<br/>
+<div th:insert="summary::navbar"></div>
 
 <div class="container">
     <!-- Contact form area start -->
-    <section class="contact-form-area-start space df-bg">
+<!--    <section class="contact-form-area-start space df-bg">-->
 
         <form action="#" th:action="@{/transferFromDebitToDebitFormReview}" method="post" th:object="${transferBilanz}">
             <table class="center" width="100%" border="0">
                 <tr>
                     <td align="center">
-                        <div class="project-title-content">
-                            <h4>TRANSFER BETWEEN SAVING ACCOUNTS</h4>
-                            <span><i class="fas fa-crosshairs"></i></span>
-                        </div>
-
-                        <font size="2">Account Owner</font><br/>
-                        <font color="gray" size="4">
-                            <span style th:text="${session.customerInUse.gender +' '+session.customerInUse.firstName +' '+session.customerInUse.lastName }"/>
-                        </font>
+<!--                        <div class="project-title-content">-->
+                            <h3>TRANSFER BETWEEN SAVING ACCOUNTS</h3>
+<!--                            <span><i class="fas fa-crosshairs"></i></span>-->
+<!--                        </div>-->
+<!--                        <font size="2">Account Owner</font><br/>-->
+<!--                        <font color="gray" size="4">-->
+<!--                            <span style th:text="${session.customerInUse.gender +' '+session.customerInUse.firstName +' '+session.customerInUse.lastName }"/>-->
+<!--                        </font>-->
                     </td>
                 </tr>
                 <tr>
@@ -38,7 +39,7 @@
                         </select>
                         <br/>
                         <font size="6"> <div class="error" th:text="${invalidToAccount}"/> </font>
-                        <br/><br/>
+                        <br/>
                         <label> To Account:</label><br/>
                         <input class="selectNormal" type="number" size="12" th:field="*{transferToAccount}">
 
@@ -70,7 +71,7 @@
                 </tr>
             </table>
         </form>
-    </section>
+<!--    </section>-->
 </div>
 <div th:insert="footer::navbar"></div>
 </html>

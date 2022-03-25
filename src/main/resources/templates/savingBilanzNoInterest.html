@@ -195,7 +195,7 @@
             <td th:text="${bilanz.accountOwner}"></td>
             <td th:text="${bilanz.notes}"></td>
             <td>
-                <span th:if="${bilanz.savingAmount} < 0" th:text="${#numbers.formatDecimal(bilanz.savingAmount, 0, 'COMMA', 0, 'POINT')}"/>
+                <span th:if="${bilanz.savingAmount} < 0" th:text="${#numbers.formatDecimal(bilanz.savingAmount*-1, 0, 'COMMA', 0, 'POINT')}"/>
             </td>
             <td>
                 <span th:if="${bilanz.savingAmount} > 0" th:text="${#numbers.formatDecimal(bilanz.savingAmount, 0, 'COMMA', 0, 'POINT')}"/>

@@ -478,7 +478,7 @@ section.slider-area-start,
     height: 100%;
     transform: rotate(-45deg);
     content: '';
-    background: #7b1d05;
+    background: red;
     z-index: -1;
     opacity: 0;
     transition: 0.3s ease-in-out

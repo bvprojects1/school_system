@@ -3,23 +3,21 @@
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <div th:insert="header::navbar"></div>
 <br/>
-<br/>
-<br/>
 <div class="container">
-    <section class="contact-form-area-start space df-bg">
-        <table width="100%" class="center" border="0px">
-            <tr>
-                <td align="center">
-                    <div class="project-title-content">
-                            <font th:attr="color=${session.runtimeSettings.themeColor}" size="4">USERS LIST
-                                <a href="/registerUser"> <img width="30px" th:src="@{/assets/images/add.png}"/> </a>
-                            </font>
-                        <br/>
-                    </div>
-                    <span class="error" th:text="${error}"/>
-                </td>
-            </tr>
-        </table>
+
+        <section class="contact-form-area-start space df-bg">
+
+                    <table width="90%" class="center" border="0px">
+                        <tr>
+                            <td align="center">
+                                <font th:attr="color=${session.runtimeSettings.themeColor}" size="4">USERS LIST
+                                    <a href="/registerUser"> <img width="30px" th:src="@{/assets/images/add.png}"/> </a>
+                                </font><br/>
+                                <span class="error" th:text="${error}"/>
+                            </td>
+                        </tr>
+                    </table>
+
         <table width="100%" class="center" border="0px">
             <tr>
                 <th colspan="3">Username - Name</th>

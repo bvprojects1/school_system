@@ -22,7 +22,12 @@ import java.util.Random;
 
 public class BVMicroUtils {
 
+    public static final String TRANSFER_TO_CURRENT = "TRANSFER_TO_CURRENT";
+    public static final String TRANSFER_FROM_CURRENT = "TRANSFER_FROM_CURRENT";
+    public static final String TRANSFER_FROM_SAVING = "TRANSFER_FROM_SAVING";
+    public static final String TRANSFER_TO_SAVING = "TRANSFER_TO_SAVING";
     public static final String TRANSFER = "TRANSFER";
+
     public static final String CURRENT_TO_GL_TRANSFER = "CURRENT_TO_GL_TRANSFER";
     public static final String SAVING_TO_GL_TRANSFER = "SAVING_TO_GL_TRANSFER";
 
