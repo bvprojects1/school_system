@@ -19,17 +19,17 @@
                     </tr>
                 </table>
 
-                <table width="90%" class="center" border="0px">
-                    <ul th:each="accountLedger : ${accountLedgerList}">
-                        <li th:text="${accountLedger.code}"></li>
-                        <li>
-                            <a href="#" th:href="@{/accountLedger/{id}(id=${accountLedger.id})}">
-                                <span th:text="${accountLedger.code}"/>
-                            </a>
-                        </li>
-                    </ul>
-                </table>
-                <br/><br/>
+<!--                <table width="90%" class="center" border="0px">-->
+<!--                    <ul th:each="accountLedger : ${accountLedgerList}">-->
+<!--                        <li th:text="${accountLedger.code}"></li>-->
+<!--                        <li>-->
+<!--                            <a href="#" th:href="@{/accountLedger/{id}(id=${accountLedger.id})}">-->
+<!--                                <span th:text="${accountLedger.code}"/>-->
+<!--                            </a>-->
+<!--                        </li>-->
+<!--                    </ul>-->
+<!--                </table>-->
+
                 </div>
 
             <br/>
@@ -165,8 +165,6 @@
                         <span th:text="${#numbers.formatDecimal(gl.amount, 0, 'COMMA', 0, 'POINT')}"></span>
                     </div>
                 </div>
-            </td>
-            <td width="10">
             </td>
             <td>
                 <div th:if="${gl.type == 'CREDIT'}">
