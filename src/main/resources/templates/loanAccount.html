@@ -5,72 +5,24 @@
 <div th:insert="header::navbar"></div>
 <br/>
 <br/>
-
+<br/>
+<div th:insert="summary::navbar"></div>
 <div class="container">
 
-    <br/><br/><br/><br/>
-    <table style="border:0px" class="center" width="100%" cellpadding="5">
-        <tr>
-            <td>
-                <font size="3">Account Owner</font>
-                <br/>
-
-                <a href="#" th:href="@{/showCustomer/{id}(id=${session.customerInUse.id})}">
-                        <font color="gray" size="4">
-                            <span style th:text="${session.customerInUse.gender +' '+session.customerInUse.firstName +' '+session.customerInUse.lastName }"/>
-                            <br/>
-                            <span style th:text="${session.customerInUse.customerNumber}"/><br/>
-                        </font>
-                </a>
-
-                <button type="submit">
-                    <a href="#" th:href="@{/file/{userName}(userName=${session.customerInUse.userName})}">
-                        <font color="gray" size="2px">Upload I.D</font></a>
-                </button>
-                <a href="#" th:href="@{/reloadUser}">
-                    <img width="40px" th:src="@{/getImage}"/>
-                </a>
-                <br/>
-            <td></td>
-            <td> Saving <br/>
-                <font color="gray" size="4px">
-                    <div th:text="${session.savingBilanzList.totalSaving}"/>
-                </font>
-            </td>
-            <td> Loan<br/>
-                <font size="4px" color="gray">
-                    <div th:text="${session.loanBilanzList.currentLoanBalance}"/>
-                </font></td>
-            <td> Current<br/> <font size="4px" color="gray"> <span th:text="${session.currentBilanzList.totalCurrent}"/></font></td>
-            <td> Shares<br/> <font size="4px" color="gray"> <span th:text="${session.shareAccountBilanzList.totalShare}"/></font></td>
-        </tr>
-    </table>
-
-
     <!-- Contact form area start -->
-    <section class="contact-form-area-start space df-bg">
-
-        <!--Project title area start-->
-        <div class="project-title-area text-center">
-            <div class="container">
-                        <div class="project-title-content">
-                            <font color="green" size="4"><b>LOAN CENTER</b></font><br/>
-                            <span><i class="fas fa-crosshairs"></i></span>
-                            <!--                            <p>Cross-agency coordination clean water rural, promising development turmoil inclusive education transformative community.</p>-->
-                        </div>
-            </div>
-        </div>
+<!--    <section class="contact-form-area-start space df-bg">-->
 
         <form action="#" th:action="@{/registerLoanAccountForm}" method="post" th:object="${loanAccount}">
             <table class="center" width="100%" border="0">
                 <tr>
                     <td align="center">
+                        <div class="error" th:text="${error}"/>
+                        <font color="green" size="6"><b>LOAN CENTER</b></font>
                     </td>
                 </tr>
                 <tr>
                     <td align="center" colspan="2">
-                <br/><br/>
-                        <div class="error" th:text="${error}"/>
+                        <br/>
                         <label> Loan Type:</label>
                         <select class="selectNormal" name="productCode" id="productCode" th:field="*{productCode}">
                             <option value="41">SHORT TERM LOAN - 41</option>
@@ -94,28 +46,28 @@
                         Term of Loan:<input class="selectSmall" type="number" th:field="*{termOfLoan}"/>
 
 
-                        VAT:<input type="text" class="selectNormal" name="vatRate" readonly th:value="${session.runtimeSettings.vatPercent}"/>
+                        VAT:<input type="text" class="selectNormal" name="vatRate" readonly
+                                   th:value="${session.runtimeSettings.vatPercent}"/>
 
                         <br/>
                         <br/>
-                        <br/>
 
-                        Enter Guarantor Saving Account Numbers:
+                        <b>Enter Guarantor Saving Account Numbers:</b>
                         <br/>
                         1:<input class="selectNormal" type="text"
-                                                             th:field="*{guarantorAccountNumber1}"
-                                                             maxlength="24"/>
+                                 th:field="*{guarantorAccountNumber1}"
+                                 maxlength="24"/>
 
                         2:<input class="selectNormal" type="text"
-                                                             th:field="*{guarantorAccountNumber2}"
-                                                             maxlength="24"/>
+                                 th:field="*{guarantorAccountNumber2}"
+                                 maxlength="24"/>
 
                         3:<input class="selectNormal" type="text"
-                                                             th:field="*{guarantorAccountNumber3}"
-                                                             maxlength="24"/>
+                                 th:field="*{guarantorAccountNumber3}"
+                                 maxlength="24"/>
                         <br/>
                         <br/>
-                        <br/>
+
                         <!--                    Guarantor 2 - Acc #:<input type="text" th:field="*{guarantorAccountNumber2}"-->
                         <!--                                               maxlength="15"/>-->
                         <!--                    Guarantor 3 - Acc: #:<input type="text" th:field="*{guarantorAccountNumber3}"-->
@@ -126,9 +78,9 @@
                         </textarea>
 
 
-<!--                        <input class="selectSmall" th:field="*{accountOwner}" type="checkbox" id="true" name="block" value="true"-->
-<!--                               checked>-->
-<!--                        <label for="true">Block Guarantor Account</label>-->
+                        <!--                        <input class="selectSmall" th:field="*{accountOwner}" type="checkbox" id="true" name="block" value="true"-->
+                        <!--                               checked>-->
+                        <!--                        <label for="true">Block Guarantor Account</label>-->
                         <!--                        Payment Interval:-->
                         <select hidden name="intervalOfLoanPayment" th:field="*{intervalOfLoanPayment}"
                                 id="intervalOfLoanPayment">
@@ -138,18 +90,17 @@
                         </select>
 
 
-
-<!--                         <input type="text" readonly name="vatRate1"  th:value="${session.runtimeSettings.vatPercent}"/>-->
+                        <!--                         <input type="text" readonly name="vatRate1"  th:value="${session.runtimeSettings.vatPercent}"/>-->
                         <br/>
                         <br/>
 
                         Block Amount Guarantor:<input class="selectSmall" type="checkbox"
-                                                 th:field="*{blockBalanceQuarantor}"/>
+                                                      th:field="*{blockBalanceQuarantor}"/>
 
                         Apply VAT:<input class="selectSmall" type="checkbox"
-                                               th:field="*{vatOption}"/>
+                                         th:field="*{vatOption}"/>
 
-                            <button type="submit" class="btn btn-success">
+                        <button type="submit" class="btn btn-success">
                             <br/>
                             Next - Show Loan Guarantor Details
                         </button>
@@ -161,13 +112,11 @@
         </form>
         <br/><br/>
 
-        <br/><br/><br/>
-
         <form action="#" th:action="@{/generatePaymentSchedule}" method="post" th:object="${loanAccount}">
             <table class="center" width="100%" border="0">
                 <tr>
                     <td align="center">
-                        <h3> LOAN AMORTIZATION SCHEDULE </h3>
+                        <font color="green"><b><h3> LOAN AMORTIZATION SCHEDULE </h3></b></font>
                     </td>
                 </tr>
                 <tr>
@@ -184,7 +133,8 @@
                         <option value="47">OVERDRAFT LOAN - 47</option>
                         <option value="48">NJANGI FINANCING - 48</option>
                     </select>
-                        Loan Amount:<input class="selectAmount" type="number" th:field="*{loanAmount}" max="9000000" maxlength="10"/>
+                        Loan Amount:<input class="selectAmount" type="number" th:field="*{loanAmount}" max="9000000"
+                                           maxlength="10"/>
 
                         <select hidden name="intervalOfLoanPayment" th:field="*{intervalOfLoanPayment}">
                             <option value="01 DAY">01 DAY</option>
@@ -194,7 +144,8 @@
                         <br/>
                         <br/>
                         Interest Rate:<input type="text" th:field="*{interestRate}" max="100" maxlength="5"/>
-                        Term of Loan:<input type="number" th:field="*{termOfLoan}"/>VAT: <input type="text" disabled th:value="${session.runtimeSettings.vatPercent}"/>
+                        Term of Loan:<input type="number" th:field="*{termOfLoan}"/>VAT: <input type="text" disabled
+                                                                                                th:value="${session.runtimeSettings.vatPercent}"/>
                         <br/>
                         <br/>
                         <button type="submit" class="btn btn-success">
@@ -206,7 +157,7 @@
                 </tr>
             </table>
         </form>
-    </section>
+<!--    </section>-->
 </div>
 <div th:insert="footer::navbar"></div>
 </html>

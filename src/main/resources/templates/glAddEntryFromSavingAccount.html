@@ -6,54 +6,17 @@
 <br/>
 <br/>
 <br/>
+<div th:insert="summary::navbar"></div>
 
 <div class="container">
-    <section class="choosen-area-start space">
-        <table style="border:0px" class="center" width="100%" cellpadding="5">
-            <tr>
-                <td>
-                    <font size="4">Account Owner</font>
-                    <br/>
-                    <font size="4">
-                        <a href="#" th:href="@{/showCustomer/{id}(id=${session.customerInUse.id})}">
+<!--    <section class="choosen-area-start space">-->
 
-                            <span style
-                                  th:text="${session.customerInUse.gender +' '+session.customerInUse.firstName +' '+session.customerInUse.lastName }"/>
-                            <br/>
-                            <span style th:text="${session.customerInUse.customerNumber}"/><br/>
-
-                        </a>
-                    </font>
-                    <button type="submit">
-                        <a href="#" th:href="@{/file/{userName}(userName=${session.customerInUse.userName})}">
-                            <font color="gray" size="2px">Upload I.D</font></a>
-                    </button>
-                    <a href="#" th:href="@{/reloadUser}">
-                        <img width="40px" th:src="@{/getImage}"/>
-                    </a>
-
-                <td></td>
-                <td> Saving <br/>
-                    <font color="gray" size="4px">
-                        <div th:text="${session.savingBilanzList.totalSaving}"/>
-                    </font>
-                </td>
-                <td> Loan<br/>
-                    <font size="4px" color="gray">
-                        <div th:text="${session.loanBilanzList.currentLoanBalance}"/>
-                    </font></td>
-                <td> Current<br/> <font size="4px" color="gray"> <span
-                        th:text="${session.currentBilanzList.totalCurrent}"/></font></td>
-                <td> Shares<br/> <font size="4px" color="gray"> <span
-                        th:text="${session.shareAccountBilanzList.totalShare}"/></font></td>
-            </tr>
-        </table>
-        <!-- END -->
-        <br/>
-        <font size="4px" color="green"><b>SAVING ACCOUNT TRANSFER TO GL ACCOUNTS</b></font>
-        <font color="gray" size="8px"> <span th:text="${glAddEntryFromAccountsInfo}"/></font>
         <form action="#" th:action="@{/userHomeLedgerEntryFromAccountForm}" method="post" th:object="${ledgerEntryDTO}">
-            <table align="top" border="1" class="center" width="100%" cellpadding="5">
+            <table align="top" border="0" class="center" width="100%" cellpadding="5">
+                <tr><td colspan="2">
+                    <font size="4px" color="green"><b>SAVING ACCOUNT TRANSFER TO GL ACCOUNTS</b></font>
+                    <font color="gray" size="8px"> <span th:text="${glAddEntryFromAccountsInfo}"/></font>
+                </td></tr>
                 <tr>
                     <td style="width:33%">
                         <b>Enter Amount</b><br/>
@@ -61,10 +24,8 @@
                                th:field="*{ledgerAmount}"/>
                         <br/>
                         <font size="2">(Amount to be transfered from Saving account )</font>
-
                     </td>
                     <td>
-
                         <b>Date</b><br/>
                         <input class="selectNormal" required name="recordDate" type="date"/><br/>
                         <font size="2"> (Record entry date)</font>
@@ -73,7 +34,7 @@
                         <!--                        <br/><font size="2"> (Check to transfer from user account)</font>-->
                     </td>
                     <td>
-                        <label><b> Notes:</b></label><br/>
+                        <b> Notes:</b><br/>
                         <textarea class="selectNormal" id="notes" rows="3" cols="40" th:field="*{notes}"/>
                     </td>
                 </tr>
@@ -95,20 +56,15 @@
                 </tr>
             </table>
 
-            <br/>
             <table border="0" class="center" width="100%" cellpadding="5">
                 <tr>
-                    <td width="10%"></td>
-                    <td colspan="3">
-                        <br>
+                    <td colspan="4">
                         <font color="green"><b>LEDGER ACCOUNTS</b></font>
                     </td>
                     <td colspan="1">
-                        <br>
                         <font size="3" color="green">Total Sum of amount entered for individual GL accounts must add
                             up to amount entered above</font>
                     </td>
-
                 </tr>
                 <tr>
                     <td width="10%"></td>
@@ -123,13 +79,10 @@
                         </div>
                         <br/>
                     </td>
-
                 </tr>
             </table>
-
             <br/>
             <br/>
-
             <table>
                 <tr>
                     <td width="40%">
@@ -148,7 +101,7 @@
 
         </div>
         <br/>
-    </section>
+<!--    </section>-->
 </div>
 <div th:insert="footer::navbar"></div>
 </html>

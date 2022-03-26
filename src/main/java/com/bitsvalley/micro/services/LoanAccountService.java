@@ -335,7 +335,7 @@ public class LoanAccountService extends SuperService {
             List<LoanAccountTransaction> loanAccountTransactions,
             boolean calculateInterest) {
         double totalLoan = 0.0;
-        String currentLoanBalance = "";
+        String currentLoanBalance = "0";
         double totalLoanAccountTransactionInterest = 0.0;
         double totalLoanAccountTransactionInterestDue = 0.0;
 
@@ -402,6 +402,7 @@ public class LoanAccountService extends SuperService {
                 loanAccountRepository.save(loanAccount);
             }
             currentLoanBalanceAllUserLoans = currentLoanBalanceAllUserLoans + currentLoanBalanceUserLoans;
+
             loanBilanzsList.setCurrentLoanBalance(BVMicroUtils.formatCurrency(currentLoanBalanceUserLoans));
         }
         loanBilanzsList.setTotalLoan(BVMicroUtils.formatCurrency(totalLoanAmount));

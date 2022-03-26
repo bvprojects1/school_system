@@ -6,54 +6,14 @@
 <br/>
 <br/>
 <br/>
+<div th:insert="summary::navbar"></div>
 
 <div class="container">
-    <section class="choosen-area-start space">
-        <table style="border:0px" class="center" width="100%" cellpadding="5">
-            <tr>
-                <td>
-                    <font size="4">Account Owner</font>
-                    <br/>
-                    <font size="4">
-                        <a href="#" th:href="@{/showCustomer/{id}(id=${session.customerInUse.id})}">
-
-                            <span style
-                                  th:text="${session.customerInUse.gender +' '+session.customerInUse.firstName +' '+session.customerInUse.lastName }"/>
-                            <br/>
-                            <span style th:text="${session.customerInUse.customerNumber}"/><br/>
-
-                        </a>
-                    </font>
-                    <button type="submit">
-                        <a href="#" th:href="@{/file/{userName}(userName=${session.customerInUse.userName})}">
-                            <font color="gray" size="2px">Upload I.D</font></a>
-                    </button>
-                    <a href="#" th:href="@{/reloadUser}">
-                        <img width="40px" th:src="@{/getImage}"/>
-                    </a>
-
-                <td></td>
-                <td> Saving <br/>
-                    <font color="gray" size="4px">
-                        <div th:text="${session.savingBilanzList.totalSaving}"/>
-                    </font>
-                </td>
-                <td> Loan<br/>
-                    <font size="4px" color="gray">
-                        <div th:text="${session.loanBilanzList.currentLoanBalance}"/>
-                    </font></td>
-                <td> Current<br/> <font size="4px" color="gray"> <span
-                        th:text="${session.currentBilanzList.totalCurrent}"/></font></td>
-                <td> Shares<br/> <font size="4px" color="gray"> <span
-                        th:text="${session.shareAccountBilanzList.totalShare}"/></font></td>
-            </tr>
-        </table>
-        <!-- END -->
-        <br/>
-        <font size="4px" color="green">CURRENT ACCOUNT TRANSFER TO GL ACCOUNTS</font>
+<!--        <font size="4px" color="green">CURRENT ACCOUNT TRANSFER TO GL ACCOUNTS</font>-->
         <font color="gray" size="8px"> <span th:text="${glAddEntryFromAccountsInfo}"/></font>
         <form action="#" th:action="@{/userHomeLedgerEntryFromAccountForm}" method="post" th:object="${ledgerEntryDTO}">
-            <table align="top" border="1" class="center" width="100%" cellpadding="5">
+            <table align="top" border="0" class="center" width="100%" cellpadding="5">
+                <tr><td colspan="2"><font size="4px" color="green"><b>CURRENT ACCOUNT TRANSFER TO GL ACCOUNTS</b></font></td></tr>
                 <tr>
                     <td style="width:33%">
                         <b>Enter Amount</b><br/>
@@ -98,7 +58,6 @@
                 </tr>
             </table>
 
-            <br/>
             <table border="0" class="center" width="100%" cellpadding="5">
                 <tr>
                     <td width="10%"></td>
@@ -127,8 +86,6 @@
                     </td>
                 </tr>
             </table>
-
-            <br/>
             <br/>
 
             <table>
@@ -148,8 +105,8 @@
         <div th:insert="blog::navbar">
 
         </div>
-        <br/>
-    </section>
+<!--        <br/>-->
+<!--    </section>-->
 </div>
 <div th:insert="footer::navbar"></div>
 </html>

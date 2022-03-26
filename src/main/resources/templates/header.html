@@ -172,11 +172,13 @@
                                 <li th:if="${#authorization.expression('hasAnyAuthority(''ROLE_AGENT'')')} OR ${#authorization.expression('hasAnyAuthority(''ROLE_MANAGER'')')}">
                                     <form action="#" th:action="@{/findUserByUserName}" method="post">
                                         <font color="brown" size="3px"> <span th:text="${error}"/></font>
+                                        &nbsp;&nbsp;
                                         <input class="selectSearch" id="filter" name="userName" type="text" placeholder="Search..." />
                                         <i id="filtersubmit" class="fa fa-search"></i>
 
                                         <input style="size:30px;font-size:14pt;color:white;background-color:green;border:4px solid #white;padding:3px"
                                                type="submit" value="Submit">
+                                        &nbsp;&nbsp;
                                     </form>
                                 </li>
                                 <li>
