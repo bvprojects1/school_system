@@ -5,11 +5,8 @@
 <br/>
 <br/>
 <br/>
-<br/>
-<br/>
-<br/>
-<body>
-<br/>
+<div th:insert="summary::navbar"></div>
+
 
 <table width="90%" class="center" border="0px">
     <tr>
@@ -30,6 +27,11 @@
             <font size="3"><span th:text="${session.loanAccount.interestRate}"/></font>
         </td>
         <td>
+            <font size="2px" color="gray">VAT INCLUDED</font><br/>
+            <font size="3"><span th:text="${session.loanAccount.vatOption}"/></font>
+        </td>
+
+        <td>
             <font size="2px" color="gray">Loan Amount</font><br/>
             <font size="3">
                 <strong>
@@ -45,11 +47,15 @@
 </table>
 
 <br/>
-<table width="90%" class="center" border="0px">
+
+<table>
     <tr>
-        <th>SURETY ACCOUNTS </th>
+        <td>
+            <font color="green"><b><h3> SURETY ACCOUNTS </h3></b></font>
+        </td>
     </tr>
 </table>
+
 <form action="#" th:action="@{/loanShorteeAccountsForm}" method="post" th:object="${loanAccount}">
     <table width="90%" class="center" border="0px">
         <tr>
@@ -143,10 +149,13 @@
             </td>
         </tr>
         </span>
+    </table>
+    <table>
         <tr>
+            <td width="40%"></td>
             <td colspan="8">
                 <button type="submit" class="btn btn-success">
-                    Apply Loan Guarantees
+                    APPLY LOAN SURETY - NEXT
                 </button>
             </td>
         </tr>
@@ -195,6 +204,6 @@
 <!--    </tr>-->
 <!--</table>-->
 <br/>
-</body>
+
 <div th:insert="footer::navbar"></div>
 </html>

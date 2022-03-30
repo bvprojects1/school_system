@@ -5,64 +5,14 @@
 <div th:insert="header::navbar"></div>
 <br/>
 <br/>
+<br/>
+<br/>
+<br/>
+<div th:insert="summary::navbar"></div>
 
-<!-- Contact form area start -->
-<section class="contact-form-area-start space df-bg">
-    <!--Project title area start-->
-    <div class="project-title-area text-center">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="project-title-content">
-                        <font color="green" size="4">CREATE A SAVING ACCOUNT</font><br/>
-                        <span><i class="fas fa-crosshairs"></i></span>
-                        <!--                            <p>Cross-agency coordination clean water rural, promising development turmoil inclusive education transformative community.</p>-->
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+
     <div class="container">
-
-        <table style="border:0px" class="center" width="100%" cellpadding="5">
-            <tr>
-                <td>
-                    <font size="3">Account Owner</font>
-                    <br/>
-
-                    <a href="#" th:href="@{/showCustomer/{id}(id=${session.customerInUse.id})}">
-                        <font color="gray" size="4">
-                            <span style th:text="${session.customerInUse.gender +' '+session.customerInUse.firstName +' '+session.customerInUse.lastName }"/>
-                            <br/>
-                            <span style th:text="${session.customerInUse.customerNumber}"/><br/>
-                        </font>
-                    </a>
-
-                    <button type="submit">
-                        <a href="#" th:href="@{/file/{userName}(userName=${session.customerInUse.userName})}">
-                            <font color="gray" size="2px">Upload I.D</font></a>
-                    </button>
-                    <a href="#" th:href="@{/reloadUser}">
-                        <img width="40px" th:src="@{/getImage}"/>
-                    </a>
-                    <br/>
-                <td></td>
-                <td> Saving <br/>
-                    <font color="gray" size="4px">
-                        <div th:text="${session.savingBilanzList.totalSaving}"/>
-                    </font>
-                </td>
-                <td> Loan<br/>
-                    <font size="4px" color="gray">
-                        <div th:text="${session.loanBilanzList.currentLoanBalance}"/>
-                    </font></td>
-                <td> Current<br/> <font size="4px" color="gray"> <span th:text="${session.currentBilanzList.totalCurrent}"/></font></td>
-                <td> Shares<br/> <font size="4px" color="gray"> <span th:text="${session.shareAccountBilanzList.totalShare}"/></font></td>
-            </tr>
-        </table>
-
-
-
+    <h4><font color="green">CREATE A SAVING ACCOUNT</font></h4>
     <form action="#" th:action="@{/registerSavingAccountForm}" method="post" th:object="${savingAccount}">
         <table class="center" width="90%">
             <tr><td>
@@ -91,7 +41,6 @@
                     <input class="selectAmount" placeholder="0" type="number" th:field="*{accountMinBalance}"/>
 
 
-
                 Minimum Deposit:
                 <input class="selectAmount" placeholder="0" type="number" th:field="*{minimumPayment}"/>
                     <br/> <br/>
@@ -116,11 +65,6 @@
         </table>
     </form>
     </div>
-    <!--                </div>-->
-    <!--            </div>-->
-    <!--        </div>-->
-    <!--    </div>-->
-</section>
 
 <div th:insert="footer::navbar"></div>
 </html>
