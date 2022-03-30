@@ -413,16 +413,16 @@ public class GeneralLedgerService extends SuperService {
         for (GeneralLedgerWeb current : generalLedgerList) {
 
             if (GeneralLedgerType.CREDIT.name().equals(current.getType())) {
-                creditTotal = creditTotal + current.getAmount();
-                currentTotal = currentTotal + current.getAmount();
+                creditTotal = creditTotal - current.getAmount();
+                currentTotal = currentTotal - current.getAmount();
             } else if (GeneralLedgerType.DEBIT.name().equals(current.getType())) {
-                debitTotal = debitTotal + current.getAmount();
-                currentTotal = currentTotal + current.getAmount();
+                debitTotal = debitTotal - current.getAmount();
+                currentTotal = currentTotal - current.getAmount();
             }
-            current.setCurrentTotal( creditTotal - debitTotal);
+            current.setCurrentTotal( currentTotal);
         }
 
-        bilanz.setTotal(creditTotal - debitTotal);
+        bilanz.setTotal(creditTotal + debitTotal);
         bilanz.setDebitTotal(debitTotal);
         bilanz.setCreditTotal(creditTotal);
         bilanz.setGeneralLedgerWeb(generalLedgerList);
@@ -475,11 +475,19 @@ public class GeneralLedgerService extends SuperService {
 
             trialBalanceWeb.setCreditTotal( creditTotal );
             trialBalanceWeb.setDebitTotal( debitTotal );
-            totalDifference = creditTotal - debitTotal;
+
+            String code = aLedgerAccount.getCode();
+            if(StringUtils.isNotEmpty(code)){
+                String classCode = code.substring(code.length() - 4, code.length() - 3);
+                if(classCode.equals("1") || classCode.equals("6") || classCode.equals("3")){
+                    totalDifference = debitTotal - creditTotal;
+                }else
+                    totalDifference = creditTotal - debitTotal;
+            }
+
             trialBalanceWeb.setTotalDifference(totalDifference);
             trialBalanceWeb.setCode( aLedgerAccount.getCode() );
             trialBalanceWeb.setName( aLedgerAccount.getName() );
-            trialBalanceWeb.setTotalDifference( totalDifference );
             bilanzTotalDifference = bilanzTotalDifference + totalDifference;
             bilanzTotalCredit = bilanzTotalCredit + creditTotal;
             bilanzTotalDebit = bilanzTotalDebit + debitTotal;
@@ -758,7 +766,7 @@ public class GeneralLedgerService extends SuperService {
         
         if (savingAccountTransaction.getModeOfPayment().equals(BVMicroUtils.CASH)) {
             savingAccountTransaction.setNotes(savingAccountTransaction.getNotes());
-            updateGeneralLedger(savingAccountTransaction, BVMicroUtils.CASH, debitCredit, savingAccountTransaction.getSavingAmount(), true);
+            updateGeneralLedger(savingAccountTransaction, BVMicroUtils.CASH, debitCredit.equals(BVMicroUtils.DEBIT)?BVMicroUtils.CREDIT:BVMicroUtils.DEBIT, savingAccountTransaction.getSavingAmount(), true);
         }else if (savingAccountTransaction.getModeOfPayment().equals(BVMicroUtils.TRANSFER)) {
             savingAccountTransaction.setNotes(BVMicroUtils.TRANSFER + " " + savingAccountTransaction.getNotes());
         }
@@ -832,7 +840,7 @@ public class GeneralLedgerService extends SuperService {
         currentAccountTransaction.getNotes();
         if (currentAccountTransaction.getModeOfPayment().equals(BVMicroUtils.CURRENT_CURRENT_TRANSFER)) {
             currentAccountTransaction.setNotes(currentAccountTransaction.getNotes());
-            updateGeneralLedger(currentAccountTransaction, BVMicroUtils.CURRENT, "DEBIT", currentAccountTransaction.getCurrentAmount(),  true);
+            updateGeneralLedger(currentAccountTransaction, BVMicroUtils.CURRENT, "DEBIT", currentAccountTransaction.getCurrentAmount()*-1,  true);
             currentAccountTransaction.setNotes( currentAccountTransaction.getNotes());
             updateGeneralLedger(currentAccountTransaction, BVMicroUtils.CURRENT, "CREDIT", currentAccountTransaction.getCurrentAmount(),  true);
             currentAccountTransaction.setNotes(notes);
@@ -844,11 +852,12 @@ public class GeneralLedgerService extends SuperService {
         LedgerAccount ledgerAccount = determineLedgerAccount(savingAccountTransaction.getSavingAccount().getProductCode());
         if (currentAccountTransaction.getModeOfPayment().equals(BVMicroUtils.CURRENT_DEBIT_TRANSFER)) {
             currentAccountTransaction.setNotes(ledgerAccount.getCode() + " " + currentAccountTransaction.getNotes());
-            updateGeneralLedger(currentAccountTransaction, BVMicroUtils.CURRENT, "CREDIT", currentAccountTransaction.getCurrentAmount(),  true);
+            updateGeneralLedger(currentAccountTransaction, BVMicroUtils.CURRENT, "DEBIT", currentAccountTransaction.getCurrentAmount(),  true);
 
             savingAccountTransaction.setSavingAmount(savingAccountTransaction.getSavingAmount()); //testing
-            updateGLAfterSavingAccountTransaction(savingAccountTransaction,"DEBIT");
+            updateGeneralLedger(savingAccountTransaction, ledgerAccount.getCode(), "CREDIT", savingAccountTransaction.getSavingAmount(), true);
             currentAccountTransaction.setNotes( currentAccountTransaction.getNotes());
+
 
         }
     }
@@ -873,9 +882,9 @@ public class GeneralLedgerService extends SuperService {
         String notes = savingAccountTransaction.getNotes();
         if (savingAccountTransaction.getModeOfPayment().equals(BVMicroUtils.DEBIT_CURRENT_TRANSFER)) {
             savingAccountTransaction.setNotes(savingLedgerAccount.getCode() + " " + notes);
-            updateGeneralLedger(currentAccountTransaction, BVMicroUtils.CURRENT_GL_3004, "DEBIT", savingAccountTransaction.getSavingAmount(), true);
+            updateGeneralLedger(currentAccountTransaction, BVMicroUtils.CURRENT_GL_3004, "CREDIT", currentAccountTransaction.getCurrentAmount(), true);
             savingAccountTransaction.setNotes(notes);
-            updateGeneralLedger(savingAccountTransaction, savingLedgerAccount.getCode(), "CREDIT", savingAccountTransaction.getSavingAmount(), true);
+            updateGeneralLedger(savingAccountTransaction, savingLedgerAccount.getCode(), "DEBIT", savingAccountTransaction.getSavingAmount(), true);
             savingAccountTransaction.setNotes(notes);
         }
     }

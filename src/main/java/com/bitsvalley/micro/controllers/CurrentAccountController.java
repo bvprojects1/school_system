@@ -225,6 +225,9 @@ public class CurrentAccountController extends SuperController {
 
     private void resetCurrentAccountTransaction(CurrentAccountTransaction sat) {
         sat.setCurrentAmount(0);
+        sat.setModeOfPayment(null);
+        sat.setWithdrawalDeposit(0);
+        sat.setCurrentAmount(0);
         sat.setFifty(0);
         sat.setFiveHundred(0);
         sat.setFiveThousand(0);

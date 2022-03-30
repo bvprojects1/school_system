@@ -43,7 +43,7 @@ public class SavingAccountController extends SuperController {
     LoanAccountService loanAccountService;
 
     @Autowired
-    AccountTypeService accountTypeService;
+    GeneralLedgerService generalLedgerService;
 
     @Autowired
     UserRepository userRepository;
@@ -348,6 +348,7 @@ public class SavingAccountController extends SuperController {
         if(null == savingAccountTransaction.getAccountOwner()){
             savingAccountTransaction.setAccountOwner("false");
         }
+        String debitCredit = BVMicroUtils.CREDIT;
         String savingAccountId = request.getParameter("savingAccountId");
         SavingAccount savingAccount = savingAccountService.findById(new Long(savingAccountId)).get();
         savingAccountTransaction.setSavingAccount(savingAccount);
@@ -366,6 +367,7 @@ public class SavingAccountController extends SuperController {
             savingAccountTransaction.setSavingAmount(savingAccountTransaction.getSavingAmount() * -1);
             savingAccountTransaction.setWithdrawalDeposit(-1);
             error = savingAccountService.withdrawalAllowed(savingAccountTransaction);
+            debitCredit = BVMicroUtils.DEBIT;
             //Make sure min amount is not violated at withdrawal
         }
 
@@ -398,6 +400,7 @@ public class SavingAccountController extends SuperController {
         savingAccountTransaction.setBranchCountry(branchInfo.getCountry());
         savingAccountService.createSavingAccountTransaction(savingAccountTransaction, savingAccount);
 
+        generalLedgerService.updateGLAfterSavingAccountTransaction(savingAccountTransaction,debitCredit);
         String username = getLoggedInUserName();
         callCenterService.saveCallCenterLog(savingAccountTransaction.getReference(),
                 username, savingAccount.getAccountNumber(),

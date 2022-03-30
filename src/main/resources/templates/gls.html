@@ -3,7 +3,8 @@
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <div th:insert="header::navbar"></div>
 
-
+<br/>
+<br/>
 <section class="contact-form-area-start space df-bg">
     <!--Project title area start-->
     <div class="project-title-area text-center">
@@ -18,17 +19,6 @@
                         </td>
                     </tr>
                 </table>
-
-<!--                <table width="90%" class="center" border="0px">-->
-<!--                    <ul th:each="accountLedger : ${accountLedgerList}">-->
-<!--                        <li th:text="${accountLedger.code}"></li>-->
-<!--                        <li>-->
-<!--                            <a href="#" th:href="@{/accountLedger/{id}(id=${accountLedger.id})}">-->
-<!--                                <span th:text="${accountLedger.code}"/>-->
-<!--                            </a>-->
-<!--                        </li>-->
-<!--                    </ul>-->
-<!--                </table>-->
 
                 </div>
 
@@ -101,7 +91,7 @@
                             <span th:if="${generalLedgerBilanz.creditTotal < 0}">
                                 <div th:text="${#numbers.formatDecimal(generalLedgerBilanz.creditTotal*-1, 0, 'COMMA', 0, 'POINT')}"></div>
                             </span>
-                            <span th:unless="${generalLedgerBilanz.debitTotal < 0}">
+                            <span th:unless="${generalLedgerBilanz.creditTotal < 0}">
                                 <div th:text="${#numbers.formatDecimal(generalLedgerBilanz.creditTotal, 0, 'COMMA', 0, 'POINT')}"></div>
                             </span>
                         </font>
@@ -154,7 +144,9 @@
             <td th:text="${gl.notes}"></td>
             <td th:text="${gl.createdBy}"></td>
             <td>
-               <span th:text="${#strings.substring(gl.accountNumber,0,5)} + ' ' +${#strings.substring(gl.accountNumber,5,10)} + ' ' +${#strings.substring(gl.accountNumber,10,21)} + ' ' +${#strings.substring(gl.accountNumber,21,23)}"/>
+               <font size="3">
+                   <span th:text="${#strings.substring(gl.accountNumber,0,5)} + ' ' +${#strings.substring(gl.accountNumber,5,10)} + ' ' +${#strings.substring(gl.accountNumber,10,21)} + ' ' +${#strings.substring(gl.accountNumber,21,23)}"/>
+               </font>
             </td>
             <td>
                 <div th:if="${gl.type == 'DEBIT'}">
@@ -168,8 +160,6 @@
             </td>
             <td>
                 <div th:if="${gl.type == 'CREDIT'}">
-<!--                    <span th:text="${#numbers.formatDecimal(gl.amount, 0, 'COMMA', 0, 'POINT')}"></span>-->
-
                     <div th:if="${gl.amount < 0}">
                         <span th:text="${#numbers.formatDecimal(gl.amount*-1, 0, 'COMMA', 0, 'POINT')}"></span>
                     </div>

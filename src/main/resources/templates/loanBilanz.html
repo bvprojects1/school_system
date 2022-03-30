@@ -5,33 +5,9 @@
 <div th:insert="header::navbar"></div>
 <br/>
 <br/>
-<br/><br/><br/><br/><br/><br/>
-<table width="90%" class="center">
-    <tr>
-        <td><font size="1.5">Account Owner</font><br/><font size="4">
+<br/>
+<div th:insert="summary::navbar"></div>
 
-            <a href="#" th:href="@{/showCustomer/{id}(id=${session.customerInUse.id})}">
-                <font color="gray" size="4">
-                    <span style th:text="${session.customerInUse.gender +' '+session.customerInUse.firstName +' '+session.customerInUse.lastName }"/>
-                    <br/>
-                    <span style th:text="${session.customerInUse.customerNumber}"/><br/>
-                </font>
-            </a>
-
-        </font>
-            <button type="submit"><a href="#" th:href="@{/file/{userName}(userName=${session.customerInUse.userName})}">Upload
-                I.D</a></button>
-        </td>
-        <td><font size="2"> Saving</font> <br/>
-            <font size="4px" color="green">
-                <div th:text="${session.loanBilanzList.totalLoan}"/>
-            </font>
-        </td>
-        <td><font size="2"> Current</font><br/> <font size="4"> 0</font></td>
-        <td><font size="2"> Loan</font><br/> <font size="4"> 0</font></td>
-        <td><font size="2">Shares</font><br/> <font size="4" color="#A57C00">0 </font> </b></td>
-    </tr>
-</table>
 <br/><br/>
 <table width="90%" class="center">
     <tr>
