@@ -752,7 +752,7 @@ public class GeneralLedgerService extends SuperService {
         generalLedger.setAmount(ledgerEntryDTO.getLedgerAmount());
         generalLedger.setCreatedDate(date);
         generalLedger.setLastUpdatedDate(new Date(System.currentTimeMillis()));
-
+        generalLedger.setAccountNumber(ledgerEntryDTO.getAccountNumber());
         LedgerAccount originalAccount = ledgerAccountRepository.findById(ledgerEntryDTO.getOriginLedgerAccount()).get();
         generalLedger.setLedgerAccount(originalAccount);
         generalLedger.setGlClass(new Integer(originalAccount.getCategory().substring(0, 1)));
@@ -816,19 +816,18 @@ public class GeneralLedgerService extends SuperService {
     }
 
 
-
     public void updateGLAfterCurrentAccountTransaction(CurrentAccountTransaction currentAccountTransaction) {
         String notes = currentAccountTransaction.getNotes();
         if (currentAccountTransaction.getModeOfPayment().equals(BVMicroUtils.CASH)) {
             currentAccountTransaction.setNotes( notes);
-            updateGeneralLedger(currentAccountTransaction, BVMicroUtils.CURRENT, currentAccountTransaction.getCurrentAmount() > 0 ? "CREDIT" : "DEBIT", currentAccountTransaction.getCurrentAmount(),  true);
+            updateGeneralLedger(currentAccountTransaction, BVMicroUtils.CURRENT, BVMicroUtils.DEBIT, currentAccountTransaction.getCurrentAmount()*-1,  true);
             currentAccountTransaction.setNotes(notes);
             updateGeneralLedger(currentAccountTransaction, BVMicroUtils.CASH, currentAccountTransaction.getCurrentAmount() > 0 ? "DEBIT" : "CREDIT", currentAccountTransaction.getCurrentAmount(),  true);
             currentAccountTransaction.setNotes(notes);
         }
         if (currentAccountTransaction.getModeOfPayment().equals(BVMicroUtils.CURRENT_TO_GL_TRANSFER)) {
             currentAccountTransaction.setNotes( notes );
-            updateGeneralLedger(currentAccountTransaction, BVMicroUtils.CURRENT_GL_3004, currentAccountTransaction.getCurrentAmount() > 0 ? "DEBIT" : "CREDIT", currentAccountTransaction.getCurrentAmount(),  true);
+            updateGeneralLedger(currentAccountTransaction, BVMicroUtils.CURRENT_GL_3004, BVMicroUtils.DEBIT, currentAccountTransaction.getCurrentAmount(),  true);
         }
 
     }
@@ -895,11 +894,14 @@ public class GeneralLedgerService extends SuperService {
         long originCurrentAccount = newLedgerEntryDTO.getOriginLedgerAccount();
 
         Optional<CurrentAccount> byId = currentAccountRepository.findById(originCurrentAccount);
+        String accountNumber = "";
         if(byId.isPresent()){
-            extractCurrentAccount(newLedgerEntryDTO, byId.get());
+            accountNumber = byId.get().getAccountNumber();
+            extractFromCurrentAccountToGLAccounts(newLedgerEntryDTO, byId.get());
         }else{
             SavingAccount savingAccount = savingAccountRepository.findById(originCurrentAccount).get();
-            extractSavingAccount(newLedgerEntryDTO, savingAccount);
+            accountNumber = savingAccount.getAccountNumber();
+            extractFromSavingAccountToGLAccounts(newLedgerEntryDTO, savingAccount);
         }
 
         newLedgerEntryDTO.setCreditOrDebit(BVMicroUtils.CREDIT);
@@ -913,12 +915,13 @@ public class GeneralLedgerService extends SuperService {
             accountAmount = s[1];
             newLedgerEntryDTO.setOriginLedgerAccount(new Long(ledgerAccountId));
             newLedgerEntryDTO.setLedgerAmount(new Double(accountAmount));
+            newLedgerEntryDTO.setAccountNumber(accountNumber);
             ++i;
             recordGLFirstEntry(newLedgerEntryDTO,BVMicroUtils.formatDate(newLedgerEntryDTO.getRecordDate()), getLoggedInUserName());
         }
     }
 
-    private void extractCurrentAccount(LedgerEntryDTO newLedgerEntryDTO, CurrentAccount currentAccount) {
+    private void extractFromCurrentAccountToGLAccounts(LedgerEntryDTO newLedgerEntryDTO, CurrentAccount currentAccount) {
 
         CurrentAccountTransaction currentAccountTransaction = new CurrentAccountTransaction();
         currentAccountTransaction.setAccountOwner("false");
@@ -942,7 +945,7 @@ public class GeneralLedgerService extends SuperService {
     }
 
 
-    private void extractSavingAccount(LedgerEntryDTO newLedgerEntryDTO, SavingAccount savingAccount) {
+    private void extractFromSavingAccountToGLAccounts(LedgerEntryDTO newLedgerEntryDTO, SavingAccount savingAccount) {
 
         SavingAccountTransaction savingAccountTransaction = new SavingAccountTransaction();
         savingAccountTransaction.setAccountOwner("false");
@@ -964,7 +967,7 @@ public class GeneralLedgerService extends SuperService {
         savingAccountTransaction.setReference(BVMicroUtils.getSaltString()); //Collision
         savingAccountTransaction.setCreatedBy(getLoggedInUserName());
         savingAccountTransaction.setAccountBalance(savingAccountService.calculateAccountBalance(savingAccountTransaction.getSavingAmount(),savingAccountTransaction.getSavingAccount()));
-        generalLedgerService.updateGLAfterSavingAccountTransaction(savingAccountTransaction, "CREDIT");
+        generalLedgerService.updateGLAfterSavingAccountTransaction(savingAccountTransaction, BVMicroUtils.DEBIT);
     }
 
     @Transactional
