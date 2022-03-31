@@ -115,6 +115,7 @@ public class GeneralAccountController extends SuperController {
 
     @GetMapping(value = "/gl/reference/{reference}")
     public String showGlReference(@PathVariable("reference") String reference, ModelMap model, HttpServletRequest request) {
+        reference = reference.substring(0,reference.indexOf("_"));
         GeneralLedgerBilanz glList = generalLedgerService.findByReference(reference);
         String accountsInvolved = "";
         for (GeneralLedgerWeb generalLedgerWeb : glList.getGeneralLedgerWeb()) {

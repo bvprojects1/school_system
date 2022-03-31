@@ -115,8 +115,6 @@ public class CurrentAccountService extends SuperService {
 
         currentAccountService.save(currentAccount);
 
-        generalLedgerService.updateGLAfterCurrentAccountTransaction(currentAccountTransaction);
-
 //        generalLedgerService.updateCurrentAccountTransaction(currentAccountTransaction);
     }
 
