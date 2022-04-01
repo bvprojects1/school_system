@@ -8,6 +8,7 @@ import java.util.List;
 
 public class LedgerEntryDTO {
 
+    private String accountNumber;
     private long originLedgerAccount;
     private long destinationLedgerAccount;
     private double ledgerAmount;
@@ -92,5 +93,13 @@ public class LedgerEntryDTO {
 
     public void setFromAccountToLedger(boolean fromAccountToLedger) {
         this.fromAccountToLedger = fromAccountToLedger;
+    }
+
+    public void setAccountNumber(String accountNumber) {
+        this.accountNumber = accountNumber;
+    }
+
+    public String getAccountNumber() {
+        return accountNumber;
     }
 }

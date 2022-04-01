@@ -115,8 +115,6 @@ public class CurrentAccountService extends SuperService {
 
         currentAccountService.save(currentAccount);
 
-        generalLedgerService.updateGLAfterCurrentAccountTransaction(currentAccountTransaction);
-
 //        generalLedgerService.updateCurrentAccountTransaction(currentAccountTransaction);
     }
 
@@ -309,44 +307,6 @@ public class CurrentAccountService extends SuperService {
     }
 
 
-//    public boolean checkDefaultLogic(SavingAccount savingAccount) {
-//
-////        if(savingAccount.getAccountSavingType().getName().equals("GENERAL SAVINGS")){
-//        List<SavingAccountTransaction> savingAccountTransactionList = savingAccount.getSavingAccountTransaction();
-//
-//        LocalDateTime currentDateCal = LocalDateTime.now();
-//        Date input = savingAccount.getCreatedDate();
-//        LocalDate createdLocalDate = input.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-//
-//
-//        long monthsBetween = ChronoUnit.MONTHS.between(
-//                YearMonth.from(LocalDate.of(createdLocalDate.getYear(), createdLocalDate.getMonth(),createdLocalDate.getDayOfMonth())),
-//                YearMonth.from(LocalDate.of(currentDateCal.getYear() , currentDateCal.getMonth(),currentDateCal.getYear())));
-//
-//        if (monthsBetween >= savingAccountTransactionList.size()) {
-//            CallCenter callCenter = new CallCenter();
-//            callCenter.setNotes(BVMicroUtils.REGULAR_MONTHLY_PAYMENT_MISSING);
-//            callCenter.setDate(new Date(System.currentTimeMillis()));
-//            callCenter.setReference(savingAccount.getUser().getFirstName() + " " + savingAccount.getUser().getLastName());
-//            callCenter.setAccountNumber(savingAccount.getAccountNumber());
-//            callCenterService.callCenterSavingAccount(savingAccount);
-//            return true;
-//        }
-
-/*            if (savingAccount.getAccountMinBalance() > totalSaved){
-                CallCenter callCenter = new CallCenter();
-                callCenter.setNotes("Minimum payment not met");
-                callCenter.setDate(new Date(System.currentTimeMillis()));
-                callCenter.setAccountHolderName(savingAccount.getUser().getFirstName() + " "+ savingAccount.getUser().getLastName());
-                callCenter.setAccountNumber(savingAccount.getAccountNumber());
-                callCenterRepository.save(callCenter);
-                return true;
-            }*/
-
-//        }
-//        return false;
-//    }
-
     private String padding(int i) {
         if (i < 10)
             return "" + 0 + 1;
@@ -392,96 +352,5 @@ public class CurrentAccountService extends SuperService {
         callCenterService.saveCallCenterLog("ACTIVE", getLoggedInUserName(), loanAccount.getAccountNumber(),"LOAN FUNDS TRANSFERRED TO CURRENT"); //TODO ADD DATE
         loanAccountService.save(loanAccount);
     }
-
-
-//    public void transferFromSavingToLoan(String fromAccountNumber,
-//                                         String toAccountNumber,
-//                                         double transferAmount,
-//                                         String notes) {
-//        LocalDateTime now = LocalDateTime.now();
-//        String loggedInUserName = getLoggedInUserName();
-//        Branch branchInfo = branchService.getBranchInfo(loggedInUserName);
-//
-//        SavingAccount savingAccount = findByAccountNumber(fromAccountNumber);
-//        SavingAccountTransaction savingAccountTransaction = new SavingAccountTransaction();
-//        savingAccountTransaction.setNotes(notes);
-//        savingAccountTransaction.setSavingAccount(savingAccount);
-//        savingAccountTransaction.setSavingAmount(transferAmount*-1);
-//        savingAccountTransaction.setModeOfPayment(BVMicroUtils.TRANSFER);
-//        savingAccountTransaction.setBranch(branchInfo.getId());
-//        savingAccountTransaction.setBranchCode(branchInfo.getCode());
-//        savingAccountTransaction.setBranchCountry(branchInfo.getCountry());
-//        createSavingAccountTransaction(savingAccountTransaction);
-//
-//        LoanAccount loanAccount = loanAccountService.findByAccountNumber(toAccountNumber);
-//        LoanAccountTransaction loanAccountTransaction = new LoanAccountTransaction();
-//        loanAccountTransaction.setLoanAccount(loanAccount);
-//
-//        loanAccountTransaction.setCreatedDate(now);
-//        loanAccountTransaction.setCreatedBy(loggedInUserName);
-//        loanAccountTransaction.setNotes(notes);
-//
-//        loanAccountTransaction.setBranch(branchInfo.getId());
-//        loanAccountTransaction.setBranchCode(branchInfo.getCode());
-//        loanAccountTransaction.setBranchCountry(branchInfo.getCountry());
-//        loanAccountTransaction.setAmountReceived(transferAmount);
-//        loanAccountTransaction.setAccountOwner(loanAccount.getUser().getLastName() +", "+
-//                loanAccount.getUser().getLastName());
-//        loanAccountTransaction.setReference(BVMicroUtils.getSaltString());
-//        loanAccountService.createLoanAccountTransaction(loanAccountTransaction, loanAccount, BVMicroUtils.TRANSFER);
-//
-//        savingAccount.getSavingAccountTransaction().add(savingAccountTransaction);
-//        savingAccountRepository.save(savingAccount);
-//
-//        //Update shortee accounts min balance
-//        List<ShorteeAccount> shorteeAccounts = loanAccount.getShorteeAccounts();
-//        ShorteeAccount shorteeAccount = shorteeAccounts.get(0);
-//        SavingAccount shorteeSavingAccount = shorteeAccount.getSavingAccount();
-//        shorteeSavingAccount.setAccountMinBalance(shorteeSavingAccount.getAccountMinBalance()-loanAccountTransaction.getAmountReceived());
-//        savingAccountRepository.save(shorteeSavingAccount);
-//
-//    }
-
-//    public SavingAccount transferFromDebitToDebit(String fromAccountNumber,
-//                                         String toAccountNumber,
-//                                         double transferAmount,
-//                                         String notes) {
-//
-//        SavingAccount toSavingAccount = findByAccountNumber(toAccountNumber);
-//        if(toSavingAccount == null ){
-//            return null;
-//        }
-//
-//        LocalDateTime now = LocalDateTime.now();
-//        String loggedInUserName = getLoggedInUserName();
-//        Branch branchInfo = branchService.getBranchInfo(loggedInUserName);
-//
-//        SavingAccount savingAccount = findByAccountNumber(fromAccountNumber);
-//        SavingAccountTransaction savingAccountTransaction = new SavingAccountTransaction();
-//        savingAccountTransaction.setNotes(notes);
-//        savingAccountTransaction.setSavingAccount(savingAccount);
-//        savingAccountTransaction.setSavingAmount(transferAmount*-1);
-//        savingAccountTransaction.setModeOfPayment(BVMicroUtils.TRANSFER);
-//        savingAccountTransaction.setBranch(branchInfo.getId());
-//        savingAccountTransaction.setBranchCode(branchInfo.getCode());
-//        savingAccountTransaction.setBranchCountry(branchInfo.getCountry());
-//        createSavingAccountTransaction(savingAccountTransaction);
-//        savingAccount.getSavingAccountTransaction().add(savingAccountTransaction);
-//        savingAccountRepository.save(savingAccount);
-//
-//        SavingAccountTransaction toSavingAccountTransaction = new SavingAccountTransaction();
-//        toSavingAccountTransaction.setNotes(notes);
-//        toSavingAccountTransaction.setSavingAccount(toSavingAccount);
-//        toSavingAccountTransaction.setSavingAmount(transferAmount);
-//        toSavingAccountTransaction.setModeOfPayment(BVMicroUtils.TRANSFER);
-//        toSavingAccountTransaction.setBranch(branchInfo.getId());
-//        toSavingAccountTransaction.setBranchCode(branchInfo.getCode());
-//        toSavingAccountTransaction.setBranchCountry(branchInfo.getCountry());
-//        createSavingAccountTransaction(toSavingAccountTransaction);
-//        toSavingAccount.getSavingAccountTransaction().add(toSavingAccountTransaction);
-//        savingAccountRepository.save(toSavingAccount);
-//
-//        return savingAccount;
-//    }
 
 }

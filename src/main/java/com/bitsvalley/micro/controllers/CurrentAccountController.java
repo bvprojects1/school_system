@@ -56,6 +56,9 @@ public class CurrentAccountController extends SuperController {
     @Autowired
     InitSystemService initSystemService;
 
+    @Autowired
+    private GeneralLedgerService generalLedgerService;
+
 
     @GetMapping(value = "/registerCurrentAccount")
     public String registerCurrent(ModelMap model, HttpServletRequest request) {
@@ -193,6 +196,8 @@ public class CurrentAccountController extends SuperController {
         currentAccountTransaction.setBranchCountry(branchInfo.getCountry());
 
         currentAccountService.createCurrentAccountTransaction(currentAccountTransaction, currentAccount);
+        generalLedgerService.updateGLAfterCurrentAccountTransaction(currentAccountTransaction);
+
         if (currentAccount.getCurrentAccountTransaction() != null) {
             currentAccount.getCurrentAccountTransaction().add(currentAccountTransaction);
         } else {
