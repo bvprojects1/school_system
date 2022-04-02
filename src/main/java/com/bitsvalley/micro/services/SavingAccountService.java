@@ -461,8 +461,8 @@ public class SavingAccountService extends SuperService {
         String loggedInUserName = getLoggedInUserName();
         Branch branchInfo = branchService.getBranchInfo(loggedInUserName);
 
-        SavingAccountTransaction fromSavingAccountTransaction = getSavingAccount(fromAccountNumber, transferAmount, notes, branchInfo, BVMicroUtils.DEBIT_DEBIT_TRANSFER);
-
+        SavingAccountTransaction fromSavingAccountTransaction = getSavingAccount(fromAccountNumber, transferAmount*-1, notes, branchInfo, BVMicroUtils.DEBIT_DEBIT_TRANSFER);
+        fromSavingAccountTransaction.setWithdrawalDeposit(-1);
         SavingAccountTransaction toSavingAccountTransaction = getSavingAccountTransaction(notes, branchInfo, toSavingAccount, transferAmount, BVMicroUtils.DEBIT_DEBIT_TRANSFER);
         toSavingAccount.getSavingAccountTransaction().add(toSavingAccountTransaction);
         savingAccountRepository.save(toSavingAccount);

@@ -144,9 +144,11 @@
             <td th:text="${gl.notes}"></td>
             <td th:text="${gl.createdBy}"></td>
             <td>
-               <font size="3">
-                   <span th:text="${#strings.substring(gl.accountNumber,0,5)} + ' ' +${#strings.substring(gl.accountNumber,5,10)} + ' ' +${#strings.substring(gl.accountNumber,10,21)} + ' ' +${#strings.substring(gl.accountNumber,21,23)}"/>
-               </font>
+                <span th:if="${gl.accountNumber != null}">
+                   <font size="2">
+                       <span th:text="${#strings.substring(gl.accountNumber,0,5)} + ' ' +${#strings.substring(gl.accountNumber,5,10)} + ' ' +${#strings.substring(gl.accountNumber,10,21)} + ' ' +${#strings.substring(gl.accountNumber,21,23)}"/>
+                   </font>
+               </span>
             </td>
             <td>
                 <div th:if="${gl.type == 'DEBIT'}">

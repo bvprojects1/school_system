@@ -868,7 +868,7 @@ public class GeneralLedgerService extends SuperService {
         String toNotes = fromSavingAccountTransaction.getNotes();
         if (fromSavingAccountTransaction.getModeOfPayment().equals(BVMicroUtils.DEBIT_DEBIT_TRANSFER)) {
             fromSavingAccountTransaction.setNotes(fromSavingAccountTransaction.getNotes());
-            updateGeneralLedger(fromSavingAccountTransaction,fromLedgerAccount.getCode() , "DEBIT", fromSavingAccountTransaction.getSavingAmount()*-1, true);
+            updateGeneralLedger(fromSavingAccountTransaction,fromLedgerAccount.getCode() , "DEBIT", fromSavingAccountTransaction.getSavingAmount(), true);
             toSavingAccountTransaction.setNotes(toSavingAccountTransaction.getNotes());
             updateGeneralLedger(toSavingAccountTransaction, toLedgerAccount.getCode(), "CREDIT", toSavingAccountTransaction.getSavingAmount(), true);
             fromSavingAccountTransaction.setNotes(fromNotes);
@@ -913,6 +913,9 @@ public class GeneralLedgerService extends SuperService {
             String[] s = aString.split("_");
             ledgerAccountId = s[0];
             accountAmount = s[1];
+            Double amount = new Double(accountAmount);
+            if( amount.doubleValue() == 0.0)continue;
+
             newLedgerEntryDTO.setOriginLedgerAccount(new Long(ledgerAccountId));
             newLedgerEntryDTO.setLedgerAmount(new Double(accountAmount));
             newLedgerEntryDTO.setAccountNumber(accountNumber);
@@ -992,7 +995,7 @@ public class GeneralLedgerService extends SuperService {
             accountNumber = s[0];
             accountAmount = s[1];
             Double amount = new Double(accountAmount);
-            if( amount == 0.0)continue;
+            if( amount.doubleValue() == 0.0)continue;
             ++i;
             LedgerAccount ledgerAccount = determineLedgerAccount(accountNumber);
             final Integer productCode = new Integer(accountNumber.substring(3, 5));

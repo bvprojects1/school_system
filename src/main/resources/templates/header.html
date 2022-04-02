@@ -129,7 +129,7 @@
 .selectSearch {
   height: 40px;
   font-size: 150%;
-  width: 240px;
+  width: 350px;
   padding: 5px;
 }
 
@@ -169,10 +169,16 @@
                                 <!--                                <li> Welcome-->
                                 <!--                                    <span sec:authentication="name"></span>,</li>-->
                                 <li><img width="100px" th:src="@{/getLogoImage}"/></li>
+                                <li></li>
+                                <li></li>
+                                <li></li>
+                                <li></li>
+                                <li></li>
+                                <li></li>
                                 <li th:if="${#authorization.expression('hasAnyAuthority(''ROLE_AGENT'')')} OR ${#authorization.expression('hasAnyAuthority(''ROLE_MANAGER'')')}">
                                     <form action="#" th:action="@{/findUserByUserName}" method="post">
                                         <font color="brown" size="3px"> <span th:text="${error}"/></font>
-                                        &nbsp;&nbsp;
+                                        
                                         <input class="selectSearch" id="filter" name="userName" type="text" placeholder="Search..." />
                                         <i id="filtersubmit" class="fa fa-search"></i>
 
@@ -181,28 +187,48 @@
                                         &nbsp;&nbsp;
                                     </form>
                                 </li>
+
+
+                                <li></li>
+                                <li></li>
+                                <li></li>
+                                <li></li>
+                                <li></li>
+                                <li></li>
+                                <!--                                <li><a th:href="@{/welcomeGlobal}">Home</a></li>-->
+                                <li><a th:href="@{/welcomeGlobal}"><font size="5" color="#008001"> HOME </font> </a></li>
+
+
+                                <li></li>
+                                <li></li>
+                                <li></li>
+                                <li></li>
+                                <li></li>
+                                <li></li>
+
                                 <li>
+
                                 <a th:href="@{/welcomeGlobal}">
-                                    <span sec:authentication="name"></span> <i class="fas fa-angle-down"></i>
+                                    <font size="5" color="#008001"><span sec:authentication="name"></span> <i class="fas fa-angle-down"></i></font>
                                 </a>
                                     <ul class="sub-menu">
-<!--                                        <li class="drop-list"><a th:href="@{/logout}" href="/Logout"><i-->
-<!--                                                class="fas fa-sign-out-alt"></i>Logout</a>-->
-<!--                                            <ul class="sub-menu">-->
-<!--                                                <li><a href="blog-2-column.html">Blog 2 Column</a></li>-->
-<!--                                                <li><a href="blog-3-column.html">Blog 3 Column</a></li>-->
-<!--                                            </ul>-->
-<!--                                        </li>-->
                                         <li><a th:href="@{/logout}" href="/Logout"><i
-                                                class="fas fa-sign-out-alt"></i><font color="red" size="4"> Logout</font></a></li>
+                                                class="fas fa-sign-out-alt"></i><font color="red" size="5"> LOGOUT</font></a></li>
+
+                                        <!--                                        <li class="drop-list"><a th:href="@{/logout}" href="/Logout"><i-->
+                                        <!--                                                class="fas fa-sign-out-alt"></i>Logout</a>-->
+                                        <!--                                            <ul class="sub-menu">-->
+                                        <!--                                                <li><a href="blog-2-column.html">Blog 2 Column</a></li>-->
+                                        <!--                                                <li><a href="blog-3-column.html">Blog 3 Column</a></li>-->
+                                        <!--                                            </ul>-->
+                                        <!--                                        </li>-->
+
 <!--                                        <li><a href="right-sidebar.html">Sidebar Right</a></li>-->
 <!--                                        <li><a href="single.html">Single Page</a></li>-->
 <!--                                        <li><a href="blank.html">Blank Page</a></li>-->
                                     </ul>
                                 </li>
 
-<!--                                <li><a th:href="@{/welcomeGlobal}">Home</a></li>-->
-                                <li><a th:href="@{/welcomeGlobal}"><font size="4" color="#008001"> HOME </font> </a></li>
 <!--                                <li th:if="${#authorization.expression('hasAnyAuthority(''ROLE_AGENT'')')} OR ${#authorization.expression('hasAnyAuthority(''ROLE_MANAGER'')')}">-->
 <!--                                    <form action="#" th:action="@{/findUserByUserName}" method="post">-->
 <!--                                        <font color="brown" size="3px"> <span th:text="${error}"/></font>-->
