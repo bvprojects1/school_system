@@ -84,7 +84,7 @@ public class GeneralLedgerService extends SuperService {
 
 
     public void updateGLWithCurrentLoanAccountTransaction(LoanAccountTransaction loanAccountTransaction) {
-        updateGeneralLedger(loanAccountTransaction, BVMicroUtils.LOAN, BVMicroUtils.DEBIT, loanAccountTransaction.getLoanAmount(), true);
+        updateGeneralLedger(loanAccountTransaction, BVMicroUtils.LOAN, BVMicroUtils.DEBIT, loanAccountTransaction.getLoanAmount()*-1, true);
         updateGeneralLedger(loanAccountTransaction, BVMicroUtils.CURRENT, BVMicroUtils.CREDIT, loanAccountTransaction.getLoanAmount(), true);
     }
 

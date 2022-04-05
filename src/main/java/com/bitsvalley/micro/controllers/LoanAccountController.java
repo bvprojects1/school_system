@@ -429,7 +429,7 @@ public class LoanAccountController extends SuperController {
                 (sat.getFive() * 5) +
                 (sat.getOne() * 1);
 
-        boolean match = (sat.getLoanAmount() == selection) || (sat.getLoanAmount()*-1 == selection) ;
+        boolean match = (sat.getAmountReceived() == selection) || (sat.getAmountReceived()*-1 == selection) ;
 
         if (match) {
             sat.setNotes(sat.getNotes()
