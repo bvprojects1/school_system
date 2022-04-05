@@ -46,7 +46,7 @@ public class UploadController extends SuperController{
     RuntimePropertiesRepository runtimePropertiesRepository;
 
 //    private final String UPLOAD_DIR = "/Users/frusamachifen/bv_micro_workspace/bv_micro/src/main/webapp/assets/images/";
-    private final String UPLOAD_DIR = "c:/pdfs/";
+//    private final String UPLOAD_DIR = "c:/pdfs/";
 
     @GetMapping("/file")
     public String uploadFile(){
@@ -73,8 +73,8 @@ public class UploadController extends SuperController{
     public String uploadFile(@RequestParam("file") MultipartFile file, RedirectAttributes attributes,HttpServletRequest request, ModelMap model) {
         String userName = (String)request.getSession().getAttribute("userName");
         // check if file is empty
-        if (file.isEmpty()) {
-            attributes.addFlashAttribute("message", "Please select a file to upload.");
+        if (file.isEmpty() ) {
+            attributes.addFlashAttribute("message", "Please select files to upload.");
             return "redirect:/";
         }
         // normalize the file path
@@ -84,13 +84,16 @@ public class UploadController extends SuperController{
         String rpath = "";
 //        rpath = rpath + "/assets/images/" + imageId; // whatever path you used for storing the file
 
+        final String UPLOAD_DIR = runtimePropertiesRepository.findByPropertyName("Upload Directory").getPropertyValue();
         String completePAth = rpath + UPLOAD_DIR +"_"+ userName +"_id_"+fileName;
+
         // save the file on the local file system
         Path path = null;
         try {
-
+//            for(int i = 0; i< 4; i++ ){
             path = Paths.get(completePAth);
             Files.copy(file.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
+
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -100,11 +103,119 @@ public class UploadController extends SuperController{
 
         aUser.setIdFilePath(completePAth);
         userService.saveUser(aUser);
-        SavingBilanzList savingBilanzByUserList = savingAccountService.getSavingBilanzByUser(aUser,false);
-        request.getSession().setAttribute("savingBilanzList",savingBilanzByUserList);
-        model.put("user",aUser);
-        return "userHome";
+//        SavingBilanzList savingBilanzByUserList = savingAccountService.getSavingBilanzByUser(aUser,false);
+//        request.getSession().setAttribute("savingBilanzList",savingBilanzByUserList);
+//        model.put("user",aUser);
+        return "upload";
     }
+
+
+    @PostMapping("/upload2")
+    public String uploadFile2(@RequestParam("file2") MultipartFile file2, RedirectAttributes attributes,HttpServletRequest request, ModelMap model) {
+        String userName = (String)request.getSession().getAttribute("userName");
+        // check if file is empty
+        if (file2.isEmpty() ) {
+            attributes.addFlashAttribute("message", "Please select files to upload.");
+            return "redirect:/";
+        }
+        // normalize the file path
+        String fileName = StringUtils.cleanPath(file2.getOriginalFilename());
+        String rpath = "";
+
+        final String UPLOAD_DIR = runtimePropertiesRepository.findByPropertyName("Upload Directory").getPropertyValue();
+        String completePAth = rpath + UPLOAD_DIR +"_"+ userName +"_id_"+fileName;
+
+        // save the file on the local file system
+        Path path = null;
+        try {
+            path = Paths.get(completePAth);
+            Files.copy(file2.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        // return success response
+        attributes.addFlashAttribute("message", "You successfully uploaded " + fileName + '!');
+        User aUser = userService.findUserByUserName(userName);
+
+        aUser.setIdFilePath2(completePAth);
+        userService.saveUser(aUser);
+//        SavingBilanzList savingBilanzByUserList = savingAccountService.getSavingBilanzByUser(aUser,false);
+//        request.getSession().setAttribute("savingBilanzList",savingBilanzByUserList);
+        model.put("user",aUser);
+        return "upload";
+    }
+
+
+    @PostMapping("/upload3")
+    public String uploadFile3(@RequestParam("file3") MultipartFile file3, RedirectAttributes attributes,HttpServletRequest request, ModelMap model) {
+        String userName = (String)request.getSession().getAttribute("userName");
+        // check if file is empty
+        if (file3.isEmpty() ) {
+            attributes.addFlashAttribute("message", "Please select files to upload.");
+            return "redirect:/";
+        }
+        // normalize the file path
+        String fileName = StringUtils.cleanPath(file3.getOriginalFilename());
+        String rpath = "";
+
+        final String UPLOAD_DIR = runtimePropertiesRepository.findByPropertyName("Upload Directory").getPropertyValue();
+        String completePAth = rpath + UPLOAD_DIR +"_"+ userName +"_id_"+fileName;
+
+        // save the file on the local file system
+        Path path = null;
+        try {
+            path = Paths.get(completePAth);
+            Files.copy(file3.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        // return success response
+        attributes.addFlashAttribute("message", "You successfully uploaded " + fileName + '!');
+        User aUser = userService.findUserByUserName(userName);
+
+        aUser.setIdFilePath3(completePAth);
+        userService.saveUser(aUser);
+//        SavingBilanzList savingBilanzByUserList = savingAccountService.getSavingBilanzByUser(aUser,false);
+//        request.getSession().setAttribute("savingBilanzList",savingBilanzByUserList);
+        model.put("user",aUser);
+        return "upload";
+    }
+
+    @PostMapping("/upload4")
+    public String uploadFile4(@RequestParam("file4") MultipartFile file4, RedirectAttributes attributes,HttpServletRequest request, ModelMap model) {
+        String userName = (String)request.getSession().getAttribute("userName");
+        // check if file is empty
+        if (file4.isEmpty() ) {
+            attributes.addFlashAttribute("message", "Please select files to upload.");
+            return "redirect:/";
+        }
+        // normalize the file path
+        String fileName = StringUtils.cleanPath(file4.getOriginalFilename());
+        String rpath = "";
+
+        final String UPLOAD_DIR = runtimePropertiesRepository.findByPropertyName("Upload Directory").getPropertyValue();
+        String completePAth = rpath + UPLOAD_DIR +"_"+ userName +"_id_"+fileName;
+
+        // save the file on the local file system
+        Path path = null;
+        try {
+            path = Paths.get(completePAth);
+            Files.copy(file4.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        // return success response
+        attributes.addFlashAttribute("message", "You successfully uploaded " + fileName + '!');
+        User aUser = userService.findUserByUserName(userName);
+
+        aUser.setIdFilePath4(completePAth);
+        userService.saveUser(aUser);
+//        SavingBilanzList savingBilanzByUserList = savingAccountService.getSavingBilanzByUser(aUser,false);
+//        request.getSession().setAttribute("savingBilanzList",savingBilanzByUserList);
+        model.put("user",aUser);
+        return "upload";
+    }
+
 
 
     @PostMapping("/uploadLogo")
@@ -116,6 +227,8 @@ public class UploadController extends SuperController{
         }
         String fileName = StringUtils.cleanPath(file.getOriginalFilename());
 //        String completePath = request.getContextPath();
+
+        final String UPLOAD_DIR = runtimePropertiesRepository.findByPropertyName("Upload Directory").getPropertyValue();
         String completePath = UPLOAD_DIR +fileName;
         RuntimeProperties logo = runtimePropertiesRepository.findByPropertyName("logo");
         if(logo == null){
@@ -147,6 +260,8 @@ public class UploadController extends SuperController{
         }
         String fileName = StringUtils.cleanPath(file.getOriginalFilename());
 //        String rpath = request.getRealPath("/");
+
+        final String UPLOAD_DIR = runtimePropertiesRepository.findByPropertyName("Upload Directory").getPropertyValue();
         String completePath =  UPLOAD_DIR +fileName;
         RuntimeProperties unionLogo = runtimePropertiesRepository.findByPropertyName("unionLogo");
         unionLogo.setPropertyValue(completePath);

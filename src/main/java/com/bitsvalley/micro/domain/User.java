@@ -33,6 +33,9 @@ public class User {
     private String email;
     private String dateOfBirth;
     private String idFilePath;
+    private String idFilePath2;
+    private String idFilePath3;
+    private String idFilePath4;
     private String identityCardNumber;
     @ManyToOne(cascade = CascadeType.ALL)
     private Branch branch;
@@ -313,5 +316,29 @@ public class User {
 
     public void setCustomerNumber(String customerNumber) {
         this.customerNumber = customerNumber;
+    }
+
+    public String getIdFilePath2() {
+        return idFilePath2;
+    }
+
+    public void setIdFilePath2(String idFilePath2) {
+        this.idFilePath2 = idFilePath2;
+    }
+
+    public String getIdFilePath3() {
+        return idFilePath3;
+    }
+
+    public void setIdFilePath3(String idFilePath3) {
+        this.idFilePath3 = idFilePath3;
+    }
+
+    public String getIdFilePath4() {
+        return idFilePath4;
+    }
+
+    public void setIdFilePath4(String idFilePath4) {
+        this.idFilePath4 = idFilePath4;
     }
 }

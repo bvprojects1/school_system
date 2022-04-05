@@ -18,6 +18,7 @@ public class RuntimeSetting {
     private String address;
     private Double vatPercent;
     private String unitSharePrice;
+    private String uploadDirectory;
 
     public String getSlogan() {
         return slogan;
@@ -146,4 +147,13 @@ public class RuntimeSetting {
     public void setVatPercent(Double vatPercent) {
         this.vatPercent = vatPercent;
     }
+
+    public String getUploadDirectory() {
+        return uploadDirectory;
+    }
+
+    public void setUploadDirectory(String uploadDirectory) {
+        this.uploadDirectory = uploadDirectory;
+    }
+
 }

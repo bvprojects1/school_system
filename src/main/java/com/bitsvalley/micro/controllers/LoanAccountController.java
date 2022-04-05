@@ -388,11 +388,11 @@ public class LoanAccountController extends SuperController {
 
 
         if ("CASH".equals(loanAccountTransaction.getModeOfPayment())) {
-//            if (!checkBillSelectionMatchesEnteredAmount(loanAccountTransaction)) {
-//                model.put("billSelectionError", "Bills Selection does not match entered amount");
-//                loanAccountTransaction.setNotes(loanAccountTransaction.getNotes());
-//                return displayLoanBilanzNoInterest(new Long(savingAccountId), model, loanAccountTransaction);
-//            }
+            if (!checkBillSelectionMatchesEnteredAmount(loanAccountTransaction)) {
+                model.put("billSelectionError", "Bills Selection does not match entered amount");
+                loanAccountTransaction.setNotes(loanAccountTransaction.getNotes());
+                return displayLoanBilanzNoInterest(new Long(loanAccountId), model, loanAccountTransaction);
+            }
 
         }
 
@@ -415,6 +415,28 @@ public class LoanAccountController extends SuperController {
         return "loanBilanzNoInterest";
     }
 
+    private boolean checkBillSelectionMatchesEnteredAmount(LoanAccountTransaction sat) {
+
+        double selection = (sat.getTenThousand() * 10000) +
+                (sat.getFiveThousand() * 5000) +
+                (sat.getTwoThousand() * 2000) +
+                (sat.getOneThousand() * 1000) +
+                (sat.getFiveHundred() * 500) +
+                (sat.getOneHundred() * 100) +
+                (sat.getFifty() * 50) +
+                (sat.getTwentyFive() * 25) +
+                (sat.getTen() * 10) +
+                (sat.getFive() * 5) +
+                (sat.getOne() * 1);
+
+        boolean match = (sat.getLoanAmount() == selection) || (sat.getLoanAmount()*-1 == selection) ;
+
+        if (match) {
+            sat.setNotes(sat.getNotes()
+                    + addBillSelection(sat));
+        }
+        return match;
+    }
 
     private void resetLoansAccountTransaction(LoanAccountTransaction sat) {
         sat.setLoanAmount(0);
@@ -428,7 +450,7 @@ public class LoanAccountController extends SuperController {
         sat.setTwoThousand(0);
     }
 
-    private String addBillSelection(SavingAccountTransaction sat) {
+    private String addBillSelection(LoanAccountTransaction sat) {
         String billSelection = " BS \n";
         billSelection = billSelection + concatBillSelection(" 10 000x", sat.getTenThousand()) + "\n";
         billSelection = billSelection + concatBillSelection(" 5 000x", sat.getFiveThousand()) + "\n";
@@ -437,6 +459,10 @@ public class LoanAccountController extends SuperController {
         billSelection = billSelection + concatBillSelection(" 500x", sat.getFiveHundred()) + "\n";
         billSelection = billSelection + concatBillSelection(" 100x", sat.getOneHundred()) + "\n";
         billSelection = billSelection + concatBillSelection(" 50x", sat.getFifty());
+        billSelection = billSelection + concatBillSelection(" 25x", sat.getTwentyFive()) + "\n";
+        billSelection = billSelection + concatBillSelection(" 10x", sat.getTen()) + "\n";
+        billSelection = billSelection + concatBillSelection(" 5x", sat.getFive()) + "\n";
+        billSelection = billSelection + concatBillSelection(" 1x", sat.getOne());
         return billSelection;
     }
 

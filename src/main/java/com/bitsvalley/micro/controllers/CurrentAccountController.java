@@ -240,6 +240,9 @@ public class CurrentAccountController extends SuperController {
         sat.setOneThousand(0);
         sat.setTenThousand(0);
         sat.setTwentyFive(0);
+        sat.setTen(0);
+        sat.setFive(0);
+        sat.setOne(0);
         sat.setTwoThousand(0);
     }
 
@@ -251,7 +254,10 @@ public class CurrentAccountController extends SuperController {
                 (sat.getFiveHundred() * 500) +
                 (sat.getOneHundred() * 100) +
                 (sat.getFifty() * 50) +
-                (sat.getTwentyFive() * 25));
+                (sat.getTwentyFive() * 25) +
+                (sat.getTen() * 10) +
+                (sat.getFive() * 5) +
+                (sat.getOne() * 1) );
         if (match) {
             sat.setNotes(sat.getNotes()
                     + addBillSelection(sat));
@@ -267,7 +273,11 @@ public class CurrentAccountController extends SuperController {
         billSelection = billSelection + concatBillSelection(" 1 000x", sat.getOneThousand()) + "\n";
         billSelection = billSelection + concatBillSelection(" 500x", sat.getFiveHundred()) + "\n";
         billSelection = billSelection + concatBillSelection(" 100x", sat.getOneHundred()) + "\n";
-        billSelection = billSelection + concatBillSelection(" 50x", sat.getFifty());
+        billSelection = billSelection + concatBillSelection(" 50x", sat.getFifty()) + "\n";
+        billSelection = billSelection + concatBillSelection(" 25x", sat.getTwentyFive()) + "\n";
+        billSelection = billSelection + concatBillSelection(" 10x", sat.getTen()) + "\n";
+        billSelection = billSelection + concatBillSelection(" 5x", sat.getFive()) + "\n";
+        billSelection = billSelection + concatBillSelection(" 1x", sat.getOne());
         return billSelection;
     }
 

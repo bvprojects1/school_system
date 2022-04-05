@@ -6,6 +6,7 @@ public class BillSelectionBilanz {
 
     int tenThousand = 0; int fiveThousand = 0; int twoThousand = 0; int oneThousand = 0;
     int fiveHundred = 0; int oneHundred = 0; int fifty = 0; int twentyFive = 0; int ten = 0; int five = 0;
+    int one = 0;
     double total = 0;
 
     public int getTenThousand() {
@@ -94,5 +95,13 @@ public class BillSelectionBilanz {
 
     public void setTotal(double total) {
         this.total = total;
+    }
+
+    public int getOne() {
+        return one;
+    }
+
+    public void setOne(int one) {
+        this.one = one;
     }
 }

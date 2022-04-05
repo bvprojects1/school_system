@@ -63,6 +63,7 @@
                                                  placeholder="Enter slogan" class="form-control">
                             <br/>
 
+
                             VAT Percent:<input type="text" name="vatPercent" th:field="*{vatPercent}" id="vat"
                                                  placeholder="VAT" class="form-control">
                             <br/>
@@ -101,6 +102,10 @@
 
                             ThemeColor2: <input type="text" name="themeColor2" th:field="*{themeColor2}" id="themeColor2"
                                         class="form-control">#84c0d5
+                            <br/>
+
+                            Upload Directory:<input type="text" name="uploadDirectory" th:field="*{uploadDirectory}" id="uploadDirectory"
+                                                class="form-control">
                             <br/>
 
                             <img width="100px" th:src="@{/getLogoImage}"/>

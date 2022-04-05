@@ -57,7 +57,12 @@
                             <br/>
 
                             <label for="status"><font size="4px"> Active</font></label>
-                            <input class="largerCheckbox" th:field="*{status}" type="checkbox" id="status" name="status" value="true"
+                            <input class="largerCheckbox" th:field="*{status}" type="checkbox" id="status" name="status" value="*{status}"
+                                   checked>
+                            <br/>
+
+                            <label for="status"><font size="4px"> Credit Balance</font></label>
+                            <input class="largerCheckbox" th:field="*{creditBalance}" type="checkbox" id="creditBalance" name="creditBalance" th:value="*{creditBalance}"
                                    checked>
                             <br/>
 
@@ -95,12 +100,13 @@
 
                             </td>
                             <td th:text="${aLedgerAccount.code}"></td>
+                            <td th:text="${aLedgerAccount.creditBalance}"> </td>
                             <td th:text="${aLedgerAccount.category}"> </td>
                             <td th:text="${aLedgerAccount.status}"> </td>
                             <td>
-                                <font size="4"></font><a href="#" th:href="@{/cashToLedgerAccount/{id}(id=${aLedgerAccount.id})}">Cash From This Account</a><br/></font>
+                                <font size="3"></font><a href="#" th:href="@{/cashToLedgerAccount/{id}(id=${aLedgerAccount.id})}">Cash From This Account</a><br/></font>
                                 <a href="#" th:href="@{/addGeneralLedgerEntry/{id}(id=${aLedgerAccount.id})}"> <img width="30px" th:src="@{/assets/images/transfer2.png}"/> </a><br/>
-                                <font size="4"><a href="#" th:href="@{/cashFromLedgerAccount/{id}(id=${aLedgerAccount.id})}">Cash To This Account</a></font>
+                                <font size="3"><a href="#" th:href="@{/cashFromLedgerAccount/{id}(id=${aLedgerAccount.id})}">Cash To This Account</a></font>
                             </td>
                         </tr>
                     </table>

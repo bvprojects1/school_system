@@ -30,6 +30,11 @@ public class InitSystemService {
             businessName.setPropertyValue("bitsvalley");
             runtimePropertiesList.add(businessName);
 
+            RuntimeProperties uploadDirectory = new RuntimeProperties();
+            uploadDirectory.setPropertyName("Upload Directory");
+            uploadDirectory.setPropertyValue("/User/abcUser/");
+            runtimePropertiesList.add(uploadDirectory);
+
             RuntimeProperties slogan = new RuntimeProperties();
             slogan.setPropertyName("Slogan");
             slogan.setPropertyValue("together we achieve more");
@@ -143,6 +148,8 @@ public class InitSystemService {
                 runtime.setVatPercent(new Double(rp.getPropertyValue()));
             }else if(rp.getPropertyName().equals("unitSharePrice")){
                 runtime.setUnitSharePrice(rp.getPropertyValue());
+            }else if(rp.getPropertyName().equals("Upload Directory")){
+                runtime.setUploadDirectory(rp.getPropertyValue());
             }
         }
         return runtime;

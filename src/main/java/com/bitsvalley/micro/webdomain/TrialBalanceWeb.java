@@ -16,6 +16,7 @@ public class TrialBalanceWeb {
         private double debitTotal;
         private double creditTotal;
         private double totalDifference;
+    private String classCode;
 
 
     public double getTotalDifference() {
@@ -66,4 +67,11 @@ public class TrialBalanceWeb {
         this.creditTotal = creditTotal;
     }
 
+    public void setClassCode(String classCode) {
+        this.classCode = classCode;
+    }
+
+    public String getClassCode() {
+        return classCode;
+    }
 }
