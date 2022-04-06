@@ -463,7 +463,10 @@ public class SavingAccountController extends SuperController {
                 (sat.getFiveHundred() * 500) +
                 (sat.getOneHundred() * 100) +
                 (sat.getFifty() * 50) +
-                (sat.getTwentyFive() * 25);
+                (sat.getTwentyFive() * 25) +
+                (sat.getTen() * 10) +
+                (sat.getFive() * 5) +
+                (sat.getOne() * 1);
 
         boolean match = (sat.getSavingAmount() == selection) || (sat.getSavingAmount()*-1 == selection) ;
 
@@ -483,6 +486,10 @@ public class SavingAccountController extends SuperController {
         billSelection = billSelection + concatBillSelection(" 500x", sat.getFiveHundred()) + "\n";
         billSelection = billSelection + concatBillSelection(" 100x", sat.getOneHundred()) + "\n";
         billSelection = billSelection + concatBillSelection(" 50x", sat.getFifty());
+        billSelection = billSelection + concatBillSelection(" 25x", sat.getTwentyFive());
+        billSelection = billSelection + concatBillSelection(" 10x", sat.getTen()) + "\n";
+        billSelection = billSelection + concatBillSelection(" 5x", sat.getFive()) + "\n";
+        billSelection = billSelection + concatBillSelection(" 1x", sat.getOne());
         return billSelection;
     }
 

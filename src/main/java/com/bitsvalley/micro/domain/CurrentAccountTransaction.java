@@ -30,6 +30,9 @@ public class CurrentAccountTransaction {
     private int oneHundred;
     private int fifty;
     private int twentyFive;
+    private int ten;
+    private int five;
+    private int one;
     private String accountOwner;
     private String representative;
     private long branch;
@@ -232,5 +235,29 @@ public class CurrentAccountTransaction {
 
     public void setWithdrawalDeposit(int withdrawalDeposit) {
         this.withdrawalDeposit = withdrawalDeposit;
+    }
+
+    public int getTen() {
+        return ten;
+    }
+
+    public void setTen(int ten) {
+        this.ten = ten;
+    }
+
+    public int getFive() {
+        return five;
+    }
+
+    public void setFive(int five) {
+        this.five = five;
+    }
+
+    public int getOne() {
+        return one;
+    }
+
+    public void setOne(int one) {
+        this.one = one;
     }
 }

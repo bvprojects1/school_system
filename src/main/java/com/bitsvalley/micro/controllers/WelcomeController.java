@@ -135,6 +135,33 @@ public class WelcomeController extends SuperController{
         return data;
     }
 
+    @GetMapping(value = "/getImage4")
+    @ResponseBody
+    public byte[] getImage4(HttpServletRequest request) throws IOException {
+        User user = (User)request.getSession().getAttribute(BVMicroUtils.CUSTOMER_IN_USE);
+        Path path = Paths.get(user.getIdFilePath4());
+        byte[] data = Files.readAllBytes(path);
+        return data;
+    }
+
+    @GetMapping(value = "/getImage2")
+    @ResponseBody
+    public byte[] getImage2(HttpServletRequest request) throws IOException {
+        User user = (User)request.getSession().getAttribute(BVMicroUtils.CUSTOMER_IN_USE);
+        Path path = Paths.get(user.getIdFilePath2());
+        byte[] data = Files.readAllBytes(path);
+        return data;
+    }
+
+    @GetMapping(value = "/getImage3")
+    @ResponseBody
+    public byte[] getImage3(HttpServletRequest request) throws IOException {
+        User user = (User)request.getSession().getAttribute(BVMicroUtils.CUSTOMER_IN_USE);
+        Path path = Paths.get(user.getIdFilePath3());
+        byte[] data = Files.readAllBytes(path);
+        return data;
+    }
+
     @GetMapping(value = "/getLogoImage")
     @ResponseBody
     public byte[] getLogoImage(HttpServletRequest request) throws IOException {

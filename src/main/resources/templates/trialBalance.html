@@ -64,8 +64,11 @@
                             <span th:if="${trialBalanceBilanz.debitTotal == 0}">
                                 0
                             </span>
-                            <span th:unless="${trialBalanceBilanz.debitTotal == 0}">
+                            <span th:if="${trialBalanceBilanz.debitTotal > 0}">
                                 <span th:text="${#numbers.formatDecimal(trialBalanceBilanz.debitTotal, 0, 'COMMA', 0, 'POINT')}"/>
+                            </span>
+                            <span th:if="${trialBalanceBilanz.debitTotal < 0}">
+                                <span th:text="${#numbers.formatDecimal(trialBalanceBilanz.debitTotal*-1, 0, 'COMMA', 0, 'POINT')}"/>
                             </span>
                         </b>
                     </font>
@@ -73,7 +76,15 @@
                 <font size="2">CREDIT</font>
                 <font size="5">
                         <b>
-                            <span th:text="${#numbers.formatDecimal(trialBalanceBilanz.creditTotal, 0, 'COMMA', 0, 'POINT')}"/>
+                            <span th:if="${trialBalanceBilanz.creditTotal == 0}">
+                                0
+                            </span>
+                            <span th:if="${trialBalanceBilanz.creditTotal > 0}">
+                                <span th:text="${#numbers.formatDecimal(trialBalanceBilanz.creditTotal, 0, 'COMMA', 0, 'POINT')}"/>
+                            </span>
+                            <span th:if="${trialBalanceBilanz.creditTotal < 0}">
+                                <span th:text="${#numbers.formatDecimal(trialBalanceBilanz.creditTotal*-1, 0, 'COMMA', 0, 'POINT')}"/>
+                            </span>
                         </b>
                 </font>
             </td><td>
@@ -88,15 +99,17 @@
                 <span th:if="${trialBalanceBilanz.totalDifference < 0}">
                     <font size="2">DEBIT</font>
                     <font size="5">
-                    <b><span
-                            th:text="${#numbers.formatDecimal(trialBalanceBilanz.totalDifference*-1, 0, 'COMMA', 0, 'POINT')}"/></b>
+                    <b>
+                       <span th:text="${#numbers.formatDecimal(trialBalanceBilanz.totalDifference*-1, 0, 'COMMA', 0, 'POINT')}"/>
+                    </b>
                     </font>
                 </span>
                 <span th:if="${trialBalanceBilanz.totalDifference > 0}">
                     <font size="2">CREDIT</font>
                     <font size="5">
-                        <b><span
-                                th:text="${#numbers.formatDecimal(trialBalanceBilanz.totalDifference, 0, 'COMMA', 0, 'POINT')}"/></b>
+                        <b>
+                            <span th:text="${#numbers.formatDecimal(trialBalanceBilanz.totalDifference, 0, 'COMMA', 0, 'POINT')}"/>
+                        </b>
                     </font>
                 </span>
             </td>
@@ -122,18 +135,31 @@
             <td th:text="${tb.code}">
             </td>
             <td>
-                <span th:if="${tb.totalDifference < 0}">
-                    <span th:text="${#numbers.formatDecimal(tb.totalDifference*-1, 0, 'COMMA', 0, 'POINT')}"/>
+                <span th:if="${tb.classCode =='1'} OR ${tb.classCode =='5'} OR ${tb.classCode =='6'}">
+
+                    <span th:if="${tb.totalDifference > 0}">
+                        <span th:text="${#numbers.formatDecimal(tb.totalDifference, 0, 'COMMA', 0, 'POINT')}"/>
+                    </span>
+
+                    <span th:if="${tb.totalDifference < 0}">
+                        <span th:text="${#numbers.formatDecimal(tb.totalDifference*-1, 0, 'COMMA', 0, 'POINT')}"/>
+                    </span>
+
                 </span>
-                <span th:unless="${tb.totalDifference < 0}">
+                <span th:unless="${tb.classCode =='1'} OR ${tb.classCode =='5'} OR ${tb.classCode =='6'}" >
                     0
                 </span>
             </td>
             <td>
-                <span th:if="${tb.totalDifference > 0}">
-                    <span th:text="${#numbers.formatDecimal(tb.totalDifference, 0, 'COMMA', 0, 'POINT')}"/>
+                <span th:unless="${tb.classCode =='1'} OR ${tb.classCode =='5'} OR ${tb.classCode =='6'}" >
+                    <span th:if="${tb.totalDifference < 0}">
+                        <span th:text="${#numbers.formatDecimal(tb.totalDifference*-1, 0, 'COMMA', 0, 'POINT')}"/>
+                    </span>
+                    <span th:if="${tb.totalDifference > 0}">
+                        <span th:text="${#numbers.formatDecimal(tb.totalDifference, 0, 'COMMA', 0, 'POINT')}"/>
+                    </span>
                 </span>
-                <span th:unless="${tb.totalDifference > 0}">
+                <span th:if="${tb.classCode =='1'} OR ${tb.classCode =='5'} OR ${tb.classCode =='6'}">
                     0
                 </span>
                 <!--                <span th:text="${#numbers.formatDecimal(tb.creditTotal, 0, 'COMMA', 0, 'POINT')}">-->

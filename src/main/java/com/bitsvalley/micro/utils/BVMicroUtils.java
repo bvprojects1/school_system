@@ -22,10 +22,7 @@ import java.util.Random;
 
 public class BVMicroUtils {
 
-    public static final String TRANSFER_TO_CURRENT = "TRANSFER_TO_CURRENT";
-    public static final String TRANSFER_FROM_CURRENT = "TRANSFER_FROM_CURRENT";
-    public static final String TRANSFER_FROM_SAVING = "TRANSFER_FROM_SAVING";
-    public static final String TRANSFER_TO_SAVING = "TRANSFER_TO_SAVING";
+
     public static final String TRANSFER = "TRANSFER";
 
     public static final String CURRENT_TO_GL_TRANSFER = "CURRENT_TO_GL_TRANSFER";
@@ -102,10 +99,12 @@ public class BVMicroUtils {
     public static final String SHARE_GL_5004 = "SHARE_GL_5004";
 
     public static final String GL_4002 = "GL_4002";
+
     public static final String LOAN_INTEREST_GL_7001 = "LOAN_INTEREST_GL_7001";
+
     public static final String LOAN_GL_3001 = "LOAN_GL_3001";
     public static final String SAVINGS_3004 = "SAVINGS_3004";
-    public static final String SAVINGS_GL_3003 = "SAVINGS_GL_3003";
+//    public static final String SAVINGS_GL_3003 = "SAVINGS_GL_3003";
     public static final String RETIREMENT_SAVINGS_GL_3005 = "RETIREMENT_SAVINGS_GL_3005";
     public static final String DAILY_SAVINGS_GL_3006 = "DAILY_SAVINGS_GL_3006";
 
@@ -139,10 +138,26 @@ public class BVMicroUtils {
     public static final String GL_3022 = "GL_3022";
     public static final String GL_3023 = "GL_3023";
     public static final String GL_5004 = "GL_5004";
-    public static final String GL_3003 = "GL_3003";
+//    public static final String GL_3003 = "GL_3003";
     public static final String GL_5001 = "GL_5001";
-    public static final String GL_7001 = "GL_7001";
+//    public static final String GL_7001 = "GL_7001";
     public static final String GL_TRANSFER = "GL_TRANSFER";
+    public static final String NJANGI_FINANCING_LOAN_INTEREST = "NJANGI_FINANCING_LOAN_INTEREST";
+    public static final String OVERDRAFT_LOAN_INTEREST = "OVERDRAFT_LOAN_INTEREST";
+    public static final String REAL_ESTATE_LOAN_INTEREST = "REAL_ESTATE_LOAN_INTEREST";
+    public static final String SCHOOL_FEES_LOAN_INTEREST = "SCHOOL_FEES_LOAN_INTEREST";
+    public static final String BUSINESS_INVESTMENT_LOAN_INTEREST = "BUSINESS_INVESTMENT_LOAN_INTEREST";
+    public static final String AGRICULTURE_LOAN_INTEREST = "AGRICULTURE_LOAN_INTEREST";
+    public static final String CONSUMPTION_LOAN_INTEREST = "CONSUMPTION_LOAN_INTEREST";
+    public static final String SHORT_TERM_LOAN_INTEREST = "SHORT_TERM_LOAN_INTEREST";
+    public static final String GL_7015 = "GL_7015";
+    public static final String GL_7016 = "GL_7016";
+    public static final String GL_7017 = "GL_7017";
+    public static final String GL_7018 = "GL_7018";
+    public static final String GL_7019 = "GL_7019";
+    public static final String GL_7020 = "GL_7020";
+    public static final String GL_7021 = "GL_7021";
+    public static final String GL_7022 = "GL_7022";
 
 
     public static  String getSaltString() {

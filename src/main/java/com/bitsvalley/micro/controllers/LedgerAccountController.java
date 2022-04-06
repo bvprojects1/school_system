@@ -55,13 +55,6 @@ public class LedgerAccountController extends SuperController{
             List<LedgerAccount> ledgerAccountList = new ArrayList<LedgerAccount>();
 //
             LedgerAccount ledgerAccount = new LedgerAccount();
-            ledgerAccount.setName(BVMicroUtils.SAVINGS);
-            ledgerAccount.setCategory("3000 – 3999");
-            ledgerAccount.setCode(BVMicroUtils.SAVINGS+"_"+BVMicroUtils.GL_3003);
-            ledgerAccount.setStatus(BVMicroUtils.ACTIVE);
-            ledgerAccount.setCreatedBy(BVMicroUtils.INIT_SYSTEM);
-            ledgerAccount.setCreatedDate(new Date());
-            ledgerAccountList.add(ledgerAccount);
 
             ledgerAccount = new LedgerAccount();
             ledgerAccount.setName(BVMicroUtils.LOAN);
@@ -69,6 +62,7 @@ public class LedgerAccountController extends SuperController{
             ledgerAccount.setCode(BVMicroUtils.LOAN+"_"+BVMicroUtils.GL_3001);
             ledgerAccount.setStatus(BVMicroUtils.ACTIVE);
             ledgerAccount.setCreatedBy(BVMicroUtils.INIT_SYSTEM);
+            ledgerAccount.setCreditBalance("true");
             ledgerAccount.setCreatedDate(new Date());
             ledgerAccountList.add(ledgerAccount);
 
@@ -78,15 +72,7 @@ public class LedgerAccountController extends SuperController{
             ledgerAccount.setCode(BVMicroUtils.CASH+"_"+BVMicroUtils.GL_5001);
             ledgerAccount.setStatus(BVMicroUtils.ACTIVE);
             ledgerAccount.setCreatedBy(BVMicroUtils.INIT_SYSTEM);
-            ledgerAccount.setCreatedDate(new Date());
-            ledgerAccountList.add(ledgerAccount);
-
-            ledgerAccount = new LedgerAccount();
-            ledgerAccount.setName(BVMicroUtils.LOAN_INTEREST);
-            ledgerAccount.setCategory("7000 – 7999");
-            ledgerAccount.setCode(BVMicroUtils.LOAN_INTEREST+"_"+BVMicroUtils.GL_7001);
-            ledgerAccount.setStatus(BVMicroUtils.ACTIVE);
-            ledgerAccount.setCreatedBy(BVMicroUtils.INIT_SYSTEM);
+            ledgerAccount.setCreditBalance("true");
             ledgerAccount.setCreatedDate(new Date());
             ledgerAccountList.add(ledgerAccount);
 
@@ -96,6 +82,7 @@ public class LedgerAccountController extends SuperController{
             ledgerAccount.setCategory("4000 – 4999");
             ledgerAccount.setStatus(BVMicroUtils.ACTIVE);
             ledgerAccount.setCreatedBy(BVMicroUtils.INIT_SYSTEM);
+            ledgerAccount.setCreditBalance("true");
             ledgerAccount.setCreatedDate(new Date());
             ledgerAccountList.add(ledgerAccount);
 
@@ -105,6 +92,7 @@ public class LedgerAccountController extends SuperController{
             ledgerAccount.setCategory("4000 – 4999");
             ledgerAccount.setStatus(BVMicroUtils.ACTIVE);
             ledgerAccount.setCreatedBy(BVMicroUtils.INIT_SYSTEM);
+            ledgerAccount.setCreditBalance("true");
             ledgerAccount.setCreatedDate(new Date());
             ledgerAccountList.add(ledgerAccount);
 
@@ -113,6 +101,7 @@ public class LedgerAccountController extends SuperController{
             ledgerAccount.setCode(BVMicroUtils.CURRENT+"_"+BVMicroUtils.GL_3004);
             ledgerAccount.setCategory("3000 – 3999");
             ledgerAccount.setStatus(BVMicroUtils.ACTIVE);
+            ledgerAccount.setCreditBalance("true");
             ledgerAccountList.add(ledgerAccount);
 
             ledgerAccount = new LedgerAccount();
@@ -120,6 +109,7 @@ public class LedgerAccountController extends SuperController{
             ledgerAccount.setCode(BVMicroUtils.GENERAL_SAVINGS+"_"+BVMicroUtils.GL_3005);
             ledgerAccount.setCategory("3000 – 3999");
             ledgerAccount.setStatus(BVMicroUtils.ACTIVE);
+            ledgerAccount.setCreditBalance("true");
             ledgerAccountList.add(ledgerAccount);
 
             ledgerAccount = new LedgerAccount();
@@ -127,6 +117,7 @@ public class LedgerAccountController extends SuperController{
             ledgerAccount.setCode(BVMicroUtils.RETIREMENT_SAVINGS+"_"+BVMicroUtils.GL_3006);
             ledgerAccount.setCategory("3000 – 3999");
             ledgerAccount.setStatus(BVMicroUtils.ACTIVE);
+            ledgerAccount.setCreditBalance("true");
             ledgerAccountList.add(ledgerAccount);
 
             ledgerAccount = new LedgerAccount();
@@ -134,6 +125,7 @@ public class LedgerAccountController extends SuperController{
             ledgerAccount.setCode(BVMicroUtils.DAILY_SAVINGS+"_"+BVMicroUtils.GL_3007);
             ledgerAccount.setCategory("3000 – 3999");
             ledgerAccount.setStatus(BVMicroUtils.ACTIVE);
+            ledgerAccount.setCreditBalance("true");
             ledgerAccountList.add(ledgerAccount);
 
             ledgerAccount = new LedgerAccount();
@@ -141,6 +133,7 @@ public class LedgerAccountController extends SuperController{
             ledgerAccount.setCode(BVMicroUtils.MEDICAL_SAVINGS +"_"+ BVMicroUtils.GL_3008);
             ledgerAccount.setCategory("3000 – 3999");
             ledgerAccount.setStatus(BVMicroUtils.ACTIVE);
+            ledgerAccount.setCreditBalance("true");
             ledgerAccountList.add(ledgerAccount);
 
             ledgerAccount = new LedgerAccount();
@@ -148,6 +141,7 @@ public class LedgerAccountController extends SuperController{
             ledgerAccount.setCode(BVMicroUtils.SOCIAL_SAVINGS+"_"+BVMicroUtils.GL_3010);
             ledgerAccount.setCategory("3000 – 3999");
             ledgerAccount.setStatus(BVMicroUtils.ACTIVE);
+            ledgerAccount.setCreditBalance("true");
             ledgerAccountList.add(ledgerAccount);
 
             ledgerAccount = new LedgerAccount();
@@ -155,6 +149,7 @@ public class LedgerAccountController extends SuperController{
             ledgerAccount.setCode(BVMicroUtils.BUSINESS_SAVINGS+"_"+BVMicroUtils.GL_3011);
             ledgerAccount.setCategory("3000 – 3999");
             ledgerAccount.setStatus(BVMicroUtils.ACTIVE);
+            ledgerAccount.setCreditBalance("true");
             ledgerAccountList.add(ledgerAccount);
 
             ledgerAccount = new LedgerAccount();
@@ -162,6 +157,7 @@ public class LedgerAccountController extends SuperController{
             ledgerAccount.setCode(BVMicroUtils.CHILDREN_SAVINGS+"_"+BVMicroUtils.GL_3012);
             ledgerAccount.setCategory("3000 – 3999");
             ledgerAccount.setStatus(BVMicroUtils.ACTIVE);
+            ledgerAccount.setCreditBalance("true");
             ledgerAccountList.add(ledgerAccount);
 
             ledgerAccount = new LedgerAccount();
@@ -169,6 +165,7 @@ public class LedgerAccountController extends SuperController{
             ledgerAccount.setCode(BVMicroUtils.REAL_ESTATE_SAVINGS+"_"+BVMicroUtils.GL_3013);
             ledgerAccount.setCategory("3000 – 3999");
             ledgerAccount.setStatus(BVMicroUtils.ACTIVE);
+            ledgerAccount.setCreditBalance("true");
             ledgerAccountList.add(ledgerAccount);
 
             ledgerAccount = new LedgerAccount();
@@ -176,6 +173,7 @@ public class LedgerAccountController extends SuperController{
             ledgerAccount.setCode(BVMicroUtils.EDUCATION_SAVINGS+"_"+BVMicroUtils.GL_3014);
             ledgerAccount.setCategory("3000 – 3999");
             ledgerAccount.setStatus(BVMicroUtils.ACTIVE);
+            ledgerAccount.setCreditBalance("true");
             ledgerAccountList.add(ledgerAccount);
 
             ledgerAccount = new LedgerAccount();
@@ -183,6 +181,17 @@ public class LedgerAccountController extends SuperController{
             ledgerAccount.setCode(BVMicroUtils.SHORT_TERM_LOAN+"_"+BVMicroUtils.GL_3015);
             ledgerAccount.setCategory("3000 – 3999");
             ledgerAccount.setStatus(BVMicroUtils.ACTIVE);
+            ledgerAccount.setCreditBalance("false");
+            ledgerAccountList.add(ledgerAccount);
+
+            ledgerAccount = new LedgerAccount();
+            ledgerAccount.setName(BVMicroUtils.SHORT_TERM_LOAN_INTEREST);
+            ledgerAccount.setCategory("7000 – 7999");
+            ledgerAccount.setCode(BVMicroUtils.SHORT_TERM_LOAN_INTEREST+"_"+BVMicroUtils.GL_7015);
+            ledgerAccount.setStatus(BVMicroUtils.ACTIVE);
+            ledgerAccount.setCreatedBy(BVMicroUtils.INIT_SYSTEM);
+            ledgerAccount.setCreditBalance("true");
+            ledgerAccount.setCreatedDate(new Date());
             ledgerAccountList.add(ledgerAccount);
 
             ledgerAccount = new LedgerAccount();
@@ -190,6 +199,17 @@ public class LedgerAccountController extends SuperController{
             ledgerAccount.setCode(BVMicroUtils.CONSUMPTION_LOAN+"_"+BVMicroUtils.GL_3016);
             ledgerAccount.setCategory("3000 – 3999");
             ledgerAccount.setStatus(BVMicroUtils.ACTIVE);
+            ledgerAccount.setCreditBalance("false");
+            ledgerAccountList.add(ledgerAccount);
+
+            ledgerAccount = new LedgerAccount();
+            ledgerAccount.setName(BVMicroUtils.CONSUMPTION_LOAN_INTEREST);
+            ledgerAccount.setCategory("7000 – 7999");
+            ledgerAccount.setCode(BVMicroUtils.CONSUMPTION_LOAN_INTEREST+"_"+BVMicroUtils.GL_7016);
+            ledgerAccount.setStatus(BVMicroUtils.ACTIVE);
+            ledgerAccount.setCreatedBy(BVMicroUtils.INIT_SYSTEM);
+            ledgerAccount.setCreditBalance("true");
+            ledgerAccount.setCreatedDate(new Date());
             ledgerAccountList.add(ledgerAccount);
 
 
@@ -198,13 +218,35 @@ public class LedgerAccountController extends SuperController{
             ledgerAccount.setCode(BVMicroUtils.AGRICULTURE_LOAN+"_"+BVMicroUtils.GL_3017);
             ledgerAccount.setCategory("3000 – 3999");
             ledgerAccount.setStatus(BVMicroUtils.ACTIVE);
+            ledgerAccount.setCreditBalance("true");
+            ledgerAccountList.add(ledgerAccount);
+
+            ledgerAccount = new LedgerAccount();
+            ledgerAccount.setName(BVMicroUtils.AGRICULTURE_LOAN_INTEREST);
+            ledgerAccount.setCategory("7000 – 7999");
+            ledgerAccount.setCode(BVMicroUtils.AGRICULTURE_LOAN_INTEREST+"_"+BVMicroUtils.GL_7017);
+            ledgerAccount.setStatus(BVMicroUtils.ACTIVE);
+            ledgerAccount.setCreatedBy(BVMicroUtils.INIT_SYSTEM);
+            ledgerAccount.setCreditBalance("true");
+            ledgerAccount.setCreatedDate(new Date());
             ledgerAccountList.add(ledgerAccount);
 
             ledgerAccount = new LedgerAccount();
             ledgerAccount.setName(BVMicroUtils.BUSINESS_INVESTMENT_LOAN);
             ledgerAccount.setCode(BVMicroUtils.BUSINESS_INVESTMENT_LOAN+"_"+BVMicroUtils.GL_3018);
             ledgerAccount.setCategory("3000 – 3999");
+            ledgerAccount.setCreditBalance("false");
             ledgerAccount.setStatus(BVMicroUtils.ACTIVE);
+            ledgerAccountList.add(ledgerAccount);
+
+            ledgerAccount = new LedgerAccount();
+            ledgerAccount.setName(BVMicroUtils.BUSINESS_INVESTMENT_LOAN_INTEREST);
+            ledgerAccount.setCategory("7000 – 7999");
+            ledgerAccount.setCode(BVMicroUtils.BUSINESS_INVESTMENT_LOAN_INTEREST+"_"+BVMicroUtils.GL_7018);
+            ledgerAccount.setStatus(BVMicroUtils.ACTIVE);
+            ledgerAccount.setCreatedBy(BVMicroUtils.INIT_SYSTEM);
+            ledgerAccount.setCreatedDate(new Date());
+            ledgerAccount.setCreditBalance("true");
             ledgerAccountList.add(ledgerAccount);
 
             ledgerAccount = new LedgerAccount();
@@ -212,27 +254,74 @@ public class LedgerAccountController extends SuperController{
             ledgerAccount.setCode(BVMicroUtils.SCHOOL_FEES_LOAN+"_"+BVMicroUtils.GL_3019);
             ledgerAccount.setCategory("3000 – 3999");
             ledgerAccount.setStatus(BVMicroUtils.ACTIVE);
+            ledgerAccount.setCreditBalance("false");
             ledgerAccountList.add(ledgerAccount);
+
+            ledgerAccount = new LedgerAccount();
+            ledgerAccount.setName(BVMicroUtils.SCHOOL_FEES_LOAN_INTEREST);
+            ledgerAccount.setCategory("7000 – 7999");
+            ledgerAccount.setCode(BVMicroUtils.SCHOOL_FEES_LOAN_INTEREST+"_"+BVMicroUtils.GL_7019);
+            ledgerAccount.setStatus(BVMicroUtils.ACTIVE);
+            ledgerAccount.setCreatedBy(BVMicroUtils.INIT_SYSTEM);
+            ledgerAccount.setCreditBalance("true");
+            ledgerAccount.setCreatedDate(new Date());
+            ledgerAccountList.add(ledgerAccount);
+
 
             ledgerAccount = new LedgerAccount();
             ledgerAccount.setName(BVMicroUtils.REAL_ESTATE_LOAN);
             ledgerAccount.setCode(BVMicroUtils.REAL_ESTATE_LOAN+"_"+BVMicroUtils.GL_3020);
             ledgerAccount.setCategory("3000 – 3999");
             ledgerAccount.setStatus(BVMicroUtils.ACTIVE);
+            ledgerAccount.setCreditBalance("false");
             ledgerAccountList.add(ledgerAccount);
+
+            ledgerAccount = new LedgerAccount();
+            ledgerAccount.setName(BVMicroUtils.REAL_ESTATE_LOAN_INTEREST);
+            ledgerAccount.setCategory("7000 – 7999");
+            ledgerAccount.setCode(BVMicroUtils.REAL_ESTATE_LOAN_INTEREST+"_"+BVMicroUtils.GL_7020);
+            ledgerAccount.setStatus(BVMicroUtils.ACTIVE);
+            ledgerAccount.setCreatedBy(BVMicroUtils.INIT_SYSTEM);
+            ledgerAccount.setCreditBalance("true");
+            ledgerAccount.setCreatedDate(new Date());
+            ledgerAccountList.add(ledgerAccount);
+
 
             ledgerAccount = new LedgerAccount();
             ledgerAccount.setName(BVMicroUtils.OVERDRAFT_LOAN);
             ledgerAccount.setCode(BVMicroUtils.OVERDRAFT_LOAN+"_"+BVMicroUtils.GL_3021);
             ledgerAccount.setCategory("3000 – 3999");
             ledgerAccount.setStatus(BVMicroUtils.ACTIVE);
+            ledgerAccount.setCreditBalance("false");
             ledgerAccountList.add(ledgerAccount);
+
+            ledgerAccount = new LedgerAccount();
+            ledgerAccount.setName(BVMicroUtils.OVERDRAFT_LOAN_INTEREST);
+            ledgerAccount.setCategory("7000 – 7999");
+            ledgerAccount.setCode(BVMicroUtils.OVERDRAFT_LOAN_INTEREST+"_"+BVMicroUtils.GL_7021);
+            ledgerAccount.setStatus(BVMicroUtils.ACTIVE);
+            ledgerAccount.setCreatedBy(BVMicroUtils.INIT_SYSTEM);
+            ledgerAccount.setCreditBalance("true");
+            ledgerAccount.setCreatedDate(new Date());
+            ledgerAccountList.add(ledgerAccount);
+
 
             ledgerAccount = new LedgerAccount();
             ledgerAccount.setName(BVMicroUtils.NJANGI_FINANCING);
             ledgerAccount.setCode(BVMicroUtils.NJANGI_FINANCING+"_"+BVMicroUtils.GL_3022);
             ledgerAccount.setCategory("3000 – 3999");
             ledgerAccount.setStatus(BVMicroUtils.ACTIVE);
+            ledgerAccount.setCreditBalance("false");
+            ledgerAccountList.add(ledgerAccount);
+
+            ledgerAccount = new LedgerAccount();
+            ledgerAccount.setName(BVMicroUtils.NJANGI_FINANCING_LOAN_INTEREST);
+            ledgerAccount.setCategory("7000 – 7999");
+            ledgerAccount.setCode(BVMicroUtils.NJANGI_FINANCING_LOAN_INTEREST+"_"+BVMicroUtils.GL_7022);
+            ledgerAccount.setStatus(BVMicroUtils.ACTIVE);
+            ledgerAccount.setCreatedBy(BVMicroUtils.INIT_SYSTEM);
+            ledgerAccount.setCreatedDate(new Date());
+            ledgerAccount.setCreditBalance("true");
             ledgerAccountList.add(ledgerAccount);
 
             ledgerAccount = new LedgerAccount();
@@ -240,12 +329,14 @@ public class LedgerAccountController extends SuperController{
             ledgerAccount.setCode(BVMicroUtils.SHARE+"_"+BVMicroUtils.GL_5004);
             ledgerAccount.setCategory("5000 – 5999");
             ledgerAccount.setStatus(BVMicroUtils.ACTIVE);
+            ledgerAccount.setCreditBalance("true");
             ledgerAccountList.add(ledgerAccount);
 
 
 
             Iterable<LedgerAccount> ledgerListIterable = ledgerAccountList;
             ledgerAccountRepository.saveAll(ledgerListIterable);
+            all = ledgerAccountRepository.findAll();
         }
 
         model.put("ledgerAccount",new LedgerAccount());

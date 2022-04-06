@@ -23,8 +23,10 @@ public class LedgerAccount {
     @Column(unique = true)
     private String code;
     private String category;
+    private String creditBalance = "Y";
     private String status;
-//    private String cashAccountTransfer;
+    private String cashAccountTransfer;
+    private String interAccountTransfer = "Y";
     private String createdBy;
     private Date createdDate;
 //    private String cashTransaction;
@@ -77,13 +79,29 @@ public class LedgerAccount {
         this.generalLedger = generalLedger;
     }
 
-//    public String getCashAccountTransfer() {
-//        return cashAccountTransfer;
-//    }
-//
-//    public void setCashAccountTransfer(String cashAccountTransfer) {
-//        this.cashAccountTransfer = cashAccountTransfer;
-//    }
+    public String getCashAccountTransfer() {
+        return cashAccountTransfer;
+    }
+
+    public void setCashAccountTransfer(String cashAccountTransfer) {
+        this.cashAccountTransfer = cashAccountTransfer;
+    }
+
+    public String getCreditBalance() {
+        return creditBalance;
+    }
+
+    public void setCreditBalance(String creditBalance) {
+        this.creditBalance = creditBalance;
+    }
+
+    public String getInterAccountTransfer() {
+        return interAccountTransfer;
+    }
+
+    public void setInterAccountTransfer(String interAccountTransfer) {
+        this.interAccountTransfer = interAccountTransfer;
+    }
 
     public String getCreatedBy() {
         return createdBy;
