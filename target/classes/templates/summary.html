@@ -1,0 +1,80 @@
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <style>
+    tr:nth-child(even) {background-color: red;}
+
+    </style>
+</head>
+
+<div class="container">
+    <div th:fragment="navbar" class="navbar">
+        <table style="border-style: solid; border:0; border-width: 4px" class="center" width="100%" cellpadding="5">
+            <tr>
+                <td colspan="5"></td>
+            </tr>
+            <tr>
+                <td bgcolor="#b9e0ed" width="70%" align="left">
+                    <font color="green"><b><h3> ACCOUNTS SUMMARY </h3></b></font>
+                </td>
+                <td width="10%" bgcolor="#bee2ec" align="left">
+                    <button type="submit">
+                        <font size="2px" color="green"> <a href="#"
+                                                           th:href="@{/file/{userName}(userName=${session.customerInUse.userName})}">
+                            Upload I.D</a></font>
+                    </button>
+                    <font size="2px" color="#101011">
+                        <a href="#" th:href="@{/reloadUser}">
+                            <img width="30px" th:src="@{/getImage}"/>
+                        </a>
+                    </font>
+                </td>
+                <td width="10%" bgcolor="#bee2ec" align="left">
+                    <a href="#" th:href="@{/showCustomer/{id}(id=${session.customerInUse.id})}">
+                        <font size="3px" color="#101011">
+                            <span style
+                                  th:text="${session.customerInUse.gender +' '+session.customerInUse.firstName +' '+session.customerInUse.lastName }"/>
+                            <br/>
+                            <span style th:text="${session.customerInUse.customerNumber}"/>
+                        </font>
+                    </a>
+
+                </td>
+                <td bgcolor="#bee2ec" width="5%">
+                    <font size="3px" color="#101011"> Saving </font><br/>
+                    <font size="3px" color="#101011">
+                    <span th:if="${#strings.isEmpty(session.savingBilanzList.totalSaving)}">
+                    0
+                    </span>
+                        <span th:unless="${#strings.isEmpty(session.savingBilanzList.totalSaving)}">
+                        <span th:text="${session.savingBilanzList.totalSaving}"/>
+                        </span>
+                    </font>
+                </td>
+                <td bgcolor="#bee2ec" width="5%"><font size="3px" color="#101011"> Loan</font><br/>
+                    <font size="3px" color="#101011">
+                        <span th:if="${#strings.isEmpty(session.loanBilanzList.currentLoanBalance)}">
+                            0
+                        </span>
+                        <span th:unless="${#strings.isEmpty(session.loanBilanzList.currentLoanBalance)}">
+                        <div th:text="${session.loanBilanzList.currentLoanBalance}"/>
+                        </span>
+                    </font></td>
+                <td bgcolor="#bee2ec" width="5%"><font size="3" color="#101011"> Current</font><br/> <font size="3px"
+                                                                                                           color="#101011">
+                    <span th:text="${session.currentBilanzList.totalCurrent}"/></font></td>
+                <td bgcolor="#bee2ec" width="5%"><font size="3" color="#101011"> Shares</font><br/>
+                    <font size="3px" color="#101011">
+                        <span th:if="${#strings.isEmpty(session.shareAccountBilanzList.totalShare)}">
+                        0
+                        </span>
+                        <span th:unless="${#strings.isEmpty(session.shareAccountBilanzList.totalShare)}">
+                        <span th:text="${session.shareAccountBilanzList.totalShare}"/>
+                        </span>
+                    </font>
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>
+</html>

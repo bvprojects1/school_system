@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<div th:insert="header::navbar"></div>
+<!--<head>-->
+<!--    <style>-->
+<!--    tr:nth-child(even) {background-color: #46997c;}-->
+<!--    </style>-->
+<!--</head>-->
+
+<section class="contact-form-area-start space df-bg">
+    <!--Project title area start-->
+    <div class="project-title-area text-center">
+    <div th:insert="summary::navbar"></div>
+    <div class="col-md-12">
+    <table border="0" width="90%" class="center">
+
+        <tr>
+            <td align="center">
+                <font size="2px"> Account Type</font>
+                <font size="4px"><br/>
+                Current - 20
+            </font>
+            </td>
+            <td align="center">
+                <font size="2px"> Account Number</font><br/>
+                <font color="#a7eb89" size="4px">
+                    <a href="#"
+                       th:href="@{/showCustomer/{userid}(userid=${currentAccountTransaction.currentAccount.user.id})}">
+                         <div th:text="${#strings.substring(currentAccountTransaction.currentAccount.accountNumber,0,5)} + ' ' +${#strings.substring(currentAccountTransaction.currentAccount.accountNumber,5,10)} + ' ' +${#strings.substring(currentAccountTransaction.currentAccount.accountNumber,10,21)} + ' ' +${#strings.substring(currentAccountTransaction.currentAccount.accountNumber,21,23)}"/>
+                    </a>
+                </font>
+            </td>
+            <td align="center">
+                <font size="2px"> Member Since</font><br/>
+                <font size="4px">
+                    <a href="#"
+                       th:href="@{/showCustomer/{userid}(userid=${currentAccountTransaction.currentAccount.user.id})}">
+                        <div th:text="${#dates.format(currentAccountTransaction.currentAccount.user.created, 'dd-MMM-yyyy HH:mm')}"/>
+                    </a>
+                </font>
+            </td>
+
+            <td align="center">
+                <font size="2px"> Rate</font><font color="#2d363f" size="4px">
+                <div th:text="${currentAccountTransaction.currentAccount.interestRate}"/>
+            </font>
+            </td>
+            <td align="center">
+                <font size="2px"> Min. Balance</font><font color="#2d363f" size="4px">
+                <div th:text="${#numbers.formatDecimal(currentAccountTransaction.currentAccount.accountMinBalance, 0, 'COMMA', 0, 'POINT')}"/>
+            </font>
+            </td>
+
+            <td align="center">
+                <font size="2px"> Notes</font><font color="#2d363f" size="4px">
+                <div th:text="${currentAccountTransaction.currentAccount.notes}"/>
+            </font>
+            </td>
+        </tr>
+    </table>
+
+    <form action="#" th:action="@{/registerCurrentAccountTransactionForm}" method="post"
+          th:object="${currentAccountTransaction}">
+
+        <table border="0" width="100%" class="center">
+            <tr><td colspan="3"></td></tr>
+            <tr>
+                <td width="10%">
+                </td>
+                <td>
+                    <font size="6" color="gray"><div class="error" th:text="${billSelectionError}"/>
+                        <span th:text="${billSelectionInfo}"/>
+                        <span th:text="${error}"/>
+                    </font>
+                    <br/>
+                    <font size="5" color="green">MAKE A CURRENT ACCOUNT TRANSACTION</font>
+                    <br/>
+                    <select class="selectNormal" name="deposit_withdrawal">
+                        <option value="">Select A Transaction Type</option>
+                        <option value="DEPOSIT">DEPOSIT</option>
+                        <option value="WITHDRAWAL">WITHDRAWAL</option>
+                    </select>
+                    <select class="selectNormal" name="modeOfPayment" id="modeOfPayment">
+                        <option value="">Select MOP</option>
+                        <option value="CASH">CASH</option>
+                        <option value="MOMO">MOMO</option>
+                        <option value="ORANGE MONEY">ORANGE MONEY</option>
+                        <option value="TRANSFER">TRANSFER</option>
+                        <option value="RECEIPT">RECEIPT</option>
+                        <option value="OTHER">OTHER</option>
+                    </select>
+                    <br/>
+                    <br/>
+                    <b>Enter Amount:</b> <span th:text="${#numbers.formatDecimal(currentAccountTransaction.currentAccount.minimumPayment, 0, 'COMMA', 0, 'POINT')}"/>frs Minimum
+                    <br/>
+                    <input class="selectAmount" placeholder="Enter Amount" type="number"
+                                               th:field="*{currentAmount}"
+                                               value="${currentAccountTransaction.currentAmount}"/>
+
+<!--                    <input class="selectNormal" name="createdDate" type="date"/>-->
+
+                    <br/>
+                    <textarea class="selectNormal" placeholder="Enter Amount in letters ..." id="currentAmountInLetters" rows="1" cols="70"
+                              th:field="*{currentAmountInLetters}" maxlength="255">
+                    </textarea>
+                    <br/>
+                    <br/>
+                    <font size="4" color="green">BILL SELECTION:</font><br/>
+                    <input class="selectSmall" name="tenThousand" th:field="*{tenThousand}" type="number" min="0" max="999" maxlength="4"
+                           value="${currentAccountTransaction.tenThousand}" size="4"/>10 000 &nbsp;
+                    <input class="selectSmall" name="fiveThousand" th:field="*{fiveThousand}" type="number" min="0" max="999" maxlength="4"
+                           size="4"/>5 000 &nbsp;
+                    <input class="selectSmall" name="twoThousand" th:field="*{twoThousand}" type="number" min="0" max="999" maxlength="4"
+                           size="4"/>2 000 &nbsp;
+                    <input class="selectSmall" name="oneThousand" th:field="*{oneThousand}" type="number" min="0" max="999" maxlength="4"
+                           size="4"/>1 000 &nbsp;
+                    <input class="selectSmall" name="fiveHundred" th:field="*{fiveHundred}" type="number" min="0" max="999" maxlength="4"
+                           size="4"/>500 &nbsp;
+                    <input class="selectSmall" name="oneHundred" th:field="*{oneHundred}" type="number" min="0" max="999" maxlength="4"
+                           size="4"/>100 &nbsp;
+                    <input class="selectSmall" name="fifty" th:field="*{fifty}" type="number" min="0" max="999" maxlength="4" size="4"/>50
+                    &nbsp;
+                    <input class="selectSmall" name="twentyFive" th:field="*{twentyFive}" type="number" min="0" max="999" maxlength="4"
+                           size="4"/>25 &nbsp;
+
+                    &nbsp;
+                    <input class="selectSmall" name="ten" th:field="*{ten}" type="number" min="0" max="999" maxlength="4"
+                           size="4"/>10 &nbsp;
+
+                    &nbsp;
+                    <input class="selectSmall" name="five" th:field="*{five}" type="number" min="0" max="999" maxlength="4"
+                           size="4"/>5 &nbsp;
+
+                    <input class="selectSmall" name="one" th:field="*{one}" type="number" min="0" max="999" maxlength="4"
+                           size="4"/>1 &nbsp;
+
+
+                    <br/><br/>
+                    <label for="true">Account Owner</label>
+                    <input class="selectSmall" th:field="*{accountOwner}" type="checkbox" id="true" name="accountOwner" value="true"
+                           checked>
+
+                    <label for="representative">Representative</label>
+                    <input style="width:30%" th:field="*{representative}" type="text" id="representative" name="representative" maxlength="48"/>
+
+
+                    <input type="hidden" th:value="${currentAccountTransaction.currentAccount.id}"
+                           th:attr="name='currentAccountId'"/>
+                    <br/>
+                    <textarea class="selectNormal" placeholder="Enter Notes ..." id="notes" rows="2" cols="70" th:field="*{notes}"
+                              maxlength="255">
+                </textarea>
+                    <br/>
+                    <button type="submit" class="btn btn-success"><b>SUBMIT TRANSACTION</b></button>
+                    <br/>
+                    <br/>
+                </td>
+            </tr>
+
+        </table>
+    </form>
+    <br/>
+    <table border="0" width="100%" class="center">
+        <tr>
+            <th>
+                <font size="5" color="green"> CURRENT PAYMENTS PROCESSED </font>
+                <a href="#" th:href="@{/statementCurrentPDF/{id}(id=${currentAccountTransaction.currentAccount.id})}"><img
+                        width="40px" th:src="@{/assets/images/pdfIcon.png}"/> </a>
+            </th>
+        </tr>
+    </table>
+    <table border="0" width="100%" class="center">
+        <tr>
+            <td>Payment Date</td>
+            <td>MOP</td>
+            <td>Reference</td>
+            <td>Agent</td>
+            <td>Owner</td>
+            <td>Notes</td>
+            <td>Debit</td>
+            <td>Credit</td>
+            <td><font color="green" size="6px">
+                <div th:text="${currentBilanzList.totalCurrent}"/>
+            </font></td>
+            <td>Representative</td>
+            <td></td>
+        </tr>
+
+        <tr th:each="bilanz : ${currentBilanzList.currentBilanzList}">
+            <td th:text="${bilanz.createdDate}"></td>
+            <td th:text="${bilanz.modeOfPayment}"></td>
+            <td th:text="${bilanz.reference}"></td>
+            <td th:text="${bilanz.agent}"></td>
+            <td th:text="${bilanz.accountOwner}"></td>
+            <td th:text="${bilanz.notes}"></td>
+            <td>
+                <span th:if="${bilanz.currentAmount} < 0" th:text="${#numbers.formatDecimal(bilanz.currentAmount*-1, 0, 'COMMA', 0, 'POINT')}"/>
+            </td>
+            <td>
+                <span th:if="${bilanz.currentAmount} > 0" th:text="${#numbers.formatDecimal(bilanz.currentAmount, 0, 'COMMA', 0, 'POINT')}"/>
+            </td>
+            <td th:text="${bilanz.currentBalance}"></td>
+            <td th:text="${bilanz.representative}"></td>
+            <td>
+                <a href="#" th:href="@{/createCurrentAccountReceiptPdf/{id}(id=${bilanz.id})}">
+                    <img width="30px" th:src="@{/assets/images/pdfIcon.png}"/>
+                </a>
+            </td>
+        </tr>
+    </table>
+    </div>
+    </div>
+</section>
+
+<div th:insert="footer::navbar"></div>
+
+</body>
+
+</html>

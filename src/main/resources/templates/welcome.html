@@ -38,6 +38,10 @@
                                         <a href="/findAllCustomers">See More ...</a> <a href="/registerCustomer">Create Customer</a>
                                         <span class="far fa-user"></span>
                                     </div>
+                                    <div th:if="${#authorization.expression('hasAnyAuthority(''ROLE_VIEW_ALL_ACCOUNTS'')')} OR ${#authorization.expression('hasAnyAuthority(''ROLE_ADMIN'')')}">
+                                        <a href="/studentList">See More Students...</a> <a href="/studentForm">Register New Student</a>
+                                        <span class="far fa-user"></span>
+                                    </div>
                                     <div th:unless="${#authorization.expression('hasAnyAuthority(''ROLE_VIEW_ALL_ACCOUNTS'')')} OR ${#authorization.expression('hasAnyAuthority(''ROLE_ADMIN'')')}">
                                         See More ...
                                         <label title="Requires ROLE_VIEW_ALL_ACCOUNTS"><img

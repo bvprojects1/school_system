@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<div th:insert="header::navbar"></div>
+<br/>
+<br/>
+
+<div class="footer-content-area-start">
+    <div class="container">
+        <div class="row">
+            <!--Service area start-->
+            <section class="service-area-start space">
+
+                <!--Service content area start-->
+                <div class="service-area-content">
+                    <div class="container">
+                        <div class="row">
+                            <!--                   <div class="col-md-6 col-lg-4">-->
+                            <div th:if="${#authorization.expression('hasAnyAuthority(''ROLE_MAIN_USERS'')')} OR ${#authorization.expression('hasAnyAuthority(''ROLE_ADMIN'')')}"
+                                 class="col-md-6 col-lg-4">
+                                <div class="single-choosen-content text-center single-service-content box-pad">
+                                    <i class="far fa-user"></i>
+                                    <h4> USERS</h4>
+                                    <p>View existing Users</p>
+<!--                                    <div th:if="${#authorization.expression('hasAnyAuthority(''ROLE_CREATE_USER_ACCOUNT'')')} OR ${#authorization.expression('hasAnyAuthority(''ROLE_ADMIN'')')}">-->
+<!--                                        <a href="/registerUser"> Register User-->
+<!--                                        </a>-->
+
+<!--                                    </div>-->
+                                    <div th:unless="${#authorization.expression('hasAnyAuthority(''ROLE_CREATE_USER_ACCOUNT'')')} OR ${#authorization.expression('hasAnyAuthority(''ROLE_ADMIN'')')}">
+                                        <a href=""> <img alt="Requires ROLE_CREATE_USER_ACCOUNT" width="5px"
+                                                         th:src="@{/assets/images/add.png}"/> </a>
+                                        <span class="far fa-user"></span>
+                                    </div>
+
+                                    <div th:if="${#authorization.expression('hasAnyAuthority(''ROLE_VIEW_ALL_ACCOUNTS'')')} OR ${#authorization.expression('hasAnyAuthority(''ROLE_ADMIN'')')}">
+                                        <a href="/findAllCustomers">See More ...</a> <a href="/registerCustomer">Create Customer</a>
+                                        <span class="far fa-user"></span>
+                                    </div>
+                                    <div th:if="${#authorization.expression('hasAnyAuthority(''ROLE_VIEW_ALL_ACCOUNTS'')')} OR ${#authorization.expression('hasAnyAuthority(''ROLE_ADMIN'')')}">
+                                        <a href="/studentList">See More Students...</a> <a href="/studentForm">Register New Student</a>
+                                        <span class="far fa-user"></span>
+                                    </div>
+                                    <div th:unless="${#authorization.expression('hasAnyAuthority(''ROLE_VIEW_ALL_ACCOUNTS'')')} OR ${#authorization.expression('hasAnyAuthority(''ROLE_ADMIN'')')}">
+                                        See More ...
+                                        <label title="Requires ROLE_VIEW_ALL_ACCOUNTS"><img
+                                                th:src="@{/assets/images/toolTip.png}"/></label>
+                                        <span class="far fa-user"></span>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                            <div th:if="${#authorization.expression('hasAnyAuthority(''ROLE_MAIN_SHARES'')')}"
+                                 class="col-md-6 col-lg-4">
+                                <div class="single-choosen-content text-center single-service-content box-pad">
+                                    <i class="fas fa-handshake"></i>
+                                    <h4>SHARES</h4>
+                                    <p>Shares and Account holders</p>
+                                    <a href="/shareAccounts">See More ...</a>
+                                    <span class="fas fa-handshake"></span>
+                                </div>
+                            </div>
+
+                            <!--Single service area end-->
+                            <div th:if="${#authorization.expression('hasAnyAuthority(''ROLE_MAIN_LOANS'')')}"
+                                 class="col-md-6 col-lg-4">
+                                <div class="single-choosen-content text-center single-service-content box-pad">
+                                    <i class="fas fa-hand-holding-usd"></i>
+                                    <h4>LOANS</h4>
+                                    <p>See loans pending action</p>
+                                    <a href="/loansPendingAction">See more</a>
+                                    <span class="fas fa-hand-holding-usd"></span>
+                                </div>
+                            </div>
+
+                            <!--Single service area end-->
+                            <div th:if="${#authorization.expression('hasAnyAuthority(''ROLE_ADMIN'')')} OR ${#authorization.expression('hasAnyAuthority(''ROLE_MANAGER'')')} "
+                                 class="col-md-6 col-lg-4">
+                                <div class="single-choosen-content text-center single-service-content box-pad">
+                                    <i class="fas fa-cogs"></i>
+                                    <h4>SETTINGS</h4>
+                                    <p>Init settings</p>
+                                    <a href="#" th:href="@{/initsettings}"> init settings </a>
+                                    <span class="fas fa-cogs"></span>
+                                </div>
+                            </div>
+                            <!--Single service area end-->
+                            <div th:if="${#authorization.expression('hasAnyAuthority(''ROLE_ADMIN'')')} OR${#authorization.expression('hasAnyAuthority(''ROLE_MAIN_BRANCHES'')')}"
+                                 class="col-md-6 col-lg-4">
+                                <div class="single-choosen-content text-center single-service-content box-pad">
+                                    <i class="fas fa-ethernet"></i>
+                                    <h4>LOCATION/ BRANCHES</h4>
+                                    <p>Create and View new branches</p>
+                                    <a href="/registerBranch"> <img width="10px" th:src="@{/assets/images/add.png}"/>
+                                    </a>
+                                    <a href="#" th:href="@{/branches}"> See Branches </a>
+                                    <span class="fas fa-ethernet"></span>
+                                </div>
+                            </div>
+                            <!--Single service area end-->
+
+                            <div th:if="${#authorization.expression('hasAnyAuthority(''ROLE_MAIN_TRANSFERS'')')}"
+                                 class="col-md-6 col-lg-4">
+                                <div class="single-choosen-content text-center single-service-content box-pad">
+                                    <i class="fas fa-piggy-bank"></i>
+                                    <h4>BILL SELECTION</h4>
+                                    <p>Bill Selection</p>
+                                    <a href="/billSelection"> <img width="5px" th:src="@{/assets/images/add.png}"/> </a>
+                                    <a href="/billSelection">See More ...</a>
+                                    <span class="fas fa-piggy-bank"></span>
+                                </div>
+                            </div>
+                            <!--Single service area end-->
+
+                            <div th:if="${#authorization.expression('hasAnyAuthority(''ROLE_MANAGER'')')} OR ${#authorization.expression('hasAnyAuthority(''ROLE_AUDITOR'')')}"
+                                 class="col-md-6 col-lg-4">
+                                <div class="single-choosen-content text-center single-service-content box-pad">
+                                    <i class="fas fa-clipboard"></i>
+                                    <h4>GL ACCOUNTS</h4>
+                                    <p>General Ledger Accounts</p>
+                                    <a href="/newLedgerAccount">See More ...</a>
+                                    <span class="fas fa-clipboard"></span>
+                                </div>
+                            </div>
+                            <!--Single service area end-->
+
+
+                            <!--Single service area end-->
+                            <div th:if="${#authorization.expression('hasAnyAuthority(''ROLE_MAIN_GENERAL_LEDGER'')')}"
+                                 class="col-md-6 col-lg-4">
+                                <div class="single-choosen-content text-center single-service-content box-pad">
+                                    <i class="fas fa-book"></i>
+                                    <h4>GENERAL LEDGER</h4>
+                                    <p>Records all account transactions </p>
+                                    <a href="/gl">See More ...</a>
+                                    <span class="fas fa-book"></span>
+                                </div>
+                            </div>
+
+
+                            <!--Single service area end-->
+                            <div th:if="${#authorization.expression('hasAnyAuthority(''ROLE_MANAGER'')')} OR ${#authorization.expression('hasAnyAuthority(''ROLE_AUDITOR'')')}"
+                                 class="col-md-6 col-lg-4">
+                                <div class="single-choosen-content text-center single-service-content box-pad">
+                                    <i class="fas fa-balance-scale"></i>
+                                    <h4>TRIAL BALANCE</h4>
+                                    <p>Journal entries and ledger balances</p>
+                                    <a href="/trialBalance">See More ...</a>
+                                    <span class="fas fa-balance-scale"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+
+                <!--Service content area end-->
+            </section>
+            <!--Service area end-->
+        </div>
+    </div>
+</div>
+
+<div th:insert="blog::navbar"></div>
+
+<div th:insert="footer::navbar"></div>
+</html>

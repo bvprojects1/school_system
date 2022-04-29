@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<div th:insert="header::navbar">  </div>
+<br/>
+<br/>
+
+<!-- Contact form area start -->
+<section class="contact-form-area-start space df-bg">
+    <!--Project title area start-->
+    <div class="project-title-area text-center">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="project-title-content">
+                        <h3>CONFIRM USER DETAILS</h3>
+                        <span><i class="fas fa-crosshairs"></i></span>
+                        <!--                            <p>Cross-agency coordination clean water rural, promising development turmoil inclusive education transformative community.</p>-->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--Project title area end-->
+
+    <div class="contact-from-area">
+        <div class="container">
+            <div class="row">
+                <div class="offset-md-2 col-md-8">
+                    <form action="#" th:action="@{/registerUserPreviewForm}" method="post" th:object="${user}" >
+
+                        <label> <p>UserRole:</p></label>
+                        <input type="text" name="userRoleTemp" th:value="${userRoleTemp}" readonly/><br/>
+
+                        <input type="hidden" th:field="*{id}"/> <br/>
+
+                        <label> <p>Username:</p> </label>
+                        <input type="text" th:field="*{userName}" readonly/> <br/>
+
+                        <label><p>Gender:</p></label>
+                        <input type="text" th:field="*{gender}" readonly/><br/>
+
+                        <label><p>Firstname and Lastname:</p></p></label>
+                        <input type="text" th:field="*{firstName}" readonly/> <input type="text" th:field="*{lastName}" readonly/><br/>
+
+                        <label><p>Telephone1:</p></label>
+                        <input type="text" th:field="*{telephone1}" readonly/><br/>
+
+                        <label><p>Telephone2:</p></label>
+                        <input type="text" th:field="*{telephone2}" readonly/><br/>
+
+                        <label><p>Address:</p></label>
+                        <input type="text" size="50px" th:field="*{address}" readonly/><br/>
+
+                        <label><p>Date of birth:</p></label>
+                        <input type="text" th:field="*{dateOfBirth}" readonly/><br/>
+
+<!--                        <label><p>Beneficiary:</p></label>-->
+<!--                        <input type="text" th:field="*{beneficiary}" readonly/><br/>-->
+
+<!--                        <label><p>Beneficiary 2:</p></label>-->
+<!--                        <input type="text" th:field="*{beneficiary2}" readonly/><br/>-->
+
+<!--                        <label><p>Beneficiary 3:</p></label>-->
+<!--                        <input type="text" th:field="*{beneficiary3}" readonly/><br/>-->
+
+<!--                        <label><p>Beneficiary 4:</p></label>-->
+<!--                        <input type="text" th:field="*{beneficiary4}" readonly/><br/>-->
+
+<!--                        <label><p>Beneficiary 5:</p></label>-->
+<!--                        <input type="text" th:field="*{beneficiary5}" readonly/><br/>-->
+
+                        <label><p>Email:</p></label>
+                        <input type="text" size="10px" th:field="*{email}" readonly/><br/>
+
+                        <label><p>Password:</p></label>
+                        <input type="text" th:field="*{password}" readonly/><br/>
+
+                        <label><p>Identity Card No:</p></label>
+                        <input type="text" th:field="*{identityCardNumber}" readonly/><br/>
+
+                        <label><p>Profession:</p></label>
+                        <input type="text" th:field="*{profession}" readonly/><br/>
+
+                        <label><p>Identity Card Expiry:</p></label>
+                        <input type="text" th:field="*{identityCardExpiry}" readonly/><br/>
+
+                        <label> <p>Account Locked:</p></label>
+                        <input type="text" th:field="*{accountLocked}" readonly/><br/>
+                        <br/>
+                        <br/>
+                        <br/>
+                        <label> <p>Beneficiaries - 100%</p></label>
+                        <div th:each="aBeneficiary : ${user.beneficiary}">
+                            <span th:text="${aBeneficiary.name}"></span>
+                            <span th:text="${aBeneficiary.percentage}"></span>%
+                            <span th:text="${aBeneficiary.relation}"></span>
+                            <span th:text="${aBeneficiary.notes}"></span>
+                        </div>
+
+<!--                        <label><b> Notes:</b></label>-->
+<!--                        <span th:text="${notes}"/>-->
+<!--                        <input type="hidden"  id="notes" rows="3" cols="30" th:field="*{notes}"/>-->
+
+                        <input type="hidden" th:field="*{idFilePath}" readonly/><br/>
+
+                        <button type="submit" class="btn btn-success">CONFIRM AND SAVE</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div th:insert="footer::navbar">  </div>
+</html>

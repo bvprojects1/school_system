@@ -1,0 +1,265 @@
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<div th:fragment="navbar" class="navbar">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>bitsvalley - bala@nz</title>
+        <!-- Favicon  -->
+        <link rel="icon" type="image/x-icon" th:href="@{/assets/images/favicon/faviconn.ico}">
+        <!--Bootstrap-->
+        <link type="text/css" rel="stylesheet" th:href="@{/assets/css/bootstrap.min.css}">
+        <!--Fontawesome-->
+        <link type="text/css" rel="stylesheet" th:href="@{/assets/css/all.min.css}">
+        <!--Owl-carousel-->
+        <link type="text/css" rel="stylesheet" th:href="@{/assets/css/owl.carousel.min.css}">
+        <!--Owl Carousel theme-->
+        <link type="text/css" rel="stylesheet" th:href="@{/assets/css/owl.theme.default.min.css}">
+        <!--Animate-->
+        <link type="text/css" rel="stylesheet" th:href="@{/assets/css/animate.min.css}">
+        <!-- magnific CSS -->
+        <link type="text/css" rel="stylesheet" th:href="@{/assets/css/magnific-popup.css}">
+        <!-- Mmenu CSS -->
+        <link type="text/css" rel="stylesheet" th:href="@{/assets/css/slicknav.min.css}">
+        <!--Style-->
+        <link type="text/css" rel="stylesheet" th:href="@{/assets/css/style.css}">
+        <!-- Responsive -->
+        <link type="text/css" rel="stylesheet" th:href="@{/assets/css/responsive.css}">
+
+        <style>
+
+        input.largerCheckbox {
+            width: 20px;
+            height: 20px;
+        }
+
+        table, th, td {
+<!--          border: 0px solid #BF360C;-->
+          align: center;
+          padding-right: 20px;
+          margin: 10px;
+        }
+        table.center {
+          margin-left: auto;
+          margin-right: auto;
+        }
+          tr:nth-child(even) {background-color: #84c0d5;}
+
+        .error {
+            color: red;
+            font-size: 25px;
+        }
+
+#filtersubmit {
+    position: relative;
+    z-index: 1;
+    left: -25px;
+    top: 1px;
+    color: #7B7B7B;
+    cursor:pointer;
+    width: 0;
+}
+
+.select {
+  width: 100%;
+  height: 700px;
+  font-size: 100%;
+  font-weight: bold;
+  cursor: pointer;
+  border-radius: 0;
+  background-color: #6a8c98;
+  border: none;
+  border-bottom: 2px solid #80635b;
+  color: white;
+  padding: 10px;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  padding: 10px;
+}
+
+.selectMedium {
+<!--  width: 10%;-->
+  height: 25px;
+  font-size: 150%;
+  background-color: #6a8c98;
+  padding: 5px;
+  border-radius: 5;
+
+<!--  font-weight: bold;-->
+<!--  cursor: pointer;-->
+<!--  border: none;-->
+<!--  border-bottom: 2px solid #80635b;-->
+<!--  color: white;-->
+<!--  appearance: none;-->
+<!--  -webkit-appearance: none;-->
+<!--  -moz-appearance: none;-->
+<!--  padding: 10px;-->
+}
+
+.selectLarge50 {
+  height: 100px;
+  font-size: 150%;
+  padding: 10px;
+}
+
+.selectNormal {
+  height: 60px;
+  font-size: 125%;
+  padding: 10px;
+}
+
+.selectNormal100 {
+  height: 60px;
+  font-size: 125%;
+  width: 70px;
+  padding: 10px;
+}
+
+.selectNormal125 {
+  height: 60px;
+  font-size: 100%;
+  width: 250px;
+  padding: 10px;
+}
+
+
+
+.selectSearch {
+  height: 40px;
+  font-size: 150%;
+  width: 350px;
+  padding: 5px;
+}
+
+.selectAmount {
+  height: 40px;
+  width: 250px;
+  font-size: 250%;
+}
+
+.selectSmall {
+  height: 40px;
+  width: 70px;
+  font-size: 150%;
+}
+
+
+    </style>
+    </head>
+
+    <header class="header-area-start">
+        <!--Header navigation area start-->
+        <div class="navigation-area-start shadow">
+            <div class="container">
+                <div class="row">
+<!--                    <div class="col-md-3 col-5 col-sm-5">-->
+<!--                        <div class="logo-area">-->
+<!--                            <br/>-->
+<!--                            &lt;!&ndash;                            &#45;&#45;<div th:text="${session.customerInUse.idFilePath}"/>&#45;&#45;&ndash;&gt;-->
+<!--&lt;!&ndash;                            <a href="index.html"><img width="80px" th:src="@{/getLogoImage}"/> </a>&ndash;&gt;-->
+<!--&lt;!&ndash;                                                        <a href="index.html"><img th:src="@{/assets/images/logo.jpeg}"/> </a>&ndash;&gt;-->
+<!--                        </div>-->
+<!--                    </div>-->
+                    <!--Logo area end-->
+                    <div class="col-md-12 col-9 col-sm-9">
+                        <nav class="main-menu-area">
+                            <ul class="main-menu" id="mobile-menu">
+                                <!--                                <li> Welcome-->
+                                <!--                                    <span sec:authentication="name"></span>,</li>-->
+                                <li><img width="100px" th:src="@{/getLogoImage}"/></li>
+                                <li></li>
+                                <li></li>
+                                <li></li>
+                                <li></li>
+                                <li></li>
+                                <li></li>
+                                <li th:if="${#authorization.expression('hasAnyAuthority(''ROLE_AGENT'')')} OR ${#authorization.expression('hasAnyAuthority(''ROLE_MANAGER'')')}">
+                                    <form action="#" th:action="@{/findUserByUserName}" method="post">
+                                        <font color="brown" size="3px"> <span th:text="${error}"/></font>
+                                        
+                                        <input class="selectSearch" id="filter" name="userName" type="text" placeholder="Search..." />
+                                        <i id="filtersubmit" class="fa fa-search"></i>
+
+                                        <input style="size:30px;font-size:14pt;color:white;background-color:green;border:4px solid #white;padding:3px"
+                                               type="submit" value="Submit">
+                                        &nbsp;&nbsp;
+                                    </form>
+                                </li>
+
+
+                                <li></li>
+                                <li></li>
+                                <li></li>
+                                <li></li>
+                                <li></li>
+                                <li></li>
+                                <!--                                <li><a th:href="@{/welcomeGlobal}">Home</a></li>-->
+                                <li><a th:href="@{/welcomeGlobal}"><font size="5" color="#008001"> HOME </font> </a></li>
+
+
+                                <li></li>
+                                <li></li>
+                                <li></li>
+                                <li></li>
+                                <li></li>
+                                <li></li>
+
+                                <li>
+
+                                <a th:href="@{/welcomeGlobal}">
+                                    <font size="5" color="#008001"><span sec:authentication="name"></span> <i class="fas fa-angle-down"></i></font>
+                                </a>
+                                    <ul class="sub-menu">
+                                        <li><a th:href="@{/logout}" href="/Logout"><i
+                                                class="fas fa-sign-out-alt"></i><font color="red" size="5"> LOGOUT</font></a></li>
+
+                                        <!--                                        <li class="drop-list"><a th:href="@{/logout}" href="/Logout"><i-->
+                                        <!--                                                class="fas fa-sign-out-alt"></i>Logout</a>-->
+                                        <!--                                            <ul class="sub-menu">-->
+                                        <!--                                                <li><a href="blog-2-column.html">Blog 2 Column</a></li>-->
+                                        <!--                                                <li><a href="blog-3-column.html">Blog 3 Column</a></li>-->
+                                        <!--                                            </ul>-->
+                                        <!--                                        </li>-->
+
+<!--                                        <li><a href="right-sidebar.html">Sidebar Right</a></li>-->
+<!--                                        <li><a href="single.html">Single Page</a></li>-->
+<!--                                        <li><a href="blank.html">Blank Page</a></li>-->
+                                    </ul>
+                                </li>
+
+<!--                                <li th:if="${#authorization.expression('hasAnyAuthority(''ROLE_AGENT'')')} OR ${#authorization.expression('hasAnyAuthority(''ROLE_MANAGER'')')}">-->
+<!--                                    <form action="#" th:action="@{/findUserByUserName}" method="post">-->
+<!--                                        <font color="brown" size="3px"> <span th:text="${error}"/></font>-->
+<!--                                        <input class="selectSearch" id="filter2" name="userName" type="text" placeholder="Search..." />-->
+<!--                                        <i id="filtersubmit2" class="fa fa-search"></i>-->
+
+<!--                                        <input style="size:30px;font-size:14pt;color:white;background-color:green;border:4px solid #white;padding:3px"-->
+<!--                                               type="submit" value="Submit">-->
+<!--                                    </form>-->
+<!--                                </li>-->
+
+<!--                                <li>-->
+<!--                                    <a th:href="@{/logout}" href="/Logout">Logout</a>-->
+<!--                                </li>-->
+<!--                                <li th:if="${#authorization.expression('hasAnyAuthority(''ROLE_AGENT'')')} OR ${#authorization.expression('hasAnyAuthority(''ROLE_MANAGER'')')}">-->
+<!--                                    <form action="#" th:action="@{/findUserByUserName}" method="post">-->
+
+<!--                                            <input type="text" name="userName" placeholder="Username" value=""/>-->
+<!--                                            <input style="font-size:12pt;color:white;background-color:green;border:2px solid #336600;padding:3px"-->
+<!--                                                   type="submit" value="Submit">-->
+<!--                                    </form>-->
+<!--                                </li>-->
+                            </ul>
+                        </nav>
+                    </div>
+                    <!--Menu area end-->
+                </div>
+            </div>
+        </div>
+        <!--Header navigation area end-->
+    </header>
+
+</div>
+</html>

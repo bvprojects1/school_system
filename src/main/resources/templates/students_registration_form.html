@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <html xmlns:th="http://www.thymeleaf.org"
+          xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+    <div th:insert="header::navbar"></div>
+    <title>School Report Card</title>
+</html>
+    <link rel="stylesheet" th:href="@{/css/registration_form_css.css}">
+</head>
+
+<body>
+<div class="page-container">
+    <div class="custom-col-12">
+        <h1>Student Registration Form</h1>
+        <form  th:action="@{/saveStudent}" th:object="${student}" method="post">
+            <div class="form-section">
+                <div class="form-section-content">
+                    <h3>Student's Personal Information</h3>
+
+                    <p class="input">Surname:</p>
+                    <input th:field="*{students_surname}" class="form-inputs" type="text" name="students_surname" required>
+                    <p class="input">Given Name:</p>
+                    <input th:field="*{students_given_name}" class="form-inputs" type="text" name="students_given_name" required>
+                     <p class="input">Address:</p>
+                    <input th:field="*{students_address}" class="form-inputs" type="text" name="students_address">
+                    <p class="input">Place of birth:</p>
+                    <input class="form-inputs" type="text" name="place_of_birth">
+                    <br/>
+<!--                    <div class="flex">-->
+<!--                        <p class="input"  style="margin-top:10px;">Date Of Birth: </p>-->
+<!--                        <input type="date" name="students_date_of_birth" style="height:35px; margin-top:10px;" required> <br/><br/>-->
+
+<!--                        <fieldset>-->
+<!--                            &lt;!&ndash;                        <legend>Gender</legend>&ndash;&gt;-->
+<!--                            <label>Gender:</label>-->
+<!--                            <label>Male</label>-->
+<!--                            <input type="radio" name="gender" value="male" required>-->
+<!--                            <label>Female</label>-->
+<!--                            <input type="radio" name="gender" value="female" required>-->
+<!--                        </fieldset>-->
+<!--                        <div class="flex" style="margin-top:10px;">-->
+<!--                            <p class="input">Tel:</p>-->
+<!--                            <input class="form-inputs" type="number" name="students_tel" style="width:245px;"></div>-->
+<!--                    </div>-->
+                </div>
+            </div>
+            <hr>
+            <div class="form-section">
+                <div class="form-section-content">
+                    <h3>Guardian's Personal Information</h3>
+<!--                    <fieldset>-->
+<!--                        <label>Mr.</label>-->
+<!--                        <input type="radio" name="guardians_title" value="guardians_title" required>-->
+<!--                        <label>Mrs.</label>-->
+<!--                        <input type="radio" name="guardians_title" value="guardians_title" required>-->
+<!--                        <label>Miss.</label>-->
+<!--                        <input type="radio" name="guardians_title" value="guardians_title" required>-->
+<!--                    </fieldset>-->
+                    
+                    <p class="input">Name:</p>
+                    <input class="form-inputs" type="text" name="guardians_full_name" required>
+                    <p class="input">Address:</p>
+                    <input class="form-inputs" type="text" name="guardians_address">
+                    <p class="input">Contact:</p>
+                    <input class="form-inputs" type="number" name="guardians_tel" required>
+                    <p class="input">Email:</p>
+                    <input class="form-inputs" type="email" name="guardians_email_address">
+                </div>
+
+            </div>
+            <hr>
+<!--            <div class="form-section">-->
+<!--                <div class="form-section-content">-->
+<!--                    <h3>Enrolment</h3>-->
+<!--                    <p>Departments:</p><br/>-->
+
+<!--&lt;!&ndash;                        TODO: Start and End Date&ndash;&gt;-->
+<!--                    <div class="department" aria-required="true">-->
+<!--                        <p><input type="checkbox" name="web_dev_check"> Web Development: 3 months. Start Date:  <input type="date" name="start_date_wev_dev" class="enrol_date"> End Date: <input type="date" name="end_date_web_dev" class="enrol_date"></p><br/>-->
+<!--                        <p><input type="checkbox" name="software_test_check"> Software Testing: 3 months. <input type="date" name="start_date_software_test" class="enrol_date"> End Date: <input type="date" name="end_date_software_test" class="enrol_date"></p><br/>-->
+<!--                        <p><input type="checkbox" name="app_dev_check"> Application Development: 9 months. <input type="date" name="start_date_app_dev" class="enrol_date"> End Date: <input type="date" name="end_date_app_dev" class="enrol_date"></p><br/>-->
+<!--                        <p><input type="checkbox" name="networking_check"> Networking: 3 months. <input type="date" name="start_date_networking" class="enrol_date"> End Date: <input type="date" name="end_date_networking" class="enrol_date"></p><br/>-->
+<!--                        <p><input type="checkbox" name="comp_awareness_check"> Computer Awareness: 3 months. <input type="date" name="start_date_comp_awareness" class="enrol_date"> End Date: <input type="date" name="end_date_comp_awareness" class="enrol_date"></p><br/>-->
+<!--                    </div>-->
+<!--                    <label>Receipt Reference number:</label>-->
+<!--                    <input type="number" name="receipt_ref" required> <br><br>-->
+<!--                </div>-->
+<!--            </div>-->
+            <button type="submit">Submit</button>
+        </form>
+        <footer>
+            Please verify tuition has been paid before proceeding with the registration.
+        </footer>
+    </div>
+</div>
+
+<script>
+
+        //Fetch all forms fields to apply custom bootstrap validation
+
+        var forms = document.querySelectorAll('.needs-validation')
+
+        //loop over fields and prevent submission
+
+        Array.prototype.slice.call(forms)
+            .forEach(function (form) {
+                form.addEventListener('submit', function (event){
+                    if (!form.checkValidity()) {
+                        event.preventDefault()
+                        event.stopPropagation()
+                    }
+
+                    form.classList.add('was-validated')
+                }, false)
+            })
+    // })
+</script>
+
+</body>
+</html>

@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<div th:insert="header::navbar"></div>
+<br/>
+<br/>
+<br/>
+<div th:insert="summary::navbar"></div>
+
+<br/><br/>
+<table width="90%" class="center">
+    <tr>
+        <th><font color="green" size="4px">LOAN INTEREST</font><br/>Date Of Payment</th>
+        <th>Method Of Payment</th>
+        <th>Agent</th>
+        <th>%</th>
+        <th>Notes</th>
+        <th>Days</th>
+        <th>
+            Interest
+        </th>
+        <th>VAT</th>
+        <th>Debit</th>
+        <th>Credit</th>
+        <th>
+            <span th:if="${#authorization.expression('hasAnyAuthority(''ROLE_MANAGER'')')}">
+                <font color="green" size="6px">
+                    <div th:text="${loanBilanzList.totalLoan}"/>
+                </font>
+
+                <font color="green" size="2px">
+
+                   Total Interest Paid: <span th:text="${loanBilanzList.totalLoanInterest}"/>
+                </font>
+            </span>
+        </th>
+    </tr>
+    <tr th:each="bilanz : ${loanBilanzList.loanBilanzList}">
+        <td>
+            <span th:text="${bilanz.createdDate}"/>
+            <form action="#" th:action="@{/updateTrxDateForm}" method="post">
+                <input type="hidden" name="transactionID" th:value="${bilanz.id}">
+                <input name="dateChange" type="date"/>
+                <input type="submit" value="Submit">
+            </form>
+        </td>
+        <td th:text="${bilanz.modeOfPayment}"></td>
+        <td th:text="${bilanz.agent}"></td>
+<!--        <td th:text="${bilanz.accountNumber}"></td>-->
+        <td th:text="${bilanz.interestRate}">
+        </td>
+        <td th:text="${bilanz.notes}"></td>
+        <td th:text="${bilanz.noOfDays}"></td>
+<!--        <td th:text="${bilanz.interestAccrued}"></td>-->
+        <td th:text="${bilanz.interestDue}"></td>
+        <td th:text="${bilanz.vatPercent}"></td>
+        <td th:text="${bilanz.loanAmount}"></td>
+        <td th:text="${bilanz.amountReceived}"></td>
+        <td th:text="${bilanz.currentBalance}"></td>
+    </tr>
+</table>
+<br/> <br/>
+
+<div th:insert="footer::navbar"></div>
+</html>

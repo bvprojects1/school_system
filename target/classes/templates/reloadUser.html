@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<div th:insert="header::navbar">  </div>
+<br/>
+<br/>
+<!-- Contact information area end -->
+
+<!-- Contact form area start -->
+<section class="contact-form-area-start space df-bg">
+    <!--Project title area start-->
+    <div class="project-title-area text-center">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="project-title-content">
+                        <h3>UPDATE USER DETAILS</h3>
+                        <span><i class="fas fa-crosshairs"></i></span>
+                        <!--                            <p>Cross-agency coordination clean water rural, promising development turmoil inclusive education transformative community.</p>-->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--Project title area end-->
+
+    <div class="contact-from-area">
+        <div class="container">
+            <div class="row">
+                <div class="offset-md-2 col-md-8">
+                    <form action="#" th:action="@{/registerUserForm}" method="post" th:object="${user}">
+                                <label for="aUserRole">User Role:</label>
+                                <select  name="aUserRole" id="aUserRole">
+                                    <option value="ROLE_CUSTOMER">CUSTOMER</option>
+                                </select>
+
+                                <br/>
+
+                                <input type="text" name="userName" th:field="*{userName}" id="userName"
+                                       placeholder="Username" class="form-control" required>
+                                <br/>
+                                <label>
+                                    Mr
+                                    <input type="radio" value="Mr" th:field="*{gender}" name="gender" checked>
+                                </label>
+                                <label>
+                                    Mrs
+                                    <input type="radio" value="Mrs" th:field="*{gender}" name="gender">
+                                </label>
+                                <label>
+                                    Miss
+                                    <input type="radio" value="Miss" th:field="*{gender}" name="gender">
+                                </label>
+
+                                <br/>
+
+                                <br/>
+                                <input type="text" name="firstName" th:field="*{firstName}" id="firstName"
+                                       placeholder="First Name" class="form-control" required>
+
+                                <br/>
+                                <input type="text" name="lastName" th:field="*{lastName}" id="lastName"
+                                       placeholder="Last Name" class="form-control" required>
+
+                                <br/>
+                                <input type="text" name="profession" th:field="*{profession}" id="profession"
+                                       placeholder="Profession" class="form-control" required>
+
+                                <br/>
+                                <input type="text" name="telephone1" th:field="*{telephone1}" id="telephone1"
+                                       placeholder="Telephone 1" class="form-control" required>
+
+                                <br/>
+                                <input type="text" name="telephone2" th:field="*{telephone2}" id="telephone2"
+                                       placeholder="Telephone 2" class="form-control" required>
+
+                                <br/>
+                                <input type="text" name="address" th:field="*{address}" id="address"
+                                       placeholder="Address" class="form-control" required>
+
+                                <br/>
+
+                                <input type="date" name="dateOfBirth" th:field="*{dateOfBirth}" id="dateOfBirth"
+                                       placeholder="Date of Birth:" class="form-control" required>
+
+                                <br/>
+                                <input type="text" name="emailInput" th:field="*{email}" id="emailInout"
+                                       placeholder="Email" class="form-control" required>
+
+                                <br/>
+                                <input type="password" name="passwordInput" th:field="*{password}" id="passwordInput"
+                                       placeholder="Password" class="form-control" required>
+
+                                <br/>
+<!--                                <input type="text" name="beneficiary" th:field="*{beneficiary}" id="beneficiary"-->
+<!--                                       placeholder="Beneficiary Username" class="form-control" required>-->
+                                <br/>
+                                <input type="text" name="identityCardNumber" th:field="*{identityCardNumber}" id="identityCardNumber"
+                                       placeholder="Identity Card No" class="form-control" required>
+                                <br/>
+
+                                Notes:
+                                <textarea id="notes" class="selectNormal" rows="3" cols="70" th:field="*{notes}">
+                                </textarea>
+
+                                <label for="true">This new user CANNOT login</label><br/>
+                                    False<input th:field="*{accountLocked}"  type="radio" id="false" name="accountLocked" value="false"
+                                           checked>
+                                    <br/>
+                                    True<input th:field="*{accountLocked}" type="radio" id="true" name="accountLocked" value="true">
+                                <br/>
+                                <input type="hidden" name="id" th:field="*{id}" id="id"
+                                       class="form-control" required>
+
+                        <br/>
+                        ****************** ID No. 1 ******************
+
+                                <input type="hidden" th:field="*{idFilePath}" readonly/><br/>
+                                <img width="450px" th:src="@{/getImage}"/><br/>
+
+                        <br/>
+                        ****************** ID No. 2 ******************
+                                <input type="hidden" th:field="*{idFilePath2}" readonly/><br/>
+                                <img width="450px" th:src="@{/getImage2}"/><br/>
+
+
+                        <br/>
+                        ****************** ID No. 3 ******************
+                                <input type="hidden" th:field="*{idFilePath3}" readonly/><br/>
+                                <img width="450px" th:src="@{/getImage3}"/><br/>
+
+                        <br/>
+                        ****************** ID No. 4 ******************
+                                <input type="hidden" th:field="*{idFilePath4}" readonly/><br/>
+                                <img width="450px" th:src="@{/getImage4}"/><br/>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div th:insert="footer::navbar">  </div>
+</html>

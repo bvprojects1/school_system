@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<div th:insert="header::navbar"></div>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<body>
+<br/>
+
+<table width="90%" class="center" border="0px">
+    <tr>
+        <td>
+            <strong><span th:text="${branch.name}"></span></strong>
+        </td>
+        <td>
+            <font size="2"><span th:text="${branch.code}"/></font>
+        </td>
+        <td>
+            <font size="2"><span th:text="${branch.street}"/></font>
+        </td>
+        <td>
+            <font size="2"><span th:text="${branch.city}"/></font>
+        </td>
+        <td>
+            <font size="2"><span th:text="${branch.telephone}"/></font>
+        </td>
+        <td>
+            <font size="2"><span th:text="${branch.email}"/></font>
+        </td>
+    </tr>
+</table>
+
+<h4><font color="green">BRANCH USERS</font></h4>
+
+<table width="90%" class="center" border="0px">
+    <tr>
+        <td>Username</td>
+        <td>Firstname</td>
+        <td>Lastname</td>
+        <td>Role</td>
+        <td>Telephone</td>
+        <td>Member Since</td>
+        <td>Creator</td>
+        <td></td>
+    </tr>
+    <tr th:each="user : ${branchUserList}">
+        <td th:text="${user.userName}"></td>
+        <td th:text="${user.firstName}"></td>
+        <td th:text="${user.lastName}"></td>
+        <td>
+            <div th:each="userRole : ${user.userRole}">
+                <span th:text="${userRole.name}"></span>
+            </div>
+        </td>
+        <td th:text="${user.telephone1}"></td>
+        <td th:text="${#dates.format(user.created, 'dd-MMM-yyyy HH:mm')}"></td>
+        <td th:text="${user.createdBy}"></td>
+        <td>
+            <a th:href="${'/removeCustomerFromBranch/' + {user.id} + '/' + {branch.id}}"><img width="25px" th:src="@{/assets/images/redArrowDown.png}"/>
+                Move from <span th:text="${branch.name}"></span>
+            </a>
+        </td>
+    </tr>
+</table>
+<br/>
+<br/>
+
+<table width="90%" class="center" border="0px">
+    <tr>
+        <th>OTHER BRANCH USERS</th>
+    </tr>
+</table>
+
+<table width="90%" class="center" border="0px">
+    <tr>
+        <td>Username</td>
+        <td>Name</td>
+        <td>Role</td>
+        <td>telephone</td>
+        <td>Member Since</td>
+        <td>Branch</td>
+        <td>Creator</td>
+        <td></td>
+    </tr>
+    <tr th:each="user : ${otherUserList}">
+        <td th:text="${user.userName}"></td>
+        <td>
+            <div th:text="${user.firstName}"></div>
+            <div th:text="${user.lastName}"></div>
+        </td>
+        <td>
+            <div th:each="userRole : ${user.userRole}">
+                <span th:text="${userRole.name}"></span>
+            </div>
+        </td>
+        <td th:text="${user.telephone1}"></td>
+        <td th:text="${#dates.format(user.created, 'dd-MMM-yyyy HH:mm')}"></td>
+        <td th:text="${user.branch.name}"></td>
+        <td th:text="${user.createdBy}"></td>
+        <td>
+            <a th:href="${'/addCustomerToBranch/' + {user.id} + '/' + {branch.id}}"> <img width="25px" th:src="@{/assets/images/greenArrowUp.png}"/>
+                Move to <span th:text="${branch.name}"></span>
+            </a>
+        </td>
+    </tr>
+</table>
+
+<br/><br/>
+
+<table width="90%" class="center" border="0px">
+    <tr>
+        <th>ASSIGN A BRANCH TO THESE USERS</div> </th>
+    </tr>
+</table>
+
+<table width="90%" class="center" border="0px">
+    <tr>
+        <th>Username</th>
+        <th>Name</th>
+        <th>Role</th>
+        <th>telephone</th>
+        <th>Member Since</th>
+        <th>Creator</th>
+        <th></th>
+    </tr>
+    <tr th:each="user : ${noBranchUserList}">
+        <td th:text="${user.userName}"></td>
+        <td>
+            <div th:text="${user.firstName}"></div>
+            <div th:text="${user.lastName}"></div>
+        </td>
+        <td>
+            <div th:each="userRole : ${user.userRole}">
+                <span th:text="${userRole.name}"></span>
+            </div>
+        </td>
+        <td th:text="${user.telephone1}"></td>
+        <td th:text="${#dates.format(user.created, 'dd-MMM-yyyy HH:mm')}"></td>
+        <td th:text="${user.createdBy}"></td>
+        <td>
+            <a th:href="${'/addCustomerToBranch/' + {user.id} + '/' + {branch.id}}">
+                <img width="25px" th:src="@{/assets/images/greenArrowUp.png}"/>
+                Move to <span th:text="${branch.name}"></span>
+            </a>
+        </td>
+    </tr>
+</table>
+<br/>
+</body>
+<div th:insert="footer::navbar"></div>
+</html>

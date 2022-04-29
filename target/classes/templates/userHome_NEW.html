@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<div th:insert="header::navbar"></div>
+<br/>
+<br/>
+
+<section class="contact-form-area-start space df-bg">
+
+    <table width="800%" class="center" border="0px">
+        <tr>
+            <td align="center">
+                <font color="#BF360C;" size="4"><h4>All System users with a Saving, Current, Loan, Retirement
+                    Savings</h4></font>
+            </td>
+        </tr>
+    </table>
+    <!--Project title area end-->
+<!--    <div class="contact-from-area">-->
+<!--        <div class="container">-->
+<!--            <div class="row">-->
+<!--                <table width="100%" class="center" border="0px">-->
+
+<!--                    <tr>-->
+<!--                        &lt;!&ndash;                            <th></th>&ndash;&gt;-->
+<!--                        <th>Username</th>-->
+<!--                        <th>Firstname</th>-->
+<!--                        <th>Lastname</th>-->
+<!--                        <th>Role</th>-->
+<!--                        <th>telephone</th>-->
+<!--                        <th>Member Since</th>-->
+<!--                        <div th:if="${#authorization.expression('hasAnyAuthority(''ROLE_MANAGER'')')}">-->
+<!--                            <th>Locked</th>-->
+<!--                        </div>-->
+
+<!--                        <th>Creator</th>-->
+<!--                        <th></th>-->
+<!--                    </tr>-->
+<!--                    <tr th:each="user : ${userList}">-->
+<!--                        &lt;!&ndash;                            <td th:text="${userList[index]}"></td>&ndash;&gt;-->
+<!--                        <td th:text="${user.userName}"></td>-->
+<!--                        <td th:text="${user.firstName}"></td>-->
+<!--                        <td th:text="${user.lastName}"></td>-->
+<!--                        <div th:if="${#authorization.expression('hasAnyAuthority(''ROLE_MANAGER'')')}">-->
+<!--                            <td>-->
+<!--                                <div th:each="userRole : ${user.userRole}">-->
+<!--                                    <span th:text="${userRole.name}"></span>-->
+<!--                                </div>-->
+<!--                            </td>-->
+<!--                        </div>-->
+
+<!--                        <td th:text="${user.telephone1}"></td>-->
+<!--                        <td th:text="${user.created}"></td>-->
+<!--                        <td>-->
+<!--                            <a href="#" th:href="@{/lockAccount/{id}(id=${user.id})}">-->
+<!--                                <span th:text="${user.accountLocked}"/>-->
+<!--                            </a>-->
+<!--                        </td>-->
+<!--                        <td th:text="${user.createdBy}"></td>-->
+<!--                        &lt;!&ndash;                            <td th:text="${#dates.format(user.created, 'dd-MMM-yyyy')}"></td>&ndash;&gt;-->
+<!--                        <td>-->
+<!--                            <a href="#" th:href="@{/showCustomer/{id}(id=${user.id})}">See more ...</a>-->
+<!--                        </td>-->
+<!--            </div>-->
+<!--            <tr th:if="${userList.isEmpty()}">-->
+<!--                <td class="text-center" colspan="2">No customers. Add a customer!-->
+<!--                    <a href="/registerUser">-->
+<!--                        <img width="25px" th:src="@{/assets/images/add.png}"/>-->
+<!--                    </a></td>-->
+<!--                <td></td>-->
+<!--                <td></td>-->
+<!--                <td></td>-->
+<!--                <td></td>-->
+<!--            </tr>-->
+<!--            </table>-->
+
+        </div>
+    </div>
+    </div>
+
+</section>
+
+<div th:insert="footer::navbar"></div>
+</html>

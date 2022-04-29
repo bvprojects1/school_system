@@ -1,0 +1,91 @@
+        body{background-color: #33A9C4;}
+        .section-1{display: flex; justify-content: space-between;}
+        .passport-photo{border: 2px solid #324960; padding: 5px;}
+        .title{ text-align: center; margin-bottom: 50px; text-transform: uppercase;}
+        #motto{ font-size: 25px;}
+        .data-head{ text-align: center; margin-top: 30px; margin-bottom: 30px;}
+        .sec-2{display: flex; justify-content: space-around;}
+        .course-col{
+        flex-basis: 31%;
+        background: linear-gradient(to bottom,#324960,#245a66);
+        border-radius: 10px;
+        margin-bottom: 5%;
+        padding: 20px 12px;
+        margin: 40px 12px;
+        box-sizing: border-box;
+        transition: all 0.5s;
+    }
+
+    /* .tables-border{padding: 0, 15px, 0;} */
+
+    .course-col:hover{
+        box-shadow: 0 0 15px 0px #245a66,0 0 15px 0px #349db4;
+        transform: scale(1.1);
+    }
+    .border-around{
+        padding: 10px;
+        margin-top: 50px;
+        margin-bottom: 50px;
+        background-color: #fff;
+        border: 20px;
+    }
+    .border-around{
+        box-shadow: 0 0 20px 0px #0d3842;
+    }
+
+    .footer-text-left, .footer-text-right{
+        width: 20%;
+    }
+
+    .footer-text-left th, .footer-text-right th{
+        font-size: 20px;
+    }
+
+    .container{
+        margin: 15%;
+    }
+
+
+    /* Table Styles */
+
+.fl-table {
+    border-radius: 5px;
+    font-size: 15px;
+    font-weight: normal;
+    border: none;
+    border-collapse: collapse;
+    width: 100%;
+    max-width: 100%;
+    white-space: nowrap;
+    background-color: white;
+}
+
+.fl-table td, .fl-table th {
+    text-align: center;
+    padding: 8px;
+}
+
+.fl-table td {
+    border-right: 1px solid #f8f8f8;
+    font-size: 15px;
+    /* border: 2px solid gray; */
+}
+
+
+
+.fl-table thead th {
+    color: #ffffff;
+    background: linear-gradient(to bottom right,#324960,black);
+    font-size: 25px;
+}
+
+
+.fl-table thead th:nth-child(odd) {
+    color: #ffffff;
+    background: #324960;
+}
+
+.fl-table tr:nth-child(even) {
+    background: #F8F8F8;
+}
+

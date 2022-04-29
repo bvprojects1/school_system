@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<div th:insert="header::navbar">  </div>
+<br/>
+<br/>
+
+
+<section class="contact-form-area-start space df-bg">
+    <!--Project title area start-->
+    <div class="project-title-area text-center">
+        <div class="col-md-12">
+            <div class="project-title-content">
+                <font color="#BF360C;" size="4"><h4>Notifications and Warning related to this account </h4></font> </div>
+            <table border="0" width="90%" class="center">
+                <tr><td>
+                     <font size="1.5px"> Account Number</font> <br/>
+                    <a href="#" th:href="@{/showCustomer/{id}(id=${session.customerInUse.id})}">
+                    <font color="#2d363f" size="4px">
+                        <span th:text="${#strings.substring(accountNumber,0,5)} + ' ' +${#strings.substring(accountNumber,5,10)} + ' ' +${#strings.substring(accountNumber,10,21)} + ' ' +${#strings.substring(accountNumber,21,23)}"/>
+                    </font>
+                    </a>
+                </td>
+                <td>
+                    <font color="#2d363f" size="1.5px">  Account Name </font> <br/>
+                        <font color="#2d363f" size="4px"> <div th:text="${accountHolderName}"></div>
+                    </font>
+                </td></tr>
+            </table>
+
+        </div>
+    </div>
+    <!--Project title area end-->
+    <div class="contact-from-area">
+        <div class="container">
+            <div class="row">
+
+                <table border="0" width="100%" class="center">
+                    <tr>
+                        <th>Date</th>
+                        <th>Agent</th>
+                        <th>Notes</th>
+                    </tr>
+                    <tr th:each="callCenter : ${callCenterList}">
+                        <td><p th:text="${#dates.format(callCenter.date, 'dd-MMM-yyyy HH:mm')}"></p></td>
+                        <td th:text="${callCenter.userName}"></td>
+                        <td th:text="${callCenter.notes}"></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+
+</section>
+
+</body>
+<div th:insert="footer::navbar"></div>
+
+</html>

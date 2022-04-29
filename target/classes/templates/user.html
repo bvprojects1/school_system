@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<div th:insert="header::navbar">  </div>
+<br/>
+<br/>
+
+<!-- Contact form area start -->
+<section class="contact-form-area-start space df-bg">
+    <!--Project title area start-->
+    <div class="project-title-area text-center">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="project-title-content">
+                        <h3>REGISTER A NEW USER</h3>
+                        <span><i class="fas fa-crosshairs"></i></span>
+                        <!--                            <p>Cross-agency coordination clean water rural, promising development turmoil inclusive education transformative community.</p>-->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--Project title area end-->
+
+    <div class="contact-from-area">
+        <div class="container">
+            <div class="row">
+                <div class="offset-md-2 col-md-8">
+                    <form action="#" th:action="@{/registerUserForm}" method="post" th:object="${user}">
+
+                            <div class="col-md-12">
+
+                                <label for="aUserRole">Choose a User Role:</label>
+                                <span th:if="${#authorization.expression('hasAnyAuthority(''ROLE_MANAGER'')')} OR ${#authorization.expression('hasAnyAuthority(''ROLE_ADMIN'')')}">
+                                    <select class="select" name="aUserRole" id="aUserRole" multiple>
+
+                                        <option value="ROLE_MAIN_USERS">MAIN USERS</option>
+                                        <option value="ROLE_MAIN_SEARCH_USERS">MAIN SEARCH USERS</option>
+                                        <option value="ROLE_MAIN_TRANSFERS">MAIN TRANSFERS</option>
+                                        <option value="ROLE_MAIN_LOANS">MAIN LOANS</option>
+                                        <option value="ROLE_MAIN_SETTINGS">MAIN SETTINGS</option>
+                                        <option value="ROLE_MAIN_BRANCHES">MAIN BRANCHES</option>
+                                        <option value="ROLE_MAIN_GENERAL_LEDGER">MAIN GENERAL LEDGER</option>
+                                        <option value="ROLE_MAIN_SHARES">MAIN SHARES</option>
+                                        <option value="ROLE_MAIN_TRIAL_BALANCE">MAIN TRIAL BALANCE</option>
+
+                                        <option value="ROLE_CASHIER">CASHIER</option>
+                                        <option value="ROLE_LOAN_OFFICER">LOAN OFFICER</option>
+                                        <option value="ROLE_CUSTOMER_SERVICE_OFFICER">CUSTOMER SERVICE OFFICER</option>
+                                        <option value="ROLE_WORKER">WORKER</option>
+
+                                        <option value="ROLE_VIEW_ALL_ACCOUNTS">VIEW ALL ACCOUNTS</option>
+                                        <option value="ROLE_CREATE_CUSTOMER_ACCOUNT">CREATE CUSTOMER ACCOUNT</option>
+                                        <option value="ROLE_CREATE_USER_ACCOUNT">CREATE USER ACCOUNT</option>
+
+                                        <option value="ROLE_EDIT_CUSTOMER_ACCOUNT">EDIT CUSTOMER ACCOUNT</option>
+                                        <option value="ROLE_EDIT_USER_ACCOUNT">EDIT USER ACCOUNT </option>
+
+                                        <option value="ROLE_VIEW_CUSTOMER_ACCOUNT_BALANCES">VIEW CUSTOMER ACCOUNT BALANCES</option>
+                                        <option value="ROLE_PRINT_CUSTOMER_ACCOUNT_BALANCES">PRINT CUSTOMER ACCOUNT BALANCES</option>
+                                        <option value="ROLE_CUSTOMER_ACCOUNT_DEPOSIT_CASH">CUSTOMER ACCOUNT DEPOSIT CASH</option>
+                                        <option value="ROLE_CUSTOMER_ACCOUNT_PAYOUT_CASH">CUSTOMER ACCOUNT PAYOUT CASH</option>
+                                        <option value="ROLE_CUSTOMER_ACCOUNT_TYPE_TRANSFERS">CUSTOMER ACCOUNT TYPE TRANSFERS</option>
+
+                                        <option value="ROLE_CUSTOMER_TRANSACTIONS_VIEW">CUSTOMER TRANSACTIONS VIEW</option>
+                                        <option value="ROLE_CUSTOMER_TRANSACTIONS_PRINT">CUSTOMER TRANSACTIONS PRINT</option>
+
+                                        <option value="ROLE_LOAN_APPLY">LOAN APPLY</option>
+                                        <option value="ROLE_LOAN_APPROVE">LOAN APPROVE</option>
+                                        <option value="ROLE_LOAN_AMORTIZE">LOAN AMORTIZE</option>
+
+                                        <option value="ROLE_LOAN_DELIQUENCY_RATE">LOAN DELIQUENCY RATE</option>
+                                        <option value="ROLE_LOAN_GRANTED">LOAN GRANTED</option>
+
+                                        <option value="ROLE_SHARE_APPLY">SHARE APPLY</option>
+                                        <option value="ROLE_SHARE_APPROVE">SHARE APPROVE</option>
+                                        <option value="ROLE_SHARE_CURRENT_ACCOUNT_PAYOUT">SHARE CURRENT ACCOUNT PAYOUT</option>
+
+                                        <option value="ROLE_VIEW_CUSTOMERS_CREATED">VIEW CUSTOMERS</option>
+                                        <option value="ROLE_PRINT_CUSTOMERS_CREATED">PRINT CUSTOMERS</option>
+
+                                        <option value="ROLE_GL_VIEW">GENERAL LEDGER VIEW</option>
+                                        <option value="ROLE_GL_PRINT">GENERAL LEDGER PRINT</option>
+
+                                        <option value="ROLE_GL_1_1_TRANSFER">GL_ACCOUNT_1_1_TRANSFER</option>
+                                        <option value="ROLE_GL_1_MANY_TRANSFER">GL_ACCOUNT_1_TO_MANY_TRANSFER</option>
+                                        <option value="ROLE_GL_ACCOUNT_TRANSFER_TO_CUSTOMER_ACCOUNT">GL_ACCOUNT_TRANSFER_TO_CUSTOMER_ACCOUNT</option>
+                                        <option value="ROLE_GL_ACCOUNT_TRANSFER_FROM_CUSTOMER_ACCOUNT">GL_ACCOUNT_TRANSFER_FROM_CUSTOMER_ACCOUNT</option>
+
+                                        <option value="ROLE_PRINT_CASH_SELECTION_SITUATION">PRINT CASH SELECTION SITUATION</option>
+
+                                        <option value="ROLE_GL_ACCOUNT_EXPENSE_ENTRY">GL_ACCOUNT_EXPENSE_ENTRY</option>
+                                        <option value="ROLE_ACCOUNTANT">ACCOUNTANT</option>
+
+                                        <!--                                        <option value="ROLE_CUSTOMER_ACCOUNT_RECEIVE_CASH">CUSTOMER ACCOUNT RECEIVE CASH</option>-->
+                                        <option value="ROLE_VIEW_CUSTOMER_ACCOUNT_BALANCES">VIEW CUSTOMER ACCOUNT BALANCES</option>
+
+                                        <option value="ROLE_UPDATE_GL_ACCOUNT_NAME">ROLE_UPDATE_GL_ACCOUNT_NAME</option>
+
+                                        <option value="ROLE_MANAGER">MANAGER</option>
+
+                                    </select>
+
+                                </span>
+                                <br/>
+                                <div th:if="${#authorization.expression('hasAnyAuthority(''ROLE_AGENT'')')}">
+                                    <select  name="aUserRole">
+                                        <option value="ROLE_CUSTOMER">CUSTOMER</option>
+                                    </select>
+                                </div>
+                                <br/>
+                                Username: <input type="text" name="userName" th:field="*{userName}" id="userName"
+                                                 class="form-control" required>
+                                <br/>
+                                <label>
+                                    Mr
+                                    <input type="radio" value="Mr" th:field="*{gender}" name="gender" checked>
+                                </label>
+                                <label>
+                                    Mrs
+                                    <input type="radio" value="Mrs" th:field="*{gender}" name="gender">
+                                </label>
+                                <label>
+                                    Miss
+                                    <input type="radio" value="Miss" th:field="*{gender}" name="gender">
+                                </label>
+
+                                <br/>
+
+                                <br/>
+                                Firstname:
+                                <input type="text" name="firstName" th:field="*{firstName}" id="firstName"
+                                       class="form-control" required>
+
+                                <br/>
+                                Lastname:
+                                <input type="text" name="lastName" th:field="*{lastName}" id="lastName"
+                                       class="form-control" required>
+
+                                <br/>
+                                Profession:
+                                <input type="text" name="profession" th:field="*{profession}" id="profession"
+                                       class="form-control" required>
+
+                                <br/>
+                                Telephone 1:
+                                <input type="text" name="telephone1" th:field="*{telephone1}" id="telephone1"
+                                       class="form-control" required>
+
+                                <br/>
+                                Telephone 2:
+                                <input type="text" name="telephone2" th:field="*{telephone2}" id="telephone2"
+                                       class="form-control">
+
+                                <br/>
+                                Address:
+                                <input type="text" name="address" th:field="*{address}" id="address"
+                                       class="form-control" required>
+
+                                <br/>
+                                Date of Birth:
+                                <input type="date" placeholder="Date Of Birth" name="dateOfBirth" th:field="*{dateOfBirth}" id="dateOfBirth"
+                                       class="form-control" required>
+
+                                <br/>
+                                Email:
+                                <input type="text" name="emailInput" th:field="*{email}" id="emailInout"
+                                       class="form-control" required>
+
+                                <br/>
+                                Password:
+                                <input type="password" name="passwordInput" th:field="*{password}" id="passwordInput"
+                                       class="form-control" required>
+
+                                <br/>
+                                Identity Card Number:
+                                <input type="text" name="identityCardNumber" th:field="*{identityCardNumber}" id="identityCardNumber"
+                                       class="form-control" required>
+                                <br/>
+                                <label for="true">This new user will be able to login</label><br/>
+                                False<input th:field="*{accountLocked}"  type="radio" id="true" name="accountLocked" value="true"
+                                            checked>
+                                <br/>
+                                True<input th:field="*{accountLocked}" type="radio" id="false" name="accountLocked" value="false">
+
+                                <br/>
+                                <br/>
+                                <br/>
+                                <input type="submit" class="btn-block btn contact-btn" value="CREATE USER"/>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div th:insert="footer::navbar">  </div>
+</html>

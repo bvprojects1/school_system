@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<div th:insert="header::navbar"></div>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<div class="container">
+        <table width="90%" class="center" border="0px">
+            <tr>
+                <td align="center">
+                    <div class="project-title-content">
+                        <font color="green" size="4"><b>
+                            <div th:text="${accountNameHeader}"/>
+                        </b></font>
+                        <span><i class="fas fa-crosshairs"></i></span>
+                    </div>
+                </td>
+                </tr><tr>
+                <td colspan="4" align="center">
+                    <font size="4">
+                        <span th:text="${startDate}"/>
+                        <b><font color="green"> to </font></b>
+                        <span th:text="${endDate}"/>
+                    </font>
+                </td>
+            </tr>
+
+        </table>
+
+        <form action="#" th:action="@{/filterTrialBalance}" method="post" th:object="${glSearchDTO}">
+            <table border="0" width="80%" class="center">
+                <tr>
+                    <td>
+                        Start Date:<input type="date" name="startDate" th:field="*{startDate}" id="startDate"
+                                         class="form-control" required>
+                        <br/>
+                    </td>
+                    <td>
+                        End Date:<input type="date" name="endDate" th:field="*{endDate}" id="endDate"
+                                       class="form-control" required>
+                        <br/>
+                    </td>
+                    <td>
+                        <br/>
+                        <button type="submit" class="btn btn-success">SEARCH</button>
+                        <br/>
+                    </td>
+                </tr>
+            </table>
+        </form>
+
+<!--    </div>-->
+    <table border="1" width="80%" class="center">
+        <tr>
+            <td width="50%">
+            </td>
+            <td>
+                    <font size="2">DEBIT</font>
+                    <font size="5">
+                        <b>
+                            <span th:if="${trialBalanceBilanz.debitTotal == 0}">
+                                0
+                            </span>
+                            <span th:if="${trialBalanceBilanz.debitTotal > 0}">
+                                <span th:text="${#numbers.formatDecimal(trialBalanceBilanz.debitTotal, 0, 'COMMA', 0, 'POINT')}"/>
+                            </span>
+                            <span th:if="${trialBalanceBilanz.debitTotal < 0}">
+                                <span th:text="${#numbers.formatDecimal(trialBalanceBilanz.debitTotal*-1, 0, 'COMMA', 0, 'POINT')}"/>
+                            </span>
+                        </b>
+                    </font>
+                </td><td>
+                <font size="2">CREDIT</font>
+                <font size="5">
+                        <b>
+                            <span th:if="${trialBalanceBilanz.creditTotal == 0}">
+                                0
+                            </span>
+                            <span th:if="${trialBalanceBilanz.creditTotal > 0}">
+                                <span th:text="${#numbers.formatDecimal(trialBalanceBilanz.creditTotal, 0, 'COMMA', 0, 'POINT')}"/>
+                            </span>
+                            <span th:if="${trialBalanceBilanz.creditTotal < 0}">
+                                <span th:text="${#numbers.formatDecimal(trialBalanceBilanz.creditTotal*-1, 0, 'COMMA', 0, 'POINT')}"/>
+                            </span>
+                        </b>
+                </font>
+            </td><td>
+            <font size="2">Balance</font>
+                <span th:if="${trialBalanceBilanz.totalDifference == 0}">
+                    <font size="5">
+                        <b>
+                            0
+                        </b>
+                    </font>
+                </span>
+                <span th:if="${trialBalanceBilanz.totalDifference < 0}">
+                    <font size="2">DEBIT</font>
+                    <font size="5">
+                    <b>
+                       <span th:text="${#numbers.formatDecimal(trialBalanceBilanz.totalDifference*-1, 0, 'COMMA', 0, 'POINT')}"/>
+                    </b>
+                    </font>
+                </span>
+                <span th:if="${trialBalanceBilanz.totalDifference > 0}">
+                    <font size="2">CREDIT</font>
+                    <font size="5">
+                        <b>
+                            <span th:text="${#numbers.formatDecimal(trialBalanceBilanz.totalDifference, 0, 'COMMA', 0, 'POINT')}"/>
+                        </b>
+                    </font>
+                </span>
+            </td>
+        </tr>
+    </table>
+    <!--Project title area end-->
+    <table border="0" width="90%" class="center">
+
+        <tr>
+            <th>Account Name</th>
+            <th>Account Code</th>
+            <th>DEBIT
+
+            </th>
+            <th>
+                CREDIT
+
+            </th>
+        </tr>
+        <tr th:each="tb : ${trialBalanceBilanz.trialBalanceWeb}">
+            <td th:text="${tb.name}">
+            </td>
+            <td th:text="${tb.code}">
+            </td>
+            <td>
+                <span th:if="${tb.classCode =='1'} OR ${tb.classCode =='5'} OR ${tb.classCode =='6'}">
+
+                    <span th:if="${tb.totalDifference > 0}">
+                        <span th:text="${#numbers.formatDecimal(tb.totalDifference, 0, 'COMMA', 0, 'POINT')}"/>
+                    </span>
+
+                    <span th:if="${tb.totalDifference < 0}">
+                        <span th:text="${#numbers.formatDecimal(tb.totalDifference*-1, 0, 'COMMA', 0, 'POINT')}"/>
+                    </span>
+
+                </span>
+                <span th:unless="${tb.classCode =='1'} OR ${tb.classCode =='5'} OR ${tb.classCode =='6'}" >
+                    0
+                </span>
+            </td>
+            <td>
+                <span th:unless="${tb.classCode =='1'} OR ${tb.classCode =='5'} OR ${tb.classCode =='6'}" >
+                    <span th:if="${tb.totalDifference < 0}">
+                        <span th:text="${#numbers.formatDecimal(tb.totalDifference*-1, 0, 'COMMA', 0, 'POINT')}"/>
+                    </span>
+                    <span th:if="${tb.totalDifference > 0}">
+                        <span th:text="${#numbers.formatDecimal(tb.totalDifference, 0, 'COMMA', 0, 'POINT')}"/>
+                    </span>
+                </span>
+                <span th:if="${tb.classCode =='1'} OR ${tb.classCode =='5'} OR ${tb.classCode =='6'}">
+                    0
+                </span>
+                <!--                <span th:text="${#numbers.formatDecimal(tb.creditTotal, 0, 'COMMA', 0, 'POINT')}">-->
+                <!--                </span>-->
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2">
+            </td>
+            <td>
+                <span th:if="${trialBalanceBilanz.totalDifference < 0}">
+                    <font size="4">
+                    <b><span
+                            th:text="${#numbers.formatDecimal(trialBalanceBilanz.totalDifference*-1, 0, 'COMMA', 0, 'POINT')}"/></b>
+                    </font>
+                </span>
+            </td>
+            <td>
+                <span th:if="${trialBalanceBilanz.totalDifference > 0}">
+                    <font size="4">
+                        <b><span
+                                th:text="${#numbers.formatDecimal(trialBalanceBilanz.totalDifference, 0, 'COMMA', 0, 'POINT')}"/></b>
+                    </font>
+                </span>
+            </td>
+        </tr>
+    </table>
+</div>
+</body>
+<div th:insert="footer::navbar"></div>
+</html>

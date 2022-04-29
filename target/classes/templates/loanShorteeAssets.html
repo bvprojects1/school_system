@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<div th:insert="header::navbar">  </div>
+<br/>
+<br/>
+
+<!-- Contact form area start -->
+<section class="contact-form-area-start space df-bg">
+    <!--Project title area start-->
+    <div class="project-title-area text-center">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="project-title-content">
+                        <h3>ADD LOAN GUARANTEES</h3>
+                        <span><i class="fas fa-crosshairs"></i></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <form action="#" th:action="@{/registerLoanGuarantorForm}" method="post" th:object="${loanGuarantor}">
+        <table class="center" width="100%">
+            <tr>
+                <td><label> Guarantor Type 1:</label></td>
+                <td><select name="guarantorType1" id="guarantorType1" th:field="*{guarantorTypeOne}">
+                    <option value="41">BUILDING</option>
+                    <option value="42">LAND</option>
+                    <option value="43">BUSINESS</option>
+                    <option value="43">OTHERS</option>
+                </select>
+                </td>
+                <td width="33%">Amount:<input type="number" th:field="*{guarantorTypeAmountOne}" max="100" maxlength="10"/></td>
+            </tr>
+
+            <tr>
+                <td><label> Guarantor Type 2:</label></td>
+                <td><select name="guarantorType2" id="guarantorType2" th:field="*{guarantorTypeTwo}">
+                    <option value="41">BUILDING</option>
+                    <option value="42">LAND</option>
+                    <option value="43">BUSINESS</option>
+                    <option value="43">OTHERS</option>
+                </select>
+                </td>
+                <td width="33%">Amount:<input type="number" th:field="*{guarantorTypeAmountTwo}" max="100" maxlength="10"/></td>
+            </tr>
+
+            <tr>
+                <td><label> Guarantor Type 3:</label></td>
+                <td><select name="guarantorType3" id="guarantorType3" th:field="*{guarantorTypeThree}">
+                    <option value="41">BUILDING</option>
+                    <option value="42">LAND</option>
+                    <option value="43">BUSINESS</option>
+                    <option value="43">OTHERS</option>
+                </select>
+                </td>
+                <td width="33%">Amount:<input type="number" th:field="*{guarantorTypeAmountThree}" max="100" maxlength="10"/></td>
+            </tr>
+            <tr>
+                <td width="33%"></td>
+                <td width="10%"><label> Notes:</label></td>
+                <td>
+                    <br/>
+                    <textarea id="notes" rows="3" cols="30" th:field="*{notes}">
+                    </textarea>
+                    <br/>
+                    <button type="submit" class="btn btn-success">
+                        Add Loan Guarantees
+                    </button>
+                </td>
+            </tr>
+        </table>
+    </form>
+</section>
+
+<div th:insert="footer::navbar">  </div>
+</html>

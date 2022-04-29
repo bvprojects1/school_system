@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<div th:insert="header::navbar"></div>
+<br/>
+<br/>
+<br/>
+<div th:insert="summary::navbar"></div>
+
+<div class="container">
+<!--        <font size="4px" color="green">CURRENT ACCOUNT TRANSFER TO GL ACCOUNTS</font>-->
+        <font color="gray" size="8px"> <span th:text="${glAddEntryFromAccountsInfo}"/></font>
+        <form action="#" th:action="@{/userHomeLedgerEntryFromAccountForm}" method="post" th:object="${ledgerEntryDTO}">
+            <table align="top" border="0" class="center" width="100%" cellpadding="5">
+                <tr><td colspan="2"><font size="4px" color="green"><b>CURRENT ACCOUNT TRANSFER TO GL ACCOUNTS</b></font></td></tr>
+                <tr>
+                    <td style="width:33%">
+                        <b>Enter Amount</b><br/>
+                        <input required class="selectAmount" name="glAccountAmount" type="text"
+                               th:field="*{ledgerAmount}"/>
+                        <br/>
+                        <font size="2">(Amount to be transfered from Current account )</font>
+
+                    </td>
+                    <td>
+
+                        <b>Date</b><br/>
+                        <input class="selectNormal" required name="recordDate" type="date"/><br/>
+                        <font size="2"> (Record entry date)</font>
+                        <!--                        <b>From User Accounts</b><br/>-->
+                        <!--                        <input class="selectAmount" name="fromAccountToLedger" type="checkbox" th:field="*{fromAccountToLedger}"/>-->
+                        <!--                        <br/><font size="2"> (Check to transfer from user account)</font>-->
+                    </td>
+                    <td>
+                        <label><b> Notes:</b></label><br/>
+                        <textarea class="selectNormal" id="notes" rows="3" cols="40" th:field="*{notes}"/>
+                    </td>
+                </tr>
+            </table>
+            <table align="top" border="1" class="center" width="100%" cellpadding="5">
+                <tr>
+                    <td style="width:50%" colspan="2">
+                        <b>Select From</b>
+                        <br/>
+                        <select class="selectNormal" th:field="*{originLedgerAccount}">
+                            <option th:each="i : ${session.customerInUse.currentAccount}"
+                                    th:value="${i.id}">
+                                <span th:text="${'Account Number: ' + i.accountNumber + '  Balance: ' + #numbers.formatDecimal(i.accountBalance, 0, 'COMMA', 0, 'POINT')+ '  Minimum Balance: ' + #numbers.formatDecimal(i.accountMinBalance, 0, 'COMMA', 0, 'POINT')}"/>
+                            </option>
+                        </select>
+                        <br/>
+                        <font size="2"> (Opposite booking Type happens in various GL accounts)</font>
+                    </td>
+                    <!--                <td style="width:50%">-->
+                    <!--                    -->
+                    <!--                </td>-->
+                </tr>
+            </table>
+
+            <table border="0" class="center" width="100%" cellpadding="5">
+                <tr>
+                    <td width="10%"></td>
+                    <td colspan="3">
+                        <br>
+                        <font color="green"><b>LEDGER ACCOUNTS</b></font>
+                    </td>
+                    <td colspan="1">
+                        <br>
+                        <font size="4" color="green">Total Sum of amount entered for individual GL accounts must add
+                            up to amount entered above</font>
+                    </td>
+                </tr>
+                <tr>
+                    <td width="10%"></td>
+                    <td colspan="4">
+                        <br/>
+                        <div th:each="ledgerAccount : ${originLedgerAccounts}">
+                            <font size="3">
+                                Enter Amount:
+                            </font>
+                            <input class="selectAmount" type="text" th:name="${ledgerAccount.id}"/>
+                            <span th:text="${ledgerAccount.code}"/>
+                        </div>
+                        <br/>
+                    </td>
+                </tr>
+            </table>
+            <br/>
+
+            <table>
+                <tr>
+                    <td width="40%">
+                    </td>
+                    <td width="30%">
+                        <input type="submit" class="btn btn-success" value="SUBMIT LEDGER TRANSFER"/>
+                    </td>
+                    <td width="30%">
+                    </td>
+                </tr>
+            </table>
+
+        </form>
+        <br/><br/><br/>
+        <div th:insert="blog::navbar">
+
+        </div>
+<!--        <br/>-->
+<!--    </section>-->
+</div>
+<div th:insert="footer::navbar"></div>
+</html>

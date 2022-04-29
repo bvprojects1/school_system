@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student's Report Card</title>
+
+    <style>
+        body{background-color: #33A9C4;}
+        .section-1{display: flex; justify-content: space-between;}
+        .passport-photo{border: 2px solid #324960; padding: 5px;}
+        .title{ text-align: center; margin-bottom: 50px; text-transform: uppercase;}
+        #motto{ font-size: 25px;}
+        .data-head{ text-align: center; margin-top: 30px; margin-bottom: 30px;}
+        .sec-2{display: flex; justify-content: space-around;}
+        .course-col{
+        flex-basis: 31%;
+        background: linear-gradient(to bottom,#324960,#245a66);
+        border-radius: 10px;
+        margin-bottom: 5%;
+        padding: 20px 12px;
+        margin: 40px 12px;
+        box-sizing: border-box;
+        transition: all 0.5s;
+    }
+
+    /* .tables-border{padding: 0, 15px, 0;} */
+
+    .course-col:hover{
+        box-shadow: 0 0 15px 0px #245a66,0 0 15px 0px #349db4;
+        transform: scale(1.1);
+    }
+    .border-around{
+        padding: 10px;
+        margin-top: 50px;
+        margin-bottom: 50px;
+        background-color: #fff;
+        border: 20px;
+    }
+    .border-around{
+        box-shadow: 0 0 20px 0px #0d3842;
+    }
+
+    .footer-text-left, .footer-text-right{
+        width: 20%;
+    }
+
+    .footer-text-left th, .footer-text-right th{
+        font-size: 20px;
+    }
+
+    .container{
+        margin: 15%;
+    }
+
+
+    /* Table Styles */
+
+.fl-table {
+    border-radius: 5px;
+    font-size: 15px;
+    font-weight: normal;
+    border: none;
+    border-collapse: collapse;
+    width: 100%;
+    max-width: 100%;
+    white-space: nowrap;
+    background-color: white;
+}
+
+.fl-table td, .fl-table th {
+    text-align: center;
+    padding: 8px;
+}
+
+.fl-table td {
+    border-right: 1px solid #f8f8f8;
+    font-size: 15px;
+    /* border: 2px solid gray; */
+}
+
+
+
+.fl-table thead th {
+    color: #ffffff;
+    background: linear-gradient(to bottom right,#324960,black);
+    font-size: 25px;
+}
+
+
+.fl-table thead th:nth-child(odd) {
+    color: #ffffff;
+    background: #324960;
+}
+
+.fl-table tr:nth-child(even) {
+    background: #F8F8F8;
+}
+
+
+    </style>
+</head>
+<body>
+    
+    <div class="container border-around">
+    
+        <div class="data-head">
+            <p id="motto">Bits Valley iLABS</p>
+            <p>Longla Street, Bamenda, North West Region, Cameroon <br/> Tel: +237 672017610 </p>
+        </div>
+
+        <h2 class="title">Student's Report Card</h2>
+
+    <hr>
+
+        <div class="section-1">
+            <div>
+                <table>
+                    <tbody>
+                    <tr>
+                        <th scope="row">Name:</th>
+                        <td id="surname"></td>
+                        <!-- <td id="given_names"></td> -->
+                    </tr>
+                    <tr>
+                        <th scope="row">Date Of Birth:</th>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Sex:</th>
+                        <td></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="passport-photo">
+                <img src="images/picture-1.png" th:src="@{/images/picture-1.png}" alt="student's passport photo">
+            </div>
+        </div> <br/><br/>
+    
+        <table class="fl-table">
+            <thead>
+            <tr>
+                <th scope="col">Course(s)</th>
+                <th scope="col">Session 1</th>
+                <th scope="col">Session 2</th>
+                <th scope="col">Session 3</th>
+                <th scope="col">Completion Progress</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <th scope="row">Web Development</th>
+                <td>HTML</td>
+                <td>CSS</td>
+                <td>Javascript</td>
+                <td>%</td>
+            </tr>
+            <tr class="tr-hov">
+                <th scope="row">Application Development</th>
+                <td></td>
+                <td>Java</td>
+                <td>TH</td>
+                <td>%</td>
+            </tr>
+            <tr>
+                <th scope="row">Networking</th>
+                <td></td>
+                <td>PHP</td>
+                <td>Bootstrap</td>
+                <td>%</td>
+            </tr>
+            <tr>
+                <th scope="row">Software Testing</th>
+                <td></td>
+                <td>Manual</td>
+                <td>Automation</td>
+                <td>%</td>
+            </tr>
+            </tbody>
+        </table>
+        <div class="sec-2">
+            <div class="course-col">
+                <table class="fl-table">
+                    <thead>
+                        <tr>
+                            <th scope="col">Course(s)</th>
+                            <th scope="col">Tutor</th>
+                            <th scope="col">Remark</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th scope="row">Web Dev</th>
+                            <td>Name</td>
+                            <td>Comment</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">App Dev</th>
+                            <td>Name</td>
+                            <td>comment</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Networking</th>
+                            <td>Name</td>
+                            <td>Comment</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Testing</th>
+                            <td>Name</td>
+                            <td>Comment</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+    
+            <div class="course-col">
+                <table class="fl-table">
+                    <thead>
+                        <tr>
+                            <th scope="col">Course</th>
+                            <th scope="col">Grade</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th scope="row">Web Dev</th>
+                            <td>A</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">App Dev</th>
+                            <td>A+</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Networking</th>
+                            <td>C</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Testing</th>
+                            <td>B</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+    
+            <div class="course-col">
+                <table class="fl-table">
+                    <thead>
+                    <tr>
+                        <th scope="col">Course(s)</th>
+                        <th scope="col">Start Date</th>
+                        <th scope="col">Stop Date</th>
+                        <tbody>
+                            <tr>
+                                <th scope="row">Web Dev</th>
+                                <td>01/01/2022</td>
+                                <td>01/01/2022</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">App Dev</th>
+                                <td>01/01/2022</td>
+                                <td>01/01/2022</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Networking</th>
+                                <td>01/01/2022</td>
+                                <td>01/01/2022</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Testing</th>
+                                <td>01/01/2022</td>
+                                <td>01/01/2022</td>
+                            </tr>
+                        </tbody>
+                    </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+
+        <div class="section-1 footer-text">
+            <div class="footer-text-left">
+                <table class="fl-table">
+                    <tbody>
+                    <tr>
+                        <th scope="row">Coordinator</th>
+                        <td id="coordinator"></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="footer-text-right">
+                <table class="fl-table">
+                    <tbody>
+                    <tr>
+                        <th scope="row">Bits Valley Board</th>
+                        <td id="bitsvalley_board"></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div><br><br>
+
+    </div>
+    
+    
+
+
+
+
+
+    <script src="js/bootstrap.min.js"></script>
+</body>
+</html>

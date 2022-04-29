@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<div th:insert="header::navbar">  </div>
+<br/>
+<br/>
+<!-- Contact information area end -->
+
+<!-- Contact form area start -->
+<section class="contact-form-area-start space df-bg">
+    <!--Project title area start-->
+    <div class="project-title-area text-center">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="project-title-content">
+                        <h3>REGISTER A NEW USER</h3>
+                        <span><i class="fas fa-crosshairs"></i></span>
+                        <!--                            <p>Cross-agency coordination clean water rural, promising development turmoil inclusive education transformative community.</p>-->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--Project title area end-->
+
+    <div class="contact-from-area">
+        <div class="container">
+            <div class="row">
+                <div class="offset-md-2 col-md-8">
+<!--                    <form action="#" th:action="@{/findCustomerForm}" method="post" th:object="${user}">-->
+                        <div class="row">
+                            <div class="col-md-12">
+
+                                FIND CUSTOMER FOR MORE ACCOUNT DETAILS<br/>
+
+                                <form action="#" th:action="@{/findUserByUserName}" method="post">
+                                    <nobr>
+                                        <input type="text" name="userName" id="userName"
+                                               placeholder="Username" class="form-control" required>
+<!--                                        <input type="text" name="userName" placeholder="Search" value=""/>-->
+                                    </nobr>
+                                    <br/>
+
+<!--                                    <input style="font-size:12pt;color:white;background-color:green;border:2px solid #336600;padding:3px"-->
+<!--                                           type="submit" value="Submit">-->
+
+                                    <button type="submit" class="btn-block btn contact-btn"
+                                            id="message-btn">Search Customer
+                                    </button>
+                                </form>
+
+
+<!--                                <div class="col-md-12">-->
+<!--                                <button type="button" class="btn-block btn contact-btn"-->
+<!--                                        id="message-btn">Search-->
+<!--                                </button>-->
+<!--                                &lt;!&ndash;                                    <div class="mt-4 text-uppercase custom-color text-center" id="mail-status"></div>&ndash;&gt;-->
+<!--                            </div>-->
+                        </div>
+<!--                    </form>-->
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div th:insert="footer::navbar">  </div>
+</html>
+

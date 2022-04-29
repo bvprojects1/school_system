@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<div th:insert="header::navbar"></div>
+<br/>
+<br/>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8 mx-auto">
+                <br/><br/>
+                Name:<h4><span style th:text="${session.customerInUse.lastName}"/></h4>
+
+                ****************** ID No. 1 ******************
+                <h3> Upload Customer Identity Card info </h3>
+<!--                User: <div th:text="${userName}"/>-->
+                <p th:text="${message}" th:if="${message ne null}" class="alert alert-primary"></p>
+                <form action="#" method="post" th:action="@{/upload}" enctype="multipart/form-data">
+                    <div class="form-group">
+                        <input type="file" name="file" class="form-control-file"/>
+<!--                    <input type="hidden" th:value="${userName}" th:attr="userName='userName'"/>-->
+                    </div>
+                    <button type="submit" class="btn btn-primary">Upload File</button>
+                </form>
+                <img width="450px" th:src="@{/getImage}"/><br/><br/><br/>
+
+
+                ****************** ID No. 2 ******************
+                <h3>Upload Customer id 2 </h3>
+                <p th:text="${message}" th:if="${message ne null}" class="alert alert-primary"></p>
+                <form action="#" method="post" th:action="@{/upload2}" enctype="multipart/form-data">
+                    <div class="form-group">
+                        <input type="file" name="file2" class="form-control-file"/>
+                        <!--                    <input type="hidden" th:value="${userName}" th:attr="userName='userName'"/>-->
+                    </div>
+                    <button type="submit" class="btn btn-primary">Upload File</button>
+                </form>
+                <img width="450px" th:src="@{/getImage2}"/><br/><br/><br/>
+
+
+                ****************** ID No. 3 ******************
+                <h3>Upload Customer id 3 </h3>
+                <p th:text="${message}" th:if="${message ne null}" class="alert alert-primary"></p>
+                <form action="#" method="post" th:action="@{/upload3}" enctype="multipart/form-data">
+                    <div class="form-group">
+                        <input type="file" name="file3" class="form-control-file"/>
+                        <!--                    <input type="hidden" th:value="${userName}" th:attr="userName='userName'"/>-->
+                    </div>
+                    <button type="submit" class="btn btn-primary">Upload File</button>
+                </form>
+                <img width="450px" th:src="@{/getImage3}"/><br/><br/><br/>
+
+
+                ****************** ID No. 4 ******************
+                <h3>Upload Customer id 4 </h3>
+                <p th:text="${message}" th:if="${message ne null}" class="alert alert-primary"></p>
+                <form action="#" method="post" th:action="@{/upload4}" enctype="multipart/form-data">
+                    <div class="form-group">
+                        <input type="file" name="file4" class="form-control-file"/>
+                        <!--                    <input type="hidden" th:value="${userName}" th:attr="userName='userName'"/>-->
+                    </div>
+                    <button type="submit" class="btn btn-primary">Upload File</button>
+                </form>
+
+                <img width="450px" th:src="@{/getImage4}"/><br/>
+
+                <!-- ------------------------------------------------------------------------------>
+
+            </div>
+        </div>
+    </div>
+
+
+<div th:insert="footer::navbar">  </div>
+</html>

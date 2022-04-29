@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<div th:insert="header::navbar">  </div>
+<br/>
+<br/>
+
+<!-- Contact form area start -->
+<section class="contact-form-area-start space df-bg">
+    <!--Project title area start-->
+    <div class="project-title-area text-center">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="project-title-content">
+                        <font size="4" color="green"><b>SYSTEM SETTINGS</b></font><br/>
+
+                        <span><i class="fas fa-crosshairs"></i></span>
+                        <!--                            <p>Cross-agency coordination clean water rural, promising development turmoil inclusive education transformative community.</p>-->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--Project title area end-->
+
+    <div class="contact-from-area">
+        <div class="container">
+            <div class="row">
+                <div class="offset-md-2 col-md-8">
+                    <font size="6" color="gray"><span th:text="${notify}"/></font>
+                    <form action="#" method="post" th:action="@{/uploadLogo}" enctype="multipart/form-data">
+                        <div class="form-group">
+                            <input type="file" name="file" class="form-control-file">
+                        </div>
+                        <button type="submit" class="btn btn-primary">Upload logo And Save To See Changes</button>
+                    </form>
+                    <br/>
+                    <form action="#" method="post" th:action="@{/uploadUnionLogo}" enctype="multipart/form-data">
+                        <div class="form-group">
+                            <input type="file" name="file" class="form-control-file">
+                        </div>
+                        <button type="submit" class="btn btn-primary">Upload Union logo And Save To See Changes</button>
+                    </form>
+
+                    <form action="#" th:action="@{/saveSettingForm}" method="post" th:object="${runtimeSetting}">
+                        <div class="col-md-12">
+
+
+                            Logo: <input type="text" name="logo" th:field="*{logo}" id="logo"
+                                         placeholder="Upload logo" class="form-control">
+                            <br/>
+
+                            Union logo: <input type="text" name="unionLogo" th:field="*{unionLogo}" id="unionLogo"
+                                         placeholder="Upload Union logo" class="form-control">
+                            <br/>
+
+                           Business Name:<input type="text" name="businessName" th:field="*{businessName}" id="businessName"
+                                   placeholder="Enter business name" class="form-control">
+                            <br/>
+
+                            Slogan:<input type="text" name="slogan" th:field="*{slogan}" id="slogan"
+                                                 placeholder="Enter slogan" class="form-control">
+                            <br/>
+
+
+                            VAT Percent:<input type="text" name="vatPercent" th:field="*{vatPercent}" id="vat"
+                                                 placeholder="VAT" class="form-control">
+                            <br/>
+
+                            Address:<input type="text" name="address" th:field="*{address}" id="address"
+                                                 placeholder="Enter address name" class="form-control">
+                            <br/>
+
+                            Telephone:<input type="text" name="telephone" th:field="*{telephone}" id="telephone"
+                                           class="form-control">
+                            <br/>
+
+                            Telephone2:<input type="text" name="telephone2" th:field="*{telephone2}" id="telephone2"
+                                             class="form-control">
+                            <br/>
+
+                            Email:<input type="text" name="email" th:field="*{email}" id="email"
+                                          class="form-control">
+                            <br/>
+
+                            Website: <input type="text" name="website" th:field="*{website}" id="website"
+                                            class="form-control">
+                            <br/>
+
+                            Fax: <input type="text" name="fax" th:field="*{fax}" id="fax"
+                                            class="form-control">
+                            <br/>
+
+                            LogoSize: <input type="text" name="logoSize" th:field="*{logoSize}" id="logoSize"
+                                        class="form-control">
+                            <br/>
+
+                            ThemeColor: <input type="text" name="themeColor" th:field="*{themeColor}" id="themeColor"
+                                        class="form-control">
+                            <br/>
+
+                            ThemeColor2: <input type="text" name="themeColor2" th:field="*{themeColor2}" id="themeColor2"
+                                        class="form-control">#84c0d5
+                            <br/>
+
+                            Upload Directory:<input type="text" name="uploadDirectory" th:field="*{uploadDirectory}" id="uploadDirectory"
+                                                class="form-control">
+                            <br/>
+
+                            <img width="100px" th:src="@{/getLogoImage}"/>
+                            <br/>
+                            <img width="100px" th:src="@{/getUnionLogoImage}"/>
+
+                            <input type="submit" class="btn-block btn contact-btn" value="Save"/>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+    <div th:insert="footer::navbar">  </div>
+</html>

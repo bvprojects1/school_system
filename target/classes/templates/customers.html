@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<div th:insert="header::navbar"></div>
+<br/>
+<div class="container">
+
+        <section class="contact-form-area-start space df-bg">
+
+                    <table width="90%" class="center" border="0px">
+                        <tr>
+                            <td align="center">
+                                <font th:attr="color=${session.runtimeSettings.themeColor}" size="4">USERS LIST
+                                    <a href="/registerUser"> <img width="30px" th:src="@{/assets/images/add.png}"/> </a>
+                                </font><br/>
+                                <span class="error" th:text="${error}"/>
+                            </td>
+                        </tr>
+                    </table>
+
+        <table width="100%" class="center" border="0px">
+            <tr>
+                <th colspan="3">Username - Name</th>
+
+                <th>Role</th>
+                <th>Telephone</th>
+                <th>Member Since</th>
+                <div th:if="${#authorization.expression('hasAnyAuthority(''ROLE_MANAGER'')')}">
+                    <th>Locked</th>
+                </div>
+                <th>Creator</th>
+                <th></th>
+            </tr>
+            <tr th:each="user : ${userList}">
+                <td>
+                    <span th:text="${user.userName}+' - '+ ${user.gender} +'. '+${user.firstName} +' '+ ${user.lastName}"/>
+                </td>
+                <td>
+                    <div th:each="userRole : ${user.userRole}">
+                        <span th:text="${userRole.name}">
+                        </span>
+                    </div>
+                </td>
+                <td th:text="${user.telephone1}"></td>
+                <td th:text="${#dates.format(user.created, 'dd-MMM-yyyy HH:mm')}"></td>
+                <div th:if="${#authorization.expression('hasAnyAuthority(''ROLE_MANAGER'')')}">
+                    <td>
+                        <a href="#" th:href="@{/lockAccount/{id}(id=${user.id})}">
+                            <span th:text="${user.accountLocked}"/>
+                        </a>
+                    </td>
+                </div>
+                <td th:text="${user.createdBy}"></td>
+                <td>
+                    <div th:if="${#authorization.expression('hasAnyAuthority(''ROLE_VIEW_CUSTOMER_ACCOUNT_BALANCES'')')}">
+                        <a href="#" th:href="@{/showCustomer/{id}(id=${user.id})}">
+                            See more ...
+                        </a>
+                    </div>
+                    <div th:unless="${#authorization.expression('hasAnyAuthority(''ROLE_VIEW_CUSTOMER_ACCOUNT_BALANCES'')')}">
+                            See more ...<label title="Requires ROLE_VIEW_CUSTOMER_ACCOUNT_BALANCES"><img width="25px" th:src="@{/assets/images/toolTip.png}"/></label>
+                    </div>
+                </td>
+                <td>
+                    <span th:if="${#authorization.expression('hasAnyAuthority(''ROLE_ADMIN'')')} OR ${#authorization.expression('hasAnyAuthority(''ROLE_EDIT_USER_ACCOUNT'')')} ">
+
+                        <a  th:href="@{/editUserRole/{id}(id=${user.id})}">
+                            <i class="fas fa-pencil-alt" style='font-size:16px;color:gray'></i>
+                        </a>
+                    </span>
+                    <span th:unless="${#authorization.expression('hasAnyAuthority(''ROLE_ADMIN'')')} OR ${#authorization.expression('hasAnyAuthority(''ROLE_EDIT_USER_ACCOUNT'')')}">
+                            <a href="">
+                                <i class="fas fa-pencil-alt" style='font-size:16px;color:gray'></i>
+                            </a>
+                        <label title="Requires ROLE_EDIT_USER_ACCOUNT"><img width="25px" th:src="@{/assets/images/toolTip.png}"/></label>
+                    </span>
+                </td>
+            </tr>
+        </table>
+    </section>
+</div>
+<div th:insert="footer::navbar"></div>
+</html>

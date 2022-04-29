@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<div th:insert="header::navbar"></div>
+
+<body>
+
+<div class="container">
+    <br/><br/>
+    <br/><br/>
+    <br/>
+
+    <div th:insert="summary::navbar"></div>
+    <table width="100%" border="0">
+        <tr>
+            <td align="center">
+                <font size="2px">Username</font>
+                <br/>
+                <a href="#" th:href="@{/showCustomer/{id}(id=${session.customerInUse.id})}">
+                    <font color="gray" size="4">
+                        <span style th:text="${session.customerInUse.gender +' '+session.customerInUse.firstName +' '+session.customerInUse.lastName }"/>
+                        <br/>
+                        <span style th:text="${session.customerInUse.customerNumber}"/><br/>
+                    </font>
+                </a>
+            </td>
+
+            <td align="center">
+                <font size="2px"> Account Number</font><br/>
+                <font color="#2d363f" size="3px">
+                    <a href="#"
+                       th:href="@{/showCustomer/{userid}(userid=${loanAccountTransaction.loanAccount.user.id})}">
+                        <div th:text="${#strings.substring(loanAccountTransaction.loanAccount.accountNumber,0,5)} + ' ' +${#strings.substring(loanAccountTransaction.loanAccount.accountNumber,5,10)} + ' ' +${#strings.substring(loanAccountTransaction.loanAccount.accountNumber,10,21)} + ' ' +${#strings.substring(loanAccountTransaction.loanAccount.accountNumber,21,23)}"/>
+
+                    </a>
+                </font>
+            </td>
+            <td align="center">
+                <font size="2px"> Member Since</font><br/>
+                <font size="3px">
+                    <div th:text="${#dates.format(loanAccountTransaction.loanAccount.user.created, 'dd-MMM-yyyy HH:mm')}"/>
+                </font>
+            </td>
+
+            <td align="center"><font size="2px">Initial Loan Amount</font> <br/>
+                <font color="#2d363f" size="4px">
+                    <span th:text="${loanAccountTransaction.loanAmount}"/>
+                </font>
+            </td>
+            <td align="center">
+                <font color="#2d363f" size="2px"> Principal Balance </font>
+                <br/>
+                <font color="#2d363f" size="4px"><span th:text="${loanBilanzList.currentLoanBalance}"/>
+                </font>
+            </td>
+        </tr>
+
+        <tr>
+            <td align="center">
+                <font size="2px"> Account Type</font><font color="#2d363f" size="3px">
+                <div th:text="${loanAccountTransaction.loanAccount.accountType.name}"/>
+            </font>
+            </td>
+
+
+            <td align="center"><font size="2px">Monthly Payment</font> <br/>
+                <font color="#2d363f" size="4px">
+                    <span th:text="${#numbers.formatDecimal(loanAccountTransaction.loanAccount.monthlyPayment, 0, 'COMMA', 0, 'POINT')}"/>
+                </font>
+            </td>
+            <td align="center">
+                <font color="#2d363f" size="2px">Loan Term</font>
+                <br/>
+                <font color="#2d363f" size="4px">
+                    <span th:text="${loanBilanzList.loanBilanzList[0].monthYearOfLastPayment}"/></font>
+            </td>
+
+
+            <td align="center">
+                <font size="2px"> Rate</font><br/><font color="#2d363f" size="3px"><span
+                    th:text="${loanAccountTransaction.loanAccount.interestRate}"/>%</font>
+            </td>
+
+            <td align="center">
+                <font size="2px"> Approved Date</font><font color="#2d363f" size="3px">
+                <div th:text="${loanAccountTransaction.loanAccount.approvedDate}"/>
+            </font>
+            </td>
+        </tr>
+
+        <tr>
+            <td align="center">
+                <font size="2px"> Approved By</font><font color="#2d363f" size="3px">
+                <div th:text="${loanAccountTransaction.loanAccount.approvedBy}"/>
+            </font>
+            </td>
+            <td align="center">
+                <font size="2px"> Loan Status</font><br/>
+                <font color="#2d363f" size="3px">
+                    <span th:if="${loanAccountTransaction.loanAccount.accountStatus.name == 'PENDING_APPROVAL'} AND ${#authorization.expression('hasAnyAuthority(''ROLE_MANAGER'')')}">
+
+                        <div th:if="${#authorization.expression('hasAnyAuthority(''ROLE_LOAN_APPROVE'')')}">
+                        <a th:href="@{/approveLoan/{id}(id=${loanAccountTransaction.loanAccount.id})}">
+                             APPROVE THIS LOAN
+                        </a>
+                        </div>
+                       <div th:unless="${#authorization.expression('hasAnyAuthority(''ROLE_LOAN_APPROVE'')')}">
+                        <label title="Requires ROLE_APPROVE_LOAN">APPROVE THIS LOAN<img width="25px"
+                                                                                        th:src="@{/assets/images/toolTip.png}"/></label>
+                        </div>
+                    </span>
+                    <span th:text="${loanAccountTransaction.loanAccount.accountStatus}"/>
+                </font>
+            </td>
+            <td align="center">
+        <table><tr th:each="surety: ${loanAccountTransaction.loanAccount.shorteeAccounts}">
+            <td>
+                <font size="2px"> Guarantor</font><br/>
+                <font color="#2d363f" size="3px">
+
+                    <span th:text="${surety.savingAccount.user.lastName}"/>,
+                    <span th:text="${surety.savingAccount.user.firstName}"/>
+                </font>
+            </td>
+        </tr></table>
+            </td>
+
+            <td align="center" colspan="2">
+                <font size="2px"> Notes</font><font color="#2d363f" size="3px">
+                <div th:text="${loanAccountTransaction.loanAccount.notes}"/>
+            </font>
+            </td>
+
+        </tr>
+    </table>
+    <br/>
+    <form action="#" th:action="@{/registerLoanAccountTransactionForm}" method="post"
+          th:object="${loanAccountTransaction}">
+
+        <table border="0" width="100%" class="center">
+            <tr>
+                <th width="15%">
+                </th>
+                <th align="center">
+                    <div class="error" th:text="${billSelectionError}"/>
+                    <font size="6" color="gray"> <div th:text="${billSelectionInfo}"/></font>
+                </th>
+            </tr>
+            <tr>
+                <td width="15%">
+                </td>
+                <td>
+                    <font size="5" color="green"><b> MAKE A LOAN PAYMENT</b></font>
+                    <br/>
+                    <select name="deposit_withdrawal">
+                        <!--                        <option value="DEPOSIT">LOAN</option>-->
+                        <option value="LOAN PAYMENT">LOAN PAYMENT</option>
+                    </select>
+                    <select name="modeOfPayment" id="modeOfPayment">
+                        <option value="">Select A Method Of Payment</option>
+                        <option value="CASH">CASH</option>
+                        <option value="MOMO">MOMO</option>
+                        <option value="ORANGE MONEY">ORANGE MONEY</option>
+                        <option value="TRANSFER">TRANSFER</option>
+                        <option value="RECEIPT">RECEIPT</option>
+                        <option value="OTHER">OTHER</option>
+                    </select>
+                    <b>Enter Amount:</b>
+                    <input placeholder="Enter Amount" style="font-size: 200%;" size="6" type="number"
+                           th:field="*{amountReceived}"
+                           value="${loanAccountTransaction.amountReceived}"/>
+                    <font size="2">
+                        <span
+                                th:text="${#numbers.formatDecimal(loanAccountTransaction.loanAccount.minimumPayment, 0, 'COMMA', 0, 'POINT')}"/>
+                        (Minimum)
+                    </font>
+                    <textarea placeholder="Enter Amount in letters ..." id="loanAmountInLetters" rows="1" cols="90"
+                              th:field="*{loanAmountInLetters}" maxlength="255">
+                </textarea>
+
+                    <br/>
+                    <br/>
+
+                    <font size="3" color="green"><b> BILL SELECTION </b></font><br/>
+                    <input name="tenThousand" th:field="*{tenThousand}" type="number" min="0" max="999" maxlength="4"
+                           value="${loanAccountTransaction.tenThousand}" size="4"/><font size="2">10 000</font>
+                    <input name="fiveThousand" th:field="*{fiveThousand}" type="number" min="0" max="999" maxlength="4"
+                           size="4"/><font size="2">5 000</font> &nbsp;
+                    <input name="twoThousand" th:field="*{twoThousand}" type="number" min="0" max="999" maxlength="4"
+                           size="4"/><font size="2">2 000</font> &nbsp;
+                    <input name="oneThousand" th:field="*{oneThousand}" type="number" min="0" max="999" maxlength="4"
+                           size="4"/><font size="2">1 000</font> &nbsp;
+                    <input name="fiveHundred" th:field="*{fiveHundred}" type="number" min="0" max="999" maxlength="4"
+                           size="4"/><font size="2">500</font>
+                    <input name="oneHundred" th:field="*{oneHundred}" type="number" min="0" max="999" maxlength="4"
+                           size="4"/><font size="2">100</font> &nbsp;
+                    <input name="fifty" th:field="*{fifty}" type="number" min="0" max="999" maxlength="4"
+                           size="4"/><font size="2">50</font>
+                    <input name="twentyFive" th:field="*{twentyFive}" type="number" min="0" max="999" maxlength="4"
+                           size="4"/><font size="2">25</font>
+                    &nbsp;
+                    <input class="selectSmall" name="ten" th:field="*{ten}" type="number" min="0" max="999" maxlength="4"
+                           size="4"/>10 &nbsp;
+
+                    &nbsp;
+                    <input class="selectSmall" name="five" th:field="*{five}" type="number" min="0" max="999" maxlength="4"
+                           size="4"/>5 &nbsp;
+
+                    <input class="selectSmall" name="one" th:field="*{one}" type="number" min="0" max="999" maxlength="4"
+                           size="4"/>1 &nbsp;
+                    <input type="hidden" th:value="${loanAccountTransaction.loanAccount.id}"
+                           th:attr="name='loanAccountId'"/>
+                    <br/> <br/>
+                    <textarea placeholder="Enter Notes ..." id="notes" rows="2" cols="90" th:field="*{notes}"
+                              maxlength="255">
+                </textarea>
+
+                    <br/> <br/>
+                    <label for="true">Account Owner</label>
+                    <input class="selectSmall" th:field="*{accountOwner}" type="checkbox" id="true" name="accountOwner" value="true"
+                           checked>
+
+                    <label for="representative">Representative</label>
+                    <input style="width:30%" th:field="*{representative}" type="text" id="representative" name="representative"/>
+
+                    <label for="true">Increase Guarantor Minimum:</label>
+                    <input style="width:14px" th:field="*{increaseGuarantorMinimum}" type="checkbox"
+                           id="increaseGuarantorMinimum" name="increaseGuarantorMinimum" value="true"
+                           checked>
+
+                    <button type="submit" class="btn btn-success">SUBMIT PAYMENT TRANSACTION</button>
+                    <br/><br/>
+                </td>
+            </tr>
+        </table>
+    </form>
+    <br/>
+    <table border="0" width="100%" class="center">
+        <tr>
+            <th align="center">
+                <font size="3" color="green"> PREVIOUS LOAN PAYMENTS PROCESSED </font>
+            </th>
+            <th>
+                Initial Loan Amount:
+                <font color="green" size="3px">
+                    <span th:text="${loanBilanzList.totalLoan}"/>
+                </font>
+            </th>
+            <th>
+                Current Loan Amount:
+                <font color="green" size="3px">
+                    <span th:text="${loanBilanzList.currentLoanBalance}"/>
+                </font>
+            </th>
+        </tr>
+    </table>
+    <table border="0" width="100%" class="center">
+        <tr>
+            <th>Date For Payment</th>
+            <th>MOP</th>
+            <th></th>
+            <th>Reference</th>
+            <th></th>
+            <th>Agent</th>
+            <th>Owner</th>
+            <th>Notes</th>
+            <th>Debit</th>
+            <th>Credit</th>
+            <th></th>
+            <th>Interest</th>
+            <th></th>
+            <th>VAT</th>
+            <th>Representative</th>
+            <th>
+            </th>
+            <td><a href="#" th:href="@{/statementLoanPDF/{id}(id=${loanAccountTransaction.loanAccount.id})}"><img
+                    width="40px" th:src="@{/assets/images/pdfIcon.png}"/>
+            </a></td>
+        </tr>
+        <tr th:each="bilanz : ${loanBilanzList.loanBilanzList}">
+            <td th:text="${bilanz.createdDate}"></td>
+            <td th:text="${bilanz.modeOfPayment}"></td>
+            <td width="10"></td>
+            <td th:text="${bilanz.reference}"></td>
+            <td width="10"></td>
+            <td th:text="${bilanz.agent}"></td>
+            <td th:text="${bilanz.accountOwner}"></td>
+            <td th:text="${bilanz.notes}"></td>
+
+            <td th:text="${bilanz.loanAmount}"></td>
+            <td th:text="${bilanz.amountReceived}"></td>
+            <td width="10"></td>
+            <td th:text="${bilanz.interestAccrued}"></td>
+            <td width="10"></td>
+            <td th:text="${bilanz.vatPercent}"></td>
+            <td th:text="${bilanz.representative}"></td>
+            <td th:text="${bilanz.currentBalance}"></td>
+            <td>
+                <a href="#" th:href="@{/createLoanAccountReceiptPdf/{id}(id=${bilanz.id})}">
+                    <img width="30px" th:src="@{/assets/images/pdfIcon.png}"/>
+                </a>
+            </td>
+        </tr>
+    </table>
+
+    <!--    <table border="0" width="100%" class="center">-->
+    <!--        <tr>-->
+    <!--            <td>-->
+    <!--                <a href="">Update shortee minimum Block</a>-->
+    <!--            </td>-->
+    <!--            <td>-->
+    <!--            </td>-->
+    <!--        </tr>-->
+    <!--    </table>-->
+
+    <br/> <br/>
+
+    <div th:insert="footer::navbar"></div>
+</div>
+
+</body>
+
+</html>

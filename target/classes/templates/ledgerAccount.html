@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<div th:insert="header::navbar">  </div>
+<br/>
+<br/>
+<br/>
+<br/>
+
+
+<!-- Contact form area start -->
+<section class="contact-form-area-start space df-bg">
+    <!--Project title area start-->
+    <div class="project-title-area text-center">
+        <div class="container">
+
+
+                        <div class="offset-md-2 col-md-8">
+                        <!--  <p>Cross-agency coordination clean water rural, promising development turmoil inclusive education transformative community.</p>-->
+
+                            <table width="90%" class="center" border="0px">
+                                <tr>
+                                    <td align="center">
+                                        <div class="project-title-content">
+                                            <font size="4" color="green"><b>CREATE LEDGER ACCOUNT</b></font><br/>
+                                            <span><i class="fas fa-crosshairs"></i></span>
+                                        </div>
+
+                                            <font color="red" size="4"> <span th:text="${ledgerAccountInfo}"/> </font>
+                                        <br/>
+                                    </td>
+                                </tr>
+                            </table>
+
+                        <form action="#" th:action="@{/saveLedgerAccountForm}" method="post" th:object="${ledgerAccount}">
+
+                            <select class="selectMedium" name="Category" id="category" th:field="*{category}">
+                                <option value="1000 – 1999">Assets (1000 – 1999)</option>
+                                <option value="2000 – 2999">Long Term Assets (2000 – 2999)</option>
+                                <option value="3000 – 3999">Inventory (3000 – 3999)</option>
+                                <option value="4000 – 4999">Third Party Revenue (4000 – 4999)</option>
+                                <option value="5000 – 5999">Treasury Accounts (5000 – 5999)</option>
+                                <option value="6000 – 6999">Expense (6000 – 6999)</option>
+                                <option value="7000 – 7999">Revenue (7000 – 7999)</option>
+                                <option value="8000 – 8999">Extra Ordinary Activities (8000 – 8999)</option>
+                            </select>
+                            <br/>
+                            <br/>
+                            <label for="status"><font size="4px"> Name</font></label>
+                            <input type="text" name="name" th:field="*{name}" id="name"
+                                   placeholder="e.g MEALS" class="form-control" required>
+
+                            <br/>
+                            <label for="status"><font size="4px"> Code</font></label>
+                            <input type="text" name="code" th:field="*{code}" id="code"
+                                   placeholder="e.d 4004" class="form-control" required>
+                            <br/>
+
+                            <label for="status"><font size="4px"> Active</font></label>
+                            <input class="largerCheckbox" th:field="*{status}" type="checkbox" id="status" name="status" value="*{status}"
+                                   checked>
+                            <br/>
+
+                            <label for="status"><font size="4px"> Credit Balance</font></label>
+                            <input class="largerCheckbox" th:field="*{creditBalance}" type="checkbox" id="creditBalance" name="creditBalance" th:value="*{creditBalance}"
+                                   checked>
+                            <br/>
+
+                            <input type="submit" class="btn-block btn contact-btn"
+                                   value="CREATE LEDGER ACCOUNT"/>
+                            <br/>
+
+                        </form>
+                        </div>
+
+        </div>
+    </div>
+    <!--Project title area end-->
+
+    <div class="contact-from-area">
+        <div class="container">
+            <div class="row">
+
+
+                    <br/><br/>
+                    <table width="90%" class="center" border="0px">
+                        <tr><th colspan="5"><h4>EXISTING LEDGER ACCOUNTS</h4></th></tr>
+                        <tr th:each="aLedgerAccount : ${ledgerAccountList}">
+                            <td>
+                                <span th:text="${aLedgerAccount.name}"/>
+
+                                <div th:if="${#authorization.expression('hasAnyAuthority(''ROLE_UPDATE_GL_ACCOUNT_NAME'')')}">
+                                <a th:href="@{/deleteGL/{id}(id=${aLedgerAccount.id})}">Delete this GL</a>
+                                <form th:action="@{/updateLedgerAccountForm}" method="post">
+                                    <input type="text" name="accountName"/>
+                                    <input type="hidden" name="aLedgerAccountId" th:value="${aLedgerAccount.id}"/>
+                                    <input type="submit" name="Submit"/>
+                                </form>
+                                </div>
+
+                            </td>
+                            <td th:text="${aLedgerAccount.code}"></td>
+                            <td th:text="${aLedgerAccount.creditBalance}"> </td>
+                            <td th:text="${aLedgerAccount.category}"> </td>
+                            <td th:text="${aLedgerAccount.status}"> </td>
+                            <td>
+                                <font size="3"></font><a href="#" th:href="@{/cashToLedgerAccount/{id}(id=${aLedgerAccount.id})}">Cash From This Account</a><br/></font>
+                                <a href="#" th:href="@{/addGeneralLedgerEntry/{id}(id=${aLedgerAccount.id})}"> <img width="30px" th:src="@{/assets/images/transfer2.png}"/> </a><br/>
+                                <font size="3"><a href="#" th:href="@{/cashFromLedgerAccount/{id}(id=${aLedgerAccount.id})}">Cash To This Account</a></font>
+                            </td>
+                        </tr>
+                    </table>
+
+            </div>
+        </div>
+    </div>
+</section>
+
+<div th:insert="footer::navbar">  </div>
+</html>

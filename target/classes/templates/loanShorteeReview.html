@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<div th:insert="header::navbar"></div>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<body>
+<br/>
+<table width="90%" class="center" border="0px">
+    <tr>
+        <td>
+            <font size="2px" color="gray">Loan Type</font><br/>
+                <span th:text="${session.loanAccount.accountType.name}"></span>
+        </td>
+        <td>
+            <font size="2px" color="gray">Interval Of Payment</font><br/>
+            <font size="3"><span th:text="${session.loanAccount.intervalOfLoanPayment}"/></font>
+        </td>
+        <td>
+            <font size="2px" color="gray">Term Of Loan</font><br/>
+            <font size="3"><span th:text="${session.loanAccount.termOfLoan}"/></font>
+        </td>
+        <td>
+            <font size="2px" color="gray">Interest Rate</font><br/>
+            <font size="3"><span th:text="${session.loanAccount.interestRate}"/></font>
+        </td>
+        <td>
+            <font size="2px" color="gray">Loan Amount</font><br/>
+            <font size="3"><strong>
+                <span th:text="${#numbers.formatDecimal(session.loanAccount.loanAmount, 0, 'COMMA', 0, 'POINT')}"/>
+            </strong></font>
+        </td>
+        <td>
+            <font size="2px" color="gray">Interest On Loan</font><br/>
+            <font size="3"><span th:text="${session.loanAccount.totalInterestOnLoan}"/></font>
+        </td>
+
+    </tr>
+</table>
+
+<br/>
+<table width="90%" class="center" border="0px">
+    <tr>
+        <th>SHORTEE ACCOUNTS </th>
+    </tr>
+</table>
+<form action="#" th:action="@{/createLoanAccountForm}" method="post" th:object="${loanAccount}">
+    <table width="90%" class="center" border="0px">
+        <tr>
+            <th>
+                <font size="2px" color="gray">Account #</font>
+            </th>
+            <th colspan="2">
+                <font size="2px" color="gray">Name</font>
+            </th>
+            <th>
+                <font size="2px" color="gray">Default</font>
+            </th>
+            <th>
+                <font size="2px" color="gray">Product code</font>
+            </th>
+            <th>
+                <font size="2px" color="gray">Balance</font>
+            </th>
+            <th>
+                <font size="2px" color="gray">Minimum Balance</font>
+            </th>
+            <th>
+
+                <div class="error" th:text="${errorShorteeAmount}"/>
+            </th>
+            <th>
+            </th>
+        </tr>
+        <tr>
+            <span th:if="${session.guarantor1 != null}">
+                <td th:text="${session.guarantor1.accountNumber}"></td>
+                <td th:text="${session.guarantor1.user.firstName}"></td>
+                <td th:text="${session.guarantor1.user.lastName}"></td>
+                <td th:text="${session.guarantor1.defaultedPayment}"></td>
+                <td th:text="${session.guarantor1.productCode}"></td>
+
+                <td>
+                    <span th:text="${#numbers.formatDecimal(session.guarantor1.accountBalance, 0, 'COMMA', 0, 'POINT')}"/>
+                </td>
+                <td>
+                    <span th:text="${#numbers.formatDecimal(session.guarantor1.accountMinBalance, 0, 'COMMA', 0, 'POINT')}"/>
+                </td>
+                <td>
+                    Enter Amount: <input type="number" disabled name="guarantor1Amount1" th:field="*{guarantor1Amount1}">
+                </td>
+            </span>
+            <td>
+
+                <input type="hidden" name="vatOption" th:field="*{vatOption}"/>
+                <input type="hidden" name="blockBalanceQuarantor" th:field="*{blockBalanceQuarantor}"/>
+
+            </td>
+        </tr>
+        <tr>
+            <span th:if="${session.guarantor2 != null}">
+                <td th:text="${session.guarantor2.accountNumber}"></td>
+                <td th:text="${session.guarantor2.user.firstName}"></td>
+                <td th:text="${session.guarantor2.user.lastName}"></td>
+                <td th:text="${session.guarantor2.defaultedPayment}"></td>
+                <td th:text="${session.guarantor2.productCode}"></td>
+
+                <td>
+                    <span th:text="${#numbers.formatDecimal(session.guarantor2.accountBalance, 0, 'COMMA', 0, 'POINT')}"/>
+                </td>
+                <td>
+                    <span th:text="${#numbers.formatDecimal(session.guarantor2.accountMinBalance, 0, 'COMMA', 0, 'POINT')}"/>
+                </td>
+                <td>
+                    Enter Amount: <input type="number" disabled name="guarantor1Amount2" th:field="*{guarantor1Amount2}">
+                </td>
+            </span>
+            <td>
+
+                <input type="hidden" name="vatOption" th:field="*{vatOption}"/>
+                <input type="hidden" name="blockBalanceQuarantor" th:field="*{blockBalanceQuarantor}"/>
+
+            </td>
+        </tr>
+        <tr>
+            <span th:if="${session.guarantor3 != null}">
+                <td th:text="${session.guarantor3.accountNumber}"></td>
+                <td th:text="${session.guarantor3.user.firstName}"></td>
+                <td th:text="${session.guarantor3.user.lastName}"></td>
+                <td th:text="${session.guarantor3.defaultedPayment}"></td>
+                <td th:text="${session.guarantor3.productCode}"></td>
+
+                <td>
+                    <span th:text="${#numbers.formatDecimal(session.guarantor3.accountBalance, 0, 'COMMA', 0, 'POINT')}"/>
+                </td>
+                <td>
+                    <span th:text="${#numbers.formatDecimal(session.guarantor3.accountMinBalance, 0, 'COMMA', 0, 'POINT')}"/>
+                </td>
+                <td>
+                    Enter Amount: <input type="number" disabled name="guarantor1Amount3" th:field="*{guarantor1Amount3}">
+                </td>
+            </span>
+            <td>
+
+                <input type="hidden" name="vatOption" th:field="*{vatOption}"/>
+                <input type="hidden" name="blockBalanceQuarantor" th:field="*{blockBalanceQuarantor}"/>
+
+            </td>
+        </tr>
+        <tr>
+            <td colspan="9">
+
+                <button type="submit" class="btn btn-success">
+                    CREATE LOAN
+                </button>
+            </td>
+        </tr>
+    </table>
+</form>
+<br/>
+<br/>
+
+<br/><br/>
+<br/>
+</body>
+<div th:insert="footer::navbar"></div>
+</html>

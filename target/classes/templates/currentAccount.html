@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<div th:insert="header::navbar"></div>
+<br/>
+<br/>
+<br/>
+<div th:insert="summary::navbar"></div>
+
+<div class="container">
+    <h4><font color="green">CREATE A CURRENT ACCOUNT</font></h4>
+    <form action="#" th:action="@{/registerCurrentAccountForm}" method="post" th:object="${currentAccount}">
+        <table class="center" width="100%">
+            <tr>
+                <td align="center">
+                </td>
+            </tr>
+            <tr>
+                <td align="center">
+                    <br/>
+                <label> Account Type</label><br/>
+                <select class="selectNormal" name="currentType" id="currentType" th:field="*{productCode}">
+                    <option value="20">Current - 20</option>
+                </select>
+                    <br/>
+                    <br/>
+                <textarea placeholder="Notes..." id="notes" rows="3" cols="70" th:field="*{notes}">
+                </textarea>
+                    <br/>
+                    <br/>
+                    <button type="submit" class="btn btn-success">Create Current Account</button>
+                    <br/>
+                    <br/>
+                </td>
+            </tr>
+
+        </table>
+    </form>
+
+</div>
+<div th:insert="footer::navbar">  </div>
+</html>

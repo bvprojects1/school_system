@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<div th:insert="header::navbar"></div>
+
+<br/>
+<br/>
+<section class="contact-form-area-start space df-bg">
+    <!--Project title area start-->
+    <div class="project-title-area text-center">
+        <div class="col-md-12">
+                <table width="90%" class="center" border="0px">
+                    <tr>
+                        <td align="center">
+                            <div class="project-title-content">
+                                <font color="green" size="4"><b><div th:text="${accountNameHeader}"/></b></font>
+                                <span><i class="fas fa-crosshairs"></i></span>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+
+                </div>
+
+            <br/>
+            <form action="#" th:action="@{/filterGenaralLedger}" method="post" th:object="${glSearchDTO}">
+                <table border="0" width="80%" class="center">
+                    <tr>
+                        <td>
+                            Ledger<br/>
+                            <select name="allLedgerAccount" class="selectMedium" th:field="*{allLedgerAccount}">
+                                <option value="-1">
+                                    ALL
+                                </option>
+                                <option th:each="i : ${allLedgerAccount}"
+                                        th:value="${i.id}">
+                                    <span th:text="${i.code}"/>
+                                </option>
+                            </select>
+                        </td>
+
+                        <td width="5"></td>
+                        <td>
+                            Start Date<input type="date" name="startDate" th:field="*{startDate}" id="startDate"
+                                              placeholder="Start Date:" class="form-control" required>
+                        </td>
+                        <td width="5"></td>
+                        <td>
+                            End Date<input type="date" name="endDate" th:field="*{endDate}" id="endDate"
+                                            placeholder="End Date:" class="form-control" required>
+                        </td>
+                        <td width="5"></td>
+                        <td width="5"></td>
+                        <td>
+                        User<br/>
+                        <select class="selectMedium" name="allGLEntryUsers" id="allGLEntryUsers" th:field="*{allGLEntryUsers}">
+                            <option value="-1">ALL</option>
+                            <option th:each="username : ${allGLEntryUsers}"
+                                    th:value="${username}">
+                                <span th:text="${username}"/>
+                            </option>
+                        </select>
+                        </td>
+                        <td width="5"></td>
+                        <td>
+                            <br/>
+                            <button type="submit" class="btn btn-success">SEARCH</button>
+                        </td>
+                    </tr>
+                </table>
+            </form>
+
+            <table border="0" width="80%" class="center">
+                <tr>
+                    <td>
+                        <font size="1.5px"> DEBIT</font> <br/>
+                        <font color="#2d363f" size="4px">
+                            <span th:if="${generalLedgerBilanz.debitTotal < 0}">
+                                <div th:text="${#numbers.formatDecimal(generalLedgerBilanz.debitTotal*-1, 0, 'COMMA', 0, 'POINT')}">
+                                </div>
+                            </span>
+                            <span th:unless="${generalLedgerBilanz.debitTotal < 0}">
+                                <div th:text="${#numbers.formatDecimal(generalLedgerBilanz.debitTotal, 0, 'COMMA', 0, 'POINT')}">
+                                </div>
+                            </span>
+                        </font></td>
+                    <td width="5"></td>
+                    <td>
+                        <font color="#2d363f" size="1.5px"> CREDIT </font> <br/>
+                        <font color="#2d363f" size="4px">
+                            <span th:if="${generalLedgerBilanz.creditTotal < 0}">
+                                <div th:text="${#numbers.formatDecimal(generalLedgerBilanz.creditTotal*-1, 0, 'COMMA', 0, 'POINT')}"></div>
+                            </span>
+                            <span th:unless="${generalLedgerBilanz.creditTotal < 0}">
+                                <div th:text="${#numbers.formatDecimal(generalLedgerBilanz.creditTotal, 0, 'COMMA', 0, 'POINT')}"></div>
+                            </span>
+                        </font>
+                    </td>
+                    <td>
+                        <font color="#2d363f" size="1.5px"> TOTAL </font> <br/>
+                        <font color="#2d363f" size="4px">
+
+                        <span th:if="${generalLedgerBilanz.total < 0}">
+                            <div th:text="${#numbers.formatDecimal(generalLedgerBilanz.total*-1, 0, 'COMMA', 0, 'POINT')}"></div>
+                        </span>
+                        <span th:unless="${generalLedgerBilanz.total < 0}">
+                             <div th:text="${#numbers.formatDecimal(generalLedgerBilanz.total, 0, 'COMMA', 0, 'POINT')}"></div>
+                        </span>
+                        </font>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+    <!--Project title area end-->
+    <table border="0" width="90%" class="center">
+        <tr>
+            <th>Date</th>
+            <th>Class</th>
+            <th>Reference</th>
+            <th>Ledger</th>
+            <th>Notes</th>
+            <th>Creator</th>
+            <th>Account Number</th>
+            <th><a href="#" th:href="@{/findGlByType/{type}(type='DEBIT')}">DEBIT</a></th>
+
+            <th><a href="#" th:href="@{/findGlByType/{type}(type='CREDIT')}">CREDIT</a></th>
+
+            <th><a href="#" th:href="@{/gl}">Balance</a></th>
+            <th>Representative</th>
+        </tr>
+        <tr th:each="gl : ${generalLedgerBilanz.generalLedgerWeb}">
+            <td>
+                <font size="2"> <div th:text="${#dates.format(gl.createdDate, 'dd-MMM-yyyy HH:mm')}"></div></font>
+            </td>
+            <td th:text="${gl.glClass}"></td>
+            <td>
+                <a href="#" th:href="@{/gl/reference/{code}(code=${gl.reference})}">
+                    <span th:text="${gl.reference}"/>
+                </a>
+            </td>
+            <td th:text="${gl?.ledgerAccount?.code}"></td>
+            <td th:text="${gl.notes}"></td>
+            <td th:text="${gl.createdBy}"></td>
+            <td>
+                <span th:if="${gl.accountNumber != null}">
+                   <font size="2">
+                       <span th:text="${#strings.substring(gl.accountNumber,0,5)} + ' ' +${#strings.substring(gl.accountNumber,5,10)} + ' ' +${#strings.substring(gl.accountNumber,10,21)} + ' ' +${#strings.substring(gl.accountNumber,21,23)}"/>
+                   </font>
+               </span>
+            </td>
+            <td>
+                <div th:if="${gl.type == 'DEBIT'}">
+                    <div th:if="${gl.amount < 0}">
+                        <span th:text="${#numbers.formatDecimal(gl.amount*-1, 0, 'COMMA', 0, 'POINT')}"></span>
+                    </div>
+                    <div th:unless="${gl.amount < 0}">
+                        <span th:text="${#numbers.formatDecimal(gl.amount, 0, 'COMMA', 0, 'POINT')}"></span>
+                    </div>
+                </div>
+            </td>
+            <td>
+                <div th:if="${gl.type == 'CREDIT'}">
+                    <div th:if="${gl.amount < 0}">
+                        <span th:text="${#numbers.formatDecimal(gl.amount*-1, 0, 'COMMA', 0, 'POINT')}"></span>
+                    </div>
+                    <div th:unless="${gl.amount < 0}">
+                        <span th:text="${#numbers.formatDecimal(gl.amount, 0, 'COMMA', 0, 'POINT')}"></span>
+                    </div>
+                </div>
+            </td>
+            <td>
+                <div th:if="${gl.currentTotal < 0}">
+                    <span th:text="${#numbers.formatDecimal(gl.currentTotal*-1, 0, 'COMMA', 0, 'POINT')}"></span>
+                </div>
+                <div th:unless="${gl.currentTotal < 0}">
+                    <span th:text="${#numbers.formatDecimal(gl.currentTotal, 0, 'COMMA', 0, 'POINT')}"></span>
+                </div>
+            </td>
+            <td>
+                <span th:if="${gl.representative != null}">
+                    <span th:text="${gl.representative}" />
+                </span>
+            </td>
+        </tr>
+    </table>
+</section>
+
+</body>
+<div th:insert="footer::navbar"></div>
+</html>

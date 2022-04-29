@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<div th:insert="header::navbar">  </div>
+<br/>
+<br/>
+
+<!-- Contact form area start -->
+<section class="contact-form-area-start space df-bg">
+    <!--Project title area start-->
+    <div class="project-title-area text-center">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="project-title-content">
+                        <h3> LEDGER ACCOUNT ENTRY</h3>
+                        <span><i class="fas fa-crosshairs"></i></span>
+                        <!--  <p>Cross-agency coordination clean water rural, promising development turmoil inclusive education transformative community.</p>-->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--Project title area end-->
+
+    <div class="contact-from-area">
+        <div class="container">
+            <div class="row">
+                    <font size="6" color="gray"><span  th:text="${ledgerAccountInfo}"/></font>
+                    <form action="#" th:action="@{/saveLedgerAccountForm}" method="post" th:object="${destiantionLedgerAccounts}">
+                            <div class="col-md-12">
+                                <select class="selectNormal" name="Category" id="category">
+                                    <option value="Assets">Assets (1000 – 1999)</option>
+                                    <option value="Liabilities">Liabilities (2000 – 2999)</option>
+                                </select>
+                                <br/>
+                                <br/>
+                                <input type="text" name="name" th:field="*{name}" id="name"
+                                       placeholder="name" class="form-control" required>
+
+                                <br/>
+                                <input type="text" name="code" th:field="*{code}" id="code"
+                                       placeholder="code" class="form-control" required>
+                                <br/>
+                                Active
+                                <label>
+                                    True
+                                    <input type="radio" value="ACTIVE" th:field="*{status}" name="status" checked>
+                                </label>
+                                <label>
+                                    False
+                                    <input type="radio" value="INACTIVE" th:field="*{status}" name="status">
+                                </label>
+                                <br/>
+
+                                <input type="submit" class="btn-block btn contact-btn"
+                                       value="CREATE LEDGER ACCOUNT"/>
+                                <br/>
+                        </div>
+                    </form>
+
+                    <br/><br/>
+                    <h3>EXISTING LEDGER ACCOUNTS</h3>
+                    <table width="100%" class="center" border="0px">
+                        <tr th:each="aLedgerAccount : ${ledgerAccountList}">
+                            <td><a href="#" th:href="@{/editLedgerAccount/{id}(id=${aLedgerAccount.id})}"> <span th:text="${aLedgerAccount.name}"/></td>
+                            <td th:text="${aLedgerAccount.code}"></td>
+                            <td th:text="${aLedgerAccount.category}"> </td>
+                            <td th:text="${aLedgerAccount.status}"> </td>
+                            <td>
+                                <a href="#" th:href="@{/viewLedgerAccount/{id}(id=${aLedgerAccount.id})}">From Cash Account ...</a>
+                                <a href="#" th:href="@{/addGeneralLedgerEntry/{id}(id=${aLedgerAccount.id})}"> <img width="30px" th:src="@{/assets/images/transfer2.png}"/> </a>
+                                <a href="#" th:href="@{/viewLedgerAccount/{id}(id=${aLedgerAccount.id})}">To Cash Account ...</a>
+                            </td>
+                        </tr>
+                    </table>
+
+            </div>
+        </div>
+    </div>
+</section>
+
+<div th:insert="footer::navbar">  </div>
+</html>

@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<div th:insert="header::navbar">  </div>
+<br/>
+<br/>
+
+    <div>
+
+        <h3> Welcome <strong th:text="${user.userName}"> </strong></h3>
+                <div>Your account was successfully created</div>
+
+                <a href="#" th:href="@{/userSavePreview}">Preview Account Details</a>
+
+                    <form action="#" th:action="@{/registerUserForm}" method="post" th:object="${user}">
+                        <br/>
+<!--                        <label> Customer name:</label>-->
+<!--                        <input type="text" th:field="*{userName}"/> <br/>-->
+
+
+                        <br>
+                        <a href="#" th:href="@{/registerSavingAccount}">Create Saving Account</a>
+                        <a href="#" th:href="@{/registerCurrentAccount}">Create Current Account</a>
+                        <a href="#" th:href="@{/registerRetirementAccount}">Create Retirement Saving Account</a>
+                    </form>
+                </div>
+<br/><br/><br/><br/><br/><br/>
+<div th:insert="footer::navbar">  </div>
+    </div>
+
+</html>

@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<div th:insert="header::navbar">  </div>
+<br/>
+<br/>
+
+<!-- Contact form area start -->
+<section class="contact-form-area-start space df-bg">
+    <!--Project title area start-->
+    <div class="project-title-area text-center">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="project-title-content">
+                        <h3>REGISTER A NEW BRANCH</h3>
+                        <span><i class="fas fa-crosshairs"></i></span>
+                        <!--  <p>Cross-agency coordination clean water rural, promising development turmoil inclusive education transformative community.</p>-->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--Project title area end-->
+
+    <div class="contact-from-area">
+        <div class="container">
+            <div class="row">
+                <div class="offset-md-2 col-md-8">
+                    <font size="6" color="gray"><span th:text="${branchInfo}"/> </font>
+                    <font color="blue"><b><div class="error" th:text="${error}"/></b></font> <a href="#" th:href="@{/branches}"> See Branches </a>
+                    <form action="#" th:action="@{/registerBranchForm}" method="post" th:object="${branch}">
+                            <div class="col-md-12">
+                                <label for="country">Choose a Country:</label>
+                                <select class="selectMedium" name="country" id="country">
+                                        <option value="100">CAMEROON</option>
+                                        <option value="200">GABON</option>
+                                </select>
+                                <br/>
+                                <br/>
+                                Code<br/>
+                                <input type="text" name="code" th:field="*{code}" id="code"
+                                       class="form-control" required>
+                                <br/>
+
+                                Name<br/>
+                                <input type="text" name="name" th:field="*{name}" id="name"
+                                       class="form-control" required>
+                                <br/>
+                                Street<br/>
+                                <input type="text" name="street" th:field="*{street}" id="street"
+                                       class="form-control" required>
+
+                                <br/>
+                                City<br/>
+                                <input type="text" name="city" th:field="*{city}" id="city"
+                                       class="form-control" required>
+
+                                <br/>
+                                P. O. Box<br/>
+                                <input type="poBox" name="poBox" th:field="*{poBox}" id="poBox"
+                                       class="form-control">
+
+                                <br/>
+                                Telephone<br/>
+                                <input type="text" name="telephone" th:field="*{telephone}" id="telephone" class="form-control" required>
+                                <br/>
+
+                                Fax<br/>
+                                <input type="text" name="fax" th:field="*{fax}" id="fax"
+                                       class="form-control">
+
+                                <br/>
+                                Email<br/>
+                                <input type="email" name="email" th:field="*{email}" id="email"
+                                       class="form-control" required>
+
+                                <br/>
+                                Contact Person<br/>
+                                <input type="text" name="contact" th:field="*{contact}" id="contact"
+                                       class="form-control" required>
+
+                                <br/>
+                                Notes e.g Opening hours ..<br/>
+                                <input type="text" name="notes" th:field="*{notes}" id="notes"
+                                       class="form-control">
+                                <br/>
+
+                                <input type="submit" class="btn-block btn contact-btn" value="CREATE BRANCH"/>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div th:insert="footer::navbar">  </div>
+</html>

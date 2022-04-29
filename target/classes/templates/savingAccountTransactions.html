@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http:/>/www.thymeleaf.org">
+<div th:insert="header::navbar">  </div>
+<br/>
+<br/>
+<div class="panel-heading">This page will show <b>All payments</b> made to this Saving Accounts<br/>
+    Right now it shows just the last payment made</div>
+<table>
+    <tr>
+
+        <th>
+            Payment Amount
+        </th>
+        <th>
+            Created Date
+        </th>
+        <th>
+            Created By
+        </th>
+        <th>
+
+        </th>
+    </tr>
+    <tr th:each="savingAccountTransaction : ${savingAccountTransaction}">
+        <td>
+            <p th:text="${savingAccountTransaction.savingAmount}"/>
+        </td>
+        <td>
+            <p th:text="${savingAccountTransaction.createdDate}"/>
+        </td>
+        <td>
+            <p th:text="${savingAccountTransaction.createdBy}"/>
+        </td>
+
+    </tr>
+</table>
+
+<br/><br/><br/><br/><br/><br/>
+<div th:insert="footer::navbar">  </div>
+
+</html>
+
